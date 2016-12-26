@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "724418252665",
+    "firebase_url": "https://fir-linkus.firebaseio.com",
+    "project_id": "fir-linkus",
+    "storage_bucket": "fir-linkus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:724418252665:android:a94e4c694f5d0ba3",
+        "android_client_info": {
+          "package_name": "com.start_up.dev.apilinkus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "724418252665-9jtsnh38l886qpl6qa43ikvfijin6uu1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBG2cuBLHoISP8hKl5_1ALvVoBEGB1k6AM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

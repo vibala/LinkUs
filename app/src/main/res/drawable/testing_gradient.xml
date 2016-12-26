@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/red">
+        <shape
+            android:shape="rectangle">
+            <solid
+                android:width="10dp"
+                android:color="@color/blue_2" />
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/gmail" android:gravity="left"
+        android:background="@android:color/transparent"
+        android:left="4dp"
+      />
+    <item
+        android:drawable="@color/white"
+        android:left="40dp">
+        <shape android:shape="rectangle">
+            <solid
+                android:width="10dp"
+                android:color="@color/blue_2" />
+        </shape>
+    </item>
+
+</layer-list>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.start_up.dev.apilinkus.AlbumActivity">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:context="com.start_up.dev.apilinkus.AlbumActivity">
+
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/album_share_friend_by_mail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                app:srcCompat="@android:drawable/ic_menu_share" />
+
+        </android.support.design.widget.CoordinatorLayout>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="Entrez l'adresse mail de votre ami pour qu'il puisse le consulter\nExemple :john@gmail.com"
+            android:id="@+id/album_read_mail_friend"/>
+
+    </LinearLayout>
+        <ProgressBar
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/album_progressBar"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/album_card_recycler_view"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="auto_fit"/>
+
+    </LinearLayout>
+
+    <!--<include
+        layout="@layout/app_bar_album"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />-->
+</android.support.design.widget.CoordinatorLayout>
