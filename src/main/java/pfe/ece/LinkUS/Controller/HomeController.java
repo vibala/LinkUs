@@ -90,19 +90,6 @@ public class HomeController {
         return new ResponseEntity(new Message(100, "Congratulations!", "You have accessed a Basic Auth protected resource."),HttpStatus.CREATED);
     }
 
-    public User createUserAccount(UserCreateForm accountDTO){
-
-        User registered = null;
-        try{
-            userService.registerNewUserAccount(accountDTO);
-        }catch(EmailExistsException e){
-            return null;
-        }
-
-        return registered;
-    }
-
-
     @RequestMapping(value="/home", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Message> getHomePage(){
         LOGGER.info("UserController - getHomePage");
@@ -122,5 +109,15 @@ public class HomeController {
         return new Message(100, "Congratulations!", "You have accessed a Basic Auth protected resource.");
     }
 
+    public User createUserAccount(UserCreateForm accountDTO){
 
+        User registered = null;
+        try{
+            userService.registerNewUserAccount(accountDTO);
+        }catch(EmailExistsException e){
+            return null;
+        }
+
+        return registered;
+    }
 }

@@ -15,7 +15,6 @@ import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -130,8 +129,6 @@ public class OAuth2ServerConfig {
 
         @Autowired
         private CurrentUserDetailsService userDetailsService;
-
-        private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
         /***

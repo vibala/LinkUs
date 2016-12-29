@@ -69,7 +69,7 @@ public class AlbumController {
             right = "lecture";
         }
         System.out.println("coucou2 ! ");
-        // Get the current authentified user id
+        // Get the current authentified userid
         System.out.println("accessTokenService ! " + accessTokenService);
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         System.out.println("userId ! " + userId);

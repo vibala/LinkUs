@@ -46,6 +46,9 @@ public class User implements Serializable {
     @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
     private Date dateofBirth;
 
+    @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
+    private Date dateofRegistration;
+
     @Field("enabled")
     private boolean enabled;
 
@@ -195,5 +198,13 @@ public class User implements Serializable {
 
     public void setFriendPendingList(ArrayList<String> friendPendingList) {
         this.friendPendingList = friendPendingList;
+    }
+
+    public Date getDateofRegistration() {
+        return dateofRegistration;
+    }
+
+    public void setDateofRegistration(Date dateofRegistration) {
+        this.dateofRegistration = dateofRegistration;
     }
 }

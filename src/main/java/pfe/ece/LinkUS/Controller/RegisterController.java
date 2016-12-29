@@ -44,22 +44,6 @@ public class RegisterController {
 
     private static final Logger LOGGER = Logger.getLogger(RegisterController.class);
 
-    /*private final UserService userService;
-    private final UserCreateFormValidator userCreateFormValidator;
-    private final VerificationTokenService verificationTokenService;
-    private final AlbumService albumService;
-
-
-
-    @Autowired
-    public RegisterController(UserService userService, UserCreateFormValidator userCreateFormValidator,VerificationTokenService verificationTokenService,AlbumService albumService) {
-        this.userService = userService;
-        this.userCreateFormValidator = userCreateFormValidator;
-        this.verificationTokenService = verificationTokenService;
-        this.albumService = albumService;
-    }*/
-
-
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.addValidators(userCreateFormValidator);

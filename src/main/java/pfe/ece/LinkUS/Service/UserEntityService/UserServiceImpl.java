@@ -10,7 +10,11 @@ import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Model.UserCreateForm;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -51,7 +55,7 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-
+    /* Main method used to save a new user in the mongo database */
     @Override
     public User registerNewUserAccount(UserCreateForm form) throws EmailExistsException {
 
@@ -63,10 +67,19 @@ public class UserServiceImpl implements UserService {
         user.setEmail(form.getEmail());
         user.setFirstName(form.getFirstName());
         user.setLastName(form.getLastName());
-        user.setPasswordHash(new BCryptPasswordEncoder().encode(form.getPassword()));
         user.setSexe(form.getSexe());
         user.setDateofBirth(form.getDateofBirth());
         user.setRole(form.getRole());
+        try {
+            // ***** https://www.mkyong.com/java/java-how-to-get-current-date-time-date-and-calender/
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Pattern corresponding to ISO Format
+            Date timestamp = dateFormat.parse(dateFormat.format(new Date()));
+            user.setDateofRegistration(timestamp); // Setting the date of the registration
+            String passwordBeforeHash = form.getPassword().concat(timestamp.toString());
+            user.setPasswordHash(new BCryptPasswordEncoder().encode(passwordBeforeHash));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return userRepository.save(user);
     }
 
