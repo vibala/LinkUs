@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+</head>
+<body>
+<h1>     MAIL CONFIRMATION STATUS FOLLOWING YOUR SIGN UP </h1>
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>HTTP CODE</th>
+            <th>SUBJECT</th>
+            <th>MESSAGE</th>
+            <th>Good</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- TODO: Content -->
+        <tr th:each="message, status : ${messages_confirmation}">
+            <td th:text="${status.count}">#</td>
+            <td th:text="${message.id}">HTTP Code</td>
+            <td th:text="${message.subject}">Subject</td>
+            <td th:text="${message.text}">Text</td>
+            <td>
+                <span class="glyphicon glyphicon-ok" th:if="${message.user_registred}"></span>
+                <span class="glyphicon glyphicon-remove" th:unless="${message.user_registred}"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
