@@ -81,16 +81,28 @@ public class RegisterController {
             String appUrl = request.getContextPath();
             System.out.println("fsdfsdf " + userService);
 
-            if(!userService.getUserByEmail(username).isPresent()){
+            if((userService.getUserByEmail(username).isPresent() && userService.getUserByEmail(username).get().isEnabled())
+                 || (userService.getUserByEmail(username).isPresent() &&
+                        !userService.getUserByEmail(username).get().isEnabled() && verificationTokenService.existsTokenAssociatedToUsername(username))){
                 System.out.println("b");
-                eventPublisher.publishEvent(new OnRegistrationCompleteEvent(username,request.getLocale(),appUrl,1));
+                messages.add(new Message(417,"msg.Failure","A user with this email address already exists in the DB"));
                 System.out.println("c");
+                return new ResponseEntity(messages.get(0), HttpStatus.CONFLICT);
+
             }else{
                 System.out.println("d");
-                messages.add(new Message(417,"msg.Failure","A user with this email already exists in the DB"));
+                eventPublisher.publishEvent(new OnRegistrationCompleteEvent(username,request.getLocale(),appUrl,1));
+                System.out.println("e");
+            }
+
+            /*if(!userService.getUserByEmail(username).isPresent()){
+                eventPublisher.publishEvent(new OnRegistrationCompleteEvent(username,request.getLocale(),appUrl,1));
+            }else{
+                System.out.println("d");
+                messages.add(new Message(417,"msg.Failure","A user with this email address already exists in the DB"));
                 System.out.println("e");
                 return new ResponseEntity(messages.get(0), HttpStatus.CONFLICT);
-            }
+            }*/
         }catch(MailSendException e ){
             System.out.println("f");
             messages.add(new Message(417,"msg.Failure",e.getMessage()));

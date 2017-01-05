@@ -90,18 +90,22 @@ public class OAuth2ServerConfig {
 
         /***
          * List the requests that are allowed to be sent to the server in which way
-         * @param http
+         * @param https
          * @throws Exception
          */
         @Override
-        public void configure(HttpSecurity http) throws Exception {
-            http
+        public void configure(HttpSecurity https) throws Exception {
+            https
                     .authorizeRequests()
                     .antMatchers(HttpMethod.POST,"/user").permitAll()
                     .antMatchers(HttpMethod.POST,"/user/registration").permitAll()
+                    .antMatchers(HttpMethod.POST,"/forgotPassword").permitAll()
+                    .antMatchers(HttpMethod.GET,"/setNewPassword").permitAll()
+                    .antMatchers(HttpMethod.POST,"/saveNewpassword").permitAll()
                     .antMatchers(HttpMethod.GET,"/registrationConfirm").permitAll()
                     .antMatchers(HttpMethod.POST,"/facebook/login").permitAll()
                     .antMatchers(HttpMethod.POST,"/twitter/login").permitAll()
+                    .antMatchers(HttpMethod.POST,"/google/login").permitAll()
                     .antMatchers(HttpMethod.POST,"/oauth/token").permitAll()
                     .antMatchers(HttpMethod.GET,"/oauth/revoke-token").authenticated()
                     .antMatchers("/users/**").hasRole("ADMIN")
@@ -137,9 +141,7 @@ public class OAuth2ServerConfig {
          * @throws Exception
          */
         @Override
-        public void configure(
-                AuthorizationServerSecurityConfigurer oauthServer)
-                throws Exception {
+        public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
             oauthServer
                     .tokenKeyAccess("permitAll()")
                     .checkTokenAccess("isAuthenticated()");
@@ -159,9 +161,9 @@ public class OAuth2ServerConfig {
                     .authorizedGrantTypes(
                             "password","authorization_code","refresh_token")
                     .scopes("read","write")
-                    .accessTokenValiditySeconds(3600*24*365);
+                    .accessTokenValiditySeconds(3600*24)//Access token is only valid for 1 day.
+                    .refreshTokenValiditySeconds(3600*24*30);//Refresh token is only valid for 1 month.
         }
-
 
         /***
          * Configure the token endpoint which is the endpoint on the authorization server where the client
@@ -230,7 +232,5 @@ public class OAuth2ServerConfig {
                     .build();
             return dataSource;
         }
-
     }
-
 }

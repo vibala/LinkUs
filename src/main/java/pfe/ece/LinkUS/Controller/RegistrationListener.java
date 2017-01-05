@@ -76,7 +76,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     private void confirmRegistrationFirstStep(OnRegistrationCompleteEvent event){
         String token = UUID.randomUUID().toString();
         LOGGER.info("Token value : " + token);
-        tokenservice.createVerificationToken(token,event.getRegistred_email());
+        tokenservice.createVerificationToken(token,event.getRegistred_email(),"MAIL");
 
          /*Preparation du mail*/
         String recipientAddress = event.getRegistred_email();
@@ -96,30 +96,6 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         }catch (MessagingException e) {
             e.printStackTrace();
         }
-
-       /* MailjetRequest email;
-        JSONArray recipients;
-        MailjetResponse response;
-        recipients = new JSONArray()
-                .put(new JSONObject().put(Contact.EMAIL,recipientAddress));
-        email = new MailjetRequest(Email.resource)
-                .property(Email.FROMNAME, "support_linkus")
-                .property(Email.FROMEMAIL, usernameFromEmail)
-                .property(Email.SUBJECT, subject)
-                .property(Email.TEXTPART, confirmationUrl)
-                .property(Email.RECIPIENTS, recipients)
-                .property(Email.MJCUSTOMID, "JAVA-Email");
-
-        try {
-            response = client.post(email);
-            System.out.println("ZZZZZZZZZ 1: " + response.toString());
-        } catch (MailjetException e) {
-            System.out.println("MAIL EXCEPTION 1: " + e.getMessage());
-            e.printStackTrace();
-        } catch (MailjetSocketTimeoutException e) {
-            System.out.println("MailjetSocketTimeoutException1 : " + e.getMessage());
-            e.printStackTrace();
-        }*/
     }
 
     private void confirmRegistrationSecondStep(OnRegistrationCompleteEvent event){
@@ -139,32 +115,6 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         }catch (MessagingException e) {
             e.printStackTrace();
         }
-
-       /* MailjetRequest email;
-        JSONArray recipients;
-        MailjetResponse response;
-        recipients = new JSONArray()
-                .put(new JSONObject().put(Contact.EMAIL,recipientAddress));
-        email = new MailjetRequest(Email.resource)
-                .property(Email.FROMNAME, "support_linkus")
-                .property(Email.FROMEMAIL, usernameFromEmail)
-                .property(Email.SUBJECT, subject)
-                .property(Email.TEXTPART, "You receive this email because your are successfully connected")
-                .property(Email.RECIPIENTS, recipients)
-                .property(Email.MJCUSTOMID, "JAVA-Email");
-
-        try {
-            response = client.post(email);
-            System.out.println("ZZZZZZZZZ : " + response);
-        } catch (MailjetException e) {
-            System.out.println("MAIL EXCEPTION : " + e.getMessage());
-            e.printStackTrace();
-        } catch (MailjetSocketTimeoutException e) {
-            System.out.println("MailjetSocketTimeoutException : " + e.getMessage());
-            e.printStackTrace();
-        }*/
-
-
     }
 
 

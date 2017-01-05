@@ -93,6 +93,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void saveNewPassword(User user,String password) {
+        String dateofRegistration = user.getDateofRegistration().toString();
+        user.setPasswordHash(new BCryptPasswordEncoder().encode(password.concat(dateofRegistration)));
+        userRepository.save(user);
+    }
 
 
 }

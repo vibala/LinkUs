@@ -114,6 +114,15 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-thymeleaf</artifactId>
       </dependency>
+      <!--  Simply adding this to the dependencies makes Bootstrap available for our project: -->
+      <dependency>
+          <groupId>org.webjars</groupId>
+          <artifactId>bootstrap</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.webjars</groupId>
+          <artifactId>jquery</artifactId>
+      </dependency>
       <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-web</artifactId>
@@ -175,6 +184,16 @@
           <artifactId>spring-test</artifactId>
           <version>4.3.3.RELEASE</version>
           <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>com.firebase</groupId>
+          <artifactId>firebase-client</artifactId>
+          <version>1.0.1</version>
+      </dependency>
+      <dependency>
+          <groupId>com.google.firebase</groupId>
+          <artifactId>firebase-admin</artifactId>
+          <version>4.0.3</version>
       </dependency>
   </dependencies>
     <build>

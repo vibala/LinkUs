@@ -14,7 +14,8 @@ import java.util.Date;
 @Table(name= "verification_tokens")
 public class VerificationToken {
 
-    private static final int EXPIRATION = 60 * 24;
+    private static final int EXPIRATION_MAIL_ONE_DAY  = 60 * 24;
+    private static final int EXPIRATION_MAIL_ONE_HOUR = 60 * 1;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,29 +28,43 @@ public class VerificationToken {
     @Column(name="user_name")
     private String username;
 
+    @Column(name="creation_date")
+    @Type(type="timestamp")
+    private Timestamp creationDate;
+
+
     @Column(name="expiry_date")
     @Type(type="timestamp")
     private Timestamp expiryDate;
 
-    public VerificationToken(){
-        this.expiryDate = new Timestamp(calculateExpiryDate(EXPIRATION).getTime());
-    }
-
-    public VerificationToken(String token, String username){
+    public VerificationToken(String token, String username,Timestamp creationDate,Timestamp expiryDate){
         super();
         this.username = username;
         this.token = token;
+        this.creationDate = creationDate;
+        this.expiryDate = expiryDate;
+    }
+
+    public VerificationToken(){}
+
+    public VerificationToken(String object){
+        this.creationDate = new Timestamp(getCreationDate().getTime()); // Same configuration for the following cases
+        if(object.contentEquals("MAIL")){
+            this.expiryDate = new Timestamp(calculateExpiryDate(EXPIRATION_MAIL_ONE_DAY).getTime());
+        }else if(object.contentEquals("PASSWORD")){
+            this.expiryDate = new Timestamp(calculateExpiryDate(EXPIRATION_MAIL_ONE_HOUR).getTime());
+        }
+    }
+
+    private Date getCreationDate(){
+        Calendar cal = Calendar.getInstance();
+        return cal.getTime();
     }
 
     private Date calculateExpiryDate(int expiryTimeInMinutes){
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MINUTE,expiryTimeInMinutes);
         return cal.getTime();
-    }
-
-
-    public static int getEXPIRATION() {
-        return EXPIRATION;
     }
 
     public Long getId() {
@@ -80,4 +95,20 @@ public class VerificationToken {
         return expiryDate;
     }
 
+    public boolean check_token_is_expired(){
+        Date current_datetime = Calendar.getInstance().getTime();
+        Date expired_datetime = getExpiryDate();
+        if (current_datetime.compareTo(expired_datetime) > 0) {
+            System.out.println("Date1 is after Date2");
+            return true;
+        } else if (current_datetime.compareTo(expired_datetime) < 0) {
+            System.out.println("Date1 is before Date2");
+            return false;
+        } else if (current_datetime.compareTo(expired_datetime) == 0) {
+            System.out.println("Date1 is equal to Date2");
+            return true;
+        }
+
+        return false;
+    }
 }

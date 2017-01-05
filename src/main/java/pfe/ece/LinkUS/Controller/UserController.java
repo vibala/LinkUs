@@ -57,7 +57,7 @@ public class UserController {
         List<User> userList = userService.findUsersByName(name);
 
         if(userList == null || userList.isEmpty()) {
-            throw  new AlbumNotFoundException(name);
+            throw new AlbumNotFoundException(name);
         } else {
             return userList.toString();
         }
