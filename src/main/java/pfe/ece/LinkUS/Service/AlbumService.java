@@ -117,32 +117,18 @@ public class AlbumService {
         return groupIdsList;
     }
 
-    // Added by Vignesh
-    public void save_album(Album album) {
-       save(album);
-    }
-
-    // Added By Vignesh
-    public void update_album(Album album) {
-        LOGGER.info("Updating album" + album.toString());
-        albumRepository.save(album);
-    }
-
-    private void save(Album album) {
+    public void save(Album album) {
         // Set to null not to erase another object with the same Id (new object)
         LOGGER.info("Saving new album" + album.toString());
         albumRepository.save(album);
     }
 
-    private void update(Album album) {
+    public void update(Album album) {
         LOGGER.info("Updating album" + album.toString());
         albumRepository.save(album);
     }
 
-
-
-
-    private void delete(Album album) {
+    public void delete(Album album) {
         LOGGER.info("Deleting album" + album.toString());
         albumRepository.delete(album);
     }
