@@ -59,7 +59,6 @@ public class AlbumController {
 
     @RequestMapping(value = "/right",produces = "application/json")
     public String findAlbumByUserId(@RequestParam(value = "right") String right) {
-        System.out.println("coucou ! ");
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
         AlbumService albumService = new AlbumService(albumRepository);
@@ -68,7 +67,6 @@ public class AlbumController {
         if(right == null ||"".equals(right)) {
             right = "lecture";
         }
-        System.out.println("coucou2 ! ");
         // Get the current authentified user id
         System.out.println("accessTokenService ! " + accessTokenService);
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();

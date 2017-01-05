@@ -4,6 +4,7 @@ package pfe.ece.LinkUS.Config;
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 
@@ -11,15 +12,21 @@ import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
  * Base class for Spring Data MongoDB configuration extending AbstractMongoConfiguration.
  */
 @Configuration
+@PropertySource(value = {"classpath:application.properties"})
 public class MyMongoConfig extends AbstractMongoConfiguration {
 
-    private String host = "localhost";
-    private Integer port = 27017;
-    private String username = "";
-    private String database = "mydb";
-    private String password = "";
-    private MongoClientURI uri = new MongoClientURI("mongodb://localhost:27017");
-
+    @Value("${spring.data.mongodb.host}")
+    private String host;
+    @Value("${spring.data.mongodb.port}")
+    private Integer port;
+    @Value("${spring.data.mongodb.username}")
+    private String username;
+    @Value("${spring.data.mongodb.database}")
+    private String database;
+    @Value("${spring.data.mongodb.password}")
+    private String password;
+    @Value("${spring.data.mongodb.uri}")
+    private MongoClientURI uri;
 
     /***
      * Return the name of the database
