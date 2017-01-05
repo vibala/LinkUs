@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
 import pfe.ece.LinkUS.Model.Album;
+import pfe.ece.LinkUS.Model.Right;
 import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
@@ -81,7 +82,7 @@ public class UserController {
         List<User> userList = new ArrayList<>();
 
         if(right == null ||"".equals(right)) {
-            right = "lecture";
+            right = Right.LECTURE.name();
         }
 
         // Get userIds in album repo

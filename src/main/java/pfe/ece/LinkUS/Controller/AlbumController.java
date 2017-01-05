@@ -65,7 +65,7 @@ public class AlbumController {
         List<Album> albumList = new ArrayList<>();
 
         if(right == null ||"".equals(right)) {
-            right = "lecture";
+            right = Right.LECTURE.name();
         }
         // Get the current authentified user id
         System.out.println("accessTokenService ! " + accessTokenService);
@@ -124,14 +124,14 @@ public class AlbumController {
             //Retrieve only the first album
             Album firstownerAlbum = ownerAlbums.get(0); // Mode freemium
             // Getting the id for the lecture specific rigth
-            IdRight lectureRight = firstownerAlbum.getSpecificIdRight("lecture");
+            IdRight lectureRight = firstownerAlbum.getSpecificIdRight(Right.LECTURE.name());
             // Adding user sent in param in the userIdList thus the user will have the lecture rigth on the ownerAlbum
             lectureRight.getUserIdList().clear();
             boolean rst = lectureRight.getUserIdList().add(frienduserId);
 
             if(rst==true){
                 //  Update album
-                albumService.update_album(firstownerAlbum);
+                albumService.update(firstownerAlbum);
                 m.setId(200);
                 m.setSubject("msg.Success.SettingAlbum");
                 m.setText("The current album is set with the user (with the lecture rigth)");

@@ -123,7 +123,7 @@ public class RegisterController {
         User registered = createUserAccount(form);
         LOGGER.info("confirmRegistration (Album create) - STEP II");
         Album album_for_new_comer = createAlbumForEachNewRegisterUser(registered.getId());
-        albumService.save_album(album_for_new_comer);
+        albumService.save(album_for_new_comer);
         LOGGER.info("confirmRegistration (Album create) - STEP III");
         System.out.println("g " + registered.getId());
 
@@ -195,9 +195,13 @@ public class RegisterController {
     public Album createAlbumForEachNewRegisterUser(String userId){
         LOGGER.debug("createAlbumForEachNewRegisterUser - debut de création d'un album");
         Album album = new Album();
-        IdRight idRight = new IdRight("lecture");
-        album.getIdRight().add(idRight);
         album.setOwnerId(userId);
+        // on ajoute l'owner dans chaque droit
+        for(Right right: Right.values()) {
+            IdRight idRight = new IdRight(right.name());
+            idRight.getUserIdList().add(userId);
+            album.getIdRight().add(idRight);
+        }
         LOGGER.debug("createAlbumForEachNewRegisterUser - fin de création d'un album");
         return album;
     }
