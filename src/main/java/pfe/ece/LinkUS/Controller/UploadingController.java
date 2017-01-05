@@ -1,5 +1,6 @@
 package pfe.ece.LinkUS.Controller;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Model.Album;
 import pfe.ece.LinkUS.Model.IdRight;
 import pfe.ece.LinkUS.Model.Moment;
+import pfe.ece.LinkUS.Model.Right;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
@@ -17,9 +19,18 @@ import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
 
+import javax.imageio.ImageIO;
+import javax.sound.midi.SysexMessage;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -39,9 +50,6 @@ public class UploadingController {
     AccessTokenService accessTokenService;
     @Autowired
     AlbumService albumService;
-
-    private final String LECTURE="lecture";
-
 
 
     @RequestMapping(value = "/uploadFiles", method = RequestMethod.POST)
@@ -64,18 +72,48 @@ public class UploadingController {
         System.out.println(notificationTokenRepository);
 
         /** ----------------------UPLOAD IMAGE*/
-        AmazonS3Service amazonService = new AmazonS3Service();
+        //PARTIE AMAZON
+
+        /*AmazonS3Service amazonService = new AmazonS3Service();
 
         //On genere un nom unique du fichier dans AmazonS3
         String fileS3Name = amazonService.generatefileS3Name(moment.getName());
 
         //On upload l'image dans AmazonS3
-        amazonService.uploadFileByte(moment.getImgByte(),fileS3Name,"image/*");
+        amazonService.uploadFileByte(moment.getImgByte(),fileS3Name,"image*//*");*/
+
+        // PARTIE LOCALE
+        String fileS3Name = moment.getName();
+        File directory = new File("./images");
+        if (!directory.isDirectory()) {
+            directory.mkdir();
+        }
+
+        FileOutputStream fos = new FileOutputStream("./images/" + fileS3Name);
+        fos.write(moment.getImgByte());
+        fos.close();
+
+        //**
 
         /** ----------------------STOCKAGE DANS LA BASE DE DONNEE*/
         //Ajout de donnée au moment avant de la stocker
         moment.setName(fileS3Name);
-        moment.setUrl("https://s3.amazonaws.com/"+AmazonS3Service.bucketName+"/"+fileS3Name);
+        //moment.setUrl("https://s3.amazonaws.com/"+AmazonS3Service.bucketName+"/"+fileS3Name);
+        moment.setUrl("http://"+Inet4Address.getLocalHost().getHostAddress() + ":9999/images?name=" + fileS3Name);
+
+        Enumeration e = NetworkInterface.getNetworkInterfaces();
+        while(e.hasMoreElements())
+        {
+            NetworkInterface n = (NetworkInterface) e.nextElement();
+            Enumeration ee = n.getInetAddresses();
+            while (ee.hasMoreElements())
+            {
+                InetAddress i = (InetAddress) ee.nextElement();
+                System.out.println(i.getHostAddress());
+            }
+            System.out.println("---");
+        }
+
         moment.setPublishDate(new Date()); //Faudra plus utiliser Date car deprecated... new Date() gives you a Date object initialized with the current date / time.
         //On détruit l'image car elle vient de la stocker sur le cloud donc inutile de la stocker
         moment.setImgByte(null);
@@ -94,7 +132,7 @@ public class UploadingController {
             Album album = albumService.findAlbumById(albumId);
 
             //On récupère l'objet des droit lecture de l'album
-            IdRight albumReadRights = album.getSpecificIdRight(LECTURE);
+            IdRight albumReadRights = album.getSpecificIdRight(Right.LECTURE.name());
             //On recupere la liste des utilisateurs de cet objet
             ArrayList<String> listUserIdListWithReadRight = albumReadRights.getUserIdList();
 

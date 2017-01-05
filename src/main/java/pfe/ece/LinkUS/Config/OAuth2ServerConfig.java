@@ -104,6 +104,7 @@ public class OAuth2ServerConfig {
                     .antMatchers(HttpMethod.POST,"/facebook/login").permitAll()
                     .antMatchers(HttpMethod.POST,"/twitter/login").permitAll()
                     .antMatchers(HttpMethod.POST,"/oauth/token").permitAll()
+                    .antMatchers(HttpMethod.GET,"/images*").permitAll()
                     .antMatchers(HttpMethod.GET,"/oauth/revoke-token").authenticated()
                     .antMatchers("/users/**").hasRole("ADMIN")
                     .anyRequest().authenticated();
@@ -162,7 +163,8 @@ public class OAuth2ServerConfig {
                     .authorizedGrantTypes(
                             "password","authorization_code","refresh_token")
                     .scopes("read","write")
-                    .accessTokenValiditySeconds(3600*24*365);
+                    .accessTokenValiditySeconds(3600*24*365)
+                    .refreshTokenValiditySeconds(3600*24*365);
         }
 
 
