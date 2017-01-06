@@ -20,16 +20,18 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.start_up.dev.apilinkus.API.APILinkUS;
+import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
 
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 
 public class BaseActivity extends AppCompatActivity {
     private static final String TAG = "Notification-Main";
 
-    private Moment moment;
+    private Instant instant;
     private static final int PICK_IMAGE = 1;
     private ImageView imgView;
     private Bitmap bitmap;
@@ -82,7 +84,7 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
 
-        //-----------BUTTON - ACTION --- Send selected moment to Server -> Server side : upload then notification to readers
+        //-----------BUTTON - ACTION --- Send selected instant to Server -> Server side : upload then notification to readers
         FloatingActionButton buttonGoGallery = (FloatingActionButton) findViewById(R.id.intent_gallery_multiple_send);
         buttonGoGallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,17 +96,22 @@ public class BaseActivity extends AppCompatActivity {
         });
 
 
-        //-----------BUTTON - ACTION --- Send selected moment to Server -> Server side : upload then notification to readers
+        //-----------BUTTON - ACTION --- Send selected instant to Server -> Server side : upload then notification to readers
         FloatingActionButton buttonSend = (FloatingActionButton) findViewById(R.id.fab);
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (moment==null) {
+                if (instant==null) {
                     Snackbar.make(findViewById(R.id.main_snackbar), "No image selected",
                             Snackbar.LENGTH_SHORT)
                             .show();
                 }else{
+                    Moment moment=new Moment();
+                    moment.setName("Moment_"+instant.getName());
+                    ArrayList<Instant> listInstant=new ArrayList<Instant>();
+                    listInstant.add(instant);
+                    moment.setInstantList(listInstant);
                     new APILinkUS().addMomentToMyAlbum(moment,"true");
 
                 Snackbar.make(findViewById(R.id.main_snackbar), "Image sent for uploading",
@@ -184,8 +191,8 @@ public class BaseActivity extends AppCompatActivity {
                 String nameAndExtension = parse[parse.length-1];
 
                 if (filePath != null && nameAndExtension!=null) {//image.jpg
-                    moment=new Moment();
-                    moment.setName(nameAndExtension);
+                    instant=new Instant();
+                    instant.setName(nameAndExtension);
                     decodeFile(filePath);
                 } else {
                     bitmap = null;
@@ -239,7 +246,7 @@ public class BaseActivity extends AppCompatActivity {
         bitmap = BitmapFactory.decodeFile(filePath, o2);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 75, bos);
-        moment.setImgByte(bos.toByteArray());
+        instant.setImgByte(bos.toByteArray());
         imgView.setImageBitmap(bitmap);
 
     }

@@ -1,18 +1,13 @@
 package com.start_up.dev.apilinkus;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,9 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.start_up.dev.apilinkus.API.APILinkUS;
+import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Tool.DataAdapterGallery;
-import com.start_up.dev.apilinkus.Tool.GridItem;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -33,8 +28,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static java.lang.String.valueOf;
 
@@ -120,9 +113,9 @@ public class GalleryActivity  extends AppCompatActivity implements View.OnLongCl
 
                 for(File file : selection_list){
 
-                    Moment moment=new Moment();
-                    moment.setName(file.getName());
-                    System.out.println(moment.getName());
+                    Instant instant=new Instant();
+                    instant.setName(file.getName());
+                    System.out.println(instant.getName());
                     FileInputStream fis = null;
                     try {
                         fis = new FileInputStream(file);
@@ -144,7 +137,12 @@ public class GalleryActivity  extends AppCompatActivity implements View.OnLongCl
                     }
                     byte[] imgByte = bos.toByteArray();
 
-                    moment.setImgByte(imgByte);
+                    instant.setImgByte(imgByte);
+                    Moment moment=new Moment();
+                    moment.setName("Moment_"+instant.getName());
+                    ArrayList<Instant> listInstant=new ArrayList<Instant>();
+                    listInstant.add(instant);
+                    moment.setInstantList(listInstant);
                     new APILinkUS().addMomentToMyAlbum(moment,"true");
                 }
 

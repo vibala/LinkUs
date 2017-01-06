@@ -2,8 +2,8 @@ package com.start_up.dev.apilinkus.API;
 
 import android.content.Context;
 
+import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
-import com.start_up.dev.apilinkus.R;
 
 /**
  * Created by Huong on 06/11/2016.
@@ -17,7 +17,7 @@ public class APILinkUS {
 
     public APILinkUS(Context mContext) {
         this.mContext=mContext;
-        this.BASE_URL="http://192.168.43.45:9999";
+        this.BASE_URL="http://192.168.43.128:9999";
     }
     public APILinkUS() {
     }
@@ -38,8 +38,11 @@ public class APILinkUS {
         String query="/uploadFiles?notificationToPeopleWithReadRightOnAlbum="+notificationToPeopleWithReadRightOnAlbum;
 
         String urlrequestAPI = BASE_URL + query;
+        System.out.println("aaaaaaaa"+urlrequestAPI);
         APIPostMoment apiPostStudent = new APIPostMoment(m);
+        System.out.println("bbbbbbbbb"+urlrequestAPI);
         apiPostStudent.execute(urlrequestAPI);
+        System.out.println("vvvvvvvv"+urlrequestAPI);
         return m;
     }
 

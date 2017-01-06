@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.start_up.dev.apilinkus.BaseActivity;
+import com.start_up.dev.apilinkus.GalleryActivity;
 import com.start_up.dev.apilinkus.MainActivity;
 import com.start_up.dev.apilinkus.R;
 
@@ -85,6 +87,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notificationBuilder.build());
+        Intent intent2 = new Intent(this, BaseActivity.class);
+        //Start details activity
+        startActivity(intent2);
 
     }
 

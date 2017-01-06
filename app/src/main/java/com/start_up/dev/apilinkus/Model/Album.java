@@ -40,7 +40,7 @@ public class Album {
         this.endDate = endDate;
     }
 
-    public void setMoments(ArrayList<Moment> moments) {
+    public void setMoments(ArrayList<Instant> moments) {
         this.moments = moments;
     }
 
@@ -52,7 +52,7 @@ public class Album {
     private String placeName;
     private Date beginDate;
     private Date endDate;
-    private ArrayList<Moment> moments = new ArrayList<>();
+    private ArrayList<Instant> moments = new ArrayList<>();
     private ArrayList<IdRight> idRight = new ArrayList<>();
     private boolean active = false;
 
@@ -100,7 +100,7 @@ public class Album {
         return endDate;
     }
 
-    public ArrayList<Moment> getMoments() {
+    public ArrayList<Instant> getMoments() {
         return moments;
     }
 

@@ -187,7 +187,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void displayProfileInformation(Message welcomemsg){
-        profileTextView.setText("Subject: " + welcomemsg.getSubject() + "\nText: " + welcomemsg.getText());
+        if(welcomemsg!=null)
+            profileTextView.setText("Subject: " + welcomemsg.getSubject() + "\nText: " + welcomemsg.getText());
     }
 
     // ***************************************
