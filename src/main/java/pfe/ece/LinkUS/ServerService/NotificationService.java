@@ -31,7 +31,6 @@ public class NotificationService {
     public NotificationService(UserService userservice,NotificationTokenRepository notificationTokenRepository){
         this.userservice=userservice;
         this.notificationTokenRepository=notificationTokenRepository;
-        System.out.println("3"+notificationTokenRepository);
     }
 
     public ArrayList<String> getTokenUserListFromIdUserList(ArrayList<String>  usersIdInList){

@@ -57,8 +57,6 @@ public class RegisterController {
 
         if(form==null){
             LOGGER.error("User is null");
-        }else{
-            LOGGER.info("User is not null");
         }
 
         // contents as before
@@ -82,8 +80,8 @@ public class RegisterController {
             System.out.println("fsdfsdf " + userService);
 
             if((userService.getUserByEmail(username).isPresent() && userService.getUserByEmail(username).get().isEnabled())
-                 || (userService.getUserByEmail(username).isPresent() &&
-                        !userService.getUserByEmail(username).get().isEnabled() && verificationTokenService.existsTokenAssociatedToUsername(username))){
+                    || (userService.getUserByEmail(username).isPresent() &&
+                    !userService.getUserByEmail(username).get().isEnabled() && verificationTokenService.existsTokenAssociatedToUsername(username))){
                 System.out.println("b");
                 messages.add(new Message(417,"msg.Failure","A user with this email address already exists in the DB"));
                 System.out.println("c");

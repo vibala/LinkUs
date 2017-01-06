@@ -58,5 +58,4 @@ public interface AlbumRepository extends MongoRepository<Album, String> {
      */
     @Query(value = "{idRight:{$elemMatch:{right:?1, userIdList:?0}}}")
     List<Album> findAlbumByUserIdRight(String id, String right);
-
 }

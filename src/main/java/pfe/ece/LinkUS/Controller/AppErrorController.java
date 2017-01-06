@@ -1,8 +1,10 @@
 package pfe.ece.LinkUS.Controller;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -15,11 +17,13 @@ import java.util.Map;
  * Created by DamnAug on 16/10/2016.
  */
 @RestController
+@PropertySource(value = {"classpath:application.properties"})
 public class AppErrorController implements ErrorController{
 
     private static final String PATH = "/error";
 
-    private boolean debugMode = true;
+    @Value("${debug.debugMode}")
+    private boolean debugMode;
 
     private ErrorAttributes errorAttributes;
 

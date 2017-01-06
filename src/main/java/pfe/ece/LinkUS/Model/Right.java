@@ -8,5 +8,5 @@ package pfe.ece.LinkUS.Model;
 public enum Right {
     ADMIN,
     COMMENT,
-    LECTURE,
+    LECTURE
 }

@@ -37,9 +37,7 @@ public class UserService {
 
     public User findUserByUsername(String username) {
         Optional<User> user = userRepository.findOneByEmail(username);
-        System.out.println("WT3");
         if(user.get() == null) {
-            System.out.println("WTF");
             throw new UserNotFoundException(username);
         } else {
             return user.get();
@@ -77,11 +75,6 @@ public class UserService {
     private void update(User user) {
         LOGGER.info("Updating user" + user.toString());
         userRepository.save(user);
-    }
-
-    public void update_user(User user) {
-        LOGGER.info("Updating user" + user.toString());
-        update(user);
     }
 
     private void delete(User user) {

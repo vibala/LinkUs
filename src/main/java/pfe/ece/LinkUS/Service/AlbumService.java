@@ -1,24 +1,18 @@
 package pfe.ece.LinkUS.Service;
 
-import com.mongodb.WriteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import pfe.ece.LinkUS.Config.MyMongoConfig;
 import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
 import pfe.ece.LinkUS.Exception.OwnerAlbumNotFoundException;
-import pfe.ece.LinkUS.Model.Album;
-import pfe.ece.LinkUS.Model.FriendGroup;
-import pfe.ece.LinkUS.Model.IdRight;
-import pfe.ece.LinkUS.Model.Moment;
+import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -133,19 +127,65 @@ public class AlbumService {
         albumRepository.delete(album);
     }
 
+    /**
+     * Method preparing the users' albums: new album, new moment
+     * @param userId
+     * @return
+     */
+    public void createAlbumForNewRegisteredUser(String userId){
+        LOGGER.info("createAlbumForEachNewRegisterUser - debut de création d'un album");
+        Album album = new Album();
+        /** TODO A ENLEVER  **/
+        album.setName("First album");
+        album.setPlaceName("Earth");
+        album.setCountryName("The milkey way");
+        /**---------------**/
+        album.setBeginDate(new Date());
+        album.setActive(false);
+        album.setOwnerId(userId);
 
-    //Il faudra plus tard AUTOMATISER la détection du userid pour ne plus le mettre dans la requete-> eviter que n'importe qui modifie n'importe quoi
-    public void addPhoto(Moment moment, String userId, String albumId){
-        final Query query = new Query(new Criteria().andOperator(
-                Criteria.where("ownerId").is(userId),
-                Criteria.where("_id").is(albumId)
-        ));
-        /*Query query = new Query();
-        query.addCriteria(Criteria.where("ownerId").is(userId));
-        query.addCriteria( Criteria.where("_id").is(albumId));
-        */
-        final Update update = new Update().addToSet("moments", moment);
+        // On ajoute l'owner dans chaque droit
+        for(Right right: Right.values()) {
+            IdRight idRight = new IdRight(right.name());
+            idRight.getUserIdList().add(userId);
+            album.getIdRight().add(idRight);
+        }
 
-        final WriteResult wr = operations.updateFirst(query, update, "album");
+        // Ajout d'un moment par défaut
+        MomentService momentService = new MomentService();
+        album.getMoments().add(momentService.newDefaultMoment());
+
+        LOGGER.info("createAlbumForEachNewRegisterUser - fin de création d'un album");
+        save(album);
+    }
+
+    public void addInstant(Instant instant, String albumId, String momentId){
+
+        Album album = albumRepository.findOne(albumId);
+        ArrayList<Moment> momentArrayList = new ArrayList<>();
+
+        // on cherche le moment correspondant
+        for (Moment moment: momentArrayList) {
+            if(moment.getId().equals(momentId)) {
+                // Si l'instant n'existe pas, on l'ajoute
+                if(!moment.getInstantList().contains(instant)) {
+                    moment.getInstantList().add(instant);
+                    LOGGER.info("Adding instant: " + instant);
+                }
+            }
+        }
+        albumRepository.save(album);
+    }
+
+    public void addMoment(Moment moment, String albumId) {
+
+        Album album = albumRepository.findOne(albumId);
+
+        // On cherche si le moment existe, si non: on l'ajoute
+        if(!album.getMoments().contains(moment)) {
+            album.getMoments().add(moment);
+            LOGGER.info("Adding moment: " + moment);
+        }
+        albumRepository.save(album);
     }
 }

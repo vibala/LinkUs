@@ -90,7 +90,7 @@ public class AlbumController {
 
     }
 
-    public String gettingMyuserId(){
+    public String gettingMyUserId(){
        try{
         String user_id = accessTokenService.getUserIdOftheAuthentifiedUser();
            return user_id;
@@ -102,7 +102,7 @@ public class AlbumController {
 
     @RequestMapping(value = "/owned")
     public String findAlbumsOwnedByUser() {
-        String userId = gettingMyuserId();
+        String userId = gettingMyUserId();
         AlbumService albumService = new AlbumService(albumRepository);
         return albumService.getAlbumsOwned(userId).toString();
     }
@@ -193,8 +193,10 @@ public class AlbumController {
 
     private void removePhotosDescriptionToAlbums(List<Album> albumList) {
         for (Album album: albumList) {
-            for(Moment photo: album.getMoments()) {
-                photo.setDescriptionsList(null);
+            for(Moment moment: album.getMoments()) {
+                for(Instant instant: moment.getInstantList()) {
+                    instant.setDescriptionsList(null);
+                }
             }
         }
     }

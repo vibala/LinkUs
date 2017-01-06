@@ -58,10 +58,8 @@ public class OAuth2ServerConfig {
             ResourceServerConfigurerAdapter {
 
         private String oauthClass = "com.mysql.jdbc.Driver";
-/*<<<<<<< HEAD
         private String oauthUrl   = "jdbc:mysql://localhost:3306/linkusDB";
-=======*/
-        private String oauthUrl   = "jdbc:mysql://localhost:3311/linkusDB";
+
 
         /***
          * Return the token store that stores informations availaible in the resource server
@@ -71,12 +69,9 @@ public class OAuth2ServerConfig {
         public TokenStore tokenStore() {
             DataSource tokenDataSource = DataSourceBuilder.create()
                     .driverClassName(oauthClass)
-/*<<<<<<< HEAD
                     .username("linkus")
                     .password("linkus")
-=======*/
-                    .username("root")
-                    .password("root")
+
                     .url(oauthUrl)
                     .build();
             return new JdbcTokenStore(tokenDataSource);
