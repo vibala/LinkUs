@@ -8,11 +8,12 @@ import pfe.ece.LinkUS.Model.VerificationToken;
  */
 public interface VerificationTokenService {
 
-    void createVerificationToken(String token, String username);
+    void createVerificationToken(String token, String username, String object);
 
     VerificationToken getVerificationToken(String verificationToken);
 
     void deleteVerificationToken(String verificationToken);
 
+    boolean existsTokenAssociatedToUsername(String username);
 
 }

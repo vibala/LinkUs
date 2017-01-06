@@ -28,6 +28,7 @@ public class MyMongoConfig extends AbstractMongoConfiguration {
     @Value("${spring.data.mongodb.uri}")
     private MongoClientURI uri;
 
+
     /***
      * Return the name of the database
      * @return

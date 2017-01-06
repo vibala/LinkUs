@@ -44,22 +44,6 @@ public class RegisterController {
 
     private static final Logger LOGGER = Logger.getLogger(RegisterController.class);
 
-    /*private final UserService userService;
-    private final UserCreateFormValidator userCreateFormValidator;
-    private final VerificationTokenService verificationTokenService;
-    private final AlbumService albumService;
-
-
-
-    @Autowired
-    public RegisterController(UserService userService, UserCreateFormValidator userCreateFormValidator,VerificationTokenService verificationTokenService,AlbumService albumService) {
-        this.userService = userService;
-        this.userCreateFormValidator = userCreateFormValidator;
-        this.verificationTokenService = verificationTokenService;
-        this.albumService = albumService;
-    }*/
-
-
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.addValidators(userCreateFormValidator);
@@ -97,16 +81,28 @@ public class RegisterController {
             String appUrl = request.getContextPath();
             System.out.println("fsdfsdf " + userService);
 
-            if(!userService.getUserByEmail(username).isPresent()){
+            if((userService.getUserByEmail(username).isPresent() && userService.getUserByEmail(username).get().isEnabled())
+                 || (userService.getUserByEmail(username).isPresent() &&
+                        !userService.getUserByEmail(username).get().isEnabled() && verificationTokenService.existsTokenAssociatedToUsername(username))){
                 System.out.println("b");
-                eventPublisher.publishEvent(new OnRegistrationCompleteEvent(username,request.getLocale(),appUrl,1));
+                messages.add(new Message(417,"msg.Failure","A user with this email address already exists in the DB"));
                 System.out.println("c");
+                return new ResponseEntity(messages.get(0), HttpStatus.CONFLICT);
+
             }else{
                 System.out.println("d");
-                messages.add(new Message(417,"msg.Failure","A user with this email already exists in the DB"));
+                eventPublisher.publishEvent(new OnRegistrationCompleteEvent(username,request.getLocale(),appUrl,1));
+                System.out.println("e");
+            }
+
+            /*if(!userService.getUserByEmail(username).isPresent()){
+                eventPublisher.publishEvent(new OnRegistrationCompleteEvent(username,request.getLocale(),appUrl,1));
+            }else{
+                System.out.println("d");
+                messages.add(new Message(417,"msg.Failure","A user with this email address already exists in the DB"));
                 System.out.println("e");
                 return new ResponseEntity(messages.get(0), HttpStatus.CONFLICT);
-            }
+            }*/
         }catch(MailSendException e ){
             System.out.println("f");
             messages.add(new Message(417,"msg.Failure",e.getMessage()));
@@ -161,18 +157,11 @@ public class RegisterController {
         }
 
         LOGGER.info("From ConfirmationMailStep2 in RgisterController:" + realUser.getEmail());
-
         String appUrl = request.getContextPath();
-
         realUser.setEnabled(true);
         System.out.println("REALUSER" + realUser.getId());
-
         userService.saveRegisteredUser(realUser); // Set enabled := true
-
-
-
         verificationTokenService.deleteVerificationToken(token);
-
         MessageTypeMailConfirmation m = new MessageTypeMailConfirmation(100,"message.regSucc","Registration process completed ! You can login to the app",true);
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(realUser.getEmail(),request.getLocale(),appUrl,2));
 
@@ -180,7 +169,6 @@ public class RegisterController {
     }
 
     public User createUserAccount(UserCreateForm accountDTO){
-
         User registered = null;
         try{
             registered = userService.registerNewUserAccount(accountDTO);

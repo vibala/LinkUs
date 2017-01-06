@@ -15,8 +15,8 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     private VerificationTokenRepository verificationTokenRepository;
 
     @Override
-    public void createVerificationToken(String token, String username) {
-        VerificationToken verificationToken = new VerificationToken();
+    public void createVerificationToken(String token, String username,String object) {
+        VerificationToken verificationToken = new VerificationToken(object);
         verificationToken.setToken(token);
         verificationToken.setUsername(username);
         verificationTokenRepository.save(verificationToken);
@@ -26,13 +26,16 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     public VerificationToken getVerificationToken(String token) {
 
         VerificationToken verificationToken = null;
-
+        System.out.println("toto");
         try{
+            System.out.println("titi");
             verificationToken = verificationTokenRepository.findByToken(token);
         }catch(Exception e){
+            System.out.print(e.getMessage());
             return null;
         }
 
+        System.out.println("caca");
         return verificationToken;
     }
 
@@ -44,4 +47,11 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
         }
     }
 
+    @Override
+    public boolean existsTokenAssociatedToUsername(String username) {
+        if(verificationTokenRepository.findByUsername(username) != null){
+            return true;
+        }
+        return false;
+    }
 }

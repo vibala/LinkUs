@@ -20,6 +20,5 @@ public interface UserService {
     Collection<User> getAllUsers();
     User registerNewUserAccount(UserCreateForm form) throws EmailExistsException;
     void saveRegisteredUser(User user);
-
-
+    void saveNewPassword(User user,String new_password);
 }

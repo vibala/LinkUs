@@ -33,6 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
+
 
 /**
  * Created by Vignesh on 12/12/2016.
@@ -78,8 +80,9 @@ public class SocialRegistrationController {
                     user.setDateofBirth(formatter.parse("00/00/0000"));
                     user.setEmail(userProfile.getEmail());
                     user.setSexe(userProfile.getGender());
-                    user.setPassword(userProfile.getFirstName() + "" + userProfile.getLastName());
-                    user.setPasswordRepeated(userProfile.getFirstName() + "" + userProfile.getLastName());
+                    String password = UUID.randomUUID().toString();
+                    user.setPassword(password);
+                    user.setPasswordRepeated(password);
                     userService.registerNewUserAccount(user);
                     userService.saveRegisteredUser(userService.getUserByEmail(user.getEmail()).get());
                 } catch (ParseException e) {
@@ -189,8 +192,11 @@ public class SocialRegistrationController {
                     usercreateform.setFirstName(userOperations.getUserProfile().getName());
                     usercreateform.setLastName(userOperations.getUserProfile().getName());
                     usercreateform.setSexe("XXXX");
-                    usercreateform.setPassword(String.valueOf(userOperations.getProfileId()).concat(userOperations.getUserProfile().getName()));
-                    usercreateform.setPasswordRepeated(String.valueOf(userOperations.getProfileId()).concat(userOperations.getUserProfile().getName()));
+                    String password = UUID.randomUUID().toString();
+                    usercreateform.setPassword(password);
+                    usercreateform.setPasswordRepeated(password);
+                    //usercreateform.setPassword(String.valueOf(userOperations.getProfileId()).concat(userOperations.getUserProfile().getName()));
+                    //usercreateform.setPasswordRepeated(String.valueOf(userOperations.getProfileId()).concat(userOperations.getUserProfile().getName()));
                     userService.registerNewUserAccount(usercreateform);
                     userService.saveRegisteredUser(userService.getUserByEmail(usercreateform.getEmail()).get());
                 } catch (ParseException e) {
@@ -260,5 +266,108 @@ public class SocialRegistrationController {
 
 
     }
+
+    /**
+     * @TODO : Finir d'impléménter l'authentification avec Google
+     */
+    /*@RequestMapping(value = "/google/login", method = RequestMethod.POST)
+    public ResponseEntity<Message> getHomePageFromAGoogleUser(@RequestParam("token") String idToken){
+        // idToken comes from the client app (shown above)
+        FirebaseOptions options = null;
+        System.out.println("getHomePageFromAGoogleUser - I " + idToken);
+        try {
+            options = new FirebaseOptions.Builder()
+                    .setServiceAccount(
+                            new FileInputStream("linkus-42b42-firebase-adminsdk-l2ld3-41684b1ba5.json"))
+                    .setDatabaseUrl("https://linkus-42b42.firebaseio.com")
+                    .build();
+            System.out.println("getHomePageFromAGoogleUser - II");
+            // Initialize the default app
+            FirebaseApp defaultApp = FirebaseApp.initializeApp(options);
+            System.out.println("getHomePageFromAGoogleUser - III" + defaultApp.getName());
+
+            // Retrieve services by passing the defaultApp variable...
+            FirebaseAuth defaultAuth = FirebaseAuth.getInstance(defaultApp);
+            System.out.println("getHomePageFromAGoogleUser - IV" + defaultAuth.toString());
+            FirebaseDatabase defaultDatabase = getInstance(defaultApp);
+            System.out.println("getHomePageFromAGoogleUser - V " + defaultDatabase.toString() );
+
+            if (StringUtils.isBlank(idToken)) {System.out.println("ttttttttttttttttttttt");
+                throw new IllegalArgumentException("FirebaseTokenBlank");
+            }
+
+            try {
+
+                Task<FirebaseToken> authTask =
+                        defaultAuth.verifyIdToken(idToken)
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        System.out.println("Exception : " + e.getMessage());
+                                    }
+                                })
+                                .addOnSuccessListener(new OnSuccessListener<FirebaseToken>() {
+                                       @Override
+                                       public void onSuccess(FirebaseToken decodedToken) {
+                                             String uid = decodedToken.getUid();
+                                             String uemail = decodedToken.getEmail();
+                                             DatabaseReference  mDatabase = defaultDatabase.getReference();
+                                             System.out.println("Userid " + uid + " User email " + uemail);
+                                             mDatabase.child("user_details").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                                               @Override
+                                               public void onDataChange(DataSnapshot dataSnapshot) {
+                                                   String name = null, surname = null, email = null, phone = null, bd = null, gender = null;
+                                                   System.out.println("test1 " + dataSnapshot.getChildrenCount());
+                                                   System.out.println("test1 " + dataSnapshot.);
+                                                   for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                                       if (child.getKey().equals("firstName")) {
+                                                           name = child.getValue().toString();
+                                                           System.out.println("Name : " + name);
+                                                       }
+                                                       if (child.getKey().equals("lastName")) {
+                                                           surname = child.getValue().toString();
+                                                           System.out.println("Surname " + surname);
+                                                       }
+                                                       if (child.getKey().equals("birthday")) {
+                                                           bd = child.getValue().toString();
+                                                           System.out.println("Birthday " + bd);
+                                                       }
+                                                       if (child.getKey().equals("email")) {
+                                                           email = child.getValue().toString();
+                                                       }
+                                                       if (child.getKey().equals("gender")) {
+                                                           gender = child.getValue().toString();
+                                                       }
+                                                       if (child.getKey().equals("phone")) {
+                                                           phone = child.getValue().toString();
+                                                       }
+                                                   }
+
+                                                   System.out.println("test2");
+                                               }
+
+
+                                               @Override
+                                               public void onCancelled(DatabaseError databaseError) {
+                                               }
+                                           });
+                                       }
+                                });
+
+                Tasks.await(authTask);
+            } catch(ExecutionException | InterruptedException e ){
+                throw new FirebaseTokenInvalidException(e.getMessage());
+            }
+
+
+        } catch (FileNotFoundException e) {
+           e.printStackTrace();
+        }
+
+
+
+
+        return null;
+    }*/
 }
 

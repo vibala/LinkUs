@@ -15,7 +15,6 @@ import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -59,7 +58,10 @@ public class OAuth2ServerConfig {
             ResourceServerConfigurerAdapter {
 
         private String oauthClass = "com.mysql.jdbc.Driver";
+/*<<<<<<< HEAD
         private String oauthUrl   = "jdbc:mysql://localhost:3306/linkusDB";
+=======*/
+        private String oauthUrl   = "jdbc:mysql://localhost:3311/linkusDB";
 
         /***
          * Return the token store that stores informations availaible in the resource server
@@ -69,8 +71,12 @@ public class OAuth2ServerConfig {
         public TokenStore tokenStore() {
             DataSource tokenDataSource = DataSourceBuilder.create()
                     .driverClassName(oauthClass)
+/*<<<<<<< HEAD
                     .username("linkus")
                     .password("linkus")
+=======*/
+                    .username("root")
+                    .password("root")
                     .url(oauthUrl)
                     .build();
             return new JdbcTokenStore(tokenDataSource);
@@ -91,18 +97,22 @@ public class OAuth2ServerConfig {
 
         /***
          * List the requests that are allowed to be sent to the server in which way
-         * @param http
+         * @param https
          * @throws Exception
          */
         @Override
-        public void configure(HttpSecurity http) throws Exception {
-            http
+        public void configure(HttpSecurity https) throws Exception {
+            https
                     .authorizeRequests()
                     .antMatchers(HttpMethod.POST,"/user").permitAll()
                     .antMatchers(HttpMethod.POST,"/user/registration").permitAll()
+                    .antMatchers(HttpMethod.POST,"/forgotPassword").permitAll()
+                    .antMatchers(HttpMethod.GET,"/setNewPassword").permitAll()
+                    .antMatchers(HttpMethod.POST,"/saveNewpassword").permitAll()
                     .antMatchers(HttpMethod.GET,"/registrationConfirm").permitAll()
                     .antMatchers(HttpMethod.POST,"/facebook/login").permitAll()
                     .antMatchers(HttpMethod.POST,"/twitter/login").permitAll()
+                    .antMatchers(HttpMethod.POST,"/google/login").permitAll()
                     .antMatchers(HttpMethod.POST,"/oauth/token").permitAll()
                     .antMatchers(HttpMethod.GET,"/images*").permitAll()
                     .antMatchers(HttpMethod.GET,"/oauth/revoke-token").authenticated()
@@ -132,8 +142,6 @@ public class OAuth2ServerConfig {
         @Autowired
         private CurrentUserDetailsService userDetailsService;
 
-        private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
 
         /***
          * Configure the security of the authorization server
@@ -141,9 +149,7 @@ public class OAuth2ServerConfig {
          * @throws Exception
          */
         @Override
-        public void configure(
-                AuthorizationServerSecurityConfigurer oauthServer)
-                throws Exception {
+        public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
             oauthServer
                     .tokenKeyAccess("permitAll()")
                     .checkTokenAccess("isAuthenticated()");
@@ -163,10 +169,9 @@ public class OAuth2ServerConfig {
                     .authorizedGrantTypes(
                             "password","authorization_code","refresh_token")
                     .scopes("read","write")
-                    .accessTokenValiditySeconds(3600*24*365)
-                    .refreshTokenValiditySeconds(3600*24*365);
+                    .accessTokenValiditySeconds(3600*24)//Access token is only valid for 1 day.
+                    .refreshTokenValiditySeconds(3600*24*30);//Refresh token is only valid for 1 month.
         }
-
 
         /***
          * Configure the token endpoint which is the endpoint on the authorization server where the client
@@ -225,17 +230,24 @@ public class OAuth2ServerConfig {
         @Bean
         public DataSource dataSource() {
             String oauthClass = "com.mysql.jdbc.Driver";
+/*<<<<<<< HEAD
             String oauthUrl = "jdbc:mysql://localhost:3306/linkusDB";
 
             DataSource dataSource = DataSourceBuilder.create()
                     .driverClassName(oauthClass)
                     .username("linkus")
-                    .password("linkus")
+                    .password("linkus")*/
+
+            String oauthUrl = "jdbc:mysql://localhost:3311/linkusDB";
+
+            DataSource dataSource = DataSourceBuilder.create()
+                    .driverClassName(oauthClass)
+                    .username("root")
+                    .password("root")
+
                     .url(oauthUrl)
                     .build();
             return dataSource;
         }
-
     }
-
 }

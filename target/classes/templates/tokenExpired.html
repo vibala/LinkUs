@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Reset Password Form</title>
+    <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1.0"> </meta>
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+   <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Bootstrap css-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+    <script>
+         $(document).ready(function() {
+            function getTimeRemaining(endtime){
+              var total = Date.parse(new Date()) - Date.parse(endtime);
+              var seconds = Math.floor( (total/1000) % 60 );
+              var minutes = Math.floor( (total/1000/60) % 60 );
+              var hours = Math.floor( (total/(1000*60*60)) % 24 );
+              var days = Math.floor( total/(1000*60*60*24) );
+              return {
+                'total': total,
+                'days': days,
+                'hours': hours,
+                'minutes': minutes,
+                'seconds': seconds
+              };
+            }
+
+            function setCountDownValue(countdown){
+                var value = '';
+                if(countdown.days != 0){
+                    value += countdown.days + ' d ';
+                }
+
+                if(countdown.hours != 0){
+                    if(countdown.hours == 1){
+                        value += countdown.hours + ' hr ';
+                    }else{
+                        value += countdown.hours + ' hrs ';
+                    }
+
+                }
+
+                if(countdown.minutes != 0){
+                    if(countdown.minutes == 1){
+                         value += countdown.minutes + ' min ';
+                    }else{
+                         value += countdown.minutes + ' mins ';
+                    }
+                }
+
+                if(countdown.seconds == 1){
+                    value += countdown.seconds + ' sec';
+                }else{
+                    value += countdown.seconds + ' secs';
+                }
+
+                $("#counterdown").text(value);
+            }
+
+            var deadline = document.getElementById("expiredDate").value;
+            var countdown = getTimeRemaining(deadline);
+            setCountDownValue(countdown);
+         });
+    </script>
+    <style>
+
+        body{
+            background-color: #2c3e50;
+        }
+
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10px;
+        }
+
+        .panel panel-danger{
+            border-style:none;
+        }
+
+        .panel-danger>.panel-heading {
+           color: white;
+           background-color: #EC644B;
+           border-color: #EC644B;
+        }
+
+        h3 span{
+            float:right;
+        }
+
+        .container{
+            margin-left:auto;
+            margin-right:auto;
+            width: 50%;
+            display: block;
+            margin-top: 25vh; /* poussé de la moitié de hauteur de viewport */
+            transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
+        }
+
+        #counterdown{
+            font-family: Helvetica, Times, serif;
+            font-weight: normal;
+            font-size:xx-large;
+        }
+
+        .panel-body{
+            color: #999999;
+        }
+
+        .panel-body #icon-text span:not(#text-to-center){
+            font-size: 200%;
+            color: #EC644B;
+            margin-right: 5px;
+        }
+
+        #icon-text #my-icon{
+            vertical-align: middle;
+        }
+
+     </style>
+</head>
+<body>
+    <img src="http://image.flaticon.com/icons/svg/189/189688.svg" align="middle" width="75" />
+    <div class="container">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Token Expired <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> </h3>
+            </div>
+            <div class="panel-body">
+                <div id="icon-text">
+                    <span id="my-icon" class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                    <span id="text-to-center"> Your token is expired for </span>
+                </div>
+                <input type="hidden" name="expiredDate" id="expiredDate" th:value="${expiryDate}">
+                <span id="counterdown"></span>
+                <br/>
+                Please go back to the Linkus application and send us a new request to change your password !
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

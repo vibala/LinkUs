@@ -21,7 +21,10 @@ public class CurrentUserDetailsService implements UserDetailsService{
     private static final Logger LOGGER = Logger.getLogger(CurrentUserDetailsService.class);
     private final UserService userService;
     private final UserRepository userRepository;
-
+    private boolean accountNonExpired;
+    private boolean credentialsNonExpired;
+    private boolean accountNonLocked;
+    private User user;
 
     @Autowired
     public CurrentUserDetailsService(UserService userService, UserRepository userRepository) {
@@ -31,14 +34,37 @@ public class CurrentUserDetailsService implements UserDetailsService{
 
     @Override
     public CurrentUser loadUserByUsername(String email) throws UsernameNotFoundException {
-
-        boolean accountNonExpired = true;
-        boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
-
-        User user = userService.getUserByEmail(email).
+        user = userService.getUserByEmail(email).
                 orElseThrow(() -> new UsernameNotFoundException(String.format("User with email=%s was not found",email)));
 
-        return new CurrentUser(user,user.isEnabled(),accountNonExpired,credentialsNonExpired,accountNonLocked);
+        return new CurrentUser(user,user.isEnabled(),isAccountNonExpired(),isCredentialsNonExpired(),isAccountNonLocked());
+    }
+
+    public User getUserInfo(){
+        return user;
+    }
+
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
     }
 }

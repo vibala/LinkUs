@@ -18,7 +18,6 @@ import pfe.ece.LinkUS.ServerService.NotificationService;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
-
 import javax.imageio.ImageIO;
 import javax.sound.midi.SysexMessage;
 import java.io.File;
@@ -51,7 +50,6 @@ public class UploadingController {
     @Autowired
     AlbumService albumService;
 
-
     @RequestMapping(value = "/uploadFiles", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> uploadingFiles(@RequestBody Moment moment,@RequestParam("notificationToPeopleWithReadRightOnAlbum") String notificationToPeopleWithReadRightOnAlbum) throws IOException {
@@ -75,11 +73,15 @@ public class UploadingController {
         //PARTIE AMAZON
 
         /*AmazonS3Service amazonService = new AmazonS3Service();
+=======
+        AmazonS3Service amazonService = new AmazonS3Service();
+>>>>>>> evolution2
 
         //On genere un nom unique du fichier dans AmazonS3
         String fileS3Name = amazonService.generatefileS3Name(moment.getName());
 
         //On upload l'image dans AmazonS3
+<<<<<<< HEAD
         amazonService.uploadFileByte(moment.getImgByte(),fileS3Name,"image*//*");*/
 
         // PARTIE LOCALE
@@ -94,7 +96,6 @@ public class UploadingController {
         fos.close();
 
         //**
-
         /** ----------------------STOCKAGE DANS LA BASE DE DONNEE*/
         //Ajout de donnée au moment avant de la stocker
         moment.setName(fileS3Name);
@@ -153,7 +154,5 @@ public class UploadingController {
 
     return new ResponseEntity<String>("Finished to upload files",HttpStatus.OK);
     }
-
-
 }
 

@@ -102,7 +102,6 @@ public class HomeController {
         return registered;
     }
 
-
     @RequestMapping(value="/home", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Message> getHomePage(){
         LOGGER.info("UserController - getHomePage");
@@ -121,6 +120,4 @@ public class HomeController {
         LOGGER.info("Accessing protected resource");
         return new Message(100, "Congratulations!", "You have accessed a Basic Auth protected resource.");
     }
-
-
 }
