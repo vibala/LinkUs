@@ -3,6 +3,7 @@ package com.start_up.dev.apilinkus.API;
 import android.content.Context;
 
 import com.start_up.dev.apilinkus.Model.Moment;
+import com.start_up.dev.apilinkus.R;
 
 /**
  * Created by Huong on 06/11/2016.
@@ -16,7 +17,7 @@ public class APILinkUS {
 
     public APILinkUS(Context mContext) {
         this.mContext=mContext;
-        this.BASE_URL="";
+        this.BASE_URL="http://192.168.43.45:9999";
     }
     public APILinkUS() {
     }

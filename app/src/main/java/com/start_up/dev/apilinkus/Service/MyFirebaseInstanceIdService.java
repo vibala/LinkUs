@@ -1,7 +1,13 @@
 package com.start_up.dev.apilinkus.Service;
 
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.start_up.dev.apilinkus.API.APILinkUS;
+import com.start_up.dev.apilinkus.API.APIPostTokenNotification;
 
 /**
  * Created by Huong on 10/12/2016.

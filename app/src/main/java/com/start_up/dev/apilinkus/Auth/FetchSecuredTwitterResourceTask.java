@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.facebook.login.LoginManager;
 import com.start_up.dev.apilinkus.API.APILinkUS;
+import com.start_up.dev.apilinkus.R;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

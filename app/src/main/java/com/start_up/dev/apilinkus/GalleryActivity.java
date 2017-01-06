@@ -1,13 +1,18 @@
 package com.start_up.dev.apilinkus;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +25,7 @@ import android.widget.Toast;
 import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Tool.DataAdapterGallery;
+import com.start_up.dev.apilinkus.Tool.GridItem;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -27,6 +33,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.lang.String.valueOf;
 
@@ -168,6 +176,7 @@ public class GalleryActivity  extends AppCompatActivity implements View.OnLongCl
     }
 
     private void setGalleryDisplay(String directoryTmp){
+
         File fileTest = new File(ExternalStorageDirectoryPath + directoryTmp);
         if (fileTest.exists() && fileTest.isDirectory()) {
             directory = directoryTmp;
@@ -177,7 +186,6 @@ public class GalleryActivity  extends AppCompatActivity implements View.OnLongCl
             try {
                 File targetDirector = new File(targetPath);
                 File[] files_list = targetDirector.listFiles();
-
                 files = new ArrayList<File>();
                 for (File file : files_list) {
                     if(!file.isDirectory())
@@ -189,12 +197,13 @@ public class GalleryActivity  extends AppCompatActivity implements View.OnLongCl
                 Toast.makeText(getApplicationContext(), targetPath, Toast.LENGTH_LONG).show();
                 adapter.notifyDataSetChanged();
             }catch(Exception e){
-                Toast.makeText(getApplicationContext(), "Invalid Path", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Le chemin n'est pas valide.", Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(getApplicationContext(), "Invalid Path", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Le dossier n'existe pas.", Toast.LENGTH_LONG).show();
         }
     }
+
 
     @Override
     public boolean onLongClick(View v) {

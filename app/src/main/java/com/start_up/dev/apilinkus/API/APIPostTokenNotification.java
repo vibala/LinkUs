@@ -1,16 +1,25 @@
 package com.start_up.dev.apilinkus.API;
-
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.start_up.dev.apilinkus.BlankLoadingActivity;
+import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.ProfileActivity;
 
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Huong on 11/12/2016.

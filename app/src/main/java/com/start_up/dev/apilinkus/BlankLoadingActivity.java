@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.start_up.dev.apilinkus.Auth.AsyncResponse;
 import com.start_up.dev.apilinkus.Auth.FetchSecuredFacebookResourceTask;
