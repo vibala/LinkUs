@@ -14,6 +14,8 @@ import pfe.ece.LinkUS.Service.UserEntityService.UserService;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.Properties;
 import java.util.UUID;
 /**
@@ -91,11 +93,13 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
             helper.setFrom(usernameFromEmail);
             helper.setTo(recipientAddress);
             helper.setSubject(subject);
-            helper.setText("Thank you!" + "" + "http://192.168.0.24:9999" + confirmationUrl + "");
+            helper.setText("Thank you!" + "<br>Please confirm your email clicking on this link: " + Inet4Address.getLocalHost().getHostAddress()+":9999" + confirmationUrl + "");
             sender.send(message);
         }catch (MessagingException e) {
             e.printStackTrace();
-        }
+        } catch (UnknownHostException e) {
+           e.printStackTrace();
+       }
     }
 
     private void confirmRegistrationSecondStep(OnRegistrationCompleteEvent event){
