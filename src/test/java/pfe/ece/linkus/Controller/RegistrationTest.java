@@ -1,8 +1,9 @@
-package pfe.ece.linkus.Controller;
+package pfe.ece.linkUS.Controller;
 
 
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 /**
  * Created by Vignesh on 12/19/2016.
  */
+@Ignore
 public class RegistrationTest {
 
     private static final String REGISTRATION_URL = "http://localhost:9999/user/registration";

@@ -1,4 +1,4 @@
-package pfe.ece.LinkUS;
+package pfe.ece.linkUS;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
