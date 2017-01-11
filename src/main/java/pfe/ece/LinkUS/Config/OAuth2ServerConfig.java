@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
@@ -39,6 +40,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @Order(1)
+@PropertySource(value = {"classpath:application.properties"})
 public class OAuth2ServerConfig {
 
     private static final String RESOURCE_ID = "oauth2-resource";
@@ -57,8 +59,14 @@ public class OAuth2ServerConfig {
     protected static class ResourceServerConfiguration extends
             ResourceServerConfigurerAdapter {
 
-        private String oauthClass = "com.mysql.jdbc.Driver";
-        private String oauthUrl   = "jdbc:mysql://localhost:3306/linkusDB";
+        @Value("${datasource.primary.jdbc.driverClassName}")
+        private String oauthClass;
+        @Value("${datasource.primary.jdbc.url}")
+        private String oauthUrl;
+        @Value("${datasource.primary.jdbc.username}")
+        String username;
+        @Value("${datasource.primary.jdbc.password}")
+        String password;
 
 
         /***
@@ -69,10 +77,9 @@ public class OAuth2ServerConfig {
         public TokenStore tokenStore() {
             DataSource tokenDataSource = DataSourceBuilder.create()
                     .driverClassName(oauthClass)
-                    .username("linkUS")
-                    .password("linkUS")
-
                     .url(oauthUrl)
+                    .username(username)
+                    .password(password)
                     .build();
             return new JdbcTokenStore(tokenDataSource);
         }
@@ -87,7 +94,6 @@ public class OAuth2ServerConfig {
             resources
                     .tokenStore(tokenStore())
                     .resourceId(RESOURCE_ID);
-
         }
 
         /***
@@ -129,6 +135,15 @@ public class OAuth2ServerConfig {
     @EnableAuthorizationServer
     protected static class AuthorizationServerConfiguration extends
             AuthorizationServerConfigurerAdapter {
+
+        @Value("${datasource.primary.jdbc.driverClassName}")
+        private String oauthClass;
+        @Value("${datasource.primary.jdbc.url}")
+        private String oauthUrl;
+        @Value("${datasource.primary.jdbc.username}")
+        String username;
+        @Value("${datasource.primary.jdbc.password}")
+        String password;
 
         @Autowired
         @Qualifier("authenticationManagerBean")
@@ -224,23 +239,11 @@ public class OAuth2ServerConfig {
          */
         @Bean
         public DataSource dataSource() {
-            String oauthClass = "com.mysql.jdbc.Driver";
-/*<<<<<<< HEAD
-            String oauthUrl = "jdbc:mysql://localhost:3306/linkusDB";
-
             DataSource dataSource = DataSourceBuilder.create()
                     .driverClassName(oauthClass)
-                    .username("linkUS")
-                    .password("linkUS")*/
-
-            String oauthUrl = "jdbc:mysql://localhost:3311/linkusDB";
-
-            DataSource dataSource = DataSourceBuilder.create()
-                    .driverClassName(oauthClass)
-                    .username("root")
-                    .password("root")
-
                     .url(oauthUrl)
+                    .username(username)
+                    .password(password)
                     .build();
             return dataSource;
         }

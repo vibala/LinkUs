@@ -82,7 +82,6 @@ public class AlbumController {
             //throw  new AlbumNotFoundException(userId);
             return "ablumnotfoundexception";
         } else {
-            System.out.println("Aablum to string " + albumList.toString());
             return albumList.toString();
             // TODO Building return checkDataAutorization(albumList, userId).toString();
         }

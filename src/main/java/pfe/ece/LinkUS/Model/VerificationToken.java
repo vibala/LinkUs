@@ -98,13 +98,10 @@ public class VerificationToken {
         Date current_datetime = Calendar.getInstance().getTime();
         Date expired_datetime = getExpiryDate();
         if (current_datetime.compareTo(expired_datetime) > 0) {
-            System.out.println("Date1 is after Date2");
             return true;
         } else if (current_datetime.compareTo(expired_datetime) < 0) {
-            System.out.println("Date1 is before Date2");
             return false;
         } else if (current_datetime.compareTo(expired_datetime) == 0) {
-            System.out.println("Date1 is equal to Date2");
             return true;
         }
 

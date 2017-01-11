@@ -22,7 +22,7 @@ public class NotificationTokenServiceImpl implements NotificationTokenService{
     public String getNotifcationTokenByUsername(String username) {
 
         String token = notificationTokenRepository.findByUsername(username).getToken();
-        if(token!= null && !token.isEmpty()){
+        if(token != null && !token.isEmpty()){
             return token;
         } else {
             return null;

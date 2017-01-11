@@ -31,7 +31,7 @@ public class Images {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        Path path = Paths.get("/images/" + userId + "/" + albumId + "/" + name);
+        Path path = Paths.get("./images/" + userId + "/" + albumId + "/" + name);
         InputStream in = new FileInputStream(path.toString());
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         IOUtils.copy(in, response.getOutputStream());

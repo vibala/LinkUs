@@ -63,9 +63,6 @@ public class UploadingController {
         // On fetche l'id de cet album
         String albumId = firstAlbum.getId();
 
-        // Pour chaque instant
-        //System.out.println(notificationTokenRepository);
-
         /** ----------------------UPLOAD IMAGE----------*/
         //PARTIE AMAZON
 
@@ -78,15 +75,15 @@ public class UploadingController {
         amazonService.uploadFileByte(instant.getImgByte(),fileS3Name,"image*//*");*/
 
         // PARTIE LOCALE
-        File directory = new File("src/main/images");
+        File directory = new File("./images");
         if (!directory.exists()) {
             directory.mkdir();
         }
-        directory = new File("src/main/images/" + userId);
+        directory = new File("./images/" + userId);
         if (!directory.exists()) {
             directory.mkdir();
         }
-        directory = new File("src/main/images/" + userId + "/" + albumId);
+        directory = new File("./images/" + userId + "/" + albumId);
         if (!directory.exists()) {
             directory.mkdir();
         }
@@ -95,7 +92,7 @@ public class UploadingController {
 
             String fileS3Name = instant.getName();
 
-            fos = new FileOutputStream("src/main/images/" + userId + "/" + albumId + "/" + fileS3Name);
+            fos = new FileOutputStream("./images/" + userId + "/" + albumId + "/" + fileS3Name);
             fos.write(instant.getImgByte());
             fos.close();
 
@@ -114,9 +111,9 @@ public class UploadingController {
             //On détruit l'image car elle vient de la stocker sur le cloud donc inutile de la stocker sur mongoDb
             instant.setImgByte(null);
 
-            // Ajout du nouveau moment a la BDD
-            albumService.addMoment(moment, albumId);
         }
+        // Ajout du nouveau moment a la BDD
+        albumService.addMoment(moment, albumId);
 
         /** ------------------ NOTIFICATION PAR MOMENT ------------*/
         if(notificationToPeopleWithReadRightOnAlbum.equals("true")) { // TODO @Vincent implementer ca dans le controleur et appeler le controleurNotification ici

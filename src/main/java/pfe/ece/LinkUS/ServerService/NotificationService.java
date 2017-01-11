@@ -54,7 +54,6 @@ public class NotificationService {
                 /*Structure de la table NotificationsTokens dans la BD : ID;USERNAME;TOKEN */
                 String username = userservice.findUserById(userIdInList).getId();
                 /*Recupération du token notif de chaque utilisateur à partir de l'username*/
-                System.out.println("USERNAME"+username);
                 NotificationTokenServiceImpl notificationTokenService=new NotificationTokenServiceImpl(notificationTokenRepository);
                 String notification_token = notificationTokenService.getNotifcationTokenByUsername(username);
                 /*Ajout des tokens dans la liste tokenUserList*/

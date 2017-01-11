@@ -23,12 +23,15 @@ import pfe.ece.LinkUS.Service.UserEntityService.UserService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 /**
  * Created by Vignesh on 12/30/2016.
  */
 @Controller
 public class PasswordController {
+
+    private Logger LOGGER = Logger.getLogger("LinkUS.Controller.PasswordController");
 
     @Autowired
     private  AccessTokenService accessTokenService;
@@ -42,8 +45,6 @@ public class PasswordController {
 
     @RequestMapping(value = "/forgotPassword",method = RequestMethod.POST)
     public ResponseEntity<Message> changePasswordFirstStep(@RequestBody String mail,HttpServletRequest request){
-
-        System.out.println("Mail value : " + mail);
 
         // Message to be dispatched to be sent back
         Message message = null;
@@ -62,7 +63,6 @@ public class PasswordController {
 
         // Generate a token
         String token = UUID.randomUUID().toString();
-        System.out.println("Token generated value : " + token);
         verificationTokenService.createVerificationToken(token,user.get().getEmail(),"PASSWORD");
 
 
@@ -89,14 +89,13 @@ public class PasswordController {
         VerificationToken verificationToken = verificationTokenService.getVerificationToken(verification_token_param);
         if(verificationToken == null){
             // Tentative d'usurpation d'identité)
-            System.out.println("Tentative d'usurpation d'identité");
+            LOGGER.warning("Tentative d'usurpation d'identité");
             return "tokenUnknown";
         }else{
             boolean token_expired = verificationToken.check_token_is_expired();
             if(token_expired){
                 // TOKEN _EXPIRE
-                System.out.println("Token expiré");
-                System.out.println("Expiry date " + verificationToken.getExpiryDate().toString());
+                LOGGER.info("Token expiré --- " + "Expiry date " + verificationToken.getExpiryDate().toString());
                 model.addAttribute("expiryDate",verificationToken.getExpiryDate().toString()); // Input Hidden in HTML
                 return "tokenExpired";
             }
@@ -104,7 +103,6 @@ public class PasswordController {
 
         String username = verificationToken.getUsername(); // Retrieving username
         String expiryDate = verificationToken.getExpiryDate().toString(); // Retrieving expirateDate
-        System.out.println("Expiry date " + expiryDate);
         model.addAttribute("expiryDate",expiryDate); // Input Hidden in HTML
         model.addAttribute("token",verification_token_param); // Input Hidden in HTML
         return "resetPassword";

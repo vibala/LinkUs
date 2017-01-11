@@ -61,7 +61,6 @@ public class AlbumService {
 
     public Album findAlbumById(String id) {
         Album album = albumRepository.findOne(id);
-        System.out.println(album.toString());
         if (album == null) {
             throw  new AlbumNotFoundException(id);
         } else {

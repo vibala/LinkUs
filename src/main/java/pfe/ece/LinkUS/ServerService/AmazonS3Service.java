@@ -59,7 +59,6 @@ public class AmazonS3Service {
 
         GetSessionTokenResult sessionTokenResult = stsClient.getSessionToken(getSessionTokenRequest);
         Credentials sessionCredentials = sessionTokenResult.getCredentials();
-        System.out.println("Session Credentials: " + sessionCredentials.toString());
 
         // Package the session credentials as a BasicSessionCredentials
         // object for an S3 client object to use.
@@ -70,7 +69,6 @@ public class AmazonS3Service {
 
 
     public String generatefileS3Name(String fileName){
-        System.out.println(fileName);
 
         String randomString = UUID.randomUUID().toString();
         String uniqueTimeStamp=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
@@ -172,7 +170,6 @@ public class AmazonS3Service {
 
     stream.close();
     stream = new FileInputStream(AbsolutePathfile);
-    System.out.println(contentLengthbyte.length);
 
     Long contentLength = Long.valueOf(contentLengthbyte.length);
 

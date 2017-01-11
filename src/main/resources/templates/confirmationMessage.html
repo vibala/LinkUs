@@ -19,7 +19,8 @@
             <div class="col-md-8 col-xs-7">
                 <div style="height:30px;"></div>
                 <div class="row">
-                    <h2 th:text="${message.subject}"> Subject </h2>
+                    <h2 th:if="${message.user_registred}"> Registration successful !</h2>
+                    <h2 th:unless="${message.user_registred}"> Registration failed !</h2>
                     <h3 th:text="${message.text}"> Text </h3>
                 </div>
             </div>

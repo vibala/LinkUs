@@ -25,7 +25,6 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method= RequestMethod.GET)
     public ResponseEntity<Message> getLoginMessage(@RequestParam Optional<String> error){
-        System.out.println("Username = " + SecurityContextHolder.getContext().getAuthentication().getDetails().toString());
         LOGGER.debug("Getting login page");
         Message msg = null;
         if(SecurityContextHolder.getContext().getAuthentication() != null &&
