@@ -22,6 +22,31 @@ public class MomentService {
         return moment;
     }
 
+    public void add(Album album, Moment moment) {
+
+        // On cherche si le moment existe, si non: on l'ajoute
+        if(!album.getMoments().contains(moment)) {
+            LOGGER.info("Adding moment: " + moment);
+            album.getMoments().add(moment);
+        }
+    }
+
+    /**
+     *
+     * @param album
+     * @param momentId
+     * @return
+     *      moment or null
+     */
+    public Moment find(Album album, String momentId) {
+        for (Moment moment: album.getMoments()) {
+            if(moment.getId().equals(momentId)){
+                return moment;
+            }
+        }
+        return null;
+    }
+
     public void delete(Album album, Moment moment) {
         delete(album, moment.getId());
     }

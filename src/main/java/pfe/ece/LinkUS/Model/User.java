@@ -65,6 +65,8 @@ public class User implements Serializable {
     @Field("friendPendingList")
     private ArrayList<String> friendPendingList = new ArrayList<>();
 
+    @Field("profilImgUrl")
+    private String profilImgUrl;
 
     @Override
     public String toString() {
@@ -89,17 +91,7 @@ public class User implements Serializable {
 
     public User (String user_id){
         this.setId(user_id);
-    }
-
-    public User(String lastName, String firstName, String email, String plain_password, String sexe,Date dateofBirth,String role) {
-        this();
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.email = email;
-        this.passwordHash = BCrypt.hashpw(plain_password, BCrypt.gensalt());
-        this.sexe = sexe;
-        this.dateofBirth = dateofBirth;
-        this.role = Role.valueOf(role);
+        this.enabled = false;
     }
 
     //
@@ -116,6 +108,7 @@ public class User implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
+
     public String getLastName() {
         return lastName;
     }
@@ -208,4 +201,11 @@ public class User implements Serializable {
         this.dateofRegistration = dateofRegistration;
     }
 
+    public String getProfilImgUrl() {
+        return profilImgUrl;
+    }
+
+    public void setProfilImgUrl(String profilImgUrl) {
+        this.profilImgUrl = profilImgUrl;
+    }
 }

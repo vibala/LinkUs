@@ -93,7 +93,10 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
             helper.setFrom(usernameFromEmail);
             helper.setTo(recipientAddress);
             helper.setSubject(subject);
-            helper.setText("Thank you!" + "<br>Please confirm your email clicking on this link: " + Inet4Address.getLocalHost().getHostAddress()+":9999" + confirmationUrl + "");
+            helper.setText("Thank you for registering at LinkUs ! " +
+                    "Your account is created and must be activated before you can use it. " +
+                    "To activate the account, click on the following link or copy-paste it in your browser: " +
+                    "<br>http://" + Inet4Address.getLocalHost().getHostAddress()+":9999" + confirmationUrl + "");
             sender.send(message);
         }catch (MessagingException e) {
             e.printStackTrace();
@@ -111,10 +114,9 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
             MimeMessage message = sender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
             helper.setFrom(usernameFromEmail);
-            //helper.setFrom("twenty.lim25@gmail.com");
             helper.setTo(recipientAddress);
             helper.setSubject(subject);
-            helper.setText("You receive this email because your are successfully connected");
+            helper.setText("You receive this email because you are successfully connected");
             sender.send(message);
         }catch (MessagingException e) {
             e.printStackTrace();

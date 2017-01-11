@@ -5,7 +5,7 @@
   <groupId>pfe.ece.LinkUS</groupId>
   <artifactId>LinkUs</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <name>LinkUs</name>
   <url>http://maven.apache.org</url>
@@ -113,15 +113,6 @@
       <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-thymeleaf</artifactId>
-      </dependency>
-      <!--  Simply adding this to the dependencies makes Bootstrap available for our project: -->
-      <dependency>
-          <groupId>org.webjars</groupId>
-          <artifactId>bootstrap</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>org.webjars</groupId>
-          <artifactId>jquery</artifactId>
       </dependency>
       <dependency>
           <groupId>org.springframework.boot</groupId>

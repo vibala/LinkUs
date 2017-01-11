@@ -63,32 +63,39 @@ public class UploadingController {
         // On fetche l'id de cet album
         String albumId = firstAlbum.getId();
 
-        // Ajout du nouveau moment a la BDD
-        albumService.addMoment(moment, albumId);
-
         // Pour chaque instant
+        //System.out.println(notificationTokenRepository);
+
+        /** ----------------------UPLOAD IMAGE----------*/
+        //PARTIE AMAZON
+
+        /*AmazonS3Service amazonService = new AmazonS3Service();
+
+        //On genere un nom unique du fichier dans AmazonS3
+        String fileS3Name = amazonService.generatefileS3Name(instant.getName());
+
+        //On upload l'image dans AmazonS3
+        amazonService.uploadFileByte(instant.getImgByte(),fileS3Name,"image*//*");*/
+
+        // PARTIE LOCALE
+        File directory = new File("src/main/images");
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        directory = new File("src/main/images/" + userId);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        directory = new File("src/main/images/" + userId + "/" + albumId);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+
         for (Instant instant: moment.getInstantList()) {
-            //System.out.println(notificationTokenRepository);
 
-            /** ----------------------UPLOAD IMAGE----------*/
-            //PARTIE AMAZON
-
-            /*AmazonS3Service amazonService = new AmazonS3Service();
-
-            //On genere un nom unique du fichier dans AmazonS3
-            String fileS3Name = amazonService.generatefileS3Name(instant.getName());
-
-            //On upload l'image dans AmazonS3
-            amazonService.uploadFileByte(instant.getImgByte(),fileS3Name,"image*//*");*/
-
-            // PARTIE LOCALE
             String fileS3Name = instant.getName();
-            File directory = new File("./images");
-            if (!directory.isDirectory()) {
-                directory.mkdir();
-            }
 
-            fos = new FileOutputStream("./images/" + fileS3Name);
+            fos = new FileOutputStream("src/main/images/" + userId + "/" + albumId + "/" + fileS3Name);
             fos.write(instant.getImgByte());
             fos.close();
 
@@ -100,15 +107,15 @@ public class UploadingController {
             //LOGGER.info("Sauvegarde à l'url: " +"https://s3.amazonaws.com/"+AmazonS3Service.bucketName+"/"+fileS3Name);
             //instant.setUrl("https://s3.amazonaws.com/"+AmazonS3Service.bucketName+"/"+fileS3Name);
 
-            LOGGER.info("Sauvegarde à l'url: " + "http://" + Inet4Address.getLocalHost().getHostAddress() + ":9999/images?name=" + fileS3Name);
-            instant.setUrl("http://"+Inet4Address.getLocalHost().getHostAddress() + ":9999/images?name=" + fileS3Name);
+            LOGGER.info("Sauvegarde à l'url: " + "http://" + Inet4Address.getLocalHost().getHostAddress() + ":9999/images?name=" + fileS3Name + "&albumId=" + albumId);
+            instant.setUrl("http://"+Inet4Address.getLocalHost().getHostAddress() + ":9999/images?name=" + fileS3Name + "&albumId=" + albumId);
 
             instant.setPublishDate(new Date()); //Faudra plus utiliser Date car deprecated... new Date() gives you a Date object initialized with the current date / time.
-            //On détruit l'image car elle vient de la stocker sur le cloud donc inutile de la stocker
+            //On détruit l'image car elle vient de la stocker sur le cloud donc inutile de la stocker sur mongoDb
             instant.setImgByte(null);
 
-            //Ajout de la photo dans la base de donnée
-            albumService.addInstant(instant, albumId, moment.getId());
+            // Ajout du nouveau moment a la BDD
+            albumService.addMoment(moment, albumId);
         }
 
         /** ------------------ NOTIFICATION PAR MOMENT ------------*/

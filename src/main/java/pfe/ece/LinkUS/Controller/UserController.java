@@ -3,6 +3,7 @@ package pfe.ece.LinkUS.Controller;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
@@ -15,6 +16,7 @@ import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.FriendGroupService;
+import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
 
 import java.util.ArrayList;
@@ -34,6 +36,8 @@ public class UserController {
     FriendGroupRepository friendGroupRepository;
     @Autowired
     SubscriptionRepository subscriptionRepository;
+    @Autowired
+    private AccessTokenService accessTokenService;
 
     private static final Logger LOGGER = Logger.getLogger(UserController.class);
 
@@ -100,6 +104,28 @@ public class UserController {
             throw  new AlbumNotFoundException(albumId);
         } else {
             return userList.toString();
+        }
+    }
+
+    @RequestMapping(value = "/friendRequest", params = {"friendId"}, method = RequestMethod.POST)
+    public void friendRequest(@RequestParam(value = "friendId") String friendId) {
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        userService.friendRequest(userId, friendId);
+    }
+
+    @RequestMapping(value = "/friend", params = {"friendId", "decision"}, method = RequestMethod.POST)
+    public void friendRequestDecision(@RequestParam(value = "friendId") String friendId, @RequestParam(value = "decision") Boolean decision) {
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        if(decision) {
+            userService.acceptFriend(userId, friendId);
+        } else {
+            userService.refuseFriend(userId, friendId);
         }
     }
 }

@@ -69,8 +69,8 @@ public class OAuth2ServerConfig {
         public TokenStore tokenStore() {
             DataSource tokenDataSource = DataSourceBuilder.create()
                     .driverClassName(oauthClass)
-                    .username("linkus")
-                    .password("linkus")
+                    .username("linkUS")
+                    .password("linkUS")
 
                     .url(oauthUrl)
                     .build();
@@ -230,8 +230,8 @@ public class OAuth2ServerConfig {
 
             DataSource dataSource = DataSourceBuilder.create()
                     .driverClassName(oauthClass)
-                    .username("linkus")
-                    .password("linkus")*/
+                    .username("linkUS")
+                    .password("linkUS")*/
 
             String oauthUrl = "jdbc:mysql://localhost:3311/linkusDB";
 

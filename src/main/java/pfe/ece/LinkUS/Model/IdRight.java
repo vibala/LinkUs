@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
 
@@ -10,6 +11,7 @@ import java.util.ArrayList;
  */
 public class IdRight {
 
+    @Id
     private String id;
     private String right;
     private ArrayList<String> userIdList = new ArrayList<>();
@@ -21,11 +23,6 @@ public class IdRight {
         this.right = right;
     }
 
-
-    public IdRight(String right, ArrayList<String> userIdList) {
-        this.right = right;
-        this.userIdList = userIdList;
-    }
 
     @Override
     public String toString() {

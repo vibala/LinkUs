@@ -68,9 +68,8 @@ public class AlbumController {
             right = Right.LECTURE.name();
         }
         // Get the current authentified user id
-        System.out.println("accessTokenService ! " + accessTokenService);
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-        System.out.println("userId ! " + userId);
+        String userId = gettingMyUserId();
+
         //Get the groups in which the user is.
         List<FriendGroup> groupList = friendGroupService.getFriendGroupById(userId);
 
@@ -90,12 +89,12 @@ public class AlbumController {
 
     }
 
-    public String gettingMyUserId(){
+    private String gettingMyUserId(){
        try{
-        String user_id = accessTokenService.getUserIdOftheAuthentifiedUser();
-           return user_id;
+            String user_id = accessTokenService.getUserIdOftheAuthentifiedUser();
+            return user_id;
        }catch(UsernameNotFoundException e){
-           return "UserId is not found because username is not found";
+            return "UserId is not found because username is not found";
        }
     }
 
@@ -108,49 +107,15 @@ public class AlbumController {
     }
 
     @RequestMapping(value = "/setwith", method = RequestMethod.POST)
-    public ResponseEntity<Message> setCurrentAlbumWithUserWhoseEmailSentInParam(@RequestParam("email") String email){
+    public void addFriendToAlbumWithSpecificRight(
+            @RequestParam("friendId") String friendId,
+            @RequestParam("albumId") String albumId,
+            @RequestParam("right") String right){
 
-        // Retrieving user entity from db
-        User user = userService.getUserByEmail(email).get();
-        Message m = new Message();
+        String userId = gettingMyUserId();
 
-        if(user!=null){
-            // Fetch user id whose email adress is sent in parameter
-            String frienduserId = user.getId();
-            // Retrieving current authentified userId
-            String currentAuthUserId = accessTokenService.getUserIdOftheAuthentifiedUser();
-            // Fetch albums of current authentified user
-            List<Album> ownerAlbums = albumService.getAlbumsOwned(currentAuthUserId);
-            //Retrieve only the first album
-            Album firstownerAlbum = ownerAlbums.get(0); // Mode freemium
-            // Getting the id for the lecture specific rigth
-            IdRight lectureRight = firstownerAlbum.getSpecificIdRight(Right.LECTURE.name());
-            // Adding user sent in param in the userIdList thus the user will have the lecture rigth on the ownerAlbum
-            lectureRight.getUserIdList().clear();
-            boolean rst = lectureRight.getUserIdList().add(frienduserId);
-
-            if(rst==true){
-                //  Update album
-                albumService.update(firstownerAlbum);
-                m.setId(200);
-                m.setSubject("msg.Success.SettingAlbum");
-                m.setText("The current album is set with the user (with the lecture rigth)");
-            }else{
-                m.setId(417);
-                m.setSubject("msg.Error.SettingAlbum");
-                m.setText("The current cannot be set with the user");
-            }
-        }else{
-            m.setId(417);
-            m.setSubject("msg.Error.SettingAlbum");
-            m.setText("The user does not exist in the DB");
-        }
-
-        if(m.getId()==407){
-            return new ResponseEntity<Message>(m, HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<Message>(m, HttpStatus.FOUND);
+        AlbumService albumService = new AlbumService(albumRepository);
+        albumService.addFriendToAlbum(userId, friendId, albumId, right);
     }
 
     private List<Album> checkDataAutorization(List<Album> albumList, String userId) {

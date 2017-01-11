@@ -75,9 +75,8 @@ public class RegisterController {
         try{
 
             username = form.getEmail();
-            System.out.println("Username ! " + username);
+
             String appUrl = request.getContextPath();
-            System.out.println("fsdfsdf " + userService);
 
             if((userService.getUserByEmail(username).isPresent() && userService.getUserByEmail(username).get().isEnabled())
                     || (userService.getUserByEmail(username).isPresent() &&

@@ -16,17 +16,23 @@ public class NotificationTokenServiceImpl implements NotificationTokenService{
 
     public NotificationTokenServiceImpl (NotificationTokenRepository notificationTokenRepository){
         this.notificationTokenRepository=notificationTokenRepository;
-        System.out.println("6"+notificationTokenRepository);
     }
+
     @Override
     public String getNotifcationTokenByUsername(String username) {
-        System.out.println("7"+notificationTokenRepository);
-        if(notificationTokenRepository.findByUsername(username).getToken()!= null &&
-                !notificationTokenRepository.findByUsername(username).getToken().isEmpty()){
-            return notificationTokenRepository.findByUsername(username).getToken();
-        }
 
-        return null;
+        String token = notificationTokenRepository.findByUsername(username).getToken();
+        if(token!= null && !token.isEmpty()){
+            return token;
+        } else {
+            return null;
+        }
+    }
+
+    public void removeNotifcationTokenByUsername(String username) {
+
+        NotificationToken notificationToken = notificationTokenRepository.findByUsername(username);
+        notificationTokenRepository.delete(notificationToken);
     }
 
     @Override
@@ -38,8 +44,7 @@ public class NotificationTokenServiceImpl implements NotificationTokenService{
         if(notificationToken.getUsername() == null || notificationToken.getUsername().isEmpty()){
             throw new Exception("Username element in the notification token entity is either null or empty");
         }
-
+        removeNotifcationTokenByUsername(notificationToken.getUsername());
         notificationTokenRepository.save(notificationToken);
     }
-
 }

@@ -278,7 +278,7 @@ public class SocialRegistrationController {
         try {
             options = new FirebaseOptions.Builder()
                     .setServiceAccount(
-                            new FileInputStream("linkus-42b42-firebase-adminsdk-l2ld3-41684b1ba5.json"))
+                            new FileInputStream("linkUS-42b42-firebase-adminsdk-l2ld3-41684b1ba5.json"))
                     .setDatabaseUrl("https://linkus-42b42.firebaseio.com")
                     .build();
             System.out.println("getHomePageFromAGoogleUser - II");

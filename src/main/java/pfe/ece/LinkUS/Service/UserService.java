@@ -81,4 +81,46 @@ public class UserService {
         LOGGER.info("Deleting user" + user.toString());
         userRepository.delete(user);
     }
+
+    public boolean checkFriend(User user, String friendId) {
+
+        return user.getFriendList().contains(friendId);
+    }
+
+    public void friendRequest(String userId, String friendId) {
+
+        User user = findUserById(userId);
+
+        if(!user.getFriendPendingList().contains(friendId)) {
+            LOGGER.info("New friend request with friendID: " + friendId);
+            user.getFriendPendingList().add(friendId);
+        }
+        update(user);
+
+    }
+
+    public void acceptFriend(String userId, String friendId) {
+
+        User user = findUserById(userId);
+
+        if(user.getFriendPendingList().contains(friendId)) {
+            LOGGER.info("New friend with friendID: " + friendId);
+            user.getFriendList().add(friendId);
+            user.getFriendPendingList().remove(friendId);
+        }
+        update(user);
+    }
+
+    public void refuseFriend(String userId, String friendId) {
+
+        User user = findUserById(userId);
+
+        if(user.getFriendPendingList().contains(friendId)) {
+            LOGGER.info("Friend request refused with friendID: " + friendId);
+            user.getFriendPendingList().remove(friendId);
+        }
+        update(user);
+    }
+
+
 }

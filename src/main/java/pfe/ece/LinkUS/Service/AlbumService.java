@@ -10,6 +10,7 @@ import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
 import pfe.ece.LinkUS.Exception.OwnerAlbumNotFoundException;
 import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
+import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +27,9 @@ public class AlbumService {
 
     @Autowired
     AlbumRepository albumRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     ApplicationContext ctx;
     MongoOperations operations;
@@ -114,6 +118,7 @@ public class AlbumService {
     public void save(Album album) {
         // Set to null not to erase another object with the same Id (new object)
         LOGGER.info("Saving new album" + album.toString());
+        album.setId(null);
         albumRepository.save(album);
     }
 
@@ -144,48 +149,100 @@ public class AlbumService {
         album.setActive(false);
         album.setOwnerId(userId);
 
-        // On ajoute l'owner dans chaque droit
-        for(Right right: Right.values()) {
-            IdRight idRight = new IdRight(right.name());
-            idRight.getUserIdList().add(userId);
-            album.getIdRight().add(idRight);
-        }
+        // Ajout de tous les idRight
+        addAllIdRight(album);
+
+        // Ajout de l'owner dans chaque droit
+        IdRightService idRightService = new IdRightService();
+        idRightService.addUserToAll(album, userId);
 
         // Ajout d'un moment par défaut
         MomentService momentService = new MomentService();
-        album.getMoments().add(momentService.newDefaultMoment());
+        momentService.add(album, momentService.newDefaultMoment());
 
         LOGGER.info("createAlbumForEachNewRegisterUser - fin de création d'un album");
         save(album);
     }
 
+    /**
+     * Ajoute tous les idRight (vide) à l'album
+     * @param album
+     */
+    public void addAllIdRight(Album album) {
+        IdRightService idRightService = new IdRightService();
+        for(Right right: Right.values()) {
+            IdRight idRight = new IdRight(right.name());
+            idRightService.add(album, idRight);
+        }
+    }
+
+    public void addFriendToAlbum(String userId, String friendId, String albumId, String right) {
+
+        // Récupération album
+        Album album = findAlbumById(albumId);
+
+        // Récupération du user
+        UserService userService = new UserService(userRepository);
+        User user = userService.findUserById(userId);
+
+        // Si l'ami est bien dans la liste
+        if(userService.checkFriend(user, friendId)) {
+
+            // Ajout du friend au right
+            addUser(album, friendId, right);
+        }
+    }
+
+    public void addUser(Album album, String userId, String right) {
+        IdRightService idRightService = new IdRightService();
+        idRightService.addUser(idRightService.findByRight(album, right), userId);
+    }
+
+    /*
+    *
+    *
+    * INSTANT
+    *
+    *
+    */
+
     public void addInstant(Instant instant, String albumId, String momentId){
 
-        Album album = albumRepository.findOne(albumId);
-        ArrayList<Moment> momentArrayList = new ArrayList<>();
+        // Récupération album
+        Album album = findAlbumById(albumId);
 
-        // on cherche le moment correspondant
-        for (Moment moment: momentArrayList) {
-            if(moment.getId().equals(momentId)) {
-                // Si l'instant n'existe pas, on l'ajoute
-                if(!moment.getInstantList().contains(instant)) {
-                    moment.getInstantList().add(instant);
-                    LOGGER.info("Adding instant: " + instant);
-                }
-            }
-        }
+        // Récupération moment
+        MomentService momentService = new MomentService();
+        Moment momentFound = momentService.find(album, momentId);
+
+        // Ajout instant
+        InstantService instantService = new InstantService();
+        instantService.add(momentFound, instant);
+
+        // Sauvegarde
         albumRepository.save(album);
     }
+
+    /*
+    *
+    *
+    * MOMENT
+    *
+    *
+    */
 
     public void addMoment(Moment moment, String albumId) {
 
+        // Récupération album
         Album album = albumRepository.findOne(albumId);
 
-        // On cherche si le moment existe, si non: on l'ajoute
-        if(!album.getMoments().contains(moment)) {
-            album.getMoments().add(moment);
-            LOGGER.info("Adding moment: " + moment);
-        }
+        // Ajout moment
+        MomentService momentService = new MomentService();
+        momentService.add(album, moment);
+
+        // Sauvegarde
         albumRepository.save(album);
     }
+
+
 }
