@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
 import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Enum.Right;
+import pfe.ece.LinkUS.Model.Enum.SubscriptionTypeEnum;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
@@ -41,8 +43,6 @@ public class AlbumController {
     FriendGroupRepository friendGroupRepository;
     @Autowired
     SubscriptionRepository subscriptionRepository;
-    @Autowired
-    private TokenStore tokenStore;
     @Autowired
     private AccessTokenService accessTokenService;
     @Autowired
@@ -78,13 +78,10 @@ public class AlbumController {
         albumList.addAll(albumService.findAlbumByGroupIdRight(groupList, right));
 
         if(albumList == null || albumList.isEmpty()) {
-            //throw  new AlbumNotFoundException(userId);
-            return "ablumnotfoundexception";
+            throw  new AlbumNotFoundException(userId);
         } else {
-            return albumList.toString();
-            // TODO Building return checkDataAutorization(albumList, userId).toString();
+            return albumService.checkDataAutorization(albumList, userId).toString();
         }
-
     }
 
     private String gettingMyUserId(){
@@ -114,53 +111,5 @@ public class AlbumController {
 
         AlbumService albumService = new AlbumService(albumRepository);
         albumService.addFriendToAlbum(userId, friendId, albumId, right);
-    }
-
-    private List<Album> checkDataAutorization(List<Album> albumList, String userId) {
-
-        SubscriptionService subscriptionService = new SubscriptionService(subscriptionRepository);
-        Subscription subscription = subscriptionService.findSubscription(userId);
-
-
-        if (subscription.getDateFin().compareTo(new Date()) < 0 ||
-                subscription.getDateDebut().compareTo(new Date()) > 0) {
-            //Pas d'abo valid
-
-            if(subscription.getDateFin().compareTo(new Date()) < 0) {
-                LOGGER.info("User id " + subscription.getUserId() +
-                        " subscription expired ("+subscription.getDateFin().toString()+")");
-            }
-            if(subscription.getDateDebut().compareTo(new Date()) > 0) {
-                LOGGER.severe("User id " + subscription.getUserId() +
-                        " subscription is not valid yet.("+subscription.getDateDebut().toString()+")");
-            }
-
-            // gerer le cas des descriptions free
-            if (subscription.getFree() > 0) {
-                // Decrement
-                subscription.setDescriptionFree(subscription.getFree() - 1);
-                LOGGER.info("User id " + subscription.getUserId() +
-                        " has "+ subscription.getFree() +" free description left");
-                // Save the object to update his value
-               // subscriptionService.update(subscription);
-
-            } else {
-                LOGGER.info("User id " + subscription.getUserId() + " has no free description");
-                removePhotosDescriptionToAlbums(albumList);
-            }
-        } else {
-            LOGGER.info("User id " + subscription.getUserId() + " subscription is valid");
-        }
-        return albumList;
-    }
-
-    private void removePhotosDescriptionToAlbums(List<Album> albumList) {
-        for (Album album: albumList) {
-            for(Moment moment: album.getMoments()) {
-                for(Instant instant: moment.getInstantList()) {
-                    instant.setDescriptionsList(null);
-                }
-            }
-        }
     }
 }

@@ -10,7 +10,9 @@ import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
 import pfe.ece.LinkUS.Exception.OwnerAlbumNotFoundException;
 import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Enum.Right;
+import pfe.ece.LinkUS.Model.Enum.SubscriptionTypeEnum;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
+import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 
 import java.util.ArrayList;
@@ -31,6 +33,9 @@ public class AlbumService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    SubscriptionRepository subscriptionRepository;
 
     ApplicationContext ctx;
     MongoOperations operations;
@@ -198,6 +203,52 @@ public class AlbumService {
         idRightService.addUser(idRightService.findByRight(album, right), userId);
     }
 
+    public List<Album> checkDataAutorization(List<Album> albumList, String userId) {
+
+        SubscriptionService subscriptionService = new SubscriptionService(subscriptionRepository);
+        Subscription subscription = subscriptionService.findSubscription(userId, SubscriptionTypeEnum.DESCRIPTION.name());
+
+        if (subscription.getDateFin().compareTo(new Date()) < 0 ||
+                subscription.getDateDebut().compareTo(new Date()) > 0) {
+            //Pas d'abo valid
+
+            if(subscription.getDateFin().compareTo(new Date()) < 0) {
+                LOGGER.info("User id " + subscription.getUserId() +
+                        " subscription expired ("+subscription.getDateFin().toString()+")");
+            }
+            if(subscription.getDateDebut().compareTo(new Date()) > 0) {
+                LOGGER.severe("User id " + subscription.getUserId() +
+                        " subscription is not valid yet.("+subscription.getDateDebut().toString()+")");
+            }
+
+            // gerer le cas des descriptions/friend free
+            if (subscription.getFree() > 0) {
+                // Decrement
+                subscription.setFree(subscription.getFree() - 1);
+                LOGGER.info("User id " + subscription.getUserId() +
+                        " has "+ subscription.getFree() +" free description left");
+                // Save the object to update his value
+                // subscriptionService.update(subscription);
+
+            } else {
+                LOGGER.info("User id " + subscription.getUserId() + " has no free description");
+                removePhotosDescriptionToAlbums(albumList);
+            }
+        } else {
+            LOGGER.info("User id " + subscription.getUserId() + " subscription is valid");
+        }
+        return albumList;
+    }
+
+    private void removePhotosDescriptionToAlbums(List<Album> albumList) {
+        for (Album album: albumList) {
+            for(Moment moment: album.getMoments()) {
+                for(Instant instant: moment.getInstantList()) {
+                    instant.setDescriptionsList(null);
+                }
+            }
+        }
+    }
     /*
     *
     *

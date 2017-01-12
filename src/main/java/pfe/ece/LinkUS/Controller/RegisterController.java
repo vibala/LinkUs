@@ -19,6 +19,7 @@ import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Enum.Right;
 import pfe.ece.LinkUS.Model.Validator.UserCreateFormValidator;
 import pfe.ece.LinkUS.Service.AlbumService;
+import pfe.ece.LinkUS.Service.SubscriptionService;
 import pfe.ece.LinkUS.Service.TokenService.VerificationTokenService;
 import pfe.ece.LinkUS.Service.UserEntityService.UserService;
 
@@ -42,6 +43,8 @@ public class RegisterController {
     private  VerificationTokenService verificationTokenService;
     @Autowired
     private  AlbumService albumService;
+    @Autowired
+    private SubscriptionService subscriptionService;
 
     private static final Logger LOGGER = Logger.getLogger(RegisterController.class);
 
@@ -96,11 +99,12 @@ public class RegisterController {
             return new ResponseEntity(messages.get(0), HttpStatus.CONFLICT);
         }
 
-        User registered = createUserAccount(form);
-        LOGGER.info("confirmRegistration (Album create) - STEP II");
-        Album album_for_new_comer = createAlbumForEachNewRegisterUser(registered.getId());
+        User registeredUser = createUserAccount(form);
+        LOGGER.info("confirmRegistration (Album create) - STEP II - Album creation");
+        Album album_for_new_comer = createAlbumForEachNewRegisterUser(registeredUser.getId());
         albumService.save(album_for_new_comer);
-        LOGGER.info("confirmRegistration (Album create) - STEP III");
+        LOGGER.info("confirmRegistration (Album create) - STEP III - Subscriptions creation");
+        subscriptionService.addUserToAllSubscription(registeredUser);
 
         return new ResponseEntity(new Message(200, "message.regSucc", "Hello we need to verify your mail " + username + " for the Linkus account"),HttpStatus.CREATED);
     }

@@ -36,12 +36,12 @@ public class SubscriptionController {
     }
 
 
-    @RequestMapping(params = {"id"})
-    public Subscription findSubscriptionById(@RequestParam("id") String id) {
+    @RequestMapping(params = {"id", "type"})
+    public Subscription findSubscriptionById(@RequestParam("id") String id, @RequestParam("type") String type) {
 
         // Call service function
         SubscriptionService subscriptionService = new SubscriptionService(subscriptionRepository);
-        return subscriptionService.findSubscription(id);
+        return subscriptionService.findSubscription(id, type);
     }
 
     @RequestMapping(method = RequestMethod.POST,
