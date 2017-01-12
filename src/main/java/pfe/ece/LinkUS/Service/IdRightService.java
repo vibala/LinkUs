@@ -3,7 +3,6 @@ package pfe.ece.LinkUS.Service;
 import org.springframework.stereotype.Service;
 import pfe.ece.LinkUS.Model.Album;
 import pfe.ece.LinkUS.Model.IdRight;
-import pfe.ece.LinkUS.Model.Right;
 
 import java.util.logging.Logger;
 

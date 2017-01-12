@@ -34,7 +34,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 public class RegistrationTest {
 
     private static final String REGISTRATION_URL = "http://localhost:9999/user/registration";
-    private static final Logger LOGGER = Logger.getLogger(LoginTest.class);
+    private static final Logger LOGGER = Logger.getLogger(RegistrationTest.class);
 
     @Test
     public void testRegisterANewUser() throws Exception{

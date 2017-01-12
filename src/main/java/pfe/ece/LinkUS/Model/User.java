@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import pfe.ece.LinkUS.Model.Enum.Role;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -67,6 +67,8 @@ public class User implements Serializable {
 
     @Field("profilImgUrl")
     private String profilImgUrl;
+
+    private ArrayList<KeyValue> configList = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -207,5 +209,13 @@ public class User implements Serializable {
 
     public void setProfilImgUrl(String profilImgUrl) {
         this.profilImgUrl = profilImgUrl;
+    }
+
+    public ArrayList<KeyValue> getConfigList() {
+        return configList;
+    }
+
+    public void setConfigList(ArrayList<KeyValue> configList) {
+        this.configList = configList;
     }
 }

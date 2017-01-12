@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.annotation.Id;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,7 +18,7 @@ public class Instant {
     private String name;
     private String url;
     private ArrayList<Comment> commentList = new ArrayList<>();
-    private ArrayList<Description> descriptionsList = new ArrayList<>();
+    private ArrayList<KeyValue> descriptionsList = new ArrayList<>();
     private Date publishDate;
     private ArrayList<IdRight> idRight = new ArrayList<>();
     private ArrayList<String> userIdDescriptionAvailable = new ArrayList<>();
@@ -79,11 +80,11 @@ public class Instant {
         this.commentList = commentList;
     }
 
-    public ArrayList<Description> getDescriptionsList() {
+    public ArrayList<KeyValue> getDescriptionsList() {
         return descriptionsList;
     }
 
-    public void setDescriptionsList(ArrayList<Description> descriptionsList) {
+    public void setDescriptionsList(ArrayList<KeyValue> descriptionsList) {
         this.descriptionsList = descriptionsList;
     }
 

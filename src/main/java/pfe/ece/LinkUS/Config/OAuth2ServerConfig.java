@@ -26,6 +26,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import pfe.ece.LinkUS.Model.Enum.Role;
 import pfe.ece.LinkUS.Service.CurrentUserService.CurrentUserDetailsService;
 
 import javax.sql.DataSource;
@@ -117,7 +118,7 @@ public class OAuth2ServerConfig {
                     .antMatchers(HttpMethod.POST,"/oauth/token").permitAll()
                     .antMatchers(HttpMethod.GET,"/images*").permitAll()
                     .antMatchers(HttpMethod.GET,"/oauth/revoke-token").authenticated()
-                    .antMatchers("/users/**").hasRole("ADMIN")
+                    .antMatchers("/users/**").hasRole(Role.ADMIN.name())
                     .anyRequest().authenticated();
         }
 

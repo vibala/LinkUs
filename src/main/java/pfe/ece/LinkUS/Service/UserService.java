@@ -3,6 +3,8 @@ package pfe.ece.LinkUS.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pfe.ece.LinkUS.Exception.UserNotFoundException;
+import pfe.ece.LinkUS.Model.Enum.ConfigUser;
+import pfe.ece.LinkUS.Model.KeyValue;
 import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 
@@ -122,5 +124,21 @@ public class UserService {
         update(user);
     }
 
+    public void addConfig(User user, String type, String content) {
+        for(ConfigUser configUser: ConfigUser.values()) {
+            if(configUser.name().equals(type)) {
+                addConfig(user, new KeyValue(configUser.name(), content));
+            }
+            break;
+        }
+    }
 
+    public void addConfig(User user, KeyValue config) {
+
+        if(!user.getConfigList().contains(config)) {
+            LOGGER.info("Adding a configuration: " + config.getType() + " - " + config.getContent() +
+                    " to user : " + user.getId());
+            user.getConfigList().add(config);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package pfe.ece.LinkUS.Model;
 
 import org.springframework.security.core.authority.AuthorityUtils;
+import pfe.ece.LinkUS.Model.Enum.Role;
 
 
 /**

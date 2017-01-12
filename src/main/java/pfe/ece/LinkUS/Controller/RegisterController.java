@@ -16,6 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import pfe.ece.LinkUS.Exception.EmailExistsException;
 import pfe.ece.LinkUS.Model.*;
+import pfe.ece.LinkUS.Model.Enum.Right;
 import pfe.ece.LinkUS.Model.Validator.UserCreateFormValidator;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.TokenService.VerificationTokenService;

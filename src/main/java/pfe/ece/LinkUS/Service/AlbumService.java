@@ -9,6 +9,7 @@ import pfe.ece.LinkUS.Config.MyMongoConfig;
 import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
 import pfe.ece.LinkUS.Exception.OwnerAlbumNotFoundException;
 import pfe.ece.LinkUS.Model.*;
+import pfe.ece.LinkUS.Model.Enum.Right;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 
