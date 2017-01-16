@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/action_favorites"
+        icon="@drawable/ic_favorite_white_24dp"
+        barColorWhenSelected="@color/red_flat_design"
+        title="Favorites" />
+    <tab
+        id="@+id/action_recents"
+        icon="@drawable/ic_recents_white_24dp"
+        barColorWhenSelected="@color/red_flat_design"
+        title="@string/text_recents" />
+    <tab
+        id="@+id/action_notifications"
+        icon="@drawable/ic_bell_white_24dp"
+        barColorWhenSelected="@color/red_flat_design"
+        title="Friends" />
+</tabs>
