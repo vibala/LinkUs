@@ -2,7 +2,6 @@ package pfe.ece.LinkUS.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,19 +9,16 @@ import org.springframework.web.bind.annotation.RestController;
 import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
 import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Enum.Right;
-import pfe.ece.LinkUS.Model.Enum.SubscriptionTypeEnum;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.FriendGroupService;
-import pfe.ece.LinkUS.Service.SubscriptionService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserEntityService.UserServiceImpl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -56,11 +52,12 @@ public class AlbumController {
         return "Not implemented yet.";
     }
 
-    @RequestMapping(value = "/right",produces = "application/json")
-    public String findAlbumByUserId(@RequestParam(value = "right") String right) {
+    @RequestMapping(value = "/right", produces = "application/json")
+    public String findAlbumByUserId(@RequestParam(value = "right") String right, @RequestParam(value = "news") boolean news) {
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
         AlbumService albumService = new AlbumService(albumRepository);
+        albumService.setSubscriptionRepository(subscriptionRepository);
         List<Album> albumList = new ArrayList<>();
 
         if(right == null ||"".equals(right)) {
@@ -80,7 +77,7 @@ public class AlbumController {
         if(albumList == null || albumList.isEmpty()) {
             throw  new AlbumNotFoundException(userId);
         } else {
-            return albumService.checkDataAutorization(albumList, userId).toString();
+            return albumService.checkData(albumList, news, userId).toString();
         }
     }
 
@@ -95,10 +92,11 @@ public class AlbumController {
 
 
     @RequestMapping(value = "/owned")
-    public String findAlbumsOwnedByUser() {
+    public String findAlbumsOwnedByUser(@RequestParam(value = "news") boolean news) {
         String userId = gettingMyUserId();
         AlbumService albumService = new AlbumService(albumRepository);
-        return albumService.getAlbumsOwned(userId).toString();
+        albumService.setSubscriptionRepository(subscriptionRepository);
+        return albumService.checkData(albumService.getAlbumsOwned(userId), news, userId).toString();
     }
 
     @RequestMapping(value = "/setwith", method = RequestMethod.POST)

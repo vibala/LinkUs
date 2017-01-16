@@ -128,7 +128,7 @@ public class SubscriptionService {
         if(findMatchingSubscription(subscription)) {
             delete(subscription);
         } else {
-            LOGGER.warning("No subscription matching to delete.");
+            LOGGER.warning("No subscription matching to deleteMomentFromAlbum.");
         }
     }
 

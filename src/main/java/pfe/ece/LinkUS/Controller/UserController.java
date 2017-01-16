@@ -43,30 +43,24 @@ public class UserController {
 
     @RequestMapping("/")
     public String userDefaultCall() {
-        return "Not implemented yet.";
-    }
+        String userId = getMyUserId();
 
-    @RequestMapping(params = {"id"})
-    public String findUserById(@RequestParam("id") String id) {
-        AlbumService albumService = new AlbumService(albumRepository);
-        Album album = albumService.findAlbumById(id);
-
-
-        return album.toString();
-    }
-
-    @RequestMapping(params = {"name"})
-    public String findUserByName(@RequestParam("name") String name) {
         UserService userService = new UserService(userRepository);
-
-        List<User> userList = userService.findUsersByName(name);
-
-        if(userList == null || userList.isEmpty()) {
-            throw new AlbumNotFoundException(name);
-        } else {
-            return userList.toString();
-        }
+        return userService.findUserById(userId).toString();
     }
+
+//    @RequestMapping(params = {"name"})
+//    public String findUserByName(@RequestParam("name") String name) {
+//        UserService userService = new UserService(userRepository);
+//
+//        List<User> userList = userService.findUsersByName(name);
+//
+//        if(userList == null || userList.isEmpty()) {
+//            throw new AlbumNotFoundException(name);
+//        } else {
+//            return userList.toString();
+//        }
+//    }
 
     @RequestMapping(value = "/albumOwner", params = {"albumId"})
     public User findOwnerUserByAlbumId(@RequestParam("albumId") String albumId) {
@@ -110,7 +104,7 @@ public class UserController {
     @RequestMapping(value = "/friendRequest", params = {"friendId"}, method = RequestMethod.POST)
     public void friendRequest(@RequestParam(value = "friendId") String friendId) {
 
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        String userId = getMyUserId();
 
         UserService userService = new UserService(userRepository);
         userService.friendRequest(userId, friendId);
@@ -119,7 +113,7 @@ public class UserController {
     @RequestMapping(value = "/friend", params = {"friendId", "decision"}, method = RequestMethod.POST)
     public void friendRequestDecision(@RequestParam(value = "friendId") String friendId, @RequestParam(value = "decision") Boolean decision) {
 
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        String userId = getMyUserId();
 
         UserService userService = new UserService(userRepository);
         if(decision) {
@@ -127,5 +121,9 @@ public class UserController {
         } else {
             userService.refuseFriend(userId, friendId);
         }
+    }
+
+    private String getMyUserId() {
+        return accessTokenService.getUserIdOftheAuthentifiedUser();
     }
 }

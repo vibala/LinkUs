@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
     <head>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="http://localhost:9999/bootstrap/css/bootstrap.min.css" />
     </head>
     <body>
 
@@ -13,8 +13,8 @@
         <div class="row" th:each="message, status : ${messages_confirmation}">
             <div style="height:30px;"></div>
             <div class="col-md-4 col-xs-5" >
-                <img src="../Images/" class="img-responsive center-block" alt="Green check" width="300" height="300" th:if="${message.user_registred}">
-                <img src="Images/redCross.png" class="img-responsive center-block" alt="Red cross" width="300" height="300" th:unless="${message.user_registred}">
+                <img src="http://localhost:9999/images/greenCheck.png" class="img-responsive center-block" alt="Green check" width="250" height="250" th:if="${message.user_registred}">
+                <img src="http://localhost:9999/images/redCross.png" class="img-responsive center-block" alt="Red cross" width="250" height="250" th:unless="${message.user_registred}">
             </div>
             <div class="col-md-8 col-xs-7">
                 <div style="height:30px;"></div>

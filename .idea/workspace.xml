@@ -2,71 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fc5719f7-e6a6-4011-8684-de26858fae55" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Enum/SubscriptionTypeEnum.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Description.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Right.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Role.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/test-classes/pfe/ece/LinkUS/Controller/UserControllerTest.class" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/MyMongoConfig.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/MyMongoConfig.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig$AuthorizationServerConfiguration.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig$AuthorizationServerConfiguration.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig$ResourceServerConfiguration.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig$ResourceServerConfiguration.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/ProperPasswordEncoder.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/ProperPasswordEncoder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/AlbumController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/AlbumController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/AppErrorController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/AppErrorController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/HomeController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/HomeController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/Images.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/Images.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/LoginController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/LoginController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/NotificationController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/NotificationController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/PasswordController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/PasswordController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/RegisterController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/RegisterController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/RegistrationListener.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/RegistrationListener.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/SubscriptionController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/SubscriptionController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/UploadingController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/UploadingController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/UserController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/UserController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Album.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Album.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/CurrentUser.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/CurrentUser.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/FacebookUserCreateForm.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/FacebookUserCreateForm.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/IdRight.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/IdRight.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Message.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Message.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Moment.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Moment.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Subscription.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Subscription.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/SubscriptionType.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/SubscriptionType.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/User.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/User.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/UserCreateForm.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/UserCreateForm.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/VerificationToken.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/VerificationToken.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Repository/TokenMySQLRepo/NotificationTokenRepository.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Repository/TokenMySQLRepo/NotificationTokenRepository.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/ServerService/AmazonS3Service.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/ServerService/AmazonS3Service.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/ServerService/NotificationService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/ServerService/NotificationService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/AlbumService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/AlbumService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/CurrentUserService/CurrentUserServiceImpl.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/CurrentUserService/CurrentUserServiceImpl.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/NotificationTokenServiceImpl.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/NotificationTokenServiceImpl.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/SubscriptionService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/SubscriptionService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/TokenService/AccessTokenService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/TokenService/AccessTokenService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/TokenService/VerificationTokenServiceImpl.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/TokenService/VerificationTokenServiceImpl.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/UserEntityService/UserServiceImpl.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/UserEntityService/UserServiceImpl.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/UserService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/UserService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/test-classes/pfe/ece/LinkUS/AppTest.class" afterPath="$PROJECT_DIR$/target/test-classes/pfe/ece/LinkUS/AppTest.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/test-classes/pfe/ece/LinkUS/Controller/LoginTest$1.class" afterPath="$PROJECT_DIR$/target/test-classes/pfe/ece/LinkUS/Controller/LoginTest$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/test-classes/pfe/ece/LinkUS/Controller/LoginTest.class" afterPath="$PROJECT_DIR$/target/test-classes/pfe/ece/LinkUS/Controller/LoginTest.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/test-classes/pfe/ece/LinkUS/Controller/RegistrationTest.class" afterPath="$PROJECT_DIR$/target/test-classes/pfe/ece/LinkUS/Controller/RegistrationTest.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/test-classes/pfe/ece/LinkUS/Controller/ServiceTestConfig.class" afterPath="$PROJECT_DIR$/target/test-classes/pfe/ece/LinkUS/Controller/ServiceTestConfig.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/test-classes/pfe/ece/LinkUS/Controller/SubscriptionTest.class" afterPath="$PROJECT_DIR$/target/test-classes/pfe/ece/LinkUS/Controller/SubscriptionTest.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/Images/redCross.png" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Config/OAuth2ServerConfig.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Config/OAuth2ServerConfig.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/RegisterController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/RegisterController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UploadingController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UploadingController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Enum/Role.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Enum/Role.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UserController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UserController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/FriendGroup.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/FriendGroup.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/IdRight.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/IdRight.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Instant.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Instant.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Moment.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Moment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Subscription.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Subscription.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/SubscriptionType.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/SubscriptionType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/User.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/User.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/OAuth2RepositoryTokenStore.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/OAuth2RepositoryTokenStore.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/ServerService/NotificationService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/ServerService/NotificationService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/IdRightService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/IdRightService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/InstantService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/InstantService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/MomentService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/MomentService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/NotificationTokenServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/NotificationTokenServiceImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/pfe/ece/linkus/Controller/SubscriptionTest.java" afterPath="$PROJECT_DIR$/src/test/java/pfe/ece/linkus/Controller/SubscriptionTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/application.properties" afterPath="$PROJECT_DIR$/target/classes/application.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/templates/confirmationMessage.html" afterPath="$PROJECT_DIR$/target/classes/templates/confirmationMessage.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionTypeService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionTypeService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/templates/confirmationMessage.html" afterPath="$PROJECT_DIR$/src/main/resources/templates/confirmationMessage.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/Service/MomentTest.java" afterPath="$PROJECT_DIR$/src/test/java/Service/MomentTest.java" />
     </list>
     <ignored path="LinkUs.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -123,33 +85,32 @@
       <file leaf-file-name="Subscription.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Subscription.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1826">
+            <state relative-caret-position="1870">
               <caret line="111" column="0" selection-start-line="111" selection-start-column="0" selection-end-line="111" selection-end-column="0" />
               <folding>
-                <element signature="e#1526#1527#0" expanded="false" />
-                <element signature="e#1551#1552#0" expanded="false" />
-                <element signature="e#1587#1588#0" expanded="false" />
-                <element signature="e#1615#1616#0" expanded="false" />
-                <element signature="e#1646#1647#0" expanded="false" />
-                <element signature="e#1673#1674#0" expanded="false" />
-                <element signature="e#1713#1714#0" expanded="false" />
-                <element signature="e#1745#1746#0" expanded="false" />
-                <element signature="e#1778#1779#0" expanded="false" />
-                <element signature="e#1807#1808#0" expanded="false" />
-                <element signature="e#1851#1852#0" expanded="false" />
-                <element signature="e#1887#1888#0" expanded="false" />
-                <element signature="e#1921#1922#0" expanded="false" />
-                <element signature="e#1953#1954#0" expanded="false" />
-                <element signature="e#2001#2002#0" expanded="false" />
-                <element signature="e#2043#2044#0" expanded="false" />
-                <element signature="e#2075#2076#0" expanded="false" />
-                <element signature="e#2105#2106#0" expanded="false" />
-                <element signature="e#2149#2150#0" expanded="false" />
-                <element signature="e#2187#2188#0" expanded="false" />
-                <element signature="e#2215#2216#0" expanded="false" />
-                <element signature="e#2242#2243#0" expanded="false" />
-                <element signature="e#2279#2280#0" expanded="false" />
-                <element signature="e#2311#2312#0" expanded="false" />
+                <element signature="imports" expanded="false" />
+                <element signature="e#1561#1562#0" expanded="false" />
+                <element signature="e#1586#1587#0" expanded="false" />
+                <element signature="e#1622#1623#0" expanded="false" />
+                <element signature="e#1650#1651#0" expanded="false" />
+                <element signature="e#1681#1682#0" expanded="false" />
+                <element signature="e#1708#1709#0" expanded="false" />
+                <element signature="e#1748#1749#0" expanded="false" />
+                <element signature="e#1780#1781#0" expanded="false" />
+                <element signature="e#1813#1814#0" expanded="false" />
+                <element signature="e#1842#1843#0" expanded="false" />
+                <element signature="e#1886#1887#0" expanded="false" />
+                <element signature="e#1922#1923#0" expanded="false" />
+                <element signature="e#1956#1957#0" expanded="false" />
+                <element signature="e#1988#1989#0" expanded="false" />
+                <element signature="e#2036#2037#0" expanded="false" />
+                <element signature="e#2078#2079#0" expanded="false" />
+                <element signature="e#2110#2111#0" expanded="false" />
+                <element signature="e#2140#2141#0" expanded="false" />
+                <element signature="e#2184#2185#0" expanded="false" />
+                <element signature="e#2222#2223#0" expanded="false" />
+                <element signature="e#2250#2251#0" expanded="false" />
+                <element signature="e#2277#2278#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -182,9 +143,11 @@
       <file leaf-file-name="AlbumService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
+            <state relative-caret-position="4972">
               <caret line="244" column="26" selection-start-line="244" selection-start-column="26" selection-end-line="244" selection-end-column="26" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -192,11 +155,9 @@
       <file leaf-file-name="UploadingController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UploadingController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-470">
+            <state relative-caret-position="1562">
               <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -206,7 +167,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="242">
               <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -214,9 +177,11 @@
       <file leaf-file-name="LoginTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/pfe/ece/linkUS/Controller/LoginTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-131">
+            <state relative-caret-position="1276">
               <caret line="87" column="27" selection-start-line="87" selection-start-column="27" selection-end-line="87" selection-end-column="27" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -234,12 +199,12 @@
       <file leaf-file-name="AlbumController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1298">
+            <state relative-caret-position="1386">
               <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="false" />
-                <element signature="e#2018#2019#0" expanded="false" />
-                <element signature="e#2063#2064#0" expanded="false" />
+                <element signature="e#1819#1820#0" expanded="false" />
+                <element signature="e#1864#1865#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -378,9 +343,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1122,6 +1087,7 @@
       <workItem from="1484224914988" duration="1483000" />
       <workItem from="1484234571127" duration="3388000" />
       <workItem from="1484238007520" duration="420000" />
+      <workItem from="1484573784277" duration="23000" />
     </task>
     <task id="LOCAL-00001" summary="Gestion différente des credentials - Authentification + Inscription">
       <created>1483054072233</created>
@@ -1166,7 +1132,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52853000" />
+    <option name="totallyTimeSpent" value="52876000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1179,37 +1145,37 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1098" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32583067" sideWeight="0.50214595" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22508039" sideWeight="0.49356222" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.49570817" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.49785408" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2725322" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="false" weight="0.3299356" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40943193" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32475883" sideWeight="0.49785408" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22508039" sideWeight="0.49356222" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.49570817" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.49785408" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2725322" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="false" weight="0.3299356" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32475883" sideWeight="0.49785408" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32939914" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1313,7 +1279,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="217">
           <caret line="28" column="9" selection-start-line="28" selection-start-column="9" selection-end-line="28" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1352,11 +1317,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/Images/redCross.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/Images/redCross.png" />
     <entry file="file://$PROJECT_DIR$/src/main/resources/templates/confirmationMessage.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="370">
@@ -1410,14 +1371,14 @@
       </provider>
     </entry>
     <entry file="dbDummy://dbtable:/b1440f1f/ace34dae-d655-4c71-b9bd-469809b98d79/linkusdb.notification_tokens">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1425,21 +1386,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
           <caret line="13" column="7" selection-start-line="13" selection-start-column="7" selection-end-line="13" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#569#570#0" expanded="false" />
-            <element signature="e#597#598#0" expanded="false" />
-            <element signature="e#624#625#0" expanded="false" />
-            <element signature="e#649#650#0" expanded="false" />
-            <element signature="e#695#696#0" expanded="false" />
-            <element signature="e#733#734#0" expanded="false" />
-            <element signature="e#767#768#0" expanded="false" />
-            <element signature="e#797#798#0" expanded="false" />
-            <element signature="e#837#838#0" expanded="false" />
-            <element signature="e#869#870#0" expanded="false" />
-            <element signature="e#900#901#0" expanded="false" />
-            <element signature="e#927#928#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1447,13 +1393,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
           <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#555#556#0" expanded="false" />
-            <element signature="e#641#642#0" expanded="false" />
-            <element signature="e#685#686#0" expanded="false" />
-            <element signature="e#733#734#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1461,13 +1400,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1562">
           <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1823#1824#0" expanded="false" />
-            <element signature="e#1862#1863#0" expanded="false" />
-            <element signature="e#1939#1940#0" expanded="false" />
-            <element signature="e#1995#1996#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1522,7 +1454,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
           <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1538,7 +1469,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="11" column="7" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1600,8 +1530,6 @@
           <caret line="40" column="3" selection-start-line="40" selection-start-column="3" selection-end-line="40" selection-end-column="3" />
           <folding>
             <element signature="imports" expanded="false" />
-            <element signature="e#8646#8647#0" expanded="false" />
-            <element signature="e#8709#8710#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1616,33 +1544,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Subscription.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1826">
+        <state relative-caret-position="1870">
           <caret line="111" column="0" selection-start-line="111" selection-start-column="0" selection-end-line="111" selection-end-column="0" />
           <folding>
-            <element signature="e#1526#1527#0" expanded="false" />
-            <element signature="e#1551#1552#0" expanded="false" />
-            <element signature="e#1587#1588#0" expanded="false" />
-            <element signature="e#1615#1616#0" expanded="false" />
-            <element signature="e#1646#1647#0" expanded="false" />
-            <element signature="e#1673#1674#0" expanded="false" />
-            <element signature="e#1713#1714#0" expanded="false" />
-            <element signature="e#1745#1746#0" expanded="false" />
-            <element signature="e#1778#1779#0" expanded="false" />
-            <element signature="e#1807#1808#0" expanded="false" />
-            <element signature="e#1851#1852#0" expanded="false" />
-            <element signature="e#1887#1888#0" expanded="false" />
-            <element signature="e#1921#1922#0" expanded="false" />
-            <element signature="e#1953#1954#0" expanded="false" />
-            <element signature="e#2001#2002#0" expanded="false" />
-            <element signature="e#2043#2044#0" expanded="false" />
-            <element signature="e#2075#2076#0" expanded="false" />
-            <element signature="e#2105#2106#0" expanded="false" />
-            <element signature="e#2149#2150#0" expanded="false" />
-            <element signature="e#2187#2188#0" expanded="false" />
-            <element signature="e#2215#2216#0" expanded="false" />
-            <element signature="e#2242#2243#0" expanded="false" />
-            <element signature="e#2279#2280#0" expanded="false" />
-            <element signature="e#2311#2312#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#1561#1562#0" expanded="false" />
+            <element signature="e#1586#1587#0" expanded="false" />
+            <element signature="e#1622#1623#0" expanded="false" />
+            <element signature="e#1650#1651#0" expanded="false" />
+            <element signature="e#1681#1682#0" expanded="false" />
+            <element signature="e#1708#1709#0" expanded="false" />
+            <element signature="e#1748#1749#0" expanded="false" />
+            <element signature="e#1780#1781#0" expanded="false" />
+            <element signature="e#1813#1814#0" expanded="false" />
+            <element signature="e#1842#1843#0" expanded="false" />
+            <element signature="e#1886#1887#0" expanded="false" />
+            <element signature="e#1922#1923#0" expanded="false" />
+            <element signature="e#1956#1957#0" expanded="false" />
+            <element signature="e#1988#1989#0" expanded="false" />
+            <element signature="e#2036#2037#0" expanded="false" />
+            <element signature="e#2078#2079#0" expanded="false" />
+            <element signature="e#2110#2111#0" expanded="false" />
+            <element signature="e#2140#2141#0" expanded="false" />
+            <element signature="e#2184#2185#0" expanded="false" />
+            <element signature="e#2222#2223#0" expanded="false" />
+            <element signature="e#2250#2251#0" expanded="false" />
+            <element signature="e#2277#2278#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1671,31 +1598,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1298">
+        <state relative-caret-position="1386">
           <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="false" />
-            <element signature="e#2018#2019#0" expanded="false" />
-            <element signature="e#2063#2064#0" expanded="false" />
+            <element signature="e#1819#1820#0" expanded="false" />
+            <element signature="e#1864#1865#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
+        <state relative-caret-position="4972">
           <caret line="244" column="26" selection-start-line="244" selection-start-column="26" selection-end-line="244" selection-end-column="26" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UploadingController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-470">
+        <state relative-caret-position="1562">
           <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1703,15 +1630,19 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
           <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/pfe/ece/linkUS/Controller/LoginTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-131">
+        <state relative-caret-position="1276">
           <caret line="87" column="27" selection-start-line="87" selection-start-column="27" selection-end-line="87" selection-end-column="27" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -41,16 +41,7 @@ public class NotificationService {
 
         //TEMPORAIRE A SUPPRIMER QUAND IMPLEMENTATION VIGNESH FINI
             for(String userIdInList:usersIdInList){
-               /* switch (userIdInList) {
-                    //Token du smartphone 1 Vincent
-                    case "1": tokenUserList.add("c4jGkjlpZR8:APA91bGLnUHESRso2e1aYFT77-2NebDBf3r-eII1uvRL965VGWIJohmAfdr_VjqD-5NJ2T9TYWM8kdaPIWvziA1jXmQpd-MReZHO0eycgJvIhUwqTRYn8ElWFXcc5dL2aSqUho37mWtB");
-                        break;
-                    //Token du smartphone 2 Vincent
-                    case "2": tokenUserList.add("dzy_zBjd724:APA91bFK2u2ytJf7nVUWivAIBMiEy96ckjMKDlw3BI3Zzoia4WEPJCiIzgrWRNBNAXkrfI68G6QWFvBrM84iHvDZtDJJgVjmeMitUPuYLL-jYlYVBAjXJpWsEBjdvKy-J_nmyimf2hLl");
-                        break;
-                    default:
-                        break;
-                }*/
+
                 /*Structure de la table NotificationsTokens dans la BD : ID;USERNAME;TOKEN */
                 String username = userservice.findUserById(userIdInList).getId();
                 /*Recupération du token notif de chaque utilisateur à partir de l'username*/

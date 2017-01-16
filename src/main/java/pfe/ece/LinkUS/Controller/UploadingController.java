@@ -15,6 +15,7 @@ import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
 import pfe.ece.LinkUS.ServerService.NotificationService;
 import pfe.ece.LinkUS.Service.AlbumService;
+import pfe.ece.LinkUS.Service.InstantService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
 
@@ -115,9 +116,13 @@ public class UploadingController {
             //On détruit l'image car elle vient de la stocker sur le cloud donc inutile de la stocker sur mongoDb
             instant.setImgByte(null);
 
+            // Ajout du user à tous les droits de l'instant
+            InstantService instantService = new InstantService();
+            instantService.addUserToInstantAllIdRight(instant, userId);
+
         }
         // Ajout du nouveau moment a la BDD
-        albumService.addMoment(moment, albumId);
+        albumService.addSaveMoment(moment, albumId);
 
         /** ------------------ NOTIFICATION PAR MOMENT ------------*/
         if(notificationToPeopleWithReadRightOnAlbum.equals("true")) { // TODO @Vincent implementer ca dans le controleur et appeler le controleurNotification ici
@@ -135,7 +140,6 @@ public class UploadingController {
             ArrayList<String> listUserIdListWithReadRight = albumReadRights.getUserIdList();
 
             //On dit que y a que l'utilisateur 2 qui recevra le truc (on va d'abord retrouver son tokenNotification, puis on va pouvoir lui envoyer une notif
-            //listUserIdListWithReadRight.add("2");
             //Pn récupere les token de ces utilisateurs dans une liste
             //Liste qui a pour but de lister les token des utilisateurs ayant le droit de lecture
             ArrayList<String> tokenUserListWithReadRight = notificationService.getTokenUserListFromIdUserList(listUserIdListWithReadRight);

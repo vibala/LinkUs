@@ -101,8 +101,7 @@ public class RegisterController {
 
         User registeredUser = createUserAccount(form);
         LOGGER.info("confirmRegistration (Album create) - STEP II - Album creation");
-        Album album_for_new_comer = createAlbumForEachNewRegisterUser(registeredUser.getId());
-        albumService.save(album_for_new_comer);
+        albumService.createAlbumForNewRegisteredUser(registeredUser.getId());
         LOGGER.info("confirmRegistration (Album create) - STEP III - Subscriptions creation");
         subscriptionService.addUserToAllSubscription(registeredUser);
 
@@ -161,19 +160,4 @@ public class RegisterController {
             return null;
         }
     }
-
-    public Album createAlbumForEachNewRegisterUser(String userId){
-        LOGGER.debug("createAlbumForEachNewRegisterUser - debut de création d'un album");
-        Album album = new Album();
-        album.setOwnerId(userId);
-        // on ajoute l'owner dans chaque droit
-        for(Right right: Right.values()) {
-            IdRight idRight = new IdRight(right.name());
-            idRight.getUserIdList().add(userId);
-            album.getIdRight().add(idRight);
-        }
-        LOGGER.debug("createAlbumForEachNewRegisterUser - fin de création d'un album");
-        return album;
-    }
-
 }

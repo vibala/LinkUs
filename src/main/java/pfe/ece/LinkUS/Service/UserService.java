@@ -124,7 +124,7 @@ public class UserService {
         update(user);
     }
 
-    public void addConfig(User user, String type, String content) {
+   /* public void addConfig(User user, String type, String content) {
         for(ConfigUser configUser: ConfigUser.values()) {
             if(configUser.name().equals(type)) {
                 addConfig(user, new KeyValue(configUser.name(), content));
@@ -135,10 +135,6 @@ public class UserService {
 
     public void addConfig(User user, KeyValue config) {
 
-        if(!user.getConfigList().contains(config)) {
-            LOGGER.info("Adding a configuration: " + config.getType() + " - " + config.getContent() +
-                    " to user : " + user.getId());
-            user.getConfigList().add(config);
-        }
-    }
+
+    }*/
 }

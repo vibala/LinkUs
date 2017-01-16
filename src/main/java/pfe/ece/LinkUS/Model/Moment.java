@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.annotation.Id;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.util.ArrayList;
 
 /**
@@ -12,9 +14,11 @@ import java.util.ArrayList;
 public class Moment {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String name;
     private ArrayList<Instant> instantList = new ArrayList();
+    private boolean news = true;
 
     public Moment() {
     }
@@ -53,6 +57,14 @@ public class Moment {
 
     public void setInstantList(ArrayList<Instant> instantList) {
         this.instantList = instantList;
+    }
+
+    public boolean isNews() {
+        return news;
+    }
+
+    public void setNews(boolean news) {
+        this.news = news;
     }
 
     @Override

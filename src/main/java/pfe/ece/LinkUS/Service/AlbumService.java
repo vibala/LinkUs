@@ -46,6 +46,10 @@ public class AlbumService {
         this.albumRepository = albumRepository;
     }
 
+    public void setSubscriptionRepository(SubscriptionRepository subscriptionRepository) {
+        this.subscriptionRepository = subscriptionRepository;
+    }
+
     public List<Album> getAlbumsOwned(String ownerId) {
         List<Album> albumList = albumRepository.findByOwnerId(ownerId);
 
@@ -155,29 +159,33 @@ public class AlbumService {
         album.setOwnerId(userId);
 
         // Ajout de tous les idRight
-        addAllIdRight(album);
+        addAllIdRightToAlbum(album);
 
         // Ajout de l'owner dans chaque droit
-        IdRightService idRightService = new IdRightService();
-        idRightService.addUserToAll(album, userId);
+        addUserToAlbumAllIdRight(album, userId);
 
         // Ajout d'un moment par défaut
         MomentService momentService = new MomentService();
-        momentService.add(album, momentService.newDefaultMoment());
+        momentService.addMomentToAlbum(album, momentService.newDefaultMoment());
 
         LOGGER.info("createAlbumForEachNewRegisterUser - fin de création d'un album");
         save(album);
     }
 
     /**
-     * Ajoute tous les idRight (vide) à l'album
+     * Ajoute tous les idRight (vide) à l'album (album + instants
      * @param album
      */
-    public void addAllIdRight(Album album) {
+    public void addAllIdRightToAlbum(Album album) {
         IdRightService idRightService = new IdRightService();
+        //add IdRight to the album
         for(Right right: Right.values()) {
             IdRight idRight = new IdRight(right.name());
-            idRightService.add(album, idRight);
+            idRightService.addIdRightToAlbum(album, idRight);
+        }
+        // add IdRight to all instants of the album
+        for(Moment moment: album.getMoments()) {
+            idRightService.addAllIdRightToAllInstant(moment);
         }
     }
 
@@ -194,13 +202,20 @@ public class AlbumService {
         if(userService.checkFriend(user, friendId)) {
 
             // Ajout du friend au right
-            addUser(album, friendId, right);
+            addUserToAlbumIdRight(album, friendId, right);
         }
     }
 
-    public void addUser(Album album, String userId, String right) {
+    public void addUserToAlbumIdRight(Album album, String userId, String right) {
         IdRightService idRightService = new IdRightService();
-        idRightService.addUser(idRightService.findByRight(album, right), userId);
+        idRightService.addUserToIdRight(idRightService.findByRight(album, right), userId);
+    }
+
+    public List<Album> checkData(List<Album> albumList, boolean news, String userId) {
+        checkDataAutorization(albumList, userId);
+        checkDataRight(albumList, userId);
+        checkDataNews(albumList, news, userId);
+        return albumList;
     }
 
     public List<Album> checkDataAutorization(List<Album> albumList, String userId) {
@@ -208,7 +223,7 @@ public class AlbumService {
         SubscriptionService subscriptionService = new SubscriptionService(subscriptionRepository);
         Subscription subscription = subscriptionService.findSubscription(userId, SubscriptionTypeEnum.DESCRIPTION.name());
 
-        if (subscription.getDateFin().compareTo(new Date()) < 0 ||
+        if ((subscription.getDateFin() != null && subscription.getDateFin().compareTo(new Date()) < 0) ||
                 subscription.getDateDebut().compareTo(new Date()) > 0) {
             //Pas d'abo valid
 
@@ -240,6 +255,24 @@ public class AlbumService {
         return albumList;
     }
 
+    public List<Album> checkDataRight(List<Album> albumList, String userId) {
+
+        MomentService momentService = new MomentService();
+        for(Album album: albumList) {
+            momentService.checkAllMomentDataRight(album, userId);
+        }
+        return albumList;
+    }
+
+    public List<Album> checkDataNews(List<Album> albumList, boolean news, String userId) {
+
+        MomentService momentService = new MomentService();
+        for(Album album: albumList) {
+            momentService.checkAllMomentDataNews(album, news, userId);
+        }
+        return albumList;
+    }
+
     private void removePhotosDescriptionToAlbums(List<Album> albumList) {
         for (Album album: albumList) {
             for(Moment moment: album.getMoments()) {
@@ -249,6 +282,22 @@ public class AlbumService {
             }
         }
     }
+
+
+    /**
+     * Add user to all idRight in the album
+     *
+     * @param album
+     * @param userId
+     */
+    public void addUserToAlbumAllIdRight(Album album, String userId){
+
+        for(IdRight idRight: album.getIdRight()) {
+            IdRightService idRightService = new IdRightService();
+            idRightService.addUserToIdRight(idRight, userId);
+        }
+    }
+
     /*
     *
     *
@@ -257,18 +306,18 @@ public class AlbumService {
     *
     */
 
-    public void addInstant(Instant instant, String albumId, String momentId){
+    public void addSaveInstant(Instant instant, String albumId, String momentId){
 
         // Récupération album
         Album album = findAlbumById(albumId);
 
         // Récupération moment
         MomentService momentService = new MomentService();
-        Moment momentFound = momentService.find(album, momentId);
+        Moment momentFound = momentService.findMomentInAlbum(album, momentId);
 
         // Ajout instant
         InstantService instantService = new InstantService();
-        instantService.add(momentFound, instant);
+        instantService.addInstantToMoment(momentFound, instant);
 
         // Sauvegarde
         albumRepository.save(album);
@@ -282,14 +331,14 @@ public class AlbumService {
     *
     */
 
-    public void addMoment(Moment moment, String albumId) {
+    public void addSaveMoment(Moment moment, String albumId) {
 
         // Récupération album
         Album album = albumRepository.findOne(albumId);
 
         // Ajout moment
         MomentService momentService = new MomentService();
-        momentService.add(album, moment);
+        momentService.addMomentToAlbum(album, moment);
 
         // Sauvegarde
         albumRepository.save(album);

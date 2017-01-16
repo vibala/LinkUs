@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pfe.ece.LinkUS.Model.Album;
 import pfe.ece.LinkUS.Model.Moment;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -22,11 +23,11 @@ public class MomentService {
         return moment;
     }
 
-    public void add(Album album, Moment moment) {
+    public void addMomentToAlbum(Album album, Moment moment) {
 
         // On cherche si le moment existe, si non: on l'ajoute
         if(!album.getMoments().contains(moment)) {
-            LOGGER.info("Adding moment: " + moment);
+            LOGGER.info("Adding moment: " + moment + " to album: " + album.getName());
             album.getMoments().add(moment);
         }
     }
@@ -38,7 +39,7 @@ public class MomentService {
      * @return
      *      moment or null
      */
-    public Moment find(Album album, String momentId) {
+    public Moment findMomentInAlbum(Album album, String momentId) {
         for (Moment moment: album.getMoments()) {
             if(moment.getId().equals(momentId)){
                 return moment;
@@ -47,11 +48,11 @@ public class MomentService {
         return null;
     }
 
-    public void delete(Album album, Moment moment) {
-        delete(album, moment.getId());
+    public void deleteMomentFromAlbum(Album album, Moment moment) {
+        deleteMomentFromAlbum(album, moment.getId());
     }
 
-    public void delete(Album album, String momentId) {
+    public void deleteMomentFromAlbum(Album album, String momentId) {
 
         Moment foundMoment = null;
         for(Moment moment: album.getMoments()) {
@@ -65,7 +66,30 @@ public class MomentService {
 
         // Si il n'y a plus de moments on en rajoute 1 par défaut
         if(album.getMoments().isEmpty()) {
+            LOGGER.info("Removing moment: " + momentId + " from album: " + album.getName());
             album.getMoments().add(newDefaultMoment());
+        }
+    }
+
+    public void checkAllMomentDataRight(Album album, String userId) {
+        InstantService instantService = new InstantService();
+        for(Moment moment: album.getMoments()) {
+
+            // Check if instant are available for the user
+            instantService.checkAllInstantDataRight(moment, userId);
+
+            if (moment.getInstantList().isEmpty()) {
+                deleteMomentFromAlbum(album, moment);
+            }
+        }
+    }
+
+    public void checkAllMomentDataNews(Album album, boolean news, String userId) {
+
+        for(Moment moment: album.getMoments()) {
+            if (!moment.isNews()) {
+                deleteMomentFromAlbum(album, moment);
+            }
         }
     }
 }

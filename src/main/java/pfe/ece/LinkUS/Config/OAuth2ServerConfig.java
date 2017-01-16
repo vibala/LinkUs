@@ -116,7 +116,8 @@ public class OAuth2ServerConfig {
                     .antMatchers(HttpMethod.POST,"/twitter/login").permitAll()
                     .antMatchers(HttpMethod.POST,"/google/login").permitAll()
                     .antMatchers(HttpMethod.POST,"/oauth/token").permitAll()
-                    .antMatchers(HttpMethod.GET,"/images*").permitAll()
+                    .antMatchers(HttpMethod.GET,"/images/*").permitAll()
+                    .antMatchers(HttpMethod.GET,"/bootstrap/**").permitAll()
                     .antMatchers(HttpMethod.GET,"/oauth/revoke-token").authenticated()
                     .antMatchers("/users/**").hasRole(Role.ADMIN.name())
                     .anyRequest().authenticated();

@@ -37,7 +37,7 @@ public class MomentTest {
 
         Assert.assertTrue(album.getMoments().size() == 1);
 
-        momentService.delete(album, momentId);
+        momentService.deleteMomentFromAlbum(album, momentId);
 
         Assert.assertTrue(album.getMoments().size() == 1);
         Assert.assertEquals(album.getMoments().get(0).getId(), "0");

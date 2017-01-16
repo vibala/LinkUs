@@ -56,9 +56,6 @@ public class User implements Serializable {
     @Field("role")
     private Role role;
 
-    @Field("age")
-    private int age;
-
     @Field("friendList")
     private ArrayList<String> friendList = new ArrayList<>();
 
@@ -68,7 +65,11 @@ public class User implements Serializable {
     @Field("profilImgUrl")
     private String profilImgUrl;
 
-    private ArrayList<KeyValue> configList = new ArrayList<>();
+    @Field("friendGroupList")
+    private ArrayList<FriendGroup> friendGroupList = new ArrayList<>();
+
+    @Field("configUser")
+    private ConfigUser configUser;
 
     @Override
     public String toString() {
@@ -125,14 +126,6 @@ public class User implements Serializable {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public String getPasswordHash() {
@@ -211,11 +204,19 @@ public class User implements Serializable {
         this.profilImgUrl = profilImgUrl;
     }
 
-    public ArrayList<KeyValue> getConfigList() {
-        return configList;
+    public ArrayList<FriendGroup> getFriendGroupList() {
+        return friendGroupList;
     }
 
-    public void setConfigList(ArrayList<KeyValue> configList) {
-        this.configList = configList;
+    public void setFriendGroupList(ArrayList<FriendGroup> friendGroupList) {
+        this.friendGroupList = friendGroupList;
+    }
+
+    public ConfigUser getConfigUser() {
+        return configUser;
+    }
+
+    public void setConfigUser(ConfigUser configUser) {
+        this.configUser = configUser;
     }
 }

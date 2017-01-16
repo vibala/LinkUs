@@ -19,6 +19,9 @@ public class Subscription {
     private Date dateEnd;
     private int free;
 
+    public Subscription() {
+    }
+
     public Subscription(String type, String userId) {
         this.type = type;
         this.userId = userId;

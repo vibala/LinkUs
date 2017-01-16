@@ -32,7 +32,9 @@ public class NotificationTokenServiceImpl implements NotificationTokenService{
     public void removeNotifcationTokenByUsername(String username) {
 
         NotificationToken notificationToken = notificationTokenRepository.findByUsername(username);
-        notificationTokenRepository.delete(notificationToken);
+        if(notificationToken != null) {
+            notificationTokenRepository.delete(notificationToken);
+        }
     }
 
     @Override
