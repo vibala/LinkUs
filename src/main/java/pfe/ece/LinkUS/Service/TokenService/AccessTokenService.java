@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import pfe.ece.LinkUS.Exception.UserNotFoundException;
 import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Service.UserEntityService.UserService;
 
@@ -22,7 +23,16 @@ public class AccessTokenService {
 
     private final Logger logger = Logger.getLogger(AccessTokenService.class);
 
-    public String getUserIdOftheAuthentifiedUser(){
+    public String getUserIdOftheAuthentifiedUser() {
+
+        String userId = getUserIdWithToken();
+        if(userId == null) {
+            throw new UserNotFoundException();
+        }
+        return userId;
+    }
+
+    private String getUserIdWithToken(){
 
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = ((OAuth2Authentication) a).getUserAuthentication().getName();

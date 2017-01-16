@@ -12,6 +12,8 @@ public class ConfigUser {
     @Id
     private String id;
     private boolean news = true;
+    private boolean receiveNotification = true;
+    private boolean onlyFriendCanContactMe = false;
 
     public ConfigUser() {
     }
@@ -34,5 +36,29 @@ public class ConfigUser {
 
     public void setNews(boolean news) {
         this.news = news;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public boolean isReceiveNotification() {
+        return receiveNotification;
+    }
+
+    public void setReceiveNotification(boolean receiveNotification) {
+        this.receiveNotification = receiveNotification;
+    }
+
+    public boolean isOnlyFriendCanContactMe() {
+        return onlyFriendCanContactMe;
+    }
+
+    public void setOnlyFriendCanContactMe(boolean onlyFriendCanContactMe) {
+        this.onlyFriendCanContactMe = onlyFriendCanContactMe;
     }
 }

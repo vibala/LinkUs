@@ -87,7 +87,7 @@ public class MomentService {
     public void checkAllMomentDataNews(Album album, boolean news, String userId) {
 
         for(Moment moment: album.getMoments()) {
-            if (!moment.isNews()) {
+            if (moment.isNews() != news) {
                 deleteMomentFromAlbum(album, moment);
             }
         }

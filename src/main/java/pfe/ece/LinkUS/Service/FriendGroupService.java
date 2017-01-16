@@ -23,7 +23,22 @@ public class FriendGroupService {
         this.friendGroupRepository = friendGroupRepository;
     }
 
-    public List<FriendGroup> getFriendGroupById(String id) {
+    public List<FriendGroup> findFriendGroupByIds(List<String> idList) {
+        List<FriendGroup> friendGroupList = new ArrayList<>();
+
+        for (String id: idList) {
+            FriendGroup friendGroup = friendGroupRepository.findOne(id);
+            if (friendGroup != null) {
+                    friendGroupList.add(friendGroup);
+            }
+        }
+        return friendGroupList;
+    }
+
+    /**
+     * Find friend group by UserId (every friendGroup where the user is)
+     */
+    public List<FriendGroup> findFriendGroupByUserId(String id) {
         return friendGroupRepository.findFriendGroupByMembers(id);
     }
 

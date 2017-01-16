@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -66,7 +67,7 @@ public class User implements Serializable {
     private String profilImgUrl;
 
     @Field("friendGroupList")
-    private ArrayList<FriendGroup> friendGroupList = new ArrayList<>();
+    private ArrayList<String> friendGroupIdList = new ArrayList<>();
 
     @Field("configUser")
     private ConfigUser configUser;
@@ -204,12 +205,12 @@ public class User implements Serializable {
         this.profilImgUrl = profilImgUrl;
     }
 
-    public ArrayList<FriendGroup> getFriendGroupList() {
-        return friendGroupList;
+    public ArrayList<String> getFriendGroupIdList() {
+        return friendGroupIdList;
     }
 
-    public void setFriendGroupList(ArrayList<FriendGroup> friendGroupList) {
-        this.friendGroupList = friendGroupList;
+    public void setFriendGroupIdList(ArrayList<String> friendGroupIdList) {
+        this.friendGroupIdList = friendGroupIdList;
     }
 
     public ConfigUser getConfigUser() {

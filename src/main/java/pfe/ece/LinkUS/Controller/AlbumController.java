@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
+import pfe.ece.LinkUS.Exception.UserNotFoundException;
 import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Enum.Right;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
@@ -64,10 +65,10 @@ public class AlbumController {
             right = Right.LECTURE.name();
         }
         // Get the current authentified user id
-        String userId = gettingMyUserId();
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         //Get the groups in which the user is.
-        List<FriendGroup> groupList = friendGroupService.getFriendGroupById(userId);
+        List<FriendGroup> groupList = friendGroupService.findFriendGroupByUserId(userId);
 
         // Search for users
         albumList.addAll(albumService.findAlbumByUserIdRight(userId, right));
@@ -81,19 +82,9 @@ public class AlbumController {
         }
     }
 
-    private String gettingMyUserId(){
-       try{
-            String user_id = accessTokenService.getUserIdOftheAuthentifiedUser();
-            return user_id;
-       }catch(UsernameNotFoundException e){
-            return "UserId is not found because username is not found";
-       }
-    }
-
-
     @RequestMapping(value = "/owned")
     public String findAlbumsOwnedByUser(@RequestParam(value = "news") boolean news) {
-        String userId = gettingMyUserId();
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         AlbumService albumService = new AlbumService(albumRepository);
         albumService.setSubscriptionRepository(subscriptionRepository);
         return albumService.checkData(albumService.getAlbumsOwned(userId), news, userId).toString();
@@ -105,7 +96,7 @@ public class AlbumController {
             @RequestParam("albumId") String albumId,
             @RequestParam("right") String right){
 
-        String userId = gettingMyUserId();
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         AlbumService albumService = new AlbumService(albumRepository);
         albumService.addFriendToAlbum(userId, friendId, albumId, right);
