@@ -276,5 +276,3 @@ public class GalleryActivity  extends AppCompatActivity implements View.OnLongCl
         }
     }
 }
-
-

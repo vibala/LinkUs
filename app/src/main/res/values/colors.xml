@@ -13,4 +13,6 @@
     <color name="blue_1">#3c78d8ff</color>
     <color name="blue_2">#6d9eebff</color>
     <color name="transparent">#00000000 </color>
+    <color name="red_flat_design">#f60e31</color>
+    <color name="album_title">#4c4c4c</color>
 </resources>

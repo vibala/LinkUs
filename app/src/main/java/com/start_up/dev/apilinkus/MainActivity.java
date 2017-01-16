@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,14 +42,13 @@ public class MainActivity extends AbstractAsyncActivity {
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "3vSE6aWBhqI2L3T5ruj24j3SO";
     private static final String TWITTER_SECRET = "C2tJRRZYKydLuu5WZZg56W74CcmJhd6QZZYL9mLRVEC0l39pRC";
-    private APILinkUS api;
+
 
     protected static final String
             TAG = MainActivity.class.getSimpleName();
 
     static final int REGISTER_USER_REQUEST = 1; // The request code
     private EditText passwordeditText;
-    private EditText changeIPText;
     private CallbackManager callbackManager;
     private LoginButton facebookLoginButton;
     private TwitterLoginButton twitterLoginButton;
@@ -61,9 +59,16 @@ public class MainActivity extends AbstractAsyncActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         //Initialisation de l'url il a besoin du context pour chercher l'url qui se trouve dans urls.xml
-        api =new APILinkUS(MainActivity.this);
+        new APILinkUS(MainActivity.this);
 
         super.onCreate(savedInstanceState);
+
+        /*******-------------********/
+        //Intent i = new Intent(MainActivity.this,ProfileActivity.class);
+        Intent i = new Intent(MainActivity.this,HomeActivity.class);
+        startActivity(i);
+        finish();
+        /******--------------******/
 
         /*Social conf settings */
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
@@ -81,18 +86,6 @@ public class MainActivity extends AbstractAsyncActivity {
         facebookLoginButton.setReadPermissions("public_profile","user_birthday","email");
         twitterLoginButton = (TwitterLoginButton)findViewById(R.id.twitter_sign_in_button);
         passwordeditText = (EditText) findViewById(R.id.passwordLogin);
-
-        final FloatingActionButton changeIPTextButton = (FloatingActionButton) findViewById(R.id.change_ip_button);
-        changeIPText = (EditText) findViewById(R.id.change_ip);
-        changeIPTextButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                String ip = api.setIPServer(changeIPText.getText().toString());
-                Toast.makeText(MainActivity.this, "IP changed to "+ip, Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-
 
 
         // Initiate the request to the protected service
@@ -308,5 +301,6 @@ public class MainActivity extends AbstractAsyncActivity {
     /*******************************************************************************************/
     /*******************************************************************************************/
     /*******************************************************************************************/
+
 
 }

@@ -2,68 +2,69 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.start_up.dev.apilinkus">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id" />
+
         <activity
             android:name=".BaseActivity"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:exported="true"></activity>
         <activity
-            android:label="@string/app_name"
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrationActivity"/>
-        <activity android:name=".AlbumReadActivity"/>
-        <activity android:name=".ProfileActivity"
-            android:exported="true"/>
-        <activity android:name=".BlankLoadingActivity"/>
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
+        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".AlbumReadActivity" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="true"
+            android:launchMode="singleInstance" />
+        <activity android:name=".BlankLoadingActivity" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="b4415cc4eb51d2fd6919317839154c002c445a80" />
+
         <activity
             android:name=".AlbumActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
             android:name=".GalleryActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-        <activity android:name=".AlbumActivityIntentMomentDetailed"
-            android:theme="@style/Theme.AppCompat"
-            />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity
+            android:name=".AlbumActivityIntentMomentDetailed"
+            android:theme="@style/Theme.AppCompat" />
+        <activity android:name=".HomeActivity" />
 
-        <!--Firebase -->
+        <!-- Firebase -->
         <service android:name=".Service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".Service.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
 </manifest>

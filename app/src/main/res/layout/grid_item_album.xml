@@ -34,4 +34,5 @@
             android:textSize="12sp" />
     </LinearLayout>
 
+
 </android.support.v7.widget.CardView>

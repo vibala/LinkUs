@@ -103,4 +103,3 @@ public class AlbumReadActivity extends AppCompatActivity implements APIGetAlbums
         mProgressBar.setVisibility(View.GONE);
     }
 }
-

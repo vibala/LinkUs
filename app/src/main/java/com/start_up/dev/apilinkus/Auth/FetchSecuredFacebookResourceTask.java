@@ -92,11 +92,4 @@ public class FetchSecuredFacebookResourceTask extends AsyncTask<String,Void,Stri
         }
         delegate.processFinish(tokenEntity);
     }
-
-
-
-
-
-
-
 }
