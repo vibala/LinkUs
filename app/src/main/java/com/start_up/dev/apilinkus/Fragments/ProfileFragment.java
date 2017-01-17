@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.start_up.dev.apilinkus.AlbumsAdapter;
+import com.start_up.dev.apilinkus.Adapter.AlbumsAdapter;
 import com.start_up.dev.apilinkus.Model.AlbumTestModel;
 import com.start_up.dev.apilinkus.ProfileActivity;
 import com.start_up.dev.apilinkus.R;

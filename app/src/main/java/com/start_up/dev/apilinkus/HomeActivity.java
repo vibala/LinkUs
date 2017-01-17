@@ -13,6 +13,8 @@ import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -30,6 +32,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -38,8 +41,11 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.start_up.dev.apilinkus.Fragments.HomeFragment;
+import com.start_up.dev.apilinkus.Fragments.HomeFragment.OnPostSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.MomentFragment;
+import com.start_up.dev.apilinkus.Fragments.MomentFragment.OnMomentSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.ProfileFragment;
+import com.start_up.dev.apilinkus.Fragments.ProfileFragment.OnAlbumSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.SlideshowDialogFragment;
 import com.start_up.dev.apilinkus.Model.MomentTestModel;
 
@@ -50,7 +56,7 @@ import java.util.ArrayList;
  */
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,ProfileFragment.OnAlbumSelectedListener,MomentFragment.OnMomentSelectedListener{
+        implements OnNavigationItemSelectedListener,OnAlbumSelectedListener,OnMomentSelectedListener,OnPostSelectedListener{
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -477,6 +483,12 @@ public class HomeActivity extends AppCompatActivity
         fragmentTransaction.addToBackStack(CURRENT_TAG);
         // Faites le commit
         fragmentTransaction.commit();
+
+    }
+
+    @Override
+    public void onPostSelected(int position,View view) {
+        Toast.makeText(this,"OK COOL LA PAGE d'ACCUEIL EST IMPLEMENTEE ! View id " + view.getId(),Toast.LENGTH_SHORT).show();
 
     }
 }

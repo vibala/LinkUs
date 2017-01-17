@@ -36,6 +36,12 @@
     <string name="text_notifications">Notifications</string>
     <string name="user_model_name">SAUL Molinero</string>
     <string name="user_actual_location">Paris, FRANCE</string>
+    <string name="post_sent_time">1hr ago</string>
+    <string name="album_name">Trip to India</string>
+    <string name="moment_name">Visit to Taj Mahal Palace with my family</string>
+    <string name="likes">Likes</string>
+    <string name="comments">Coms</string>
+    <string name="shares">Shares</string>
     <!-- Sliding menu using navigation drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

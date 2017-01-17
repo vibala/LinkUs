@@ -1,4 +1,4 @@
-package com.start_up.dev.apilinkus;
+package com.start_up.dev.apilinkus.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.PopupMenu;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.AlbumTestModel;
+import com.start_up.dev.apilinkus.R;
 
 import java.util.List;
 

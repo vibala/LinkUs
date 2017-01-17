@@ -18,7 +18,7 @@ import android.widget.ImageView;
 
 import com.start_up.dev.apilinkus.Model.AlbumTestModel;
 import com.start_up.dev.apilinkus.Model.MomentTestModel;
-import com.start_up.dev.apilinkus.MomentsAdapater;
+import com.start_up.dev.apilinkus.Adapter.MomentsAdapater;
 import com.start_up.dev.apilinkus.R;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 

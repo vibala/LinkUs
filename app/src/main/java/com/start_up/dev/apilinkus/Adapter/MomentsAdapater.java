@@ -1,4 +1,4 @@
-package com.start_up.dev.apilinkus;
+package com.start_up.dev.apilinkus.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +14,7 @@ import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.AlbumTestModel;
 import com.start_up.dev.apilinkus.Model.MomentTestModel;
+import com.start_up.dev.apilinkus.R;
 
 import java.util.ArrayList;
 
