@@ -123,12 +123,14 @@ public class SubscriptionService {
                 "'. (" + infoBegin + " -> " + subscription.getDateFin() + ").");
     }
 
-    public void deleteSubscription(Subscription subscription) {
+    public boolean deleteSubscription(Subscription subscription) {
 
         if(findMatchingSubscription(subscription)) {
             delete(subscription);
+            return true;
         } else {
             LOGGER.warning("No subscription matching to deleteMomentFromAlbum.");
+            return false;
         }
     }
 

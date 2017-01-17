@@ -17,12 +17,14 @@ public class IdRightService {
 
     Logger LOGGER = Logger.getLogger("LinkUS.Controller.IdRightService");
 
-    public void addUserToIdRight(IdRight idRight, String userId) {
+    public boolean addUserToIdRight(IdRight idRight, String userId) {
 
         if(!idRight.getUserIdList().contains(userId)) {
             LOGGER.info("Adding User : " + idRight + "to right: " + idRight.getRight());
             idRight.getUserIdList().add(userId);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -42,11 +44,13 @@ public class IdRightService {
         return null;
     }
 
-    public void addIdRightToAlbum(Album album, IdRight idRight) {
+    public boolean addIdRightToAlbum(Album album, IdRight idRight) {
         LOGGER.info("Adding IdRight: " + idRight + "to album: " + album.getId());
         if(findByRight(album, idRight.getRight()) == null) {
             album.getIdRight().add(idRight);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -57,18 +61,27 @@ public class IdRightService {
      *
      */
 
-    public void addIdRightToAllInstant(Moment moment, IdRight idRight) {
+    public boolean addIdRightToAllInstant(Moment moment, IdRight idRight) {
 
+        boolean bool = true;
         for(Instant instant: moment.getInstantList()) {
-            addIdRightToInstant(instant, idRight);
+            if(!addIdRightToInstant(instant, idRight)) {
+                bool = false;
+            }
         }
+        return bool;
     }
 
-    public void addAllIdRightToAllInstant(Moment moment) {
+    public boolean addAllIdRightToAllInstant(Moment moment) {
+        boolean bool = true;
+
         for(Right right: Right.values()) {
             IdRight idRight = new IdRight(right.name());
-            addIdRightToAllInstant(moment, idRight);
+            if(!addIdRightToAllInstant(moment, idRight)) {
+                bool = false;
+            }
         }
+        return bool;
     }
     /**
      *
@@ -87,11 +100,13 @@ public class IdRightService {
         return null;
     }
 
-    public void addIdRightToInstant(Instant instant, IdRight idRight) {
+    public boolean addIdRightToInstant(Instant instant, IdRight idRight) {
 
-        LOGGER.info("Adding IdRight: " + idRight + "to instant: " + instant.getId());
         if(findByRight(instant, idRight.getRight()) == null) {
+            LOGGER.info("Adding IdRight: " + idRight + "to instant: " + instant.getId());
             instant.getIdRight().add(idRight);
+            return true;
         }
+        return false;
     }
 }

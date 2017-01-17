@@ -16,9 +16,13 @@ public class InstantService {
 
     Logger LOGGER = Logger.getLogger("LinkUS.Controller.InstantService");
 
-    public void addInstantToMoment(Moment moment, Instant instant) {
-        LOGGER.info("Adding instant: " + instant + "to moment: " + moment.getId());
-        moment.getInstantList().add(instant);
+    public boolean addInstantToMoment(Moment moment, Instant instant) {
+        if(!moment.getInstantList().contains(instant)) {
+            LOGGER.info("Adding instant: " + instant + "to moment: " + moment.getId());
+            moment.getInstantList().add(instant);
+            return true;
+        }
+        return false;
     }
 
     public Instant findInstantInMoment(Moment moment, String instantId) {
@@ -30,11 +34,11 @@ public class InstantService {
         return null;
     }
 
-    public void deleteInstantFromMoment(Moment moment, Instant instant) {
-        deleteInstantFromMoment(moment, instant.getId());
+    public boolean deleteInstantFromMoment(Moment moment, Instant instant) {
+        return deleteInstantFromMoment(moment, instant.getId());
     }
 
-    public void deleteInstantFromMoment(Moment moment, String instantId) {
+    public boolean deleteInstantFromMoment(Moment moment, String instantId) {
 
         Instant foundInstant = null;
         for(Instant instant: moment.getInstantList()) {
@@ -46,14 +50,20 @@ public class InstantService {
         if(foundInstant != null) {
             LOGGER.info("Removing instant: " + instantId + "from moment: " + moment.getId());
             moment.getInstantList().remove(foundInstant);
+            return true;
         }
+        return false;
     }
 
-    public void addUserToAllInstantAllIdRight(Moment moment, String userId) {
+    public boolean addUserToAllInstantAllIdRight(Moment moment, String userId) {
 
+        boolean bool = true;
         for (Instant instant: moment.getInstantList()) {
-            addUserToInstantAllIdRight(instant, userId);
+            if(!addUserToInstantAllIdRight(instant, userId)) {
+                bool = false;
+            }
         }
+        return bool;
     }
 
     /**
@@ -62,22 +72,29 @@ public class InstantService {
      * @param instant
      * @param userId
      */
-    public void addUserToInstantAllIdRight(Instant instant, String userId) {
+    public boolean addUserToInstantAllIdRight(Instant instant, String userId) {
 
+        boolean bool = true;
         IdRightService idRightService = new IdRightService();
         for(Right right: Right.values()) {
             IdRight idRight = new IdRight(right.name());
-            idRightService.addUserToIdRight(idRight, userId);
-            idRightService.addIdRightToInstant(instant, idRight);
+            if(!idRightService.addUserToIdRight(idRight, userId) ||
+                    !idRightService.addIdRightToInstant(instant, idRight)) {
+                bool = false;
+            }
         }
-
+        return bool;
     }
 
-    public void addUserToAllInstantIdRight(Moment moment, String right, String userId) {
+    public boolean addUserToAllInstantIdRight(Moment moment, String right, String userId) {
 
+        boolean bool = true;
         for (Instant instant: moment.getInstantList()) {
-            addUserToInstantIdRight(instant, right, userId);
+            if(!addUserToInstantIdRight(instant, right, userId)) {
+                bool = false;
+            }
         }
+        return bool;
     }
 
     /**
@@ -87,16 +104,20 @@ public class InstantService {
      * @param right
      * @param userId
      */
-    public void addUserToInstantIdRight(Instant instant, String right, String userId) {
+    public boolean addUserToInstantIdRight(Instant instant, String right, String userId) {
 
+        boolean bool = true;
         IdRightService idRightService = new IdRightService();
         for(Right rightStr: Right.values()) {
             if(rightStr.equals(right)) {
                 IdRight idRight = new IdRight(rightStr.name());
-                idRightService.addUserToIdRight(idRight, userId);
-                idRightService.addIdRightToInstant(instant, idRight);
+                if(!idRightService.addUserToIdRight(idRight, userId) ||
+                        !idRightService.addIdRightToInstant(instant, idRight)) {
+                    bool = false;
+                }
             }
         }
+        return bool;
     }
 
     public void checkAllInstantDataRight(Moment moment, String userId) {

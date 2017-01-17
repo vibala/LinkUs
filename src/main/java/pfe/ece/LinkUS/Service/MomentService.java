@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import pfe.ece.LinkUS.Model.Album;
 import pfe.ece.LinkUS.Model.Moment;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -23,13 +22,15 @@ public class MomentService {
         return moment;
     }
 
-    public void addMomentToAlbum(Album album, Moment moment) {
+    public boolean addMomentToAlbum(Album album, Moment moment) {
 
         // On cherche si le moment existe, si non: on l'ajoute
         if(!album.getMoments().contains(moment)) {
             LOGGER.info("Adding moment: " + moment + " to album: " + album.getName());
             album.getMoments().add(moment);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -48,12 +49,13 @@ public class MomentService {
         return null;
     }
 
-    public void deleteMomentFromAlbum(Album album, Moment moment) {
-        deleteMomentFromAlbum(album, moment.getId());
+    public boolean deleteMomentFromAlbum(Album album, Moment moment) {
+        return deleteMomentFromAlbum(album, moment.getId());
     }
 
-    public void deleteMomentFromAlbum(Album album, String momentId) {
+    public boolean deleteMomentFromAlbum(Album album, String momentId) {
 
+        boolean bool = false;
         Moment foundMoment = null;
         for(Moment moment: album.getMoments()) {
             if(moment.getId().equals(momentId)) {
@@ -62,6 +64,7 @@ public class MomentService {
         }
         if(foundMoment != null) {
             album.getMoments().remove(foundMoment);
+            bool = true;
         }
 
         // Si il n'y a plus de moments on en rajoute 1 par défaut
@@ -69,9 +72,11 @@ public class MomentService {
             LOGGER.info("Removing moment: " + momentId + " from album: " + album.getName());
             album.getMoments().add(newDefaultMoment());
         }
+        return bool;
     }
 
     public void checkAllMomentDataRight(Album album, String userId) {
+
         InstantService instantService = new InstantService();
         for(Moment moment: album.getMoments()) {
 

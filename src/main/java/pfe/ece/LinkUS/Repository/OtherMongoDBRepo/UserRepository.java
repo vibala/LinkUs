@@ -2,7 +2,6 @@ package pfe.ece.LinkUS.Repository.OtherMongoDBRepo;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import pfe.ece.LinkUS.Model.User;
 
 import java.util.List;

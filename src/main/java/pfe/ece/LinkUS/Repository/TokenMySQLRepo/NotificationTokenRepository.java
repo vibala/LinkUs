@@ -4,7 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 import pfe.ece.LinkUS.Model.NotificationToken;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 
 /**
  * Created by Vignesh on 12/15/2016.

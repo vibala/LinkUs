@@ -189,7 +189,7 @@ public class AlbumService {
         }
     }
 
-    public void addFriendToAlbum(String userId, String friendId, String albumId, String right) {
+    public boolean addFriendToAlbum(String userId, String friendId, String albumId, String right) {
 
         // Récupération album
         Album album = findAlbumById(albumId);
@@ -198,17 +198,19 @@ public class AlbumService {
         UserService userService = new UserService(userRepository);
         User user = userService.findUserById(userId);
 
-        // Si l'ami est bien dans la liste
+        // Si l'ami est bien dans la liste d'amis
         if(userService.checkFriend(user, friendId)) {
 
             // Ajout du friend au right
             addUserToAlbumIdRight(album, friendId, right);
+            return true;
         }
+        return false;
     }
 
-    public void addUserToAlbumIdRight(Album album, String userId, String right) {
+    public boolean  addUserToAlbumIdRight(Album album, String userId, String right) {
         IdRightService idRightService = new IdRightService();
-        idRightService.addUserToIdRight(idRightService.findByRight(album, right), userId);
+        return idRightService.addUserToIdRight(idRightService.findByRight(album, right), userId);
     }
 
     public List<Album> checkData(List<Album> albumList, boolean news, String userId) {
@@ -290,12 +292,17 @@ public class AlbumService {
      * @param album
      * @param userId
      */
-    public void addUserToAlbumAllIdRight(Album album, String userId){
+    public boolean addUserToAlbumAllIdRight(Album album, String userId){
+
+        boolean bool = true;
 
         for(IdRight idRight: album.getIdRight()) {
             IdRightService idRightService = new IdRightService();
-            idRightService.addUserToIdRight(idRight, userId);
+            if(!idRightService.addUserToIdRight(idRight, userId)) {
+                bool = false;
+            }
         }
+        return true;
     }
 
     /*
@@ -306,7 +313,7 @@ public class AlbumService {
     *
     */
 
-    public void addSaveInstant(Instant instant, String albumId, String momentId){
+    public boolean addSaveInstant(Instant instant, String albumId, String momentId){
 
         // Récupération album
         Album album = findAlbumById(albumId);
@@ -315,12 +322,18 @@ public class AlbumService {
         MomentService momentService = new MomentService();
         Moment momentFound = momentService.findMomentInAlbum(album, momentId);
 
-        // Ajout instant
-        InstantService instantService = new InstantService();
-        instantService.addInstantToMoment(momentFound, instant);
+        if(album != null && momentFound != null && instant != null) {
+            // Ajout instant
+            InstantService instantService = new InstantService();
+            if(instantService.addInstantToMoment(momentFound, instant)) {
 
-        // Sauvegarde
-        albumRepository.save(album);
+                // Sauvegarde
+                albumRepository.save(album);
+
+                return true;
+            }
+        }
+        return false;
     }
 
     /*
@@ -331,18 +344,21 @@ public class AlbumService {
     *
     */
 
-    public void addSaveMoment(Moment moment, String albumId) {
+    public boolean addSaveMoment(Moment moment, String albumId) {
 
         // Récupération album
         Album album = albumRepository.findOne(albumId);
 
-        // Ajout moment
-        MomentService momentService = new MomentService();
-        momentService.addMomentToAlbum(album, moment);
+        if(album != null && moment != null) {
+            // Ajout moment
+            MomentService momentService = new MomentService();
+            momentService.addMomentToAlbum(album, moment);
 
-        // Sauvegarde
-        albumRepository.save(album);
+            // Sauvegarde
+            albumRepository.save(album);
+
+            return true;
+        }
+        return false;
     }
-
-
 }

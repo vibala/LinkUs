@@ -60,4 +60,29 @@ public class FriendGroup {
     public List<String> getMembers() {
         return members;
     }
+
+
+    /**
+     * Check on ownerId & name
+     * @param o
+     * @return
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FriendGroup that = (FriendGroup) o;
+
+        if (!ownerId.equals(that.ownerId)) return false;
+        return name.equals(that.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = ownerId.hashCode();
+        result = 31 * result + name.hashCode();
+        return result;
+    }
 }

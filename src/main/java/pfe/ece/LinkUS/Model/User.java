@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -70,7 +69,7 @@ public class User implements Serializable {
     private ArrayList<String> friendGroupIdList = new ArrayList<>();
 
     @Field("configUser")
-    private ConfigUser configUser;
+    private ConfigUser configUser = new ConfigUser();
 
     @Override
     public String toString() {

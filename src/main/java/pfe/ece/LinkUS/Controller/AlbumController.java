@@ -1,15 +1,14 @@
 package pfe.ece.LinkUS.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
-import pfe.ece.LinkUS.Exception.UserNotFoundException;
-import pfe.ece.LinkUS.Model.*;
+import pfe.ece.LinkUS.Model.Album;
 import pfe.ece.LinkUS.Model.Enum.Right;
+import pfe.ece.LinkUS.Model.FriendGroup;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;

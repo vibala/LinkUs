@@ -2,6 +2,8 @@ package pfe.ece.LinkUS.Controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +16,8 @@ import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
+
+import java.util.List;
 
 /**
  * Created by DamnAug on 12/10/2016.
@@ -104,12 +108,15 @@ public class UserController {
      * @param friendId
      */
     @RequestMapping(value = "/friendRequest", params = {"friendId"}, method = RequestMethod.POST)
-    public void friendRequest(@RequestParam(value = "friendId") String friendId) {
+    public ResponseEntity friendRequest(@RequestParam(value = "friendId") String friendId) {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         UserService userService = new UserService(userRepository);
-        userService.friendRequest(userId, friendId);
+        if(userService.friendRequest(userId, friendId)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
     /**
@@ -118,33 +125,54 @@ public class UserController {
      * @param friendId
      * @param decision
      */
-    @RequestMapping(value = "/friend", params = {"friendId", "decision"}, method = RequestMethod.POST)
-    public void friendRequestDecision(@RequestParam(value = "friendId") String friendId, @RequestParam(value = "decision") Boolean decision) {
+    @RequestMapping(value = "/friendRequestDecision", params = {"friendId", "decision"}, method = RequestMethod.POST)
+    public ResponseEntity friendRequestDecision(@RequestParam(value = "friendId") String friendId, @RequestParam(value = "decision") Boolean decision) {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         UserService userService = new UserService(userRepository);
         if(decision) {
-            userService.acceptFriend(userId, friendId);
+            if(userService.acceptFriend(userId, friendId)) {
+                return new ResponseEntity(HttpStatus.OK);
+            } else {
+                return new ResponseEntity(HttpStatus.CONFLICT);
+            }
         } else {
-            userService.refuseFriend(userId, friendId);
+            if(userService.refuseFriend(userId, friendId)){
+                return new ResponseEntity(HttpStatus.OK);
+            }
+            return new ResponseEntity(HttpStatus.CONFLICT);
         }
+    }
+
+    @RequestMapping(value = "/removeFriend", params = {"friendId"}, method = RequestMethod.POST)
+    public ResponseEntity friendRequestDecision(@RequestParam(value = "friendId") String friendId) {
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        if(userService.removeFriend(userId, friendId)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
     @RequestMapping("/getFriends")
     public String getFriends(){
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         UserService userService = new UserService(userRepository);
-        return userService.findFriends(userId).toString();
+        List<User> userList = userService.findFriends(userId);
+        userService.checkData(userList);
+        return userList.toString();
     }
 
     @RequestMapping("/getGroupFriends")
     public String getGroupFriends(){
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
         UserService userService = new UserService(userRepository);
         userService.setFriendGroupRepository(friendGroupRepository);
-
-        return userService.findFriendGroups(userId).toString();
+        return userService.findFriendGroupsOwned(userId).toString();
     }
 
     @RequestMapping(value = "/getFriend", params = {"friendId"})
@@ -152,13 +180,11 @@ public class UserController {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         UserService userService = new UserService(userRepository);
-        User user = userService.findUserById(userId);
 
-        if (user.getFriendList().contains(friendId)) {
-            return userService.findUserById(friendId).toString();
-        } else {
-            throw new UnauthorizedInformationException();
-        }
+        User friend = userService.findFriend(userId, friendId);
+        userService.checkData(friend);
+
+        return friend.toString();
     }
 
     @RequestMapping(value = "/searchFriend", params = {"text"})
@@ -167,7 +193,9 @@ public class UserController {
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         UserService userService = new UserService(userRepository);
-        return userService.searchUserByPartialFirstnameOrLastname(text).toString();
+        List<User> userList = userService.searchUserByPartialFirstnameOrLastname(text);
+        userService.checkData(userList);
+        return userList.toString();
     }
 
 }

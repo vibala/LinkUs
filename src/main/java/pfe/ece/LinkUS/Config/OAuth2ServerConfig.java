@@ -65,9 +65,9 @@ public class OAuth2ServerConfig {
         @Value("${datasource.primary.jdbc.url}")
         private String oauthUrl;
         @Value("${datasource.primary.jdbc.username}")
-        String username;
+        private String username;
         @Value("${datasource.primary.jdbc.password}")
-        String password;
+        private String password;
 
 
         /***
@@ -143,17 +143,21 @@ public class OAuth2ServerConfig {
         @Value("${datasource.primary.jdbc.url}")
         private String oauthUrl;
         @Value("${datasource.primary.jdbc.username}")
-        String username;
+        private String username;
         @Value("${datasource.primary.jdbc.password}")
-        String password;
+        private String password;
+        @Value("${datasource.primary.jdbc.clientName}")
+        private String clientName;
+        @Value("${datasource.primary.jdbc.clientPassword}")
+        private String clientPassword;
+        @Value("${datasource.primary.jdbc.accessTokenValidity}")
+        private int accessTokenValidity;
+        @Value("${datasource.primary.jdbc.refreshTokenValidity}")
+        private int refreshTokenValidity;
 
         @Autowired
         @Qualifier("authenticationManagerBean")
         private AuthenticationManager authenticationManager;
-
-        @Autowired
-        private CurrentUserDetailsService userDetailsService;
-
 
         /***
          * Configure the security of the authorization server
@@ -176,13 +180,13 @@ public class OAuth2ServerConfig {
         @Override
         public void configure(ClientDetailsServiceConfigurer clients)
                 throws Exception {
-            clients.inMemory().withClient("clientapp")
-                    .secret("123456")
+            clients.inMemory().withClient(clientName)
+                    .secret(clientPassword)
                     .authorizedGrantTypes(
                             "password","authorization_code","refresh_token")
                     .scopes("read","write")
-                    .accessTokenValiditySeconds(3600*24)//Access token is only valid for 1 day.
-                    .refreshTokenValiditySeconds(3600*24*30);//Refresh token is only valid for 1 month.
+                    .accessTokenValiditySeconds(accessTokenValidity)
+                    .refreshTokenValiditySeconds(refreshTokenValidity);
         }
 
         /***
