@@ -5,11 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import pfe.ece.LinkUS.Model.Album;
+import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Enum.Right;
-import pfe.ece.LinkUS.Model.IdRight;
-import pfe.ece.LinkUS.Model.Instant;
-import pfe.ece.LinkUS.Model.Moment;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
@@ -136,8 +133,11 @@ public class UploadingController {
 
             //On récupère l'objet des droit lecture de l'album
             IdRight albumReadRights = album.getSpecificIdRight(Right.LECTURE.name());
-            //On recupere la liste des utilisateurs de cet objet
+            //On recupere la liste des utilisateursId de cet objet
             ArrayList<String> listUserIdListWithReadRight = albumReadRights.getUserIdList();
+
+            //On filtre les user ayant les notifications enabled
+            userService.checkNotificationEnabledString(listUserIdListWithReadRight);
 
             //On dit que y a que l'utilisateur 2 qui recevra le truc (on va d'abord retrouver son tokenNotification, puis on va pouvoir lui envoyer une notif
             //Pn récupere les token de ces utilisateurs dans une liste
