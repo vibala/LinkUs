@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.GeneratedValue;
@@ -13,19 +14,21 @@ import java.util.ArrayList;
  */
 public class IdRight {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String right;
     private ArrayList<String> userIdList = new ArrayList<>();
     private ArrayList<String> groupIdList = new ArrayList<>();
 
-    public IdRight(){}
+    public IdRight(){
+        ObjectId objectId = new ObjectId();
+        setId(objectId.toString());
+    }
 
     public IdRight(String right) {
         this.right = right;
+        ObjectId objectId = new ObjectId();
+        setId(objectId.toString());
     }
-
 
     @Override
     public String toString() {

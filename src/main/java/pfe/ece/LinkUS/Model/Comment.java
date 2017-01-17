@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
 
 import java.util.Date;
 
@@ -15,6 +16,11 @@ public class Comment {
     private String text;
     private Date date;
     private boolean seen = false;
+
+    public Comment() {
+        ObjectId objectId = new ObjectId();
+        setId(objectId.toString());
+    }
 
     @Override
     public String toString() {

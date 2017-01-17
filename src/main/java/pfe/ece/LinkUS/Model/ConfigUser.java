@@ -2,20 +2,24 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+
+import java.io.Serializable;
 
 /**
  * Created by DamnAug on 16/01/2017.
  */
-public class ConfigUser {
+public class ConfigUser implements Serializable{
 
-    @Id
     private String id;
     private boolean news = true;
     private boolean receiveNotification = true;
     private boolean onlyFriendCanContactMe = false;
 
     public ConfigUser() {
+        ObjectId objectId = new ObjectId();
+        setId(objectId.toString());
     }
 
     @Override

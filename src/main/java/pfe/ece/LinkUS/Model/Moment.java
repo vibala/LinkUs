@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.GeneratedValue;
@@ -13,14 +14,14 @@ import java.util.ArrayList;
  */
 public class Moment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String name;
     private ArrayList<Instant> instantList = new ArrayList();
     private boolean news = true;
 
     public Moment() {
+        ObjectId objectId = new ObjectId();
+        setId(objectId.toString());
     }
 
     @Override
