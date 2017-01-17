@@ -198,23 +198,6 @@ public class UserService {
             user.setProfilImgUrl(null);
         }
     }
-    public void checkNotificationEnabledString(List<String> userIdList) {
-
-        List<User> userList = findUsersByIds(userIdList);
-        userIdList = checkNotificationEnabledUser(userList);
-    }
-
-    public List<String> checkNotificationEnabledUser(List<User> userList) {
-        List<String> userIdListChecked = new ArrayList<>();
-        if(userList != null) {
-            for(User user: userList) {
-                if(user.getConfigUser().isReceiveNotification()) {
-                    userIdListChecked.add(user.getId());
-                }
-            }
-        }
-        return userIdListChecked;
-    }
 
     private Pageable createPageRequest() {
         return createPageRequest(0);
