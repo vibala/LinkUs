@@ -11,10 +11,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -33,7 +31,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -44,12 +41,20 @@ import com.start_up.dev.apilinkus.Fragments.HomeFragment;
 import com.start_up.dev.apilinkus.Fragments.HomeFragment.OnPostSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.MomentFragment;
 import com.start_up.dev.apilinkus.Fragments.MomentFragment.OnMomentSelectedListener;
+import com.start_up.dev.apilinkus.Fragments.NotificationFragment;
+import com.start_up.dev.apilinkus.Fragments.ParametreFragment;
 import com.start_up.dev.apilinkus.Fragments.ProfileFragment;
 import com.start_up.dev.apilinkus.Fragments.ProfileFragment.OnAlbumSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.SlideshowDialogFragment;
+import com.start_up.dev.apilinkus.Model.Album;
+import com.start_up.dev.apilinkus.Model.Instant;
+import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Model.MomentTestModel;
+import com.start_up.dev.apilinkus.Service.DateUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Vignesh on 1/15/2017.
@@ -65,7 +70,6 @@ public class HomeActivity extends AppCompatActivity
     private LinearLayout layoutNavHeaderBg;
     private TextView txtName, txtCurrentLocalation;
     private Toolbar toolbar;
-    private AppBarLayout appBarLayout;
 
     // index to identify current nav menu item
     public static int navItemIndex = 0;
@@ -89,15 +93,18 @@ public class HomeActivity extends AppCompatActivity
     private TextView toolbarTitle;
     private BottomBar bottomBar;
 
+    private ArrayList<Album> albums;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        albums = new ArrayList<>(); // On initialise ici mais plus tard on le mettra ailleurs ds cette classe
+
         toolbar = (Toolbar) findViewById(R.id.toolbarMain);
-        appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         setSupportActionBar(toolbar);
-        /*******************************************************************************************/
+
         View view = getLayoutInflater().inflate(R.layout.custom_action_bar_v2, null);
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(
                 ActionBar.LayoutParams.WRAP_CONTENT,
@@ -106,10 +113,11 @@ public class HomeActivity extends AppCompatActivity
 
         toolbarTitle = (TextView) view.findViewById(R.id.toolbar_title);
         toolbarTitle.setText(CURRENT_TAG);
+
         getSupportActionBar().setCustomView(view,params);
         getSupportActionBar().setDisplayShowCustomEnabled(true); //show custom title
         getSupportActionBar().setDisplayShowTitleEnabled(false); //hide the default title
-        /******************************************************************************************/
+
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -133,7 +141,6 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-    /****************************************************************************************************/
         //  ActionBarDrawerToggle permettra de gérer le comportement de votre Drawer lors de sa fermeture et de son ouverture.
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
@@ -149,6 +156,7 @@ public class HomeActivity extends AppCompatActivity
                 super.onDrawerOpened(drawerView);
             }
         };
+
         //Setting the actionbarToggle to drawer layout
         drawer.setDrawerListener(toggle);
         //calling sync state is necessary or else your hamburger icon wont show up
@@ -183,6 +191,8 @@ public class HomeActivity extends AppCompatActivity
             bottomBar.setVisibility(View.INVISIBLE);
 
         }
+
+        albums = prepareAlbumTestModels();
 
     }
 
@@ -221,18 +231,10 @@ public class HomeActivity extends AppCompatActivity
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out);
 
-                // Check if the fragment to be shown is already present in the fragment backstack
-                Fragment fragment = fragmentManager.findFragmentByTag(CURRENT_TAG);
-                // Si le fragment n'existe pas, il faut le créer
-                if(fragment == null){
-                    fragment = getAppropriateFragment();
-                    // Ajoutez le nouveau fragment (Dans ce cas précis, un fragment est déjà affiché à cet emplacement, il faut donc le remplacer et non pas l'ajouter)
-                    fragmentTransaction.replace(R.id.frame,fragment,CURRENT_TAG);
-                }else{
-                    // Le fragment existe déjà, il vous suffit de l'afficher
-                    fragmentTransaction.show(fragment);
-                }
-
+                // Get the appropriate fragment
+                Fragment fragment = getAppropriateFragment();
+                // Replace the previous fragment by the new fragment
+                fragmentTransaction.replace(R.id.frame,fragment);
                 // Ajoutez la transaction à la backstack pour la dépiler quand l'utilisateur appuiera sur back
                 fragmentTransaction.addToBackStack(CURRENT_TAG);
                 // Faites le commit
@@ -261,22 +263,127 @@ public class HomeActivity extends AppCompatActivity
                 return homeFragment;
             case 1:
                 ProfileFragment profilFragment = new ProfileFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("albums",albums);
+                profilFragment.setArguments(bundle);
                 return profilFragment;
             case 2:
-                // ---
+                // Proches (JE TE LAISSE A TOI VINCENT)
                 break;
             case 3:
-                // ---
-                break;
+                NotificationFragment notificationFragment = new NotificationFragment();
+                return notificationFragment;
             case 4:
-                // ---
-                break;
+                // Parametres
+                ParametreFragment parametreFragment = new ParametreFragment();
+                return parametreFragment;
             default:
                 break;
         }
 
         return new HomeFragment();
     }
+
+    /**
+     * Adding few AlbumTestModels for testing
+     */
+    private ArrayList<Album> prepareAlbumTestModels() {
+        ArrayList<Album> albums = new ArrayList<>();
+        Album a = new Album();
+
+        /*Etape 1 : Creation d'un album*/
+        a.setActive(true);
+        a.setName("Trip to India");
+        a.setId("A001");
+        a.setOwnerId("001");
+        a.setCountryName("India");
+        a.setPlaceName("Mumbai");
+        a.setThumbnail(R.drawable.india);
+        Date date = DateUtil.getCurrentDate();
+        Log.d(TAG,"Current Date: " + date.toString());
+        a.setBeginDate(date);
+        a.setEndDate(DateUtil.addDays(date,90)); // 3 mois a peu près
+
+        /*Etape 2 : Création de deux moments*/
+        Moment moment_first = new Moment();
+        moment_first.setId("A001M001");
+        moment_first.setName("Visit of the palace Taj Mahal");
+
+        Moment moment_second = new Moment();
+        moment_second.setId("A001M002");
+        moment_second.setName("Dromedary ride in the desert of Rajasthan");
+
+        /*Etape 3 : Creation de deux instants*/
+        ArrayList<Instant> instants_first = new ArrayList<>();
+        ArrayList<Instant> instants_second = new ArrayList<>();
+        Instant instant_first = new Instant();
+        instant_first.setName("Visiting Taj Mahal with Cxxx");
+        instant_first.setId("A001M001I001");
+        instant_first.setUrl("http://whc.unesco.org/uploads/thumbs/site_0252_0008-750-0-20151104113424.jpg");
+        instants_first.add(instant_first);
+        instant_first.setPublishDate(DateUtil.getCurrentDate());
+        moment_first.setInstantList(instants_first);
+
+        Instant instant_second = new Instant();
+        instant_second.setName("Fun Ride with dromedaries");
+        instant_second.setId("A001M002I002");
+        instant_second.setPublishDate(DateUtil.getCurrentDate());
+        instants_second.add(instant_second);
+        instant_second.setUrl("http://hubchi.com/wp-content/uploads/2015/08/that-desert-tour-4.jpg");
+        moment_second.setInstantList(instants_second);
+
+        /*Ajout*/
+        ArrayList<Moment> moments = new ArrayList<>();
+        moments.add(moment_first);
+        moments.add(moment_second);
+        a.setMoments(moments);
+        albums.add(a);
+
+        Album b = new Album();
+        b.setActive(true);
+        b.setName("Trip to Australia");
+        b.setId("2");
+        b.setOwnerId("001");
+        b.setCountryName("Australia");
+        b.setPlaceName("Sydney");
+        b.setThumbnail(R.drawable.australia);
+        date = DateUtil.getCurrentDate();
+        Log.d(TAG,"Current Date: " + date.toString());
+        b.setBeginDate(date);
+        b.setEndDate(DateUtil.addDays(date,90)); // 3 mois a peu près
+        albums.add(b);
+
+        Album c = new Album();
+        c.setActive(true);
+        c.setName("Trip to Malaysia");
+        c.setId("3");
+        c.setOwnerId("001");
+        c.setCountryName("Malaysia");
+        c.setPlaceName("Kualampur");
+        date = DateUtil.getCurrentDate();
+        Log.d(TAG,"Current Date: " + date.toString());
+        c.setThumbnail(R.drawable.malaysia);
+        c.setBeginDate(date);
+        c.setEndDate(DateUtil.addDays(date,90)); // 3 mois a peu près
+        albums.add(c);
+
+        Album d = new Album();
+        d.setActive(true);
+        d.setName("Trip to New Zealand");
+        d.setId("4");
+        d.setOwnerId("001");
+        d.setCountryName("New Zealand");
+        d.setPlaceName("Auckland");
+        d.setThumbnail(R.drawable.newzeland);
+        date = DateUtil.getCurrentDate();
+        Log.d(TAG,"Current Date: " + date.toString());
+        d.setBeginDate(date);
+        d.setEndDate(DateUtil.addDays(date,90)); // 3 mois a peu près
+        albums.add(d);
+
+        return albums;
+    }
+
 
     /*Selecting the index in the navigation's menu*/
     private void selectNavMenu(){
@@ -314,11 +421,14 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+
+        for (int i=0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+            System.out.println("Current Tag in BackStack " + getSupportFragmentManager().getBackStackEntryAt(i));
+        }
+
         if (getSupportFragmentManager().getBackStackEntryCount() >= 2){
             int count = getSupportFragmentManager().getBackStackEntryCount();
-            Log.d(TAG,"EEEEEE " + count);
             CURRENT_TAG = getSupportFragmentManager().getBackStackEntryAt(count-2).getName();
-            Log.d(TAG,"ZZZZZZZZZZ " + CURRENT_TAG);
             if(!CURRENT_TAG.contentEquals("Instants")){
                 // Etre sur que le toolbar et le bottomBar st bien visibles
                 toolbar.setVisibility(View.VISIBLE);
@@ -371,16 +481,16 @@ public class HomeActivity extends AppCompatActivity
                 CURRENT_TAG = TAG_PROFIL;
                 break;
             case R.id.nav_relatives:
-                CURRENT_TAG = TAG_PROCHES;
                 navItemIndex = 2;
+                CURRENT_TAG = TAG_PROCHES;
                 break;
             case R.id.nav_notifications:
-                CURRENT_TAG = TAG_NOTIFICATIONS;
                 navItemIndex = 3;
+                CURRENT_TAG = TAG_NOTIFICATIONS;
                 break;
             case R.id.nav_settings:
-                CURRENT_TAG = TAG_PARAMETRES ;
                 navItemIndex = 4;
+                CURRENT_TAG = TAG_PARAMETRES ;
                 break;
             case R.id.nav_about_us:
                 // launch new intent instead of loading fragment
@@ -395,6 +505,8 @@ public class HomeActivity extends AppCompatActivity
             default:
                 navItemIndex = 0;
         }
+
+        Log.d(TAG,"Current TAG is " + CURRENT_TAG + " NavItemIndex " + navItemIndex);
 
         if(item.isChecked()){
             item.setChecked(false);
@@ -420,65 +532,48 @@ public class HomeActivity extends AppCompatActivity
         // The user selected the album from the lists of albums to glance at
         // Plus tard inclure la position
         // Check if the fragment to be shown is already present in the fragment backstack
-        Fragment fragment = fragmentManager.findFragmentByTag("Moment");
-        // Si le fragment n'existe pas, il faut le créer
-        if(fragment == null){
             Log.d(TAG,"New moment fragment");
-            fragment = new MomentFragment();
+            Fragment fragment = new MomentFragment();
             Bundle args = new Bundle();
-            args.putInt("Position",position);
+            args.putSerializable("moments",albums.get(position).getMoments());
             fragment.setArguments(args);
             // Ajoutez le nouveau fragment (Dans ce cas précis, un fragment est déjà affiché à cet emplacement, il faut donc le remplacer et non pas l'ajouter)
-            fragmentTransaction.replace(R.id.frame,fragment,"Moment");
-        }else{
-            Log.d(TAG,"Retour onAlbumSelected");
-            // Le fragment existe déjà, il vous suffit de l'afficher
-            fragmentTransaction.show(fragment);
-        }
+            fragmentTransaction.replace(R.id.frame,fragment);
 
-        //Set the toolbar name
-        toolbarTitle.setText(CURRENT_TAG);
+            //Set the toolbar name
+            toolbarTitle.setText(CURRENT_TAG);
 
-        // Ajoutez la transaction à la backstack pour la dépiler quand l'utilisateur appuiera sur back
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        fragmentTransaction.addToBackStack(CURRENT_TAG);
+            // Ajoutez la transaction à la backstack pour la dépiler quand l'utilisateur appuiera sur back
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            fragmentTransaction.addToBackStack(CURRENT_TAG);
 
-        // Commit the transaction
-        fragmentTransaction.commit();
+            // Commit the transaction
+            fragmentTransaction.commit();
 
     }
 
     @Override
-    public void onMomentSelected(int position,ArrayList<MomentTestModel> moments) {
+    public void onMomentSelected(int position) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out);
         Bundle bundle = new Bundle();
         Log.d(TAG,"Moment n°" + position);
-        bundle.putSerializable("albums",moments.get(position).getListOfInstants());
+        //bundle.putSerializable("albums",moments.get(position).getListOfInstants());
         bundle.putInt("position",0);
 
         // Set the current tag
         CURRENT_TAG = "Instants";
         // Check if the fragment to be shown is already present in the fragment backstack
-        Fragment fragment = fragmentManager.findFragmentByTag("Instants");
-        // Si le fragment n'existe pas, il faut le créer
-        if(fragment == null){
-            fragment = new SlideshowDialogFragment();
-            fragment.setArguments(bundle);
-            //  Cache le toolbar au moment d'afficher l'image en diapo
-            toolbar.setVisibility(View.GONE);
-            // Cache le bottom bar au moment d'afficher l'image en diapo
-            bottomBar.setVisibility(View.INVISIBLE);
-            // Ajoutez le nouveau fragment (Dans ce cas précis, un fragment est déjà affiché à cet emplacement, il faut donc le remplacer et non pas l'ajouter)
-            fragmentTransaction.replace(R.id.frame,fragment,"Instants");
-        }else{
-            Log.d(TAG,"Retour onMomentSelected");
-            // Le fragment existe déjà, il vous suffit de l'afficher
-            fragmentTransaction.show(fragment);
-        }
-
+        Fragment fragment = new SlideshowDialogFragment();
+        fragment.setArguments(bundle);
+        //  Cache le toolbar au moment d'afficher l'image en diapo
+        toolbar.setVisibility(View.GONE);
+        // Cache le bottom bar au moment d'afficher l'image en diapo
+        bottomBar.setVisibility(View.INVISIBLE);
+        // Ajoutez le nouveau fragment (Dans ce cas précis, un fragment est déjà affiché à cet emplacement, il faut donc le remplacer et non pas l'ajouter)
+        fragmentTransaction.replace(R.id.frame,fragment);
         // Ajoutez la transaction à la backstack pour la dépiler quand l'utilisateur appuiera sur back
         fragmentTransaction.addToBackStack(CURRENT_TAG);
         // Faites le commit
@@ -489,6 +584,5 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onPostSelected(int position,View view) {
         Toast.makeText(this,"OK COOL LA PAGE d'ACCUEIL EST IMPLEMENTEE ! View id " + view.getId(),Toast.LENGTH_SHORT).show();
-
     }
 }

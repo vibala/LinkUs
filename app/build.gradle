@@ -10,6 +10,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // Enabling multidex support.
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -84,6 +86,9 @@ dependencies {
     //END ADDED Vignesh autehtni
     compile 'com.mikhaellopez:circularimageview:3.0.2'
     compile 'com.roughike:bottom-bar:2.0.2'
+    // The Bson library
+    compile group: 'org.mongodb', name: 'bson', version: '3.4.1'
+
 }
 //ADDED Firebase*****************************
 apply plugin: 'com.google.gms.google-services'

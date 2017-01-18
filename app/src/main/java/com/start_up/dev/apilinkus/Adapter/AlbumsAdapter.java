@@ -16,10 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.start_up.dev.apilinkus.Fragments.ProfileFragment;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
+import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.Model.AlbumTestModel;
 import com.start_up.dev.apilinkus.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,8 +32,16 @@ import java.util.List;
 public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewHolder> {
 
     private Context mContext;
-    private List<AlbumTestModel> albumList;
+    private ArrayList<Album> albumList;
     private RecyclerViewClickListener itemListener;
+    protected static final String TAG = AlbumsAdapter.class.getSimpleName();
+    private String MODE_AUTH;
+    public static String access_token;
+    public static String token_type;
+    public static String refresh_token;
+    private TextView profileTextView;
+
+
 
 
     public class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -59,7 +70,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
         void onLongClick(View view, int position);
     }
 
-    public AlbumsAdapter(Context mContext, List<AlbumTestModel> albumList,RecyclerViewClickListener itemListener) {
+    public AlbumsAdapter(Context mContext, ArrayList<Album> albumList,RecyclerViewClickListener itemListener) {
         this.mContext = mContext;
         this.albumList = albumList;
         this.itemListener = itemListener;
@@ -75,9 +86,10 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
 
     @Override
     public void onBindViewHolder(final AlbumViewHolder holder, int position) {
-        AlbumTestModel album = albumList.get(position);
+        Album album = albumList.get(position);
+        Log.d(TAG,"Album name " + album.getName());
         holder.title.setText(album.getName());
-        holder.count.setText(album.getNumOfSongs() + "songs");
+        holder.count.setText(album.getMoments().size() + " moments");
         // loading album cover using Glide library
         Glide
                 .with(mContext)

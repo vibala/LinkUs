@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.start_up.dev.apilinkus.Adapter.HomeAdapter;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
+import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.Model.AlbumTestModel;
 import com.start_up.dev.apilinkus.R;
 
@@ -48,7 +49,7 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        homeView = inflater.inflate(R.layout.home_fragment_layout,container,false);
+        homeView = inflater.inflate(R.layout.content_home_fragment,container,false);
         recyclerView = (RecyclerView) homeView.findViewById(R.id.recycler_view);
         return homeView;
     }
@@ -60,7 +61,7 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
         albumTestModelsList = new ArrayList<>();
         adapter = new HomeAdapter(getContext(),albumTestModelsList,this);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(1)));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10)));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         prepareAlbumTestModels();

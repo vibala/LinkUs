@@ -11,8 +11,11 @@ import android.widget.TextView;
 
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.AlbumTestModel;
+import com.start_up.dev.apilinkus.Model.Instant;
+import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Model.MomentTestModel;
 import com.start_up.dev.apilinkus.R;
 
@@ -25,11 +28,11 @@ import java.util.ArrayList;
 public class MomentsAdapater extends RecyclerView.Adapter<MomentsAdapater.MomentViewHolder> {
 
     private Context mContext;
-    private ArrayList<MomentTestModel> momentList;
+    private ArrayList<Moment> momentList;
     private String TAG = MomentsAdapater.class.getSimpleName();
     private RecyclerViewClickListener itemListener;
 
-    public MomentsAdapater(Context context, ArrayList<MomentTestModel> momentList, RecyclerViewClickListener itemListener){
+    public MomentsAdapater(Context context, ArrayList<Moment> momentList, RecyclerViewClickListener itemListener){
         this.mContext = context;
         this.momentList = momentList;
         this.itemListener = itemListener;
@@ -46,14 +49,15 @@ public class MomentsAdapater extends RecyclerView.Adapter<MomentsAdapater.Moment
 
     @Override
     public void onBindViewHolder(MomentViewHolder holder, int position) {
-        MomentTestModel moment = momentList.get(position);
-        Log.i(TAG,moment.getMomentName());
-        holder.moment_title.setText(moment.getMomentName());
+        Moment moment = momentList.get(position);
+        Log.i(TAG,moment.getName());
+        holder.moment_title.setText(moment.getName());
         /* TODO A REMPLACER defaultSliderView par  TextSliderView */
-        for (AlbumTestModel album: moment.getListOfInstants()) {
-            DefaultSliderView defaultSliderView = new DefaultSliderView(mContext);
-            defaultSliderView.image(album.getThumbnail());
-            holder.sliderShow.addSlider(defaultSliderView);
+        for (Instant instant: moment.getInstantList()) {
+            TextSliderView textSliderView = new TextSliderView(mContext);
+            textSliderView.image(instant.getUrl());
+            textSliderView.description(instant.getName() + " - " + instant.getPublishDate().toString()); // On récupère uniquement la description pour l'instant
+            holder.sliderShow.addSlider(textSliderView);
         }
 
     }

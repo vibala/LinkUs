@@ -18,14 +18,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.start_up.dev.apilinkus.Adapter.AlbumsAdapter;
-import com.start_up.dev.apilinkus.Model.AlbumTestModel;
-import com.start_up.dev.apilinkus.ProfileActivity;
+import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.R;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
-
 import java.util.ArrayList;
 
 /**
@@ -35,18 +32,10 @@ import java.util.ArrayList;
 public class ProfileFragment extends Fragment implements RecyclerViewClickListener {
 
     private View myView;
-    protected static final String
-            TAG = ProfileActivity.class.getSimpleName();
-    private String MODE_AUTH;
-    public static String access_token;
-    public static String token_type;
-    public static String refresh_token;
-    private TextView profileTextView;
-
-    /*Code Video YouTube*/
+    protected static final String TAG = ProfileFragment.class.getSimpleName();
     private RecyclerView recyclerView;
     private AlbumsAdapter adapter;
-    private ArrayList<AlbumTestModel> AlbumTestModelsList;
+    private ArrayList<Album> albums;
     private FrameLayout titleLayout;
     private CircularImageView circularImageView;
     private OnAlbumSelectedListener mCallback;
@@ -89,8 +78,10 @@ public class ProfileFragment extends Fragment implements RecyclerViewClickListen
         /******************************************************************************************/
         /******************** RECYCLERVIEX DEFINITION ******************/
         /******************************************************************************************/
-        AlbumTestModelsList = new ArrayList<>();
-        adapter = new AlbumsAdapter(getContext(),AlbumTestModelsList,this);
+        Bundle bundle = this.getArguments();
+        albums = (ArrayList<Album>) bundle.get("albums");
+        adapter = new AlbumsAdapter(getContext(),albums,this);
+        /////////////////////////////////////////////////////////////////////
         // A LayoutManager is responsible for measuring and positionning items within a RecyclerView as well as determining
         // the policy when to recycle items
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(),2);
@@ -102,13 +93,12 @@ public class ProfileFragment extends Fragment implements RecyclerViewClickListen
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                Log.d(TAG,"zzzzzzzzzzzzzzzz");
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                Log.d(TAG,"eeeeeeeeeeeeeeeeee");
+
             }
         });
         /*recyclerView.addOnScrollListener(new HideShowOnScrollListener() {
@@ -122,7 +112,7 @@ public class ProfileFragment extends Fragment implements RecyclerViewClickListen
                 // bottomNavigationView.setVisibility(VISIBLE); // just want to hide the view
             }
         });*/
-        prepareAlbumTestModels();
+
 
     }
 
@@ -139,55 +129,6 @@ public class ProfileFragment extends Fragment implements RecyclerViewClickListen
         }
     }
 
-    /**
-     * Adding few AlbumTestModels for testing
-     */
-    private void prepareAlbumTestModels() {
-        int[] covers = new int[]{
-                R.drawable.album1,
-                R.drawable.album2,
-                R.drawable.album3,
-                R.drawable.album4,
-                R.drawable.album5,
-                R.drawable.album6,
-                R.drawable.album7,
-                R.drawable.album8,
-                R.drawable.album9,
-                R.drawable.album10,
-                R.drawable.album11};
-
-        AlbumTestModel a = new AlbumTestModel("Maroon5", 13, covers[0]);
-        AlbumTestModelsList.add(a);
-
-        a = new AlbumTestModel("Sugar Ray", 8, covers[1]);
-        AlbumTestModelsList.add(a);
-
-        a = new AlbumTestModel("Bon Jovi", 11, covers[2]);
-        AlbumTestModelsList.add(a);
-
-        a = new AlbumTestModel("The Corrs", 12, covers[3]);
-        AlbumTestModelsList.add(a);
-
-        a = new AlbumTestModel("The Cranberries", 14, covers[4]);
-        AlbumTestModelsList.add(a);
-
-        a = new AlbumTestModel("Westlife", 1, covers[5]);
-        AlbumTestModelsList.add(a);
-
-        a = new AlbumTestModel("Black Eyed Peas", 11, covers[6]);
-        AlbumTestModelsList.add(a);
-
-        a = new AlbumTestModel("VivaLaVida", 14, covers[7]);
-        AlbumTestModelsList.add(a);
-
-        a = new AlbumTestModel("The Cardigans", 11, covers[8]);
-        AlbumTestModelsList.add(a);
-
-        a = new AlbumTestModel("Pussycat Dolls", 17, covers[9]);
-        AlbumTestModelsList.add(a);
-
-        adapter.notifyDataSetChanged();
-    }
 
     /***
      * Class for designing each item that will be inserted into the recyclerView
@@ -232,13 +173,9 @@ public class ProfileFragment extends Fragment implements RecyclerViewClickListen
 
     @Override
     public void recyclerViewListClicked(View v, int position) {
-        //Intent intent = new Intent(getActivity(),MomentDisplayActivity.class);
-        // TODO : Utiliser la position pour plus tard
         Log.d(TAG,"Position of album " + position);
         // Send the event to the host activity
         mCallback.onAlbumSelected(position);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        //startActivity(intent);
     }
 
     /**

@@ -3,10 +3,10 @@ package com.start_up.dev.apilinkus.Model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.bson.types.ObjectId;
+
 import java.util.ArrayList;
 import java.util.Date;
-
-
 
 /**
  * Created by DamnAug on 14/10/2016.
@@ -17,19 +17,20 @@ public class Instant {
     private String name;
     private String url;
     private ArrayList<Comment> commentList = new ArrayList<>();
-    private ArrayList<Description> descriptionsList = new ArrayList<>();
+    private ArrayList<KeyValue> descriptionsList = new ArrayList<>();
     private Date publishDate;
     private ArrayList<IdRight> idRight = new ArrayList<>();
     private ArrayList<String> userIdDescriptionAvailable = new ArrayList<>();
     private byte[] imgByte;
 
     public Instant(){
+        ObjectId objectId = new ObjectId();
+        setId(objectId.toString());
 
     }
 
     @Override
     public String toString() {
-
         String str = "";
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -80,11 +81,11 @@ public class Instant {
         this.commentList = commentList;
     }
 
-    public ArrayList<Description> getDescriptionsList() {
+    public ArrayList<KeyValue> getDescriptionsList() {
         return descriptionsList;
     }
 
-    public void setDescriptionsList(ArrayList<Description> descriptionsList) {
+    public void setDescriptionsList(ArrayList<KeyValue> descriptionsList) {
         this.descriptionsList = descriptionsList;
     }
 
@@ -119,5 +120,21 @@ public class Instant {
             userIdDescriptionAvailable.add(id);
             return true;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Instant instant = (Instant) o;
+
+        return id.equals(instant.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

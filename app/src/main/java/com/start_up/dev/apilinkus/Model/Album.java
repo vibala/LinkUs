@@ -15,6 +15,15 @@ public class Album {
     private String id;
     private String name;
     private String ownerId;
+    private String countryName;
+    private String placeName;
+    private Date beginDate;
+    private Date endDate;
+    private int thumbnail; // a remplacer par private byte[] imgByte;
+    private ArrayList<Moment> moments = new ArrayList<>();
+    private ArrayList<IdRight> idRight = new ArrayList<>();
+    private boolean active = false;
+
 
     public void setName(String name) {
         this.name = name;
@@ -40,32 +49,12 @@ public class Album {
         this.endDate = endDate;
     }
 
-    public void setMoments(ArrayList<Instant> moments) {
+    public void setMoments(ArrayList<Moment> moments) {
         this.moments = moments;
     }
 
     public void setIdRight(ArrayList<IdRight> idRight) {
         this.idRight = idRight;
-    }
-
-    private String countryName;
-    private String placeName;
-    private Date beginDate;
-    private Date endDate;
-    private ArrayList<Instant> moments = new ArrayList<>();
-    private ArrayList<IdRight> idRight = new ArrayList<>();
-    private boolean active = false;
-
-    @Override
-    public String toString() {
-        String str = "";
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            str = mapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return str;
     }
 
     public String getId() {
@@ -100,7 +89,7 @@ public class Album {
         return endDate;
     }
 
-    public ArrayList<Instant> getMoments() {
+    public ArrayList<Moment> getMoments() {
         return moments;
     }
 
@@ -126,5 +115,26 @@ public class Album {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    @Override
+    public String toString() {
+        String str = "";
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            str = mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+
+    public int getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(int thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }
