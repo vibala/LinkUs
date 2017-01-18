@@ -3,10 +3,12 @@ package com.start_up.dev.apilinkus.Model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.Serializable;
+
 /**
  * Created by DamnAug on 23/10/2016.
  */
-public class Description {
+public class Description implements Serializable {
 
     private String id;
     private String type; // description, wikipedia, localisation,

@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -31,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -49,12 +52,10 @@ import com.start_up.dev.apilinkus.Fragments.SlideshowDialogFragment;
 import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
-import com.start_up.dev.apilinkus.Model.MomentTestModel;
 import com.start_up.dev.apilinkus.Service.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Vignesh on 1/15/2017.
@@ -70,6 +71,7 @@ public class HomeActivity extends AppCompatActivity
     private LinearLayout layoutNavHeaderBg;
     private TextView txtName, txtCurrentLocalation;
     private Toolbar toolbar;
+    private CoordinatorLayout coordinatorLayout;
 
     // index to identify current nav menu item
     public static int navItemIndex = 0;
@@ -94,6 +96,7 @@ public class HomeActivity extends AppCompatActivity
     private BottomBar bottomBar;
 
     private ArrayList<Album> albums;
+    private ArrayList<Moment> moments;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,8 +104,8 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         albums = new ArrayList<>(); // On initialise ici mais plus tard on le mettra ailleurs ds cette classe
-
         toolbar = (Toolbar) findViewById(R.id.toolbarMain);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         setSupportActionBar(toolbar);
 
         View view = getLayoutInflater().inflate(R.layout.custom_action_bar_v2, null);
@@ -176,6 +179,12 @@ public class HomeActivity extends AppCompatActivity
         // showing dot next to notifications label
         navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
 
+        // Initialisation des albums
+        albums = prepareAlbumTestModels();
+
+        // Initialisation des moments
+        moments = albums.get(0).getMoments();
+
         // If the savedInstanceState is eq. to null == when the fragment is not reconstructed from a previous saved state, the home fragment will be loaded
         if (savedInstanceState == null) {
             navItemIndex = 0;
@@ -192,7 +201,7 @@ public class HomeActivity extends AppCompatActivity
 
         }
 
-        albums = prepareAlbumTestModels();
+
 
     }
 
@@ -256,14 +265,17 @@ public class HomeActivity extends AppCompatActivity
 
     // Getting the appropriate fragment
     private Fragment getAppropriateFragment(){
-
+        Bundle bundle;
         switch(navItemIndex){
             case 0:
                 HomeFragment homeFragment = new HomeFragment();
+                bundle = new Bundle();
+                bundle.putSerializable("recent_instants",moments.get(0).getInstantList());
+                homeFragment.setArguments(bundle);
                 return homeFragment;
             case 1:
                 ProfileFragment profilFragment = new ProfileFragment();
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putSerializable("albums",albums);
                 profilFragment.setArguments(bundle);
                 return profilFragment;
@@ -383,7 +395,6 @@ public class HomeActivity extends AppCompatActivity
 
         return albums;
     }
-
 
     /*Selecting the index in the navigation's menu*/
     private void selectNavMenu(){
@@ -522,23 +533,34 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onAlbumSelected(int position) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out);
+        Album album = albums.get(position);
+        Log.d(TAG,"Album name " + album.getName());
+        if(album.getMoments() == null || album.getMoments().isEmpty()){
 
-        // Set the CURRENT_TAG
-        CURRENT_TAG = "Moments";
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "There are no moments for this album", Snackbar.LENGTH_LONG);
 
-        // The user selected the album from the lists of albums to glance at
-        // Plus tard inclure la position
-        // Check if the fragment to be shown is already present in the fragment backstack
-            Log.d(TAG,"New moment fragment");
+            snackbar.show();
+        }else {
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+
+            // Set the CURRENT_TAG
+            CURRENT_TAG = "Moments";
+
+            // The user selected the album from the lists of albums to glance at
+            // Plus tard inclure la position
+            // Check if the fragment to be shown is already present in the fragment backstack
             Fragment fragment = new MomentFragment();
             Bundle args = new Bundle();
-            args.putSerializable("moments",albums.get(position).getMoments());
+            moments = albums.get(position).getMoments();
+            args.putSerializable("moments", moments);
             fragment.setArguments(args);
+
             // Ajoutez le nouveau fragment (Dans ce cas précis, un fragment est déjà affiché à cet emplacement, il faut donc le remplacer et non pas l'ajouter)
-            fragmentTransaction.replace(R.id.frame,fragment);
+            fragmentTransaction.replace(R.id.frame, fragment);
 
             //Set the toolbar name
             toolbarTitle.setText(CURRENT_TAG);
@@ -550,34 +572,42 @@ public class HomeActivity extends AppCompatActivity
 
             // Commit the transaction
             fragmentTransaction.commit();
-
+        }
     }
 
     @Override
     public void onMomentSelected(int position) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out);
-        Bundle bundle = new Bundle();
-        Log.d(TAG,"Moment n°" + position);
-        //bundle.putSerializable("albums",moments.get(position).getListOfInstants());
-        bundle.putInt("position",0);
 
-        // Set the current tag
-        CURRENT_TAG = "Instants";
-        // Check if the fragment to be shown is already present in the fragment backstack
-        Fragment fragment = new SlideshowDialogFragment();
-        fragment.setArguments(bundle);
-        //  Cache le toolbar au moment d'afficher l'image en diapo
-        toolbar.setVisibility(View.GONE);
-        // Cache le bottom bar au moment d'afficher l'image en diapo
-        bottomBar.setVisibility(View.INVISIBLE);
-        // Ajoutez le nouveau fragment (Dans ce cas précis, un fragment est déjà affiché à cet emplacement, il faut donc le remplacer et non pas l'ajouter)
-        fragmentTransaction.replace(R.id.frame,fragment);
-        // Ajoutez la transaction à la backstack pour la dépiler quand l'utilisateur appuiera sur back
-        fragmentTransaction.addToBackStack(CURRENT_TAG);
-        // Faites le commit
-        fragmentTransaction.commit();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out);
+
+            Bundle bundle = new Bundle();
+            Log.d(TAG,"Moment n°" + position);
+            bundle.putSerializable("instants",moments.get(position).getInstantList());
+
+            // Set the current tag
+            CURRENT_TAG = "Instants";
+
+            // Check if the fragment to be shown is already present in the fragment backstack
+            Fragment fragment = new SlideshowDialogFragment();
+            fragment.setArguments(bundle);
+
+            //  Cache le toolbar au moment d'afficher l'image en diapo
+            toolbar.setVisibility(View.GONE);
+
+            // Cache le bottom bar au moment d'afficher l'image en diapo
+            bottomBar.setVisibility(View.INVISIBLE);
+
+            // Ajoutez le nouveau fragment (Dans ce cas précis, un fragment est déjà affiché à cet emplacement, il faut donc le remplacer et non pas l'ajouter)
+            fragmentTransaction.replace(R.id.frame,fragment);
+
+            // Ajoutez la transaction à la backstack pour la dépiler quand l'utilisateur appuiera sur back
+            fragmentTransaction.addToBackStack(CURRENT_TAG);
+
+            // Faites le commit
+            fragmentTransaction.commit();
+
 
     }
 

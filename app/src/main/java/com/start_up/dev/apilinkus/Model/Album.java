@@ -3,6 +3,7 @@ package com.start_up.dev.apilinkus.Model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,7 +11,7 @@ import java.util.Date;
  * Created by Huong on 19/12/2016.
  */
 
-public class Album {
+public class Album implements Serializable {
 
     private String id;
     private String name;

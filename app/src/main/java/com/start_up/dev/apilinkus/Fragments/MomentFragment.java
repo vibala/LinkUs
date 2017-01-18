@@ -14,13 +14,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.start_up.dev.apilinkus.Adapter.AlbumsAdapter;
-import com.start_up.dev.apilinkus.Model.Album;
-import com.start_up.dev.apilinkus.Model.AlbumTestModel;
 import com.start_up.dev.apilinkus.Model.Moment;
-import com.start_up.dev.apilinkus.Model.MomentTestModel;
 import com.start_up.dev.apilinkus.Adapter.MomentsAdapater;
 import com.start_up.dev.apilinkus.R;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
@@ -62,8 +57,7 @@ public class MomentFragment extends Fragment implements RecyclerViewClickListene
         // Item decorations can affect both measurement and drawing of individual item views
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(dpToPx(10),1));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        Bundle bundle = this.getArguments();
-        moments = (ArrayList<Moment>) bundle.get("moments");
+        moments = (ArrayList<Moment>) getArguments().get("moments");
         Log.d(TAG,"Moment list size " + moments.get(0).getName());
         adapter = new MomentsAdapater(getContext(),moments,this);
         recyclerView.setAdapter(adapter);

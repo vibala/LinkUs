@@ -78,9 +78,9 @@ public class ProfileFragment extends Fragment implements RecyclerViewClickListen
         /******************************************************************************************/
         /******************** RECYCLERVIEX DEFINITION ******************/
         /******************************************************************************************/
-        Bundle bundle = this.getArguments();
-        albums = (ArrayList<Album>) bundle.get("albums");
+        albums = (ArrayList<Album>) this.getArguments().get("albums");
         adapter = new AlbumsAdapter(getContext(),albums,this);
+
         /////////////////////////////////////////////////////////////////////
         // A LayoutManager is responsible for measuring and positionning items within a RecyclerView as well as determining
         // the policy when to recycle items

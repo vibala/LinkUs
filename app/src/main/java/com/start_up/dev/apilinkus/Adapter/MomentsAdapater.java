@@ -10,13 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
-import com.start_up.dev.apilinkus.Model.AlbumTestModel;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
-import com.start_up.dev.apilinkus.Model.MomentTestModel;
 import com.start_up.dev.apilinkus.R;
 
 import java.util.ArrayList;

@@ -3,30 +3,21 @@ package com.start_up.dev.apilinkus.Fragments;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.start_up.dev.apilinkus.Adapter.HomeAdapter;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
-import com.start_up.dev.apilinkus.Model.Album;
-import com.start_up.dev.apilinkus.Model.AlbumTestModel;
+import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.R;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -38,7 +29,7 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
 
     private View homeView;
     private RecyclerView recyclerView;
-    private ArrayList<AlbumTestModel> albumTestModelsList;
+    private ArrayList<Instant> instants;
     private HomeAdapter adapter;
     OnPostSelectedListener mCallback;
 
@@ -58,13 +49,13 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(),1);
-        albumTestModelsList = new ArrayList<>();
-        adapter = new HomeAdapter(getContext(),albumTestModelsList,this);
+        instants = (ArrayList<Instant>) getArguments().get("recent_instants");
+        adapter = new HomeAdapter(getContext(),instants,this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10)));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-        prepareAlbumTestModels();
+
     }
 
     @Override
@@ -80,61 +71,10 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
         }
     }
 
-    /**
-     * Adding few AlbumTestModels for testing
-     */
-    private void prepareAlbumTestModels() {
-        int[] covers = new int[]{
-                R.drawable.album1,
-                R.drawable.album2,
-                R.drawable.album3,
-                R.drawable.album4,
-                R.drawable.album5,
-                R.drawable.album6,
-                R.drawable.album7,
-                R.drawable.album8,
-                R.drawable.album9,
-                R.drawable.album10,
-                R.drawable.album11};
-
-        AlbumTestModel a = new AlbumTestModel("Maroon5", 13, covers[0]);
-        albumTestModelsList.add(a);
-
-        a = new AlbumTestModel("Sugar Ray", 8, covers[1]);
-        albumTestModelsList.add(a);
-
-        a = new AlbumTestModel("Bon Jovi", 11, covers[2]);
-        albumTestModelsList.add(a);
-
-        a = new AlbumTestModel("The Corrs", 12, covers[3]);
-        albumTestModelsList.add(a);
-
-        a = new AlbumTestModel("The Cranberries", 14, covers[4]);
-        albumTestModelsList.add(a);
-
-        a = new AlbumTestModel("Westlife", 1, covers[5]);
-        albumTestModelsList.add(a);
-
-        a = new AlbumTestModel("Black Eyed Peas", 11, covers[6]);
-        albumTestModelsList.add(a);
-
-        a = new AlbumTestModel("VivaLaVida", 14, covers[7]);
-        albumTestModelsList.add(a);
-
-        a = new AlbumTestModel("The Cardigans", 11, covers[8]);
-        albumTestModelsList.add(a);
-
-        a = new AlbumTestModel("Pussycat Dolls", 17, covers[9]);
-        albumTestModelsList.add(a);
-
-        adapter.notifyDataSetChanged();
-    }
-
     @Override
     public void recyclerViewListClicked(View v, int position) {
         mCallback.onPostSelected(position,v);
     }
-
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration{
 

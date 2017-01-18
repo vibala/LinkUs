@@ -3,6 +3,8 @@ package com.start_up.dev.apilinkus.Model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.Serializable;
+
 /**
  * Created by Vignesh on 1/18/2017.
  * Generic class for configUser, idRight, etc.
@@ -13,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
  */
 
-public class KeyValue {
+public class KeyValue implements Serializable {
 
     private String id;
     private String type; // description, wikipedia, localisation,

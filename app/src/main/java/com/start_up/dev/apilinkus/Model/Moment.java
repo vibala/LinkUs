@@ -3,13 +3,14 @@ package com.start_up.dev.apilinkus.Model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Huong on 06/01/2017.
  */
 
-public class Moment {
+public class Moment implements Serializable {
     private String id;
     private String name;
     private ArrayList<Instant> instantList = new ArrayList();

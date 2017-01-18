@@ -10,9 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
-import com.start_up.dev.apilinkus.Model.AlbumTestModel;
+import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.R;
 
 import java.util.List;
@@ -23,13 +22,13 @@ import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder> {
 
-    private List<AlbumTestModel> albumList;
+    private List<Instant> instants;
     private Context context;
     private RecyclerViewClickListener itemListener;
 
-    public HomeAdapter(Context context, List<AlbumTestModel> albumList,RecyclerViewClickListener itemListener){
+    public HomeAdapter(Context context, List<Instant> instants,RecyclerViewClickListener itemListener){
         this.context = context;
-        this.albumList = albumList;
+        this.instants = instants;
         this.itemListener = itemListener;
     }
 
@@ -70,18 +69,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
 
     @Override
     public void onBindViewHolder(HomeViewHolder holder, int position) {
-        AlbumTestModel album = albumList.get(position);
+        Instant instant = instants.get(position);
         // A implementer avec ce qui a été fait ds le cas réeal avec description, classe comment,etc.
         // loading album cover using Glide library
         Glide
                 .with(context)
-                .load(album.getThumbnail())
+                .load(instant.getUrl())
                 .into(holder.imagePost);
 
     }
 
     @Override
     public int getItemCount() {
-        return albumList.size();
+        return instants.size();
     }
 }

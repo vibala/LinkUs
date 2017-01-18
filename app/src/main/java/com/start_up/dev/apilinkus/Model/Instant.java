@@ -5,13 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.bson.types.ObjectId;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by DamnAug on 14/10/2016.
  */
-public class Instant {
+public class Instant implements Serializable {
 
     private String id;
     private String name;

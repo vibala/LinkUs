@@ -3,12 +3,13 @@ package com.start_up.dev.apilinkus.Model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by DamnAug on 22/10/2016.
  */
-public class IdRight {
+public class IdRight implements Serializable{
 
     private String id;
     private String right;

@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.start_up.dev.apilinkus.Model.AlbumTestModel;
+import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.R;
 
 import java.util.ArrayList;
@@ -30,9 +30,9 @@ public class SlideshowDialogFragment extends DialogFragment {
     //  ViewPager is used for screen slides
     private ViewPager viewPager;
     private int selectedPosition = 0;
-    private AlbumViewPagerAdapter albumViewPagerAdapter;
+    private InstantViewPagerAdapter instantViewPagerAdapter;
     /*TODO Remplacer les albums par les photos d'un album donné (Cf. avec Vincent)*/
-    private ArrayList<AlbumTestModel> albums;
+    private ArrayList<Instant> instants;
 
     @Nullable
     @Override
@@ -44,14 +44,14 @@ public class SlideshowDialogFragment extends DialogFragment {
         lblDate = (TextView) view.findViewById(R.id.lbl_date);
         lblTitle = (TextView) view.findViewById(R.id.lbl_title);
 
-        albums = (ArrayList<AlbumTestModel>) getArguments().getSerializable("albums");
+        instants = (ArrayList<Instant>) getArguments().getSerializable("instants");
         selectedPosition = getArguments().getInt("position");
 
         Log.e(TAG,"position: " +  selectedPosition);
-        Log.e(TAG,"albums size: " + albums.size());
+        Log.e(TAG,"albums size: " + instants.size());
 
-        albumViewPagerAdapter = new AlbumViewPagerAdapter();
-        viewPager.setAdapter(albumViewPagerAdapter);
+        instantViewPagerAdapter = new InstantViewPagerAdapter();
+        viewPager.setAdapter(instantViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
         setCurrentItem(selectedPosition);
@@ -83,9 +83,10 @@ public class SlideshowDialogFragment extends DialogFragment {
     }
 
     private void displayMetaInfo(int position){
-        lblTitle.setText(albums.get(position).getName());
-        lblCount.setText((position+1) + " of " + albums.size());
-        lblDate.setText("August 5,2016");
+        Instant instant = instants.get(position);
+        lblTitle.setText(instant.getName());
+        lblCount.setText((position+1) + " of " + instants.size());
+        lblDate.setText(instant.getPublishDate().toString());
     }
 
     @Override
@@ -94,22 +95,22 @@ public class SlideshowDialogFragment extends DialogFragment {
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
     }
 
-    public class AlbumViewPagerAdapter extends PagerAdapter{
+    public class InstantViewPagerAdapter extends PagerAdapter{
 
         private LayoutInflater layoutInflater;
 
-        public AlbumViewPagerAdapter(){}
+        public InstantViewPagerAdapter(){}
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = layoutInflater.inflate(R.layout.image_fullscreen_preview,container,false);
             ImageView imageViewPreview = (ImageView) view.findViewById(R.id.image_preview);
-            AlbumTestModel album = albums.get(position);
+            Instant instant = instants.get(position);
 
             Glide
                     .with(getActivity())
-                    .load(album.getThumbnail())
+                    .load(instant.getUrl())
                     .fitCenter()
                     .crossFade() // to make the change of images more smoothly and easier on the eyer
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -122,7 +123,7 @@ public class SlideshowDialogFragment extends DialogFragment {
 
         @Override
         public int getCount() {
-            return albums.size();
+            return instants.size();
         }
 
         @Override

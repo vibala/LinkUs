@@ -16,14 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.start_up.dev.apilinkus.Fragments.ProfileFragment;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Album;
-import com.start_up.dev.apilinkus.Model.AlbumTestModel;
 import com.start_up.dev.apilinkus.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Vignesh on 1/11/2017.
