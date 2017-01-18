@@ -2,7 +2,9 @@ package pfe.ece.LinkUS.Service;
 
 import org.springframework.stereotype.Service;
 import pfe.ece.LinkUS.Model.Album;
+import pfe.ece.LinkUS.Model.Instant;
 import pfe.ece.LinkUS.Model.Moment;
+import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 
 import java.util.logging.Logger;
 
@@ -14,12 +16,50 @@ public class MomentService {
 
     Logger LOGGER = Logger.getLogger("LinkUS.Controller.MomentService");
 
+    AlbumRepository albumRepository;
+
+    public void setAlbumRepository(AlbumRepository albumRepository) {
+        this.albumRepository = albumRepository;
+    }
+
     public Moment newDefaultMoment() {
         LOGGER.info("Creating new default moment.");
         Moment moment = new Moment();
         moment.setId("0");
         moment.setName("Default");
         return moment;
+    }
+
+    public boolean createMomentSaveToAlbum(String albumId, String name) {
+
+        AlbumService albumService = new AlbumService(albumRepository);
+        Album album = albumService.findAlbumById(albumId);
+
+        if(album != null) {
+            Moment moment = createMoment(name);
+
+            // Temporaire
+            Instant instant = new Instant();
+            instant.setName("pipi");
+            InstantService instantService = new InstantService();
+            instantService.addInstantToMoment(moment, instant);
+            //
+
+            album.getMoments().add(moment);
+            albumService.update(album);
+            return true;
+        }
+        return false;
+    }
+
+    public Moment createMoment(String name) {
+
+        Moment moment = new Moment();
+
+        moment.setName(name);
+
+        return moment;
+
     }
 
     public boolean addMomentToAlbum(Album album, Moment moment) {

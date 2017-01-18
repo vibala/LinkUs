@@ -1,6 +1,8 @@
 package pfe.ece.LinkUS.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +17,7 @@ import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.FriendGroupService;
+import pfe.ece.LinkUS.Service.MomentService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserEntityService.UserServiceImpl;
 
@@ -99,5 +102,22 @@ public class AlbumController {
 
         AlbumService albumService = new AlbumService(albumRepository);
         albumService.addFriendToAlbum(userId, friendId, albumId, right);
+    }
+
+    @RequestMapping(value = "/scenario")
+    public ResponseEntity createScenario() {
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        String albumId = albumService.createSaveAlbum(userId, "Trip to India");
+
+        if(albumId != null) {
+            MomentService momentService = new MomentService();
+            momentService.setAlbumRepository(albumRepository);
+            momentService.createMomentSaveToAlbum(albumId, "Visite du palais TajMahl");
+            momentService.createMomentSaveToAlbum(albumId, "Visite du désert de Perse");
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
     }
 }

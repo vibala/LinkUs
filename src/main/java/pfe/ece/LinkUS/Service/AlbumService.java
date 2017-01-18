@@ -78,6 +78,20 @@ public class AlbumService {
         }
     }
 
+    public Album findAlbumByOwnerIdAndName(String ownerId, String name) {
+        Album album = albumRepository.findOneByOwnerIdAndNameIgnoreCase(ownerId, name);
+        if (album == null) {
+            throw  new AlbumNotFoundException(ownerId);
+        } else {
+            return album;
+        }
+    }
+
+    public boolean checkAlbumByOwnerIdAndName(String ownerId, String name) {
+        Album album = albumRepository.findOneByOwnerIdAndNameIgnoreCase(ownerId, name);
+        return album != null;
+    }
+
     public List<Album> findAlbumByGroupIdRight(List<FriendGroup> friendGroupList, String right) {
         List<String> groupIdList = new ArrayList<>();
         for(FriendGroup fg: friendGroupList) {
@@ -141,6 +155,19 @@ public class AlbumService {
         albumRepository.delete(album);
     }
 
+    public String createSaveAlbum(String ownerId, String name) {
+
+        if(!checkAlbumByOwnerIdAndName(ownerId, name)) {
+
+            Album album = new Album();
+            album.setOwnerId(ownerId);
+            album.setName(name);
+            album.setActive(true);
+            save(album);
+            return album.getId();
+        }
+        return null;
+    }
     /**
      * Method preparing the users' albums: new album, new moment
      * @param userId

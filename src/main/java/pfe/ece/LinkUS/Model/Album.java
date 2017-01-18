@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -24,7 +25,13 @@ public class Album {
     private Date endDate;
     private ArrayList<Moment> moments = new ArrayList<>();
     private ArrayList<IdRight> idRight = new ArrayList<>();
-    private boolean active = false;
+    private boolean active;
+
+
+    public Album() {
+        ObjectId objectId = new ObjectId();
+        setId(objectId.toString());
+    }
 
     @Override
     public String toString() {
