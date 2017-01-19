@@ -35,6 +35,7 @@
     <string name="text_recents">Recents</string>
     <string name="text_notifications">Notifications</string>
     <string name="user_model_name">SAUL Molinero</string>
+    <string name="user_model_mail">mosaul@outlook.com</string>
     <string name="user_actual_location">Paris, FRANCE</string>
     <string name="post_sent_time">1hr ago</string>
     <string name="album_name">Trip to India</string>
@@ -47,7 +48,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="openDrawer">open_drawer</string>
     <string name="closeDrawer">close_drawer</string>
-
     <!-- Navigation Drawer menu labels -->
     <string name="nav_accueil">Accueil</string>
     <string name="nav_profile">Profile</string>
@@ -55,6 +55,23 @@
     <string name="nav_notifications">Notifications</string>
     <string name="nav_parametres">Paramètres</string>
     <string name="nav_about_us">A propos de nous</string>
+    <!--  Settings tabs -->
+    <string name="profile_title">PROFIL</string>
+    <string name="premium_title">PREMIUM</string>
+    <string name="notifications">NOTIFICATIONS</string>
+    <string name="social_title">SOCIAL</string>
+    <string name="support_title">SUPPORT</string>
+    <!-- Premium -->
+    <string name="premium_user">Premium User</string>
+    <!-- Notifications -->
+    <string name="text_notification">Activiter les notifications</string>
+    <!-- SOCIAL -->
+    <string name="facebook_title">Facebook</string>
+    <string name="twitter_title">Twitter</string>
+    <string name="google_title">Google+</string>
+    <!-- SUPPORT -->
+    <string name="report_a_problem_title">Signaler un problème</string>
+    <string name="privacy_policy_title">Politique de confidentialité</string>
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">

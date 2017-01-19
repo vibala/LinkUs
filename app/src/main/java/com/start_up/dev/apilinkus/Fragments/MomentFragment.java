@@ -15,10 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Adapter.MomentsAdapater;
-import com.start_up.dev.apilinkus.R;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
+import com.start_up.dev.apilinkus.Model.Moment;
+import com.start_up.dev.apilinkus.R;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * Created by Vignesh on 1/16/2017.
  */
 
-public class MomentFragment extends Fragment implements RecyclerViewClickListener {
+public class MomentFragment extends Fragment implements RecyclerViewClickListener{
 
     private RecyclerView recyclerView;
     private MomentsAdapater adapter;
@@ -35,10 +35,6 @@ public class MomentFragment extends Fragment implements RecyclerViewClickListene
     private String TAG = MomentFragment.class.getSimpleName();
     private View momentView;
     OnMomentSelectedListener mCallback;
-
-    public interface OnMomentSelectedListener{
-        public void onMomentSelected(int position);
-    }
 
     @Nullable
     @Override
@@ -62,6 +58,9 @@ public class MomentFragment extends Fragment implements RecyclerViewClickListene
         adapter = new MomentsAdapater(getContext(),moments,this);
         recyclerView.setAdapter(adapter);
     }
+
+
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -112,4 +111,11 @@ public class MomentFragment extends Fragment implements RecyclerViewClickListene
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
+
+    public interface OnMomentSelectedListener{
+        public void onMomentSelected(int position);
+    }
+
+
+
 }

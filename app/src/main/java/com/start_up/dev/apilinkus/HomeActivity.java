@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -56,6 +57,8 @@ import com.start_up.dev.apilinkus.Service.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Vignesh on 1/15/2017.
@@ -193,16 +196,14 @@ public class HomeActivity extends AppCompatActivity
         }
 
         //
-        if(CURRENT_TAG.contentEquals("Instants")){
+        if(CURRENT_TAG.contentEquals("Instants") || CURRENT_TAG.contentEquals("Paramètres")){
             //  Cache le toolbar au moment d'afficher l'image en diapo
             toolbar.setVisibility(View.GONE);
             // Cache le bottom bar au moment d'afficher l'image en diapo
             bottomBar.setVisibility(View.INVISIBLE);
-
         }
 
-
-
+        //setRepeatingAsyncTask();
     }
 
     @Override
@@ -243,7 +244,7 @@ public class HomeActivity extends AppCompatActivity
                 // Get the appropriate fragment
                 Fragment fragment = getAppropriateFragment();
                 // Replace the previous fragment by the new fragment
-                fragmentTransaction.replace(R.id.frame,fragment);
+                fragmentTransaction.replace(R.id.frame,fragment,CURRENT_TAG);
                 // Ajoutez la transaction à la backstack pour la dépiler quand l'utilisateur appuiera sur back
                 fragmentTransaction.addToBackStack(CURRENT_TAG);
                 // Faites le commit
@@ -287,6 +288,7 @@ public class HomeActivity extends AppCompatActivity
                 return notificationFragment;
             case 4:
                 // Parametres
+                bottomBar.setVisibility(View.INVISIBLE);
                 ParametreFragment parametreFragment = new ParametreFragment();
                 return parametreFragment;
             default:
@@ -329,8 +331,8 @@ public class HomeActivity extends AppCompatActivity
         ArrayList<Instant> instants_first = new ArrayList<>();
         ArrayList<Instant> instants_second = new ArrayList<>();
         Instant instant_first = new Instant();
+
         instant_first.setName("Visiting Taj Mahal with Cxxx");
-        instant_first.setId("A001M001I001");
         instant_first.setUrl("http://whc.unesco.org/uploads/thumbs/site_0252_0008-750-0-20151104113424.jpg");
         instants_first.add(instant_first);
         instant_first.setPublishDate(DateUtil.getCurrentDate());
@@ -338,7 +340,6 @@ public class HomeActivity extends AppCompatActivity
 
         Instant instant_second = new Instant();
         instant_second.setName("Fun Ride with dromedaries");
-        instant_second.setId("A001M002I002");
         instant_second.setPublishDate(DateUtil.getCurrentDate());
         instants_second.add(instant_second);
         instant_second.setUrl("http://hubchi.com/wp-content/uploads/2015/08/that-desert-tour-4.jpg");
@@ -433,18 +434,23 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
 
-        for (int i=0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
-            System.out.println("Current Tag in BackStack " + getSupportFragmentManager().getBackStackEntryAt(i));
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        // Pour mes tests
+        for (int i=0; i<count; i++) {
+            System.out.println("Tags in BackStack " + getSupportFragmentManager().getBackStackEntryAt(i));
         }
 
         if (getSupportFragmentManager().getBackStackEntryCount() >= 2){
-            int count = getSupportFragmentManager().getBackStackEntryCount();
+            count = getSupportFragmentManager().getBackStackEntryCount();
             CURRENT_TAG = getSupportFragmentManager().getBackStackEntryAt(count-2).getName();
-            if(!CURRENT_TAG.contentEquals("Instants")){
+            Log.d(TAG,"CURRENTLY DISPLAYED TAG = " + CURRENT_TAG);
+            if(!CURRENT_TAG.contentEquals("Instants") && !CURRENT_TAG.contentEquals("Paramètres")){
                 // Etre sur que le toolbar et le bottomBar st bien visibles
                 toolbar.setVisibility(View.VISIBLE);
                 bottomBar.setVisibility(View.VISIBLE);
                 toolbarTitle.setText(CURRENT_TAG);
+
             }
         }
 
@@ -615,4 +621,73 @@ public class HomeActivity extends AppCompatActivity
     public void onPostSelected(int position,View view) {
         Toast.makeText(this,"OK COOL LA PAGE d'ACCUEIL EST IMPLEMENTEE ! View id " + view.getId(),Toast.LENGTH_SHORT).show();
     }
+
+    // Taken from stackOverFlow
+    private void setRepeatingAsyncTask() {
+
+        final Handler handler = new Handler();
+        Timer timer = new Timer();
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        try {
+                            SimulationAsyncTask simulationTask = new SimulationAsyncTask();
+                            simulationTask.execute();
+                        } catch (Exception e) {
+                            // error, do something
+                        }
+                    }
+                });
+            }
+        };
+
+
+        TimerTask task2 =  new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        try {
+                            // Plus tard pour recupérer les albums et store en cache
+                        } catch (Exception e) {
+                            // error, do something
+                        }
+                    }
+                });
+            }
+        };
+
+        timer.schedule(task, 0, 60*1000);  // interval of one minute
+        timer.schedule(task2,0, 5*1000); // interval of five seconds
+    }
+
+    //
+
+    // Simulation de l'upload de plusiuers instants toutes les minutes
+    class SimulationAsyncTask extends AsyncTask<Void,Void,Void>{
+
+        Instant instant;
+        @Override
+        protected Void doInBackground(Void... voids) {
+            instant = new Instant();
+            instant.setName("William and Kate end India trip with historic Taj Mahal ");
+            instant.setUrl("http://www.todayonline.com/sites/default/files/styles/photo_gallery_image_lightbox/public/photos/43_images/screen_shot_2016-04-16_at_20.32.45.png?itok=Qnz0OmCj");
+            instant.setPublishDate(DateUtil.getCurrentDate());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            HomeFragment fragment;
+            if((fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(CURRENT_TAG)) != null){
+                fragment.synchroniseRecentlyPostedInstants(instant);
+            }
+
+        }
+    }
+
+
 }

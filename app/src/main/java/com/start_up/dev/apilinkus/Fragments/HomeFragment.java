@@ -1,14 +1,19 @@
 package com.start_up.dev.apilinkus.Fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +21,13 @@ import android.view.ViewGroup;
 
 import com.start_up.dev.apilinkus.Adapter.HomeAdapter;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
+import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.Model.Instant;
+import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Vignesh on 1/15/2017.
@@ -32,6 +40,8 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
     private ArrayList<Instant> instants;
     private HomeAdapter adapter;
     OnPostSelectedListener mCallback;
+    private static final String TAG =
+                                        HomeFragment.class.getSimpleName();
 
     public interface OnPostSelectedListener{
         public void onPostSelected(int position,View view);
@@ -106,5 +116,41 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+    public void synchroniseRecentlyPostedInstants(Instant instant){
+        Log.d(TAG,"OK JE SUIS LA");
+        new FetchRecentlyPostedInstants(getActivity()).execute(instant);
+    }
+
+    class FetchRecentlyPostedInstants extends AsyncTask<Instant,Void,Void>{
+        /** progress dialog to show user that the backup is processing. */
+        private ProgressDialog dialog;
+
+        public FetchRecentlyPostedInstants(Context context){
+           dialog = new ProgressDialog(context);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Please wait! Fetching data");
+            this.dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Instant... list_instants) {
+            instants.add(list_instants[0]);
+            Collections.reverse(instants);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+
+            adapter.notifyDataSetChanged();
+        }
     }
 }

@@ -20,7 +20,7 @@ public class ParametreFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        parametreView = inflater.inflate(R.layout.parametre_fragment_layout,container,false);
+        parametreView = inflater.inflate(R.layout.settings_fragment_layout,container,false);
         return parametreView;
     }
 }

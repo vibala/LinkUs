@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.R;
+import com.start_up.dev.apilinkus.Service.DateUtil;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
     public class HomeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public ImageView imagePost;
-        public TextView number_of_likes,number_of_comments,number_of_shares;
+        public TextView number_of_likes,number_of_comments,number_of_shares,time_elapsed;
         public LinearLayout likes_layout,comments_layout,shares_layout;
 
         public HomeViewHolder(View itemView){
@@ -44,6 +45,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
             number_of_likes = (TextView) itemView.findViewById(R.id.number_of_likes);
             number_of_comments = (TextView) itemView.findViewById(R.id.number_of_comments);
             number_of_shares = (TextView) itemView.findViewById(R.id.number_of_shares);
+            time_elapsed = (TextView) itemView.findViewById(R.id.card_view_home_timeelapsed);
             /*layout def*/
             likes_layout = (LinearLayout) itemView.findViewById(R.id.likes_layout);
             likes_layout.setClickable(true);
@@ -70,6 +72,42 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
     @Override
     public void onBindViewHolder(HomeViewHolder holder, int position) {
         Instant instant = instants.get(position);
+        Long[] time_elapsed_details = DateUtil.printDifference(instant.getPublishDate(),DateUtil.getCurrentDate());
+        if(time_elapsed_details[0] > 0){
+            if(time_elapsed_details[0] == 1) {
+                holder.time_elapsed.setText(time_elapsed_details[0] + " day ago");
+            }else{
+                holder.time_elapsed.setText(time_elapsed_details[0] + " days ago");
+            }
+        }else{
+            if(time_elapsed_details[1] > 0) {
+                if(time_elapsed_details[1] == 1) {
+                    holder.time_elapsed.setText(time_elapsed_details[1] + " hour ago");
+                }else{
+                    holder.time_elapsed.setText(time_elapsed_details[1] + " hours ago");
+                }
+            }else{
+                if(time_elapsed_details[2] > 0) {
+                    if(time_elapsed_details[2] == 1) {
+                        holder.time_elapsed.setText(time_elapsed_details[2] + " minute ago");
+                    }else{
+                        holder.time_elapsed.setText(time_elapsed_details[2] + " minutes ago");
+                    }
+                }else{
+                    if(time_elapsed_details[3] > 0) {
+                        if (time_elapsed_details[3] == 1) {
+                            holder.time_elapsed.setText(time_elapsed_details[3] + " second ago");
+                        } else {
+                            holder.time_elapsed.setText(time_elapsed_details[3] + " seconds ago");
+                        }
+                    }else if(time_elapsed_details[3] == 0){
+                        holder.time_elapsed.setText("now");
+                    }
+                }
+
+            }
+        }
+
         // A implementer avec ce qui a été fait ds le cas réeal avec description, classe comment,etc.
         // loading album cover using Glide library
         Glide

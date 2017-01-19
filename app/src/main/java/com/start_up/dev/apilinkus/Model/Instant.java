@@ -25,8 +25,8 @@ public class Instant implements Serializable {
     private byte[] imgByte;
 
     public Instant(){
-        ObjectId objectId = new ObjectId();
-        setId(objectId.toString());
+        //ObjectId objectId = new ObjectId();
+        //setId(objectId.toString());
 
     }
 
