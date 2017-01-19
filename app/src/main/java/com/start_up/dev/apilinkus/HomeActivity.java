@@ -450,7 +450,8 @@ public class HomeActivity extends AppCompatActivity
                 toolbar.setVisibility(View.VISIBLE);
                 bottomBar.setVisibility(View.VISIBLE);
                 toolbarTitle.setText(CURRENT_TAG);
-
+            }else{
+                toolbarTitle.setText(CURRENT_TAG);
             }
         }
 
