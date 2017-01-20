@@ -305,7 +305,7 @@ public class AlbumService {
         InstantService instantService = new InstantService();
         Instant instant = instantService.createInstant(name);
 
-        return createInstantSaveToAlbumMoment(albumId, momentId, instant);
+        return createInstantPhotoSaveToAlbumMoment(albumId, momentId, instant, "");
     }
 
     /**
@@ -318,11 +318,25 @@ public class AlbumService {
      */
     public String createInstantSaveToAlbumMoment(String albumId, String momentId, Instant instant) {
 
+        return createInstantPhotoSaveToAlbumMoment(albumId, momentId, instant, "");
+    }
+
+    public String createInstantPhotoSaveToAlbumMoment(String albumId, String momentId, String name, String url) {
+
+        InstantService instantService = new InstantService();
+        Instant instant = instantService.createInstant(name);
+
+        return createInstantPhotoSaveToAlbumMoment(albumId, momentId, instant, url);
+    }
+
+    public String createInstantPhotoSaveToAlbumMoment(String albumId, String momentId, Instant instant, String url) {
+
         Album album = findAlbumById(albumId);
 
         MomentService momentService = new MomentService();
         Moment moment = momentService.findMomentInAlbum(album, momentId);
 
+        instant.setUrl(url);
         InstantService instantService = new InstantService();
         if(instantService.addInstantToMoment(moment, instant)) {
             update(album);
@@ -330,7 +344,6 @@ public class AlbumService {
         }
         return null;
     }
-
     /**
      * Return null en cas  de non ajout du moment ou momentId
      *

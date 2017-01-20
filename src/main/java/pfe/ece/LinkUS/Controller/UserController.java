@@ -51,7 +51,7 @@ public class UserController {
 //    public String findUserByName(@RequestParam("name") String name) {
 //        UserService userService = new UserService(userRepository);
 //
-//        List<User> userList = userService.findUsersByName(name);
+//        List<User> userList = userService.findUsersByLastName(name);
 //
 //        if(userList == null || userList.isEmpty()) {
 //            throw new AlbumNotFoundException(name);

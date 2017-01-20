@@ -1,8 +1,10 @@
 package pfe.ece.LinkUS.Service;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pfe.ece.LinkUS.Exception.EmailExistsException;
 import pfe.ece.LinkUS.Exception.UnauthorizedInformationException;
@@ -15,9 +17,15 @@ import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.UserEntityService.UserServiceImpl;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -43,14 +51,23 @@ public class UserService {
         }
     }
 
-    /*public User findUserByEmail(String email) {
+    public User findUserByEmail(String email) {
         Optional<User> user = userRepository.findOneByEmail(email);
         if(user.get() == null) {
             throw new UserNotFoundException(email);
         } else {
             return user.get();
         }
-    }*/
+    }
+
+    public boolean checkUserByEmail(String email) {
+        Optional<User> user = userRepository.findOneByEmail(email);
+        if(user.get() == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     public List<User> searchUserByPartialFirstnameOrLastname(String textToFind) {
 
@@ -60,7 +77,7 @@ public class UserService {
         return userList;
     }
 
-    public List<User> findUsersByName(String name) {
+    public List<User> findUsersByLastName(String name) {
         List<User> userList = userRepository.findByLastNameIgnoreCase(name);
 
         if(userList == null || userList.isEmpty()) {
@@ -223,24 +240,49 @@ public class UserService {
         return new PageRequest(page, 20, Sort.Direction.ASC, "lastName", "firstName");
     }
 
-    public String createFakeUser(String name) throws EmailExistsException {
+    public String createFakeUser(String name) throws EmailExistsException, ParseException {
         pfe.ece.LinkUS.Service.UserEntityService.UserService userService = new UserServiceImpl(userRepository);
+        User user = new User();
+        user.setEmail(name + "@yopmail.com");
+        user.setDateofBirth(new Date(117, 0, 17, 17, 17));
+        user.setFirstName(name);
+        user.setLastName("Corea");
+        user.setSexe("Male");
+        user.setRole(Role.USER);
 
-        UserCreateForm form = new UserCreateForm();
-        form.setEmail(name + "@yopmail.com");
-        form.setDateofBirth(new Date(117, 0, 17, 17, 17));
-        form.setFirstName(name);
-        form.setLastName("Corea");
-        form.setSexe("Male");
-        form.setRole(Role.USER);
-        form.setPassword("1");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Pattern corresponding to ISO Format
+        Date timestamp = dateFormat.parse(dateFormat.format(new Date()));
 
-        User user = userService.registerNewUserAccount(form);
+        user.setDateofRegistration(timestamp); // Setting the date of the registration
+        user.setPasswordHash(new BCryptPasswordEncoder().encode("1".concat(timestamp.toString())));
         user.setEnabled(true);
 
-        userRepository.save(user);
+        save(user);
+
+        // PARTIE LOCALE
+        File directory = new File("./images/" + user.getId());
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
 
         return user.getId();
+    }
+
+    public boolean removeFakeUser(String name) throws IOException {
+
+        return removeUser(name + "@yopmail.com");
+    }
+
+    public boolean removeUser(String email) throws IOException {
+
+        if(checkUserByEmail(email)) {
+            User user = findUserByEmail(email);
+            FileUtils.deleteDirectory(new File("./images/" + user.getId()));
+            delete(user);
+            return true;
+        }
+
+        return false;
     }
 
     public void addFakeFriend(String userId, String friendId) {
