@@ -107,6 +107,7 @@ public class OAuth2ServerConfig {
             https
                     .authorizeRequests()
                     .antMatchers(HttpMethod.POST,"/user").permitAll()
+                    .antMatchers(HttpMethod.POST,"/scenario/**").permitAll()
                     .antMatchers(HttpMethod.POST,"/user/registration").permitAll()
                     .antMatchers(HttpMethod.POST,"/forgotPassword").permitAll()
                     .antMatchers(HttpMethod.GET,"/setNewPassword").permitAll()

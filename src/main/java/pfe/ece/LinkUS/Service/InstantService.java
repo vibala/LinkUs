@@ -6,6 +6,7 @@ import pfe.ece.LinkUS.Model.IdRight;
 import pfe.ece.LinkUS.Model.Instant;
 import pfe.ece.LinkUS.Model.Moment;
 
+import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -15,6 +16,15 @@ import java.util.logging.Logger;
 public class InstantService {
 
     Logger LOGGER = Logger.getLogger("LinkUS.Controller.InstantService");
+
+
+    public Instant createInstant(String name) {
+
+        Instant instant = new Instant();
+        instant.setName(name);
+        instant.setPublishDate(new Date());
+        return instant;
+    }
 
     public boolean addInstantToMoment(Moment moment, Instant instant) {
         if(!moment.getInstantList().contains(instant)) {

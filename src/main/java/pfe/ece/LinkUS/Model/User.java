@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -89,6 +90,8 @@ public class User implements Serializable {
 
     public User() {
         // Default Constructor
+        ObjectId objectId = new ObjectId();
+        setId(objectId.toString());
         this.enabled = false;
     }
 

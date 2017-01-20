@@ -4,14 +4,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import pfe.ece.LinkUS.Exception.EmailExistsException;
 import pfe.ece.LinkUS.Exception.UnauthorizedInformationException;
 import pfe.ece.LinkUS.Exception.UserNotFoundException;
+import pfe.ece.LinkUS.Model.Enum.Role;
 import pfe.ece.LinkUS.Model.FriendGroup;
 import pfe.ece.LinkUS.Model.User;
+import pfe.ece.LinkUS.Model.UserCreateForm;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
+import pfe.ece.LinkUS.Service.UserEntityService.UserServiceImpl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -25,14 +30,8 @@ public class UserService {
 
     UserRepository userRepository;
 
-    FriendGroupRepository friendGroupRepository;
-
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    public void setFriendGroupRepository(FriendGroupRepository friendGroupRepository) {
-        this.friendGroupRepository = friendGroupRepository;
     }
 
     public User findUserById(String userId) {
@@ -82,7 +81,7 @@ public class UserService {
         return userList;
     }
 
-    private void save(User user) {
+    public void save(User user) {
         // Set to null not to erase another object with the same Id (new object)
         user.setId(null);
         LOGGER.info("Saving new user" + user.toString());
@@ -174,7 +173,7 @@ public class UserService {
         }
     }
 
-    public List<FriendGroup> findFriendGroupsOwned(String userId) {
+    public List<FriendGroup> findFriendGroupsOwned(FriendGroupRepository friendGroupRepository ,String userId) {
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
         return friendGroupService.findFriendGroupsByOwnerId(userId);
@@ -221,6 +220,32 @@ public class UserService {
     }
 
     private Pageable createPageRequest(int page) {
-        return new PageRequest(page, 10, Sort.Direction.ASC, "lastName", "firstName");
+        return new PageRequest(page, 20, Sort.Direction.ASC, "lastName", "firstName");
+    }
+
+    public String createFakeUser(String name) throws EmailExistsException {
+        pfe.ece.LinkUS.Service.UserEntityService.UserService userService = new UserServiceImpl(userRepository);
+
+        UserCreateForm form = new UserCreateForm();
+        form.setEmail(name + "@yopmail.com");
+        form.setDateofBirth(new Date(117, 0, 17, 17, 17));
+        form.setFirstName(name);
+        form.setLastName("Corea");
+        form.setSexe("Male");
+        form.setRole(Role.USER);
+        form.setPassword("1");
+
+        User user = userService.registerNewUserAccount(form);
+        user.setEnabled(true);
+
+        userRepository.save(user);
+
+        return user.getId();
+    }
+
+    public void addFakeFriend(String userId, String friendId) {
+
+        friendRequest(userId, friendId);
+        acceptFriend(userId, friendId);
     }
 }

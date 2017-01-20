@@ -17,6 +17,7 @@ public class FriendGroup {
     private String ownerId;
     private String name;
     private List<String> members = new ArrayList<>();
+    private String groupImgUrl;
 
     public String toString(){
         String str = "";
@@ -61,6 +62,13 @@ public class FriendGroup {
         return members;
     }
 
+    public String getGroupImgUrl() {
+        return groupImgUrl;
+    }
+
+    public void setGroupImgUrl(String groupImgUrl) {
+        this.groupImgUrl = groupImgUrl;
+    }
 
     /**
      * Check on ownerId & name

@@ -6,6 +6,8 @@ import pfe.ece.LinkUS.Model.Instant;
 import pfe.ece.LinkUS.Model.Moment;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -16,12 +18,6 @@ public class MomentService {
 
     Logger LOGGER = Logger.getLogger("LinkUS.Controller.MomentService");
 
-    AlbumRepository albumRepository;
-
-    public void setAlbumRepository(AlbumRepository albumRepository) {
-        this.albumRepository = albumRepository;
-    }
-
     public Moment newDefaultMoment() {
         LOGGER.info("Creating new default moment.");
         Moment moment = new Moment();
@@ -29,14 +25,11 @@ public class MomentService {
         moment.setName("Default");
         return moment;
     }
-
-    public boolean createMomentSaveToAlbum(String albumId, String name) {
-
-        AlbumService albumService = new AlbumService(albumRepository);
-        Album album = albumService.findAlbumById(albumId);
+/*
+    public String createMomentSaveToAlbum(Album album, String name) {
 
         if(album != null) {
-            Moment moment = createMoment(name);
+            Moment moment = createMoment(name, null);
 
             // Temporaire
             Instant instant = new Instant();
@@ -45,19 +38,22 @@ public class MomentService {
             instantService.addInstantToMoment(moment, instant);
             //
 
-            album.getMoments().add(moment);
-            albumService.update(album);
-            return true;
-        }
-        return false;
-    }
+            MomentService momentService = new MomentService();
+            momentService.addMomentToAlbum(album, moment);
 
-    public Moment createMoment(String name) {
+            return moment.getId();
+        }
+        return null;
+    }*/
+
+    public Moment createMoment(String name, ArrayList<Instant> instantList) {
 
         Moment moment = new Moment();
 
         moment.setName(name);
-
+        if(instantList != null && !instantList.isEmpty()) {
+            moment.setInstantList(instantList);
+        }
         return moment;
 
     }
@@ -73,6 +69,23 @@ public class MomentService {
         return false;
     }
 
+
+/*    public String saveInstantToAlbumMoment(Album album, String momentId, Instant instant) {
+
+        MomentService momentService = new MomentService();
+        Moment moment = momentService.findMomentInAlbum(album, momentId);
+
+        return saveInstantToAlbumMoment(moment, instant);
+    }*/
+
+/*    public String saveInstantToAlbumMoment(Moment moment, Instant instant) {
+
+        InstantService instantService = new InstantService();
+
+        instantService.addInstantToMoment(moment, instant);
+
+        return instant.getId();
+    }*/
     /**
      *
      * @param album

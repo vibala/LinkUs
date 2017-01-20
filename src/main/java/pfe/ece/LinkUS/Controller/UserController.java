@@ -4,10 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Exception.UnauthorizedInformationException;
 import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
@@ -108,7 +105,7 @@ public class UserController {
      * @param friendId
      */
     @RequestMapping(value = "/friendRequest", params = {"friendId"}, method = RequestMethod.POST)
-    public ResponseEntity friendRequest(@RequestParam(value = "friendId") String friendId) {
+    public ResponseEntity friendRequest(@RequestBody String friendId) {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
@@ -126,7 +123,7 @@ public class UserController {
      * @param decision
      */
     @RequestMapping(value = "/friendRequestDecision", params = {"friendId", "decision"}, method = RequestMethod.POST)
-    public ResponseEntity friendRequestDecision(@RequestParam(value = "friendId") String friendId, @RequestParam(value = "decision") Boolean decision) {
+    public ResponseEntity friendRequestDecision(@RequestBody String friendId,  Boolean decision) {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
@@ -171,8 +168,7 @@ public class UserController {
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         UserService userService = new UserService(userRepository);
-        userService.setFriendGroupRepository(friendGroupRepository);
-        return userService.findFriendGroupsOwned(userId).toString();
+        return userService.findFriendGroupsOwned(friendGroupRepository, userId).toString();
     }
 
     @RequestMapping(value = "/getFriend", params = {"friendId"})

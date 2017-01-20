@@ -3,10 +3,7 @@ package pfe.ece.LinkUS.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
 import pfe.ece.LinkUS.Model.Album;
 import pfe.ece.LinkUS.Model.Enum.Right;
@@ -17,7 +14,6 @@ import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.FriendGroupService;
-import pfe.ece.LinkUS.Service.MomentService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserEntityService.UserServiceImpl;
 
@@ -53,6 +49,28 @@ public class AlbumController {
     @RequestMapping("/")
     public String albumDefaultCall() {
         return "Not implemented yet.";
+    }
+
+    @RequestMapping(value= "/update", method= RequestMethod.POST)
+    public ResponseEntity updateAlbum(@RequestBody Album album) {
+
+        AlbumService albumService = new AlbumService(albumRepository);
+
+        if(albumService.checkUpdateAlbum(album)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(value= "/save", method= RequestMethod.POST)
+    public ResponseEntity saveAlbum(@RequestBody Album album) {
+
+        AlbumService albumService = new AlbumService(albumRepository);
+
+        if(albumService.checkSaveAlbum(album)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
     @RequestMapping(value = "/right", produces = "application/json")
@@ -94,30 +112,13 @@ public class AlbumController {
 
     @RequestMapping(value = "/setwith", method = RequestMethod.POST)
     public void addFriendToAlbumWithSpecificRight(
-            @RequestParam("friendId") String friendId,
-            @RequestParam("albumId") String albumId,
-            @RequestParam("right") String right){
+            @RequestBody String friendId,
+            @RequestBody String albumId,
+            @RequestBody String right){
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         AlbumService albumService = new AlbumService(albumRepository);
         albumService.addFriendToAlbum(userId, friendId, albumId, right);
-    }
-
-    @RequestMapping(value = "/scenario")
-    public ResponseEntity createScenario() {
-
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-
-        String albumId = albumService.createSaveAlbum(userId, "Trip to India");
-
-        if(albumId != null) {
-            MomentService momentService = new MomentService();
-            momentService.setAlbumRepository(albumRepository);
-            momentService.createMomentSaveToAlbum(albumId, "Visite du palais TajMahl");
-            momentService.createMomentSaveToAlbum(albumId, "Visite du désert de Perse");
-            return new ResponseEntity(HttpStatus.OK);
-        }
-        return new ResponseEntity(HttpStatus.CONFLICT);
     }
 }

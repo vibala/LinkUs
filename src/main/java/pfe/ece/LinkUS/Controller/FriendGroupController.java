@@ -3,10 +3,7 @@ package pfe.ece.LinkUS.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
@@ -38,7 +35,8 @@ public class FriendGroupController {
     private AccessTokenService accessTokenService;
 
     @RequestMapping(value = "/addUser", params = {"friendGroupId", "userId"}, method = RequestMethod.POST)
-    public ResponseEntity addUserToFriendGroup(@RequestParam("friendGroupId") String friendGroupId, @RequestParam("userId") String userId) {
+    public ResponseEntity addUserToFriendGroup(@RequestBody String friendGroupId,
+                                               @RequestBody String userId) {
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
         if(friendGroupService.addUserToFriendGroup(friendGroupId, userId)){
@@ -48,7 +46,8 @@ public class FriendGroupController {
     }
 
     @RequestMapping(value = "/removeUser", params = {"friendGroupId", "userId"}, method = RequestMethod.POST)
-    public ResponseEntity removeUserToFriendGroup(@RequestParam("friendGroupId") String friendGroupId, @RequestParam("userId") String userId) {
+    public ResponseEntity removeUserToFriendGroup(@RequestBody String friendGroupId,
+                                                  @RequestBody String userId) {
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
         if(friendGroupService.removeUserToFriendGroup(friendGroupId, userId)){
@@ -58,7 +57,8 @@ public class FriendGroupController {
     }
 
     @RequestMapping(value = "/add", params = {"name", "userIdList"}, method = RequestMethod.POST)
-    public ResponseEntity addFilledFriendGroup(String name, List<String> userIdList) {
+    public ResponseEntity addFilledFriendGroup(@RequestBody String name,
+                                               @RequestBody List<String> userIdList) {
 
         String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
@@ -70,7 +70,7 @@ public class FriendGroupController {
 
     }
     @RequestMapping(value = "/add", params = {"name"}, method = RequestMethod.POST)
-    public ResponseEntity addFriendGroup(String name) {
+    public ResponseEntity addFriendGroup(@RequestBody String name) {
 
         String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
