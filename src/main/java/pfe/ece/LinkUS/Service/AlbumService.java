@@ -15,6 +15,11 @@ import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -344,6 +349,13 @@ public class AlbumService {
         }
         return null;
     }
+
+    public void saveFakePhoto(String userId, String albumId, String momentId, int numero) throws IOException {
+
+        Files.copy(new File("./src/main/resources/public/images/image" + numero + ".jpeg").toPath(),
+                new File("./images/" + userId + "/" + albumId + "/" + momentId + "_image" + numero + ".jpeg").toPath());
+    }
+
     /**
      * Return null en cas  de non ajout du moment ou momentId
      *

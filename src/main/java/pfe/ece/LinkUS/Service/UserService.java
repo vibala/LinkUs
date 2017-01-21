@@ -1,6 +1,5 @@
 package pfe.ece.LinkUS.Service;
 
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -12,7 +11,6 @@ import pfe.ece.LinkUS.Exception.UserNotFoundException;
 import pfe.ece.LinkUS.Model.Enum.Role;
 import pfe.ece.LinkUS.Model.FriendGroup;
 import pfe.ece.LinkUS.Model.User;
-import pfe.ece.LinkUS.Model.UserCreateForm;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.UserEntityService.UserServiceImpl;
@@ -277,12 +275,22 @@ public class UserService {
 
         if(checkUserByEmail(email)) {
             User user = findUserByEmail(email);
-            FileUtils.deleteDirectory(new File("./images/" + user.getId()));
+            deleteDirectory(new File("./images/" + user.getId()));
             delete(user);
             return true;
         }
 
         return false;
+    }
+
+    private void deleteDirectory(File file) {
+        File[] contents = file.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                deleteDirectory(f);
+            }
+        }
+        file.delete();
     }
 
     public void addFakeFriend(String userId, String friendId) {
