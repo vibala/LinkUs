@@ -226,6 +226,24 @@ public class AlbumService {
         return groupIdsList;
     }
 
+    public void fillEmptyIds(Album album) {
+        album.setRandomId();
+        for(IdRight idRight: album.getIdRight()){
+            idRight.setRandomId();
+        }
+        for(Moment moment: album.getMoments()) {
+            moment.setRandomId();
+            for(Instant instant: moment.getInstantList()) {
+                instant.setRandomId();
+                for(IdRight idRight:instant.getIdRight()) {
+                    idRight.setRandomId();
+                }
+                for(Comment comment: instant.getCommentList()) {
+                    comment.setRandomId();
+                }
+            }
+        }
+    }
     /**
      *
      * @param album

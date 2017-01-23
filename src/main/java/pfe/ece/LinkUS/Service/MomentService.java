@@ -103,16 +103,11 @@ public class MomentService {
     }
 
     public boolean deleteMomentFromAlbum(Album album, Moment moment) {
-        return deleteMomentFromAlbum(album, moment.getId());
-    }
-
-    public boolean deleteMomentFromAlbum(Album album, String momentId) {
-
         boolean bool = false;
         Moment foundMoment = null;
-        for(Moment moment: album.getMoments()) {
-            if(moment.getId().equals(momentId)) {
-                foundMoment = moment;
+        for(Moment momentItr: album.getMoments()) {
+            if(momentItr.equals(moment)) {
+                foundMoment = momentItr;
             }
         }
         if(foundMoment != null) {
@@ -122,7 +117,7 @@ public class MomentService {
 
         // Si il n'y a plus de moments on en rajoute 1 par défaut
         if(album.getMoments().isEmpty()) {
-            LOGGER.info("Removing moment: " + momentId + " from album: " + album.getName());
+            LOGGER.info("Removing moment: " + foundMoment.getId() + " from album: " + album.getName());
             album.getMoments().add(newDefaultMoment());
         }
         return bool;
@@ -148,6 +143,23 @@ public class MomentService {
             if (moment.isNews() != news) {
                 deleteMomentFromAlbum(album, moment);
             }
+        }
+    }
+
+    public void setMainInstantUsingCotation(Moment moment) {
+
+        Instant bestInstant = null;
+        double bestCotation = -1;
+        if(moment.getInstantList() != null) {
+            for(Instant instant: moment.getInstantList()) {
+                if(instant.getCotation() > bestCotation) {
+                    bestCotation = instant.getCotation();
+                    bestInstant = instant;
+                }
+            }
+            moment.setMainInstant(bestInstant.getId());
+        } else {
+            moment.setMainInstant("");
         }
     }
 }

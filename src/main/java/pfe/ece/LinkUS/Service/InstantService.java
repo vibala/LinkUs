@@ -45,20 +45,15 @@ public class InstantService {
     }
 
     public boolean deleteInstantFromMoment(Moment moment, Instant instant) {
-        return deleteInstantFromMoment(moment, instant.getId());
-    }
-
-    public boolean deleteInstantFromMoment(Moment moment, String instantId) {
-
         Instant foundInstant = null;
-        for(Instant instant: moment.getInstantList()) {
-            if(instant.getId().equals(instantId)) {
-                foundInstant = instant;
+        for(Instant instantItr: moment.getInstantList()) {
+            if(instantItr.equals(instant)) {
+                foundInstant = instantItr;
             }
         }
 
         if(foundInstant != null) {
-            LOGGER.info("Removing instant: " + instantId + "from moment: " + moment.getId());
+            LOGGER.info("Removing instant: " + foundInstant.getId() + "from moment: " + moment.getId());
             moment.getInstantList().remove(foundInstant);
             return true;
         }

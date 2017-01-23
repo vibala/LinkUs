@@ -1,7 +1,9 @@
 package pfe.ece.LinkUS.Model;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -11,11 +13,28 @@ public class UserAlarm {
 
     @Id
     private String id;
+    private Date date = new Date();
     private String userId;
     private String type;
     private HashMap<Character, Boolean> alarm;
 
     public UserAlarm() {
+        setRandomId();
+    }
+
+    public void setRandomId() {
+        if(getId().equals(null) || getId().equals("")) {
+            ObjectId objectId = new ObjectId();
+            setId(objectId.toString());
+        }
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getId() {

@@ -24,11 +24,17 @@ public class Instant {
     private ArrayList<IdRight> idRight = new ArrayList<>();
     private ArrayList<String> userIdDescriptionAvailable = new ArrayList<>();
     private byte[] imgByte;
+    private double cotation;
 
     public Instant(){
-        ObjectId objectId = new ObjectId();
-        setId(objectId.toString());
+        setRandomId();
+    }
 
+    public void setRandomId() {
+        if(getId().equals(null) || getId().equals("")) {
+            ObjectId objectId = new ObjectId();
+            setId(objectId.toString());
+        }
     }
 
     @Override
@@ -115,14 +121,14 @@ public class Instant {
         this.userIdDescriptionAvailable = userIdDescriptionAvailable;
     }
 
-    public boolean addUserIdDescriptionAvailable(String id) {
-        if(!userIdDescriptionAvailable.contains(id)) {
-            return false;
-        } else {
-            userIdDescriptionAvailable.add(id);
-            return true;
-        }
+    public double getCotation() {
+        return cotation;
     }
+
+    public void setCotation(double cotation) {
+        this.cotation = cotation;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -131,12 +137,12 @@ public class Instant {
 
         Instant instant = (Instant) o;
 
-        return id.equals(instant.id);
+        return url.equals(instant.url);
 
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return url.hashCode();
     }
 }

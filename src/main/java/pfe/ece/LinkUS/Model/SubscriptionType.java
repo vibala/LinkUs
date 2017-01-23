@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 /**
@@ -15,6 +16,17 @@ public class SubscriptionType {
     private String type;
     private String unit;
     private String price;
+
+    public SubscriptionType() {
+        setRandomId();
+    }
+
+    public void setRandomId() {
+        if(getId().equals(null) || getId().equals("")) {
+            ObjectId objectId = new ObjectId();
+            setId(objectId.toString());
+        }
+    }
 
     @Override
     public String toString() {

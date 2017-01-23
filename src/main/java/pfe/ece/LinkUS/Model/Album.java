@@ -29,8 +29,14 @@ public class Album {
 
 
     public Album() {
-        ObjectId objectId = new ObjectId();
-        setId(objectId.toString());
+        setRandomId();
+    }
+
+    public void setRandomId() {
+        if(getId().equals(null) || getId().equals("")) {
+            ObjectId objectId = new ObjectId();
+            setId(objectId.toString());
+        }
     }
 
     @Override

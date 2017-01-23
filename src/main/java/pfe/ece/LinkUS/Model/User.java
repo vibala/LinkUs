@@ -72,6 +72,7 @@ public class User implements Serializable {
     @Field("configUser")
     private ConfigUser configUser = new ConfigUser();
 
+
     @Override
     public String toString() {
         String str = "";
@@ -90,9 +91,15 @@ public class User implements Serializable {
 
     public User() {
         // Default Constructor
-        ObjectId objectId = new ObjectId();
-        setId(objectId.toString());
-        this.enabled = false;
+        setRandomId();
+        setEnabled(false);
+    }
+
+    public void setRandomId() {
+        if(getId().equals(null) || getId().equals("")) {
+            ObjectId objectId = new ObjectId();
+            setId(objectId.toString());
+        }
     }
 
     public User (String user_id){
