@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pfe.ece.LinkUS.Model.UserAlarm;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserAlarmRepository;
@@ -24,35 +25,35 @@ public class UserAlarmController {
     UserAlarmRepository userAlarmRepository;
 
     @RequestMapping("/add")
-    public ResponseEntity addAlarm() {
+    public ResponseEntity addAlarm(@RequestBody UserAlarm userAlarm) {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         UserAlarmService userAlarmService = new UserAlarmService(userAlarmRepository);
-        userAlarmService.addAlarm();
+        userAlarmService.addAlarm(userAlarm);
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping("/remove")
-    public ResponseEntity removeAlarm() {
+    public ResponseEntity removeAlarm(@RequestBody UserAlarm userAlarm) {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         UserAlarmService userAlarmService = new UserAlarmService(userAlarmRepository);
-        userAlarmService.removeAlarm();
+        userAlarmService.removeAlarm(userAlarm);
 
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping("/modify")
-    public ResponseEntity modifyAlarm() {
+    public ResponseEntity modifyAlarm(@RequestBody UserAlarm userAlarm) {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         UserAlarmService userAlarmService = new UserAlarmService(userAlarmRepository);
-        userAlarmService.modifyAlarm();
+        userAlarmService.modifyAlarm(userAlarm);
 
         return new ResponseEntity(HttpStatus.OK);
     }

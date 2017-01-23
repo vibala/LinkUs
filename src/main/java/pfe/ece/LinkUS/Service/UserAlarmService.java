@@ -1,6 +1,8 @@
 package pfe.ece.LinkUS.Service;
 
 import org.springframework.stereotype.Service;
+import pfe.ece.LinkUS.Model.User;
+import pfe.ece.LinkUS.Model.UserAlarm;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserAlarmRepository;
 
 import java.util.logging.Logger;
@@ -19,20 +21,31 @@ public class UserAlarmService {
         this.userAlarmRepository = userAlarmRepository;
     }
 
-    public boolean addAlarm() {
+    public boolean addAlarm(UserAlarm userAlarm) {
 
-
-        return false;
-
-    }
-
-    public boolean removeAlarm() {
-
+        if(userAlarm.getId() != null &&
+                userAlarmRepository.findOne(userAlarm.getId()) == null) {
+            userAlarmRepository.save(userAlarm);
+            return true;
+        }
         return false;
     }
 
-    public boolean modifyAlarm() {
+    public boolean removeAlarm(UserAlarm userAlarm) {
+        if(userAlarm.getId() != null) {
+            userAlarmRepository.delete(userAlarm.getId());
+            return true;
+        }
+        return false;
+    }
 
+    public boolean modifyAlarm(UserAlarm userAlarm) {
+
+        if(userAlarm.getId() != null &&
+                userAlarmRepository.findOne(userAlarm.getId()) != null) {
+            userAlarmRepository.save(userAlarm);
+            return true;
+        }
         return false;
     }
 }
