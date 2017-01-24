@@ -27,18 +27,22 @@ public class SubscriptionTypeController {
     @Autowired
     SubscriptionTypeRepository subscriptionTypeRepository;
 
-    @RequestMapping("/")
-    public String userDefaultCall() {
-        return "Not implemented yet.";
-    }
-
-
     @RequestMapping(params = {"id"})
     public SubscriptionType findSubscriptionTypeById(@RequestParam("id") String id) {
 
         // Call service function
         SubscriptionTypeService subscriptionTypeService = new SubscriptionTypeService(subscriptionTypeRepository);
         return subscriptionTypeService.findSubscriptionTypeById(id);
+    }
+
+    /**
+     * Get all
+     */
+    @RequestMapping("/")
+    public String findAllSubscriptionType() {
+
+        SubscriptionTypeService subscriptionTypeService = new SubscriptionTypeService(subscriptionTypeRepository);
+        return subscriptionTypeService.findAllSubscriptionType().toString();
     }
 
     /**

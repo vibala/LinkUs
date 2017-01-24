@@ -136,7 +136,7 @@ public class AlbumController {
 
         return albumService.checkData(albumList, news, userId).get(0).toString();
     }
-    
+
     @RequestMapping(value = "/momentUrls", params = {"albumId", "momentId"})
     public String getUrlsFromMoment(@RequestParam(value = "albumId") String albumId,
                                     @RequestParam(value = "momentId") String momentId){

@@ -6,6 +6,7 @@ import pfe.ece.LinkUS.Exception.SubscriptionTypeNotFoundException;
 import pfe.ece.LinkUS.Model.SubscriptionType;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionTypeRepository;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -20,6 +21,10 @@ public class SubscriptionTypeService {
 
     public SubscriptionTypeService(SubscriptionTypeRepository subscriptionTypeRepository) {
         this.subscriptionTypeRepository = subscriptionTypeRepository;
+    }
+
+    public List<SubscriptionType> findAllSubscriptionType() {
+        return subscriptionTypeRepository.findAll();
     }
 
     public SubscriptionType findSubscriptionTypeById(String id) {
