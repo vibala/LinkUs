@@ -7,6 +7,7 @@ import pfe.ece.LinkUS.Model.SubscriptionType;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.*;
 import pfe.ece.LinkUS.Service.SubscriptionService;
 import pfe.ece.LinkUS.Service.SubscriptionTypeService;
+import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 
 import java.util.logging.Logger;
 
@@ -54,17 +55,21 @@ public class SubscriptionController {
         subscriptionService.addSubscription(subscription);
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(method = RequestMethod.POST,
+            value = "/delete",
+            consumes = "application/json")
     public void deleteSubscription(@RequestBody Subscription subscription) {
         SubscriptionService subscriptionService = new SubscriptionService(subscriptionRepository);
 
         subscriptionService.deleteSubscription(subscription);
     }
 
-    @RequestMapping(params = {"userId", "subscriptionTypeId"})
-    public void updateSubscription(@RequestParam("userId") String userId,
-                                   @RequestParam("subscriptionTypeId") String subscriptionTypeId) {
+    @RequestMapping(value = "/update",
+            params = {"subscriptionTypeId"})
+    public void updateSubscription(@RequestParam("subscriptionTypeId") String subscriptionTypeId) {
 
+        AccessTokenService accessTokenService = new AccessTokenService();
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         // Get the subscription type
         SubscriptionTypeService subscriptionTypeService = new SubscriptionTypeService(subscriptionTypeRepository);
         SubscriptionType subscriptionType = subscriptionTypeService.findSubscriptionTypeById(subscriptionTypeId);
