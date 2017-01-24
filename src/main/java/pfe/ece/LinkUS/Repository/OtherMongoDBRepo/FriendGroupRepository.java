@@ -14,4 +14,5 @@ public interface FriendGroupRepository extends MongoRepository<FriendGroup, Stri
     List<FriendGroup> findFriendGroupByMembers(String id);
     List<FriendGroup> findFriendGroupByNameLikeIgnoreCase(String name);
     List<FriendGroup> findByOwnerId(String ownerId);
+    FriendGroup findByOwnerIdAndName(String ownerId, String name);
 }

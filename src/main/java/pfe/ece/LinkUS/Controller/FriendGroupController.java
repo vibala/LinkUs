@@ -1,4 +1,3 @@
-
 package pfe.ece.LinkUS.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.FriendGroupService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -61,6 +59,7 @@ public class FriendGroupController {
 
     @RequestMapping(value = "/add",  method = RequestMethod.POST)
     public ResponseEntity addFilledFriendGroup(@RequestBody FriendGroup friendGroup) {
+
         String name=friendGroup.getName();
         List<String> userIdList=friendGroup.getMembers();
         String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
@@ -72,10 +71,10 @@ public class FriendGroupController {
         return new ResponseEntity(HttpStatus.CONFLICT);
 
     }
-    @RequestMapping(value = "/add", params = {"name"}, method = RequestMethod.POST)
-    public ResponseEntity addFriendGroup(@RequestBody String name) {
 
-        name = name.replace("\"","");
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseEntity addFriendGroup(@RequestBody String name) {
+        name=name.replace("\"","");
         String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
@@ -83,7 +82,17 @@ public class FriendGroupController {
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.CONFLICT);
-
     }
 
+    @RequestMapping(value = "/remove",method = RequestMethod.POST)
+    public ResponseEntity removeFriendGroup(@RequestBody String name) {
+        name=name.replace("\"","");
+        String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
+        if(friendGroupService.deleteFriendGroup(name, ownerId)){
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
+    }
 }

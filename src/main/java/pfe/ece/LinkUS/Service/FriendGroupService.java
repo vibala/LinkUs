@@ -42,6 +42,10 @@ public class FriendGroupService {
         return friendGroupRepository.findByOwnerId((ownerId));
     }
 
+    public FriendGroup findFriendGroupsByOwnerIdAndName(String ownerId, String name) {
+        return friendGroupRepository.findByOwnerIdAndName(ownerId, name);
+    }
+
     public FriendGroup findFriendGroupById(String id) {
         FriendGroup friendGroup = friendGroupRepository.findOne(id);
         if (friendGroup != null) {
@@ -109,6 +113,17 @@ public class FriendGroupService {
         List<FriendGroup> friendGroupList = findFriendGroupByOwnerId(ownerId);
         if(!existingFriendGroup(friendGroupList, friendGroup)) {
             save(friendGroup);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteFriendGroup(String name, String ownerId) {
+
+        FriendGroup friendGroup = findFriendGroupsByOwnerIdAndName(ownerId, name);
+
+        if(friendGroup != null) {
+            delete(friendGroup);
             return true;
         }
         return false;
