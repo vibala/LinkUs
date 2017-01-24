@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 @Service
 public class UserAlarmService {
 
-    Logger LOGGER = Logger.getLogger("LinkUS.Controller.UserAlarmService");
+    Logger LOGGER = Logger.getLogger("LinkUS.Service.UserAlarmService");
 
     UserAlarmRepository userAlarmRepository;
 

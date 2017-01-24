@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Enum.Right;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
+import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.NotificationRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
-import pfe.ece.LinkUS.ServerService.NotificationService;
+import pfe.ece.LinkUS.ServerService.NotificationServerService;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.InstantService;
+import pfe.ece.LinkUS.Service.NotificationService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
 
@@ -42,28 +44,32 @@ public class UploadingController {
     AccessTokenService accessTokenService;
     @Autowired
     AlbumService albumService;
-
+    @Autowired
+    NotificationRepository notificationRepository;
 
     @RequestMapping(value = "/uploadFiles", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> uploadingFiles(@RequestBody Moment moment, @RequestParam("notificationToPeopleWithReadRightOnAlbum") String notificationToPeopleWithReadRightOnAlbum) throws IOException {
+    public ResponseEntity<String> uploadingFiles(@RequestBody Moment moment,
+                                                 @RequestParam("albumId") String albumId,
+                                                 @RequestParam("notificationToPeopleWithReadRightOnAlbum") String notificationToPeopleWithReadRightOnAlbum) throws IOException {
 
         Logger LOGGER = Logger.getLogger("LinkUS.Controller.AlbumController");
 
         AlbumService albumService = new AlbumService(albumRepository);
         FileOutputStream fos;
+
         // On fetche grâce au access token service
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        // On fetche les albums dont l'utilisateur est l'owned
-        List<Album> albumsOwnedByCurrentAuthentifiedUser = albumService.getAlbumsOwned(userId);
+        // On fetche les albums dont l'utilisateur a les droits WRITE
+        List<Album> albumsOfByCurrentAuthentifiedUser = albumService.findAlbumByUserIdRight(userId, Right.WRITE.name());
 
-        // On fetche uniquement le premier album
-        // (mode freemium 1 utilisateur peut seulement consulter un album parmi les albums sur lequels il est owner)
-        Album firstAlbum = albumsOwnedByCurrentAuthentifiedUser.get(0);
+        // Verify the right of the user to upload photos on this albumId
+        if(!albumService.checkAlbumIdInAlbums(albumId, albumsOfByCurrentAuthentifiedUser)) {
+            return new ResponseEntity<String>(
+                    "You have no right to upload photos on that album: " + albumId, HttpStatus.FORBIDDEN);
+        }
 
-        // On fetche l'id de cet album
-        String albumId = firstAlbum.getId();
 
         /** ----------------------UPLOAD IMAGE----------*/
         //PARTIE AMAZON
@@ -127,7 +133,7 @@ public class UploadingController {
             /**------------------------ NOTIFICATION--------------*/
             UserService userService = new UserService(userRepository);
 
-            NotificationService notificationService = new NotificationService(userService,notificationTokenRepository);
+            NotificationServerService notificationServerService = new NotificationServerService(userService,notificationTokenRepository);
             //Retrouver l'album contenant l'instant envoyé (avec moment et instants ajoutés
             Album album = albumService.findAlbumById(albumId);
 
@@ -142,10 +148,14 @@ public class UploadingController {
             //On dit que y a que l'utilisateur 2 qui recevra le truc (on va d'abord retrouver son tokenNotification, puis on va pouvoir lui envoyer une notif
             //Pn récupere les token de ces utilisateurs dans une liste
             //Liste qui a pour but de lister les token des utilisateurs ayant le droit de lecture
-            ArrayList<String> tokenUserListWithReadRight = notificationService.getTokenUserListFromIdUserList(listUserIdListWithReadRight);
+            ArrayList<String> tokenUserListWithReadRight = notificationServerService.getTokenUserListFromIdUserList(listUserIdListWithReadRight);
+
+            NotificationService notificationService = new NotificationService(notificationRepository);
+
+            Notification notification = notificationService.createSaveNotification(userId, albumId, moment.getId(), moment);
 
             //On demande a FireBase d envoyer une notification a ces personnes (FireBase va utiliser les Token pour envoyer la notif car chaque token correspond a une appli installé sur un device.)
-            notificationService.sendMomentWithTokenNotification(tokenUserListWithReadRight, moment);
+            notificationServerService.sendObjectWithTokenNotification(tokenUserListWithReadRight, notification);
         }
         return new ResponseEntity<String>("Finished to upload files",HttpStatus.OK);
     }

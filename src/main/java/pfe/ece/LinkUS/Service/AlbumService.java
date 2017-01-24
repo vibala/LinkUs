@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 @Service
 public class AlbumService {
 
-    Logger LOGGER = Logger.getLogger("LinkUS.Controller.AlbumService");
+    Logger LOGGER = Logger.getLogger("LinkUS.Service.AlbumService");
 
     @Autowired
     AlbumRepository albumRepository;
@@ -251,6 +251,7 @@ public class AlbumService {
     private void save(Album album) {
         // Set to null not to erase another object with the same Id (new object)
         LOGGER.info("Saving new album" + album.toString());
+        fillEmptyIds(album);
         album.setId(null);
         albumRepository.save(album);
     }
@@ -261,6 +262,7 @@ public class AlbumService {
      */
     private void update(Album album) {
         LOGGER.info("Updating album" + album.toString());
+        fillEmptyIds(album);
         albumRepository.save(album);
     }
 
@@ -549,6 +551,15 @@ public class AlbumService {
         return albumList;
     }
 
+    public boolean checkAlbumIdInAlbums(String albumId, List<Album> albumsOfByCurrentAuthentifiedUser) {
+        boolean found = false;
+        for(Album albumItr: albumsOfByCurrentAuthentifiedUser) {
+            if(albumItr.getId().equals(albumId)) {
+                found = true;
+            }
+        }
+        return found;
+    }
     /**
      *
      * @param albumList

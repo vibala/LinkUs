@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 @Service
 public class FriendGroupService {
 
-    Logger LOGGER = Logger.getLogger("LinkUS.Controller.FriendGroupService");
+    Logger LOGGER = Logger.getLogger("LinkUS.Service.FriendGroupService");
 
     FriendGroupRepository friendGroupRepository;
 

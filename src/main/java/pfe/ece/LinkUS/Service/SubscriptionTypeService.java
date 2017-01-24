@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 @Service
 public class SubscriptionTypeService {
 
-    Logger LOGGER = Logger.getLogger("LinkUS.Controller.SubscriptionTypeService");
+    Logger LOGGER = Logger.getLogger("LinkUS.Service.SubscriptionTypeService");
     @Autowired
     SubscriptionTypeRepository subscriptionTypeRepository;
 

@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 @Service
 public class UserService {
 
-    Logger LOGGER = Logger.getLogger("LinkUS.Controller.UserService");
+    Logger LOGGER = Logger.getLogger("LinkUS.Service.UserService");
 
     UserRepository userRepository;
 
@@ -266,21 +266,13 @@ public class UserService {
         return user.getId();
     }
 
-    public boolean removeFakeUser(String name) throws IOException {
+    public boolean removeUser(User user) throws IOException {
 
-        return removeUser(name + "@yopmail.com");
-    }
+        deleteDirectory(new File("./images/" + user.getId()));
 
-    public boolean removeUser(String email) throws IOException {
+        delete(user);
 
-        if(checkUserByEmail(email)) {
-            User user = findUserByEmail(email);
-            deleteDirectory(new File("./images/" + user.getId()));
-            delete(user);
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     private void deleteDirectory(File file) {

@@ -6,16 +6,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pfe.ece.LinkUS.Exception.EmailExistsException;
+import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
+import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.AlbumService;
+import pfe.ece.LinkUS.Service.SubscriptionService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.Inet4Address;
-import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,8 @@ public class ScenarioController {
     private AlbumRepository albumRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
 
     @RequestMapping(value = "/filledAlbum")
     public ResponseEntity createFilledAlbum() {
@@ -60,6 +64,7 @@ public class ScenarioController {
 
         AlbumService albumService = new AlbumService(albumRepository);
         UserService userService = new UserService(userRepository);
+        SubscriptionService subscriptionService = new SubscriptionService(subscriptionRepository);
 
         List<String> userList = new ArrayList<>();
         userList.add("UserA");
@@ -68,7 +73,13 @@ public class ScenarioController {
         userList.add("UserD");
 
         for(String name:userList) {
-            userService.removeFakeUser(name);
+            String email = name + "@yopmail.com";
+
+            if(userService.checkUserByEmail(email)) {
+                User user = userService.findUserByEmail(email);
+                userService.removeUser(user);
+                subscriptionService.deleteUserSubscriptions(user.getId());
+            }
             userService.createFakeUser(name);
         }
 

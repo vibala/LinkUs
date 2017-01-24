@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 @Service
 public class MomentService {
 
-    Logger LOGGER = Logger.getLogger("LinkUS.Controller.MomentService");
+    Logger LOGGER = Logger.getLogger("LinkUS.Service.MomentService");
 
     public Moment newDefaultMoment() {
         LOGGER.info("Creating new default moment.");

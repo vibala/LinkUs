@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 @Service
 public class InstantService {
 
-    Logger LOGGER = Logger.getLogger("LinkUS.Controller.InstantService");
+    Logger LOGGER = Logger.getLogger("LinkUS.Service.InstantService");
 
 
     public Instant createInstant(String name) {

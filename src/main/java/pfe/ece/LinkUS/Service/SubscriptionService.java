@@ -12,6 +12,7 @@ import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
 @Service
 public class SubscriptionService {
 
-    Logger LOGGER = Logger.getLogger("LinkUS.Controller.SubscriptionService");
+    Logger LOGGER = Logger.getLogger("LinkUS.Service.SubscriptionService");
     @Autowired
     SubscriptionRepository subscriptionRepository;
 
@@ -132,6 +133,18 @@ public class SubscriptionService {
             LOGGER.warning("No subscription matching to deleteMomentFromAlbum.");
             return false;
         }
+    }
+
+    public boolean deleteUserSubscriptions(String userId) {
+
+        List<Subscription> subscriptionList = subscriptionRepository.findByUserId(userId);
+        if(subscriptionList != null && !subscriptionList.isEmpty()) {
+            for(Subscription subscription: subscriptionList) {
+                deleteSubscription(subscription);
+            }
+            return true;
+        }
+        return false;
     }
 
     private void save(Subscription subscription) {

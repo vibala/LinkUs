@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.ServerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import pfe.ece.LinkUS.Model.Moment;
+import pfe.ece.LinkUS.Model.Notification;
 import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
 import pfe.ece.LinkUS.Service.NotificationTokenServiceImpl;
 import pfe.ece.LinkUS.Service.UserService;
@@ -11,13 +12,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
 /**
  * Created by Huong on 11/12/2016.
  */
-public class NotificationService {
+public class NotificationServerService {
     /**
      * FireBase est le serveur qui va nous permettre de gérer les notifications
      */
@@ -28,7 +30,7 @@ public class NotificationService {
     @Autowired
     NotificationTokenRepository notificationTokenRepository;
 
-    public NotificationService(UserService userservice,NotificationTokenRepository notificationTokenRepository){
+    public NotificationServerService(UserService userservice, NotificationTokenRepository notificationTokenRepository){
         this.userservice=userservice;
         this.notificationTokenRepository=notificationTokenRepository;
     }
@@ -54,7 +56,7 @@ public class NotificationService {
 
         return tokenUserList;
     }
-    public void sendMomentWithTokenNotification(ArrayList<String> listUserTokenNotification, Moment moment) throws IOException {
+    public void sendObjectWithTokenNotification(ArrayList<String> listUserTokenNotification, Object o) throws IOException {
         for(String token : listUserTokenNotification) {
             /**EXEMPLE
              *
@@ -76,7 +78,10 @@ public class NotificationService {
              }
              *
              */
-            String json = "{\"notification\":{\"title\":\"title-notification\",\"body\":\"description-notification\"},\"data\":{\"description\":\"description-data\",\"title\":\"title-data\"},\"to\":\""+token+"\"}";
+            String json = "{\"notification\":{\"title\":\"title-notification\"," +
+                    "\"body\":\"description-notification\"}," +
+                    "\"data\":{\"description\":\""+ o.toString() +
+                    "\",\"title\":\"notification\"},\"to\":\""+token+"\"}";
 
             URL url = new URL(urlServerFireBase);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -99,4 +104,33 @@ public class NotificationService {
             conn.disconnect();
         }
     }
+
+    /*public void sendNotificationWithTokenNotification(ArrayList<String> listUserTokenNotification, Notification notification) throws IOException {
+
+        for(String token : listUserTokenNotification) {
+
+            String json = "{\"notification\":{\"title\":\"title-notification\"," +
+                    "\"body\":\"description-notification\"}," +
+                    "\"data\":{\"description\":\""+ notification.toString() +
+                    "\",\"title\":\"notification\"},\"to\":\""+token+"\"}";
+
+            URL url = new URL(urlServerFireBase);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(5000);
+            conn.setRequestProperty("Content-Type", "application/json;");
+            conn.setRequestProperty("Authorization", "key="+keyServerFireBase);
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            conn.setRequestMethod("POST");
+
+            OutputStream os = conn.getOutputStream();
+            os.write(json.getBytes("UTF-8"));
+            os.close();
+
+            // read the response
+            InputStream input = new BufferedInputStream(conn.getInputStream());
+            input.close();
+            conn.disconnect();
+        }
+    }*/
 }
