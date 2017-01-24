@@ -2,12 +2,14 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.annotation.Id;
 
 /**
  * Created by DamnAug on 22/11/2016.
  */
 public class SubscriptionType {
 
+    @Id
     private String id;
     private String length;
     private String type;

@@ -49,7 +49,7 @@ public class SubscriptionTypeService {
     }
 
     /**
-     * Take the id object to find it, then update the new one
+     * Take the id object to findMomentInAlbum it, then update the new one
      * @param subscriptionTypeNew
      */
     public void updateSubscriptionType(SubscriptionType subscriptionTypeNew) {
@@ -73,7 +73,7 @@ public class SubscriptionTypeService {
         if(findMatchingSubscriptionType(subscriptionType)) {
             delete(subscriptionType);
         } else {
-            LOGGER.warning("No subscription (id: " + subscriptionType.getId() + ") matching to delete.");
+            LOGGER.warning("No subscription (id: " + subscriptionType.getId() + ") matching to deleteMomentFromAlbum.");
         }
     }
 

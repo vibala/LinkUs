@@ -31,10 +31,8 @@ public class ProperPasswordEncoder implements PasswordEncoder {
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
         User userInfo = userDetailsService.getUserInfo();
-        //System.out.println("Userinfo " + userInfo.getEmail());
         String dateofRegistration = userInfo.getDateofRegistration().toString();
         rawPassword = rawPassword + "" + dateofRegistration;
-        //System.out.println("zzzzzzzzzzzzzzz ! " + rawPassword + "rsdfsdfsdf" + encodedPassword);
         return bCryptPasswordEncoder.matches(rawPassword,encodedPassword);
     }
 }

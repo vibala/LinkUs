@@ -127,7 +127,7 @@ public class OAuth2RepositoryTokenStore implements TokenStore {
     public void removeAccessToken(OAuth2AccessToken token) {
         OAuth2AuthenticationAccessToken accessToken = oAuth2AccessTokenRepository.findByTokenId(token.getValue());
         if(accessToken != null) {
-            oAuth2AccessTokenRepository.delete(accessToken);
+            oAuth2AccessTokenRepository.deleteMomentFromAlbum(accessToken);
         }
     }
 
@@ -148,12 +148,12 @@ public class OAuth2RepositoryTokenStore implements TokenStore {
 
     @Override
     public void removeRefreshToken(OAuth2RefreshToken token) {
-        oAuth2RefreshTokenRepository.delete(oAuth2RefreshTokenRepository.findByTokenId(token.getValue()));
+        oAuth2RefreshTokenRepository.deleteMomentFromAlbum(oAuth2RefreshTokenRepository.findByTokenId(token.getValue()));
     }
 
     @Override
     public void removeAccessTokenUsingRefreshToken(OAuth2RefreshToken refreshToken) {
-        oAuth2AccessTokenRepository.delete(oAuth2AccessTokenRepository.findByRefreshToken(refreshToken.getValue()));
+        oAuth2AccessTokenRepository.deleteMomentFromAlbum(oAuth2AccessTokenRepository.findByRefreshToken(refreshToken.getValue()));
     }
 
     @Override
@@ -177,7 +177,7 @@ public class OAuth2RepositoryTokenStore implements TokenStore {
     private Collection<OAuth2AccessToken> extractAccessTokens(List<OAuth2AuthenticationAccessToken> tokens) {
         List<OAuth2AccessToken> accessTokens = new ArrayList<OAuth2AccessToken>();
         for(OAuth2AuthenticationAccessToken token : tokens) {
-            accessTokens.add(token.getoAuth2AccessToken());
+            accessTokens.addMomentToAlbum(token.getoAuth2AccessToken());
         }
         return accessTokens;
     }*/

@@ -34,12 +34,10 @@ public class NotificationController {
     @RequestMapping(value = "/token", method = RequestMethod.POST)
     @ResponseBody
     ResponseEntity<String> sendNotificationToken(@RequestBody String notification_token) {
-        System.out.println("notification_token recu:"+ notification_token);
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         notification_token=notification_token.replace("\"","");
         NotificationToken token = new NotificationToken(userId,notification_token);
 
-        System.out.println("userid : " + userId);
         try {
             notificationTokenService.registerNotificationTokenEntity(token);
         } catch (Exception e) {

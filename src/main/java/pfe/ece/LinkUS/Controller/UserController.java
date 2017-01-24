@@ -2,22 +2,20 @@ package pfe.ece.LinkUS.Controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
-import pfe.ece.LinkUS.Model.Album;
-import pfe.ece.LinkUS.Model.Right;
 import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
-import pfe.ece.LinkUS.Service.AlbumService;
-import pfe.ece.LinkUS.Service.FriendGroupService;
+import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,72 +32,201 @@ public class UserController {
     FriendGroupRepository friendGroupRepository;
     @Autowired
     SubscriptionRepository subscriptionRepository;
+    @Autowired
+    private AccessTokenService accessTokenService;
 
     private static final Logger LOGGER = Logger.getLogger(UserController.class);
 
-    @RequestMapping("/")
-    public String userDefaultCall() {
-        return "Not implemented yet.";
-    }
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String getMyProfile() {
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-    @RequestMapping(params = {"id"})
-    public String findUserById(@RequestParam("id") String id) {
-        AlbumService albumService = new AlbumService(albumRepository);
-        Album album = albumService.findAlbumById(id);
-
-
-        return album.toString();
-    }
-
-    @RequestMapping(params = {"name"})
-    public String findUserByName(@RequestParam("name") String name) {
         UserService userService = new UserService(userRepository);
+        User user = userService.findUserById(userId);
 
-        List<User> userList = userService.findUsersByName(name);
+        userService.checkData(user);
 
-        if(userList == null || userList.isEmpty()) {
-            throw new AlbumNotFoundException(name);
+        return user.toString();
+    }
+
+
+    /**
+     * Create friend request
+     *
+     * @param friendId
+     */
+    @RequestMapping(value = "/friendRequest", params = {"friendId"}, method = RequestMethod.POST)
+    public ResponseEntity friendRequest(@RequestParam(value = "friendId") String friendId) {
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        if(userService.friendRequest(userId, friendId)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
+    }
+
+    /**
+     * Accept or decline fiend request
+     *
+     * @param friendId
+     * @param decision
+     */
+    @RequestMapping(value = "/friendRequestDecision", params = {"friendId", "decision"}, method = RequestMethod.POST)
+    public ResponseEntity friendRequestDecision(@RequestParam(value = "friendId") String friendId, @RequestParam(value = "decision") Boolean decision) {
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        if(decision) {
+            if(userService.acceptFriend(userId, friendId)) {
+                return new ResponseEntity(HttpStatus.OK);
+            } else {
+                return new ResponseEntity(HttpStatus.CONFLICT);
+            }
         } else {
-            return userList.toString();
+            if(userService.refuseFriend(userId, friendId)){
+                return new ResponseEntity(HttpStatus.OK);
+            }
+            return new ResponseEntity(HttpStatus.CONFLICT);
         }
     }
 
-    @RequestMapping(value = "/albumOwner", params = {"albumId"})
-    public User findOwnerUserByAlbumId(@RequestParam("albumId") String albumId) {
-        AlbumService albumService = new AlbumService(albumRepository);
+    @RequestMapping(value = "/removeFriend", params = {"friendId"}, method = RequestMethod.POST)
+    public ResponseEntity friendRequestDecision(@RequestParam(value = "friendId") String friendId) {
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        if(userService.removeFriend(userId, friendId)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
+    }
+
+    @RequestMapping("/getFriends")
+    public String getFriends(){
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        UserService userService = new UserService(userRepository);
+        List<User> userList = userService.findFriends(userId);
+        userService.checkData(userList);
+        return userList.toString();
+    }
+
+    @RequestMapping("/getGroupFriends")
+    public String getGroupFriends(){
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        userService.setFriendGroupRepository(friendGroupRepository);
+        return userService.findFriendGroupsOwned(userId).toString();
+    }
+
+    @RequestMapping(value = "/getFriend", params = {"friendId"})
+    public String getFriend(@RequestParam("friendId") String friendId){
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         UserService userService = new UserService(userRepository);
 
-        return userService.findUserById(albumService.getAlbumOwnerId(albumId));
+        User friend = userService.findFriend(userId, friendId);
+        userService.checkData(friend);
+
+        return friend.toString();
     }
 
-    @RequestMapping(params = {"albumId", "right"})
-    public String findUserByAlbumId(@RequestParam(value = "albumId") String albumId,
-                                    @RequestParam(value = "right") String right) {
+    @RequestMapping(value = "/searchFriend", params = {"text"})
+    public String searchFriend(@RequestParam("text") String text){
 
-        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
-        AlbumService albumService = new AlbumService(albumRepository);
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
         UserService userService = new UserService(userRepository);
-        List<User> userList = new ArrayList<>();
-
-        if(right == null ||"".equals(right)) {
-            right = Right.LECTURE.name();
-        }
-
-        // Get userIds in album repo
-        List<String> userIdList = albumService.findUserIdsByAlbum(albumId, right);
-        // Get the groups in which the user is.
-        List<String> groupIdList = albumService.findGroupIdsByAlbum(albumId, right);
-        // Get the userIds of the groups
-        userIdList.addAll(friendGroupService.findUserIdsByFriendGroup(groupIdList));
-
-
-        // Search for users
-        userList.addAll(userService.findUsersByIds(userIdList));
-
-        if(userList == null || userList.isEmpty()) {
-            throw  new AlbumNotFoundException(albumId);
-        } else {
-            return userList.toString();
-        }
+        List<User> userList = userService.searchUserByPartialFirstnameOrLastname(text);
+        userService.checkData(userList);
+        return userList.toString();
     }
+
+    @RequestMapping(value = "/changeFullname", params = {"lastName","firstName"}, method = RequestMethod.POST)
+    public ResponseEntity<String> changeFullname(@RequestParam("lastName") String lastName, @RequestParam("firstName") String firstName){
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        User user = userService.findUserById(userId);
+        user.setLastName(lastName);
+        user.setFirstName(firstName);
+        User tmp = userRepository.save(user);
+        if(tmp == null){
+            return new ResponseEntity<String>("Full name not updated",HttpStatus.NOT_MODIFIED);
+        }
+
+        return new ResponseEntity<String>("Full name updated",HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/changeUsername", params = {"email"}, method = RequestMethod.POST)
+    public ResponseEntity<String> changeEmailUsername(@RequestParam("email") String email){
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        User user = userService.findUserById(userId);
+        user.setEmail(email);
+        User tmp = userRepository.save(user);
+        if(tmp == null){
+            return new ResponseEntity<String>("Username name not updated",HttpStatus.NOT_MODIFIED);
+        }
+
+        return new ResponseEntity<String>("Username updated",HttpStatus.OK);
+    }
+
+    //    @RequestMapping(params = {"name"})
+//    public String findUserByName(@RequestParam("name") String name) {
+//        UserService userService = new UserService(userRepository);
+//
+//        List<User> userList = userService.findUsersByName(name);
+//
+//        if(userList == null || userList.isEmpty()) {
+//            throw new AlbumNotFoundException(name);
+//        } else {
+//            return userList.toString();
+//        }
+//    }
+//
+//    @RequestMapping(value = "/albumOwner", params = {"albumId"})
+//    public User findOwnerUserByAlbumId(@RequestParam("albumId") String albumId) {
+//        AlbumService albumService = new AlbumService(albumRepository);
+//        UserService userService = new UserService(userRepository);
+//
+//        return userService.findUserById(albumService.getAlbumOwnerId(albumId));
+//    }
+//
+//    @RequestMapping(params = {"albumId", "right"})
+//    public String findUserByAlbumId(@RequestParam(value = "albumId") String albumId,
+//                                    @RequestParam(value = "right") String right) {
+//
+//        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
+//        AlbumService albumService = new AlbumService(albumRepository);
+//        UserService userService = new UserService(userRepository);
+//        List<User> userList = new ArrayList<>();
+//
+//        if(right == null ||"".equals(right)) {
+//            right = Right.LECTURE.name();
+//        }
+//
+//        // Get userIds in album repo
+//        List<String> userIdList = albumService.findUserIdsByAlbum(albumId, right);
+//        // Get the groups in which the user is.
+//        List<String> groupIdList = albumService.findGroupIdsByAlbum(albumId, right);
+//        // Get the userIds of the groups
+//        userIdList.addAll(friendGroupService.findUserIdsByFriendGroup(groupIdList));
+//
+//
+//        // Search for users
+//        userList.addAll(userService.findUsersByIds(userIdList));
+//
+//        if(userList == null || userList.isEmpty()) {
+//            throw  new AlbumNotFoundException(albumId);
+//        } else {
+//            return userList.toString();
+//        }
+//    }
+
 }

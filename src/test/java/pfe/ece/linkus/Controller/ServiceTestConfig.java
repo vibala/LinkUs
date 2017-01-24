@@ -1,5 +1,6 @@
-package pfe.ece.linkus.Controller;
+package pfe.ece.linkUS.Controller;
 
+import org.junit.Ignore;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import pfe.ece.LinkUS.Service.UserEntityService.UserService;
 /**
  * Created by Vignesh on 12/20/2016.
  */
+@Ignore
 @Profile("test")
 @Configuration
 public class ServiceTestConfig {

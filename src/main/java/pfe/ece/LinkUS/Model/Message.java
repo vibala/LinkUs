@@ -1,5 +1,7 @@
 package pfe.ece.LinkUS.Model;
 
+import org.springframework.data.annotation.Id;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
@@ -9,6 +11,7 @@ import java.io.Serializable;
 @XmlRootElement(name = "message")
 public class Message implements Serializable {
 
+    @Id
     private long id;
     private String subject;
     private String text;

@@ -3,6 +3,7 @@ package pfe.ece.LinkUS.Repository.TokenMySQLRepo;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import pfe.ece.LinkUS.Model.VerificationToken;
+
 import javax.transaction.Transactional;
 
 /**

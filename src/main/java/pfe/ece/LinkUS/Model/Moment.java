@@ -2,26 +2,23 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
 
-import java.util.*;
+import java.util.ArrayList;
 
 /**
- * Created by DamnAug on 14/10/2016.
+ * Created by DamnAug on 05/01/2017.
  */
 public class Moment {
 
     private String id;
     private String name;
-    private String url;
-    private ArrayList<Comment> commentList = new ArrayList<>();
-    private ArrayList<Description> descriptionsList = new ArrayList<>();
-    private Date publishDate;
-    private ArrayList<IdRight> idRight = new ArrayList<>();
-    private ArrayList<String> userIdDescriptionAvailable = new ArrayList<>();
-    private byte[] imgByte;
+    private ArrayList<Instant> instantList = new ArrayList();
+    private boolean news = true;
 
-    public Moment(){
-
+    public Moment() {
+        ObjectId objectId = new ObjectId();
+        setId(objectId.toString());
     }
 
     @Override
@@ -34,14 +31,6 @@ public class Moment {
             e.printStackTrace();
         }
         return str;
-    }
-
-    public byte[] getImgByte() {
-        return imgByte;
-    }
-
-    public void setImgByte(byte[] imgByte) {
-        this.imgByte = imgByte;
     }
 
     public String getId() {
@@ -60,60 +49,35 @@ public class Moment {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public ArrayList<Instant> getInstantList() {
+        return instantList;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setInstantList(ArrayList<Instant> instantList) {
+        this.instantList = instantList;
     }
 
-    public ArrayList<Comment> getCommentList() {
-        return commentList;
+    public boolean isNews() {
+        return news;
     }
 
-    public void setCommentList(ArrayList<Comment> commentList) {
-        this.commentList = commentList;
+    public void setNews(boolean news) {
+        this.news = news;
     }
 
-    public ArrayList<Description> getDescriptionsList() {
-        return descriptionsList;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Moment moment = (Moment) o;
+
+        return name.equals(moment.name);
+
     }
 
-    public void setDescriptionsList(ArrayList<Description> descriptionsList) {
-        this.descriptionsList = descriptionsList;
-    }
-
-    public Date getPublishDate() {
-        return publishDate;
-    }
-
-    public void setPublishDate(Date publishDate) {
-        this.publishDate = publishDate;
-    }
-
-    public ArrayList<IdRight> getIdRight() {
-        return idRight;
-    }
-
-    public void setIdRight(ArrayList<IdRight> idRight) {
-        this.idRight = idRight;
-    }
-
-    public ArrayList<String> getUserIdDescriptionAvailable() {
-        return userIdDescriptionAvailable;
-    }
-
-    public void setUserIdDescriptionAvailable(ArrayList<String> userIdDescriptionAvailable) {
-        this.userIdDescriptionAvailable = userIdDescriptionAvailable;
-    }
-
-    public boolean addUserIdDescriptionAvailable(String id) {
-        if(!userIdDescriptionAvailable.contains(id)) {
-            return false;
-        } else {
-            userIdDescriptionAvailable.add(id);
-            return true;
-        }
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }

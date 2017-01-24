@@ -3,7 +3,7 @@ package pfe.ece.LinkUS.Service.CurrentUserService;
 
 import org.springframework.stereotype.Service;
 import pfe.ece.LinkUS.Model.CurrentUser;
-import pfe.ece.LinkUS.Model.Role;
+import pfe.ece.LinkUS.Model.Enum.Role;
 
 /**
  * Created by Vignesh on 11/6/2016.

@@ -3,6 +3,7 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import pfe.ece.LinkUS.Model.Enum.Role;
 
 import java.util.Date;
 

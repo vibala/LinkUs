@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-</head>
-<body>
-<h1>     MAIL CONFIRMATION STATUS FOLLOWING YOUR SIGN UP </h1>
-<div class="container">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>HTTP CODE</th>
-            <th>SUBJECT</th>
-            <th>MESSAGE</th>
-            <th>Good</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- TODO: Content -->
-        <tr th:each="message, status : ${messages_confirmation}">
-            <td th:text="${status.count}">#</td>
-            <td th:text="${message.id}">HTTP Code</td>
-            <td th:text="${message.subject}">Subject</td>
-            <td th:text="${message.text}">Text</td>
-            <td>
-                <span class="glyphicon glyphicon-ok" th:if="${message.user_registred}"></span>
-                <span class="glyphicon glyphicon-remove" th:unless="${message.user_registred}"></span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-</body>
+    <head>
+        <link rel="stylesheet" href="http://localhost:9999/bootstrap/css/bootstrap.min.css" />
+    </head>
+    <body background="http://localhost:9999/images/background.jpg">
+
+    <div class="container">
+        <div style="height:20px;"></div>
+        <div class="text-center">
+            <h2>MAIL CONFIRMATION FOLLOWING YOUR SIGN UP </h2>
+        </div>
+        <div class="row" th:each="message, status : ${messages_confirmation}">
+            <div style="height:30px;"></div>
+            <div class="col-md-4 col-xs-5" >
+                <img src="http://localhost:9999/images/greenCheck.png" class="img-responsive center-block" alt="Green check" width="250" height="250" th:if="${message.user_registred}">
+                <img src="http://localhost:9999/images/redCross.png" class="img-responsive center-block" alt="Red cross" width="250" height="250" th:unless="${message.user_registred}">
+            </div>
+            <div class="col-md-8 col-xs-7">
+                <div style="height:30px;"></div>
+                <div class="row">
+                    <h2 th:if="${message.user_registred}"> Registration successful !</h2>
+                    <h2 th:unless="${message.user_registred}"> Registration failed !</h2>
+                    <h3 th:text="${message.text}"> Text </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    </body>
 </html>

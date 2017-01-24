@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import pfe.ece.LinkUS.Model.Enum.Role;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -56,15 +56,20 @@ public class User implements Serializable {
     @Field("role")
     private Role role;
 
-    @Field("age")
-    private int age;
-
     @Field("friendList")
     private ArrayList<String> friendList = new ArrayList<>();
 
     @Field("friendPendingList")
     private ArrayList<String> friendPendingList = new ArrayList<>();
 
+    @Field("profilImgUrl")
+    private String profilImgUrl;
+
+    @Field("friendGroupList")
+    private ArrayList<String> friendGroupIdList = new ArrayList<>();
+
+    @Field("configUser")
+    private ConfigUser configUser = new ConfigUser();
 
     @Override
     public String toString() {
@@ -89,17 +94,7 @@ public class User implements Serializable {
 
     public User (String user_id){
         this.setId(user_id);
-    }
-
-    public User(String lastName, String firstName, String email, String plain_password, String sexe,Date dateofBirth,String role) {
-        this();
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.email = email;
-        this.passwordHash = BCrypt.hashpw(plain_password, BCrypt.gensalt());
-        this.sexe = sexe;
-        this.dateofBirth = dateofBirth;
-        this.role = Role.valueOf(role);
+        this.enabled = false;
     }
 
     //
@@ -116,6 +111,7 @@ public class User implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
+
     public String getLastName() {
         return lastName;
     }
@@ -130,14 +126,6 @@ public class User implements Serializable {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public String getPasswordHash() {
@@ -208,4 +196,27 @@ public class User implements Serializable {
         this.dateofRegistration = dateofRegistration;
     }
 
+    public String getProfilImgUrl() {
+        return profilImgUrl;
+    }
+
+    public void setProfilImgUrl(String profilImgUrl) {
+        this.profilImgUrl = profilImgUrl;
+    }
+
+    public ArrayList<String> getFriendGroupIdList() {
+        return friendGroupIdList;
+    }
+
+    public void setFriendGroupIdList(ArrayList<String> friendGroupIdList) {
+        this.friendGroupIdList = friendGroupIdList;
+    }
+
+    public ConfigUser getConfigUser() {
+        return configUser;
+    }
+
+    public void setConfigUser(ConfigUser configUser) {
+        this.configUser = configUser;
+    }
 }

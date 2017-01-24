@@ -1,6 +1,7 @@
 package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import pfe.ece.LinkUS.Model.Enum.Role;
 
 /**
  * Created by Vignesh on 12/12/2016.

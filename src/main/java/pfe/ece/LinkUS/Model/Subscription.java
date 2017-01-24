@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 
@@ -10,6 +11,7 @@ import java.util.Date;
  */
 public class Subscription {
 
+    @Id
     private String id;
     private String type;
     private String userId;
@@ -17,10 +19,37 @@ public class Subscription {
     private Date dateEnd;
     private int free;
 
-    public Subscription(String id, String type, String userId) {
-        this.id = id;
+    public Subscription() {
+    }
+
+    public Subscription(String type, String userId) {
         this.type = type;
         this.userId = userId;
+    }
+
+    public Subscription(String type, String userId, Date dateBegin) {
+        this.type = type;
+        this.userId = userId;
+        this.dateBegin = dateBegin;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Subscription that = (Subscription) o;
+
+        if (!type.equals(that.type)) return false;
+        return userId.equals(that.userId);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = type.hashCode();
+        result = 31 * result + userId.hashCode();
+        return result;
     }
 
     @Override
@@ -75,12 +104,11 @@ public class Subscription {
         this.dateEnd = dateEnd;
     }
 
-
     public int getFree() {
         return free;
     }
 
-    public void setDescriptionFree(int free) {
+    public void setFree(int free) {
         this.free = free;
     }
 }

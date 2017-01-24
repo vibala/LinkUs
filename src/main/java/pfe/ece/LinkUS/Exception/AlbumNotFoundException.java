@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class AlbumNotFoundException extends RuntimeException {
 
     public AlbumNotFoundException(String userId) {
-        super("Could not find user '" + userId + "'.");
+        super("Could not find album with user '" + userId + "'.");
     }
 }

@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,9 @@ import java.util.List;
  */
 public class FriendGroup {
 
+    @Id
     private String id;
+    private String ownerId;
     private String name;
     private List<String> members = new ArrayList<>();
 
@@ -24,6 +27,14 @@ public class FriendGroup {
             e.printStackTrace();
         }
         return str;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getId() {
@@ -48,5 +59,30 @@ public class FriendGroup {
 
     public List<String> getMembers() {
         return members;
+    }
+
+
+    /**
+     * Check on ownerId & name
+     * @param o
+     * @return
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FriendGroup that = (FriendGroup) o;
+
+        if (!ownerId.equals(that.ownerId)) return false;
+        return name.equals(that.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = ownerId.hashCode();
+        result = 31 * result + name.hashCode();
+        return result;
     }
 }

@@ -5,7 +5,6 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.BasicSessionCredentials;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -16,7 +15,10 @@ import com.amazonaws.services.securitytoken.model.GetSessionTokenRequest;
 import com.amazonaws.services.securitytoken.model.GetSessionTokenResult;
 import com.amazonaws.util.IOUtils;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -57,7 +59,6 @@ public class AmazonS3Service {
 
         GetSessionTokenResult sessionTokenResult = stsClient.getSessionToken(getSessionTokenRequest);
         Credentials sessionCredentials = sessionTokenResult.getCredentials();
-        System.out.println("Session Credentials: " + sessionCredentials.toString());
 
         // Package the session credentials as a BasicSessionCredentials
         // object for an S3 client object to use.
@@ -68,7 +69,6 @@ public class AmazonS3Service {
 
 
     public String generatefileS3Name(String fileName){
-        System.out.println(fileName);
 
         String randomString = UUID.randomUUID().toString();
         String uniqueTimeStamp=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
@@ -170,7 +170,6 @@ public class AmazonS3Service {
 
     stream.close();
     stream = new FileInputStream(AbsolutePathfile);
-    System.out.println(contentLengthbyte.length);
 
     Long contentLength = Long.valueOf(contentLengthbyte.length);
 

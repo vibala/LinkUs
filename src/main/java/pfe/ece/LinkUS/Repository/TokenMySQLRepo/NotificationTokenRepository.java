@@ -11,4 +11,6 @@ import javax.transaction.Transactional;
 @Transactional
 public interface NotificationTokenRepository extends CrudRepository<NotificationToken,Long> {
     public NotificationToken findByUsername(String username);
+
+    public NotificationToken findByUsernameAndToken(String username, String token);
 }

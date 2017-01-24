@@ -2,15 +2,48 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.annotation.Id;
 
 /**
+ * Generic class for configUser, idRight, etc.
+ *
+ *      Like a key/value class
+ *      ----------------------
  * Created by DamnAug on 23/10/2016.
  */
-public class Description {
+public class KeyValue {
 
+    @Id
     private String id;
     private String type; // description, wikipedia, localisation,
     private String content;
+
+    public KeyValue() {
+    }
+
+    public KeyValue(String type, String content) {
+        this.type = type;
+        this.content = content;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        KeyValue keyValue = (KeyValue) o;
+
+        if (!type.equals(keyValue.type)) return false;
+        return content.equals(keyValue.content);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = type.hashCode();
+        result = 31 * result + content.hashCode();
+        return result;
+    }
 
     public String toString() {
         String str = "";

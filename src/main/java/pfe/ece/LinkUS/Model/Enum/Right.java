@@ -1,4 +1,4 @@
-package pfe.ece.LinkUS.Model;
+package pfe.ece.LinkUS.Model.Enum;
 
 /**
  * Tous les droits possible dans l'application sont référencés aussi
@@ -8,5 +8,5 @@ package pfe.ece.LinkUS.Model;
 public enum Right {
     ADMIN,
     COMMENT,
-    LECTURE,
+    LECTURE;
 }

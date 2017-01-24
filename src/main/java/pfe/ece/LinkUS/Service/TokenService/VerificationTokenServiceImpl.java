@@ -26,16 +26,12 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     public VerificationToken getVerificationToken(String token) {
 
         VerificationToken verificationToken = null;
-        System.out.println("toto");
         try{
-            System.out.println("titi");
             verificationToken = verificationTokenRepository.findByToken(token);
         }catch(Exception e){
             System.out.print(e.getMessage());
             return null;
         }
-
-        System.out.println("caca");
         return verificationToken;
     }
 

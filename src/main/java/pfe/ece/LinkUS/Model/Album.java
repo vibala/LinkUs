@@ -2,10 +2,12 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by DamnAug on 14/10/2016.
@@ -17,6 +19,31 @@ public class Album {
     private String id;
     private String name;
     private String ownerId;
+    private String countryName;
+    private String placeName;
+    private Date beginDate;
+    private Date endDate;
+    private ArrayList<Moment> moments = new ArrayList<>();
+    private ArrayList<IdRight> idRight = new ArrayList<>();
+    private boolean active;
+
+
+    public Album() {
+        ObjectId objectId = new ObjectId();
+        setId(objectId.toString());
+    }
+
+    @Override
+    public String toString() {
+        String str = "";
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            str = mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -48,26 +75,6 @@ public class Album {
 
     public void setIdRight(ArrayList<IdRight> idRight) {
         this.idRight = idRight;
-    }
-
-    private String countryName;
-    private String placeName;
-    private Date beginDate;
-    private Date endDate;
-    private ArrayList<Moment> moments = new ArrayList<>();
-    private ArrayList<IdRight> idRight = new ArrayList<>();
-    private boolean active = false;
-
-    @Override
-    public String toString() {
-        String str = "";
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            str = mapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return str;
     }
 
     public String getId() {

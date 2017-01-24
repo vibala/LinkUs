@@ -2,7 +2,11 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.util.ArrayList;
 
 /**
@@ -15,16 +19,15 @@ public class IdRight {
     private ArrayList<String> userIdList = new ArrayList<>();
     private ArrayList<String> groupIdList = new ArrayList<>();
 
-    public IdRight(){}
+    public IdRight(){
+        ObjectId objectId = new ObjectId();
+        setId(objectId.toString());
+    }
 
     public IdRight(String right) {
         this.right = right;
-    }
-
-
-    public IdRight(String right, ArrayList<String> userIdList) {
-        this.right = right;
-        this.userIdList = userIdList;
+        ObjectId objectId = new ObjectId();
+        setId(objectId.toString());
     }
 
     @Override

@@ -18,6 +18,7 @@ import pfe.ece.LinkUS.Exception.EmailExistsException;
 import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Validator.UserCreateFormValidator;
 import pfe.ece.LinkUS.Service.AlbumService;
+import pfe.ece.LinkUS.Service.SubscriptionService;
 import pfe.ece.LinkUS.Service.TokenService.VerificationTokenService;
 import pfe.ece.LinkUS.Service.UserEntityService.UserService;
 
@@ -41,6 +42,8 @@ public class RegisterController {
     private  VerificationTokenService verificationTokenService;
     @Autowired
     private  AlbumService albumService;
+    @Autowired
+    private SubscriptionService subscriptionService;
 
     private static final Logger LOGGER = Logger.getLogger(RegisterController.class);
 
@@ -57,8 +60,6 @@ public class RegisterController {
 
         if(form==null){
             LOGGER.error("User is null");
-        }else{
-            LOGGER.info("User is not null");
         }
 
         // contents as before
@@ -77,51 +78,31 @@ public class RegisterController {
         try{
 
             username = form.getEmail();
-            System.out.println("Username ! " + username);
+
             String appUrl = request.getContextPath();
-            System.out.println("fsdfsdf " + userService);
 
             if((userService.getUserByEmail(username).isPresent() && userService.getUserByEmail(username).get().isEnabled())
-                 || (userService.getUserByEmail(username).isPresent() &&
-                        !userService.getUserByEmail(username).get().isEnabled() && verificationTokenService.existsTokenAssociatedToUsername(username))){
-                System.out.println("b");
+                    || (userService.getUserByEmail(username).isPresent() &&
+                    !userService.getUserByEmail(username).get().isEnabled() && verificationTokenService.existsTokenAssociatedToUsername(username))){
                 messages.add(new Message(417,"msg.Failure","A user with this email address already exists in the DB"));
-                System.out.println("c");
                 return new ResponseEntity(messages.get(0), HttpStatus.CONFLICT);
 
             }else{
-                System.out.println("d");
                 eventPublisher.publishEvent(new OnRegistrationCompleteEvent(username,request.getLocale(),appUrl,1));
-                System.out.println("e");
             }
-
-            /*if(!userService.getUserByEmail(username).isPresent()){
-                eventPublisher.publishEvent(new OnRegistrationCompleteEvent(username,request.getLocale(),appUrl,1));
-            }else{
-                System.out.println("d");
-                messages.add(new Message(417,"msg.Failure","A user with this email address already exists in the DB"));
-                System.out.println("e");
-                return new ResponseEntity(messages.get(0), HttpStatus.CONFLICT);
-            }*/
         }catch(MailSendException e ){
-            System.out.println("f");
             messages.add(new Message(417,"msg.Failure",e.getMessage()));
-            System.out.println("g");
             return new ResponseEntity(messages.get(0), HttpStatus.CONFLICT);
         }catch(Exception e){
-            System.out.println("h");
             messages.add(new Message(417,"msg.Failure",e.toString()));
-            System.out.println("e");
             return new ResponseEntity(messages.get(0), HttpStatus.CONFLICT);
         }
-        System.out.println("f");
 
-        User registered = createUserAccount(form);
-        LOGGER.info("confirmRegistration (Album create) - STEP II");
-        Album album_for_new_comer = createAlbumForEachNewRegisterUser(registered.getId());
-        albumService.save(album_for_new_comer);
-        LOGGER.info("confirmRegistration (Album create) - STEP III");
-        System.out.println("g " + registered.getId());
+        User registeredUser = createUserAccount(form);
+        LOGGER.info("confirmRegistration (Album create) - STEP II - Album creation");
+        albumService.createAlbumForNewRegisteredUser(registeredUser.getId());
+        LOGGER.info("confirmRegistration (Album create) - STEP III - Subscriptions creation");
+        subscriptionService.addUserToAllSubscription(registeredUser);
 
         return new ResponseEntity(new Message(200, "message.regSucc", "Hello we need to verify your mail " + username + " for the Linkus account"),HttpStatus.CREATED);
     }
@@ -159,7 +140,6 @@ public class RegisterController {
         LOGGER.info("From ConfirmationMailStep2 in RgisterController:" + realUser.getEmail());
         String appUrl = request.getContextPath();
         realUser.setEnabled(true);
-        System.out.println("REALUSER" + realUser.getId());
         userService.saveRegisteredUser(realUser); // Set enabled := true
         verificationTokenService.deleteVerificationToken(token);
         MessageTypeMailConfirmation m = new MessageTypeMailConfirmation(100,"message.regSucc","Registration process completed ! You can login to the app",true);
@@ -179,19 +159,4 @@ public class RegisterController {
             return null;
         }
     }
-
-    public Album createAlbumForEachNewRegisterUser(String userId){
-        LOGGER.debug("createAlbumForEachNewRegisterUser - debut de création d'un album");
-        Album album = new Album();
-        album.setOwnerId(userId);
-        // on ajoute l'owner dans chaque droit
-        for(Right right: Right.values()) {
-            IdRight idRight = new IdRight(right.name());
-            idRight.getUserIdList().add(userId);
-            album.getIdRight().add(idRight);
-        }
-        LOGGER.debug("createAlbumForEachNewRegisterUser - fin de création d'un album");
-        return album;
-    }
-
 }
