@@ -244,6 +244,20 @@ public class AlbumService {
             }
         }
     }
+
+    public List<String> getUrlsFromMoment(String userId, String albumId, String momentId) {
+        Album album = findAlbumById(albumId);
+
+        MomentService momentService = new MomentService();
+        Moment moment = momentService.findMomentInAlbum(album, momentId);
+
+        List<String> urls = new ArrayList<>();
+
+        for (Instant instant: moment.getInstantList()) {
+            urls.add(instant.getUrl());
+        }
+        return urls;
+    }
     /**
      *
      * @param album

@@ -26,6 +26,7 @@ public class Album {
     private ArrayList<Moment> moments = new ArrayList<>();
     private ArrayList<IdRight> idRight = new ArrayList<>();
     private boolean active;
+    private String imageUrl;
 
 
     public Album() {

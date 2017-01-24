@@ -8,12 +8,15 @@ import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
 import pfe.ece.LinkUS.Model.Album;
 import pfe.ece.LinkUS.Model.Enum.Right;
 import pfe.ece.LinkUS.Model.FriendGroup;
+import pfe.ece.LinkUS.Model.Instant;
+import pfe.ece.LinkUS.Model.Moment;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.FriendGroupService;
+import pfe.ece.LinkUS.Service.MomentService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserEntityService.UserServiceImpl;
 
@@ -46,11 +49,6 @@ public class AlbumController {
     private AlbumService albumService;
 
 
-    @RequestMapping("/")
-    public String albumDefaultCall() {
-        return "Not implemented yet.";
-    }
-
     @RequestMapping(value= "/update", method= RequestMethod.POST)
     public ResponseEntity updateAlbum(@RequestBody Album album) {
 
@@ -74,7 +72,7 @@ public class AlbumController {
     }
 
     @RequestMapping(value = "/right", produces = "application/json")
-    public String findAlbumByUserId(@RequestParam(value = "right") String right, @RequestParam(value = "news") boolean news) {
+    public String findAlbumsByUserId(@RequestParam(value = "right") String right, @RequestParam(value = "news") boolean news) {
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
         AlbumService albumService = new AlbumService(albumRepository);
@@ -124,5 +122,27 @@ public class AlbumController {
 
         AlbumService albumService = new AlbumService(albumRepository);
         albumService.addFriendToAlbum(userId, friendId, albumId, right);
+    }
+
+    @RequestMapping(value = "/", params = {"albumId", "news"})
+    public String getAlbumById(@RequestParam(value = "albumId") String albumId,
+                               @RequestParam(value = "news") boolean news){
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        Album album = albumService.findAlbumById(albumId);
+
+        List<Album> albumList = new ArrayList<>();
+        albumList.add(album);
+
+        return albumService.checkData(albumList, news, userId).get(0).toString();
+    }
+    
+    @RequestMapping(value = "/momentUrls", params = {"albumId", "momentId"})
+    public String getUrlsFromMoment(@RequestParam(value = "albumId") String albumId,
+                                    @RequestParam(value = "momentId") String momentId){
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        return albumService.getUrlsFromMoment(userId, albumId, momentId).toString();
     }
 }
