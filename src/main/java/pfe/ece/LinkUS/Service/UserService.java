@@ -51,7 +51,7 @@ public class UserService {
 
     public User findUserByEmail(String email) {
         Optional<User> user = userRepository.findOneByEmail(email);
-        if(user.get() == null) {
+        if(!user.isPresent() || user.get() == null) {
             throw new UserNotFoundException(email);
         } else {
             return user.get();
@@ -60,10 +60,19 @@ public class UserService {
 
     public boolean checkUserByEmail(String email) {
         Optional<User> user = userRepository.findOneByEmail(email);
-        if(user.get() == null) {
+        if(!user.isPresent() || user.get() == null) {
             return false;
         } else {
             return true;
+        }
+    }
+
+    public boolean checkUserById(String userId) {
+        User user = userRepository.findOne(userId);
+        if(user != null) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -122,11 +131,13 @@ public class UserService {
 
         User user = findUserById(userId);
 
-        if(!user.getFriendPendingList().contains(friendId)) {
-            LOGGER.info("New friend request with friendID: " + friendId);
-            user.getFriendPendingList().add(friendId);
-            update(user);
-            return true;
+        if(checkUserById(friendId)) {
+            if(!user.getFriendPendingList().contains(friendId)) {
+                LOGGER.info("New friend request with friendID: " + friendId);
+                user.getFriendPendingList().add(friendId);
+                update(user);
+                return true;
+            }
         }
         return false;
     }

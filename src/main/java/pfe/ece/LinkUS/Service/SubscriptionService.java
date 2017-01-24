@@ -52,10 +52,17 @@ public class SubscriptionService {
         }
     }
 
+    /**
+     * Fonctionne pas je pense
+     *
+     * @param subscription
+     * @return
+     */
     public boolean addSubscription(Subscription subscription) {
         boolean matching = findMatchingSubscription(subscription);
 
         if(matching) {
+            //updateSubscription()
             // Existing object
             LOGGER.info("Subscription existing for user id " + subscription.getUserId() +
                     ": Type: " + subscription.getType() +

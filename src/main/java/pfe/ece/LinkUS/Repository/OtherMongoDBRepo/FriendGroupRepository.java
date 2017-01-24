@@ -12,6 +12,6 @@ public interface FriendGroupRepository extends MongoRepository<FriendGroup, Stri
 
     //@Query(value = "{\"memberId\":?0}")
     List<FriendGroup> findFriendGroupByMembers(String id);
-
+    List<FriendGroup> findFriendGroupByNameLikeIgnoreCase(String name);
     List<FriendGroup> findByOwnerId(String ownerId);
 }

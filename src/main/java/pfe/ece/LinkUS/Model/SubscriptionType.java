@@ -22,7 +22,7 @@ public class SubscriptionType {
     }
 
     public void setRandomId() {
-        if(getId().equals(null) || getId().equals("")) {
+        if(getId()== null || getId().equals("")) {
             ObjectId objectId = new ObjectId();
             setId(objectId.toString());
         }

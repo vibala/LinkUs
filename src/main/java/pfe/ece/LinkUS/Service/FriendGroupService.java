@@ -7,6 +7,8 @@ import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -101,6 +103,8 @@ public class FriendGroupService {
             friendGroup.setMembers(userIdList);
         }
 
+        //TODO: Temporaire
+        //friendGroup.setGroupImgUrl("http://" + Inet4Address.getLocalHost().getHostAddress() + ":9999/images?name="+);
         // Recherche d'un friendGroup deja existant pour l'owner
         List<FriendGroup> friendGroupList = findFriendGroupByOwnerId(ownerId);
         if(!existingFriendGroup(friendGroupList, friendGroup)) {
@@ -145,5 +149,13 @@ public class FriendGroupService {
             return true;
         }
         return false;
+    }
+
+    public List<FriendGroup> searchGroupByPartialName(String textToFind) {
+
+        List<FriendGroup> userList = friendGroupRepository.findFriendGroupByNameLikeIgnoreCase(textToFind);
+        // TODO: Tester pageable
+
+        return userList;
     }
 }

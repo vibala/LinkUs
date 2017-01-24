@@ -116,6 +116,10 @@ public class AlbumController {
             @RequestBody String albumId,
             @RequestBody String right){
 
+        friendId = friendId.replace("\"","");
+        albumId = albumId.replace("\"","");
+        right = right.replace("\"","");
+
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         AlbumService albumService = new AlbumService(albumRepository);

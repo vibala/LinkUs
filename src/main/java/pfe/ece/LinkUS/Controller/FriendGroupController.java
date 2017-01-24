@@ -1,9 +1,11 @@
+
 package pfe.ece.LinkUS.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pfe.ece.LinkUS.Model.FriendGroup;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
@@ -11,6 +13,7 @@ import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.FriendGroupService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -34,32 +37,32 @@ public class FriendGroupController {
     @Autowired
     private AccessTokenService accessTokenService;
 
-    @RequestMapping(value = "/addUser", params = {"friendGroupId", "userId"}, method = RequestMethod.POST)
-    public ResponseEntity addUserToFriendGroup(@RequestBody String friendGroupId,
-                                               @RequestBody String userId) {
-
-        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
-        if(friendGroupService.addUserToFriendGroup(friendGroupId, userId)){
-            return new ResponseEntity(HttpStatus.OK);
+    @RequestMapping(value = "/addUser", params = {"userId"}, method = RequestMethod.POST)
+    public ResponseEntity addUserToFriendGroup(@RequestBody FriendGroup friendGroup,@RequestParam String userId) {
+        if(friendGroup != null && userId != null && !userId.equals("")) {
+            FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
+            if(friendGroupService.addUserToFriendGroup(friendGroup.getId(), userId)){
+                return new ResponseEntity(HttpStatus.OK);
+            }
         }
         return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-    @RequestMapping(value = "/removeUser", params = {"friendGroupId", "userId"}, method = RequestMethod.POST)
-    public ResponseEntity removeUserToFriendGroup(@RequestBody String friendGroupId,
-                                                  @RequestBody String userId) {
-
-        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
-        if(friendGroupService.removeUserToFriendGroup(friendGroupId, userId)){
-            return new ResponseEntity(HttpStatus.OK);
+    @RequestMapping(value = "/removeUser", params = {"userId"}, method = RequestMethod.POST)
+    public ResponseEntity removeUserToFriendGroup(@RequestBody FriendGroup friendGroup,@RequestParam String userId) {
+        if(friendGroup != null && userId != null && !userId.equals("")) {
+            FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
+            if (friendGroupService.removeUserToFriendGroup(friendGroup.getId(), userId)) {
+                return new ResponseEntity(HttpStatus.OK);
+            }
         }
         return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-    @RequestMapping(value = "/add", params = {"name", "userIdList"}, method = RequestMethod.POST)
-    public ResponseEntity addFilledFriendGroup(@RequestBody String name,
-                                               @RequestBody List<String> userIdList) {
-
+    @RequestMapping(value = "/add",  method = RequestMethod.POST)
+    public ResponseEntity addFilledFriendGroup(@RequestBody FriendGroup friendGroup) {
+        String name=friendGroup.getName();
+        List<String> userIdList=friendGroup.getMembers();
         String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
@@ -72,6 +75,7 @@ public class FriendGroupController {
     @RequestMapping(value = "/add", params = {"name"}, method = RequestMethod.POST)
     public ResponseEntity addFriendGroup(@RequestBody String name) {
 
+        name = name.replace("\"","");
         String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);

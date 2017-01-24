@@ -6,11 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Exception.UnauthorizedInformationException;
+import pfe.ece.LinkUS.Model.FriendGroup;
 import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
+import pfe.ece.LinkUS.Service.FriendGroupService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
 
@@ -104,9 +106,9 @@ public class UserController {
      *
      * @param friendId
      */
-    @RequestMapping(value = "/friendRequest", params = {"friendId"}, method = RequestMethod.POST)
+    @RequestMapping(value = "/friendRequest", method = RequestMethod.POST)
     public ResponseEntity friendRequest(@RequestBody String friendId) {
-
+        friendId = friendId.replace("\"","");
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         UserService userService = new UserService(userRepository);
@@ -122,8 +124,9 @@ public class UserController {
      * @param friendId
      * @param decision
      */
-    @RequestMapping(value = "/friendRequestDecision", params = {"friendId", "decision"}, method = RequestMethod.POST)
-    public ResponseEntity friendRequestDecision(@RequestBody String friendId,  Boolean decision) {
+    @RequestMapping(value = "/friendRequestDecision", params = {"decision"}, method = RequestMethod.POST)
+    public ResponseEntity friendRequestDecision(@RequestBody String friendId,  @RequestParam("decision") boolean decision) {
+        friendId = friendId.replace("\"","");
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
@@ -192,6 +195,15 @@ public class UserController {
         List<User> userList = userService.searchUserByPartialFirstnameOrLastname(text);
         userService.checkData(userList);
         return userList.toString();
+    }
+
+    @RequestMapping(value = "/searchGroupFriend", params = {"text"})
+    public String searchGroupFriend(@RequestParam("text") String text){
+
+        FriendGroupService friendGroup = new FriendGroupService(friendGroupRepository);
+
+        List<FriendGroup> friendGroupList = friendGroup.searchGroupByPartialName(text);
+        return friendGroupList.toString();
     }
 
 }
