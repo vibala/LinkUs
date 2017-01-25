@@ -76,11 +76,22 @@ public class UserService {
         }
     }
 
-    public List<User> searchUserByPartialFirstnameOrLastname(String textToFind) {
+    public List<User> searchUserByPartialFirstnameOrLastname(String userId, String textToFind) {
 
         List<User> userList = userRepository.findByFirstNameLikeOrLastNameLike(textToFind, textToFind, createPageRequest());
         // TODO: Tester pageable
 
+        // Ne pas renvoyer le user faisant la demande
+        User userAsking = null;
+        for (User user: userList) {
+            if(userId.equals(user.getId())) {
+                userAsking = user;
+            }
+        }
+        if(userAsking != null) {
+            userList.remove(userAsking);
+        }
+        // **
         return userList;
     }
 
@@ -131,7 +142,8 @@ public class UserService {
         User user = findUserById(userId);
 
         if(checkUserById(friendId)) {
-            if(!user.getFriendPendingList().contains(friendId)) {
+            if(!user.getFriendPendingList().contains(friendId) &&
+                    !user.getFriendList().contains(friendId)) {
                 LOGGER.info("New friend request with friendID: " + friendId);
                 user.getFriendPendingList().add(friendId);
                 update(user);
@@ -187,6 +199,12 @@ public class UserService {
         return findUsersByIds(user.getFriendList());
     }
 
+    public List<User> findPendingFriends(String userId) {
+
+        User user = findUserById(userId);
+        return findUsersByIds(user.getFriendPendingList());
+
+    }
     public User findFriend(String userId, String friendId) {
 
         User user = findUserById(userId);
@@ -206,11 +224,21 @@ public class UserService {
 
     public void checkData(List<User> userList) {
 
+        List<User> userToRemove = new ArrayList<>();
         if(userList != null) {
             for (User user: userList) {
-                checkData(user);
+                if(!user.isEnabled()) {
+                    userToRemove.add(user);
+                } else {
+                    checkData(user);
+                }
             }
         }
+        // Remove disabled users
+        if(!userToRemove.isEmpty()) {
+            userList.removeAll(userToRemove);
+        }
+        // **
     }
 
     public void checkData(User user) {
@@ -251,7 +279,7 @@ public class UserService {
     public String createFakeUser(String name) throws EmailExistsException, ParseException {
         pfe.ece.LinkUS.Service.UserEntityService.UserService userService = new UserServiceImpl(userRepository);
         User user = new User();
-        user.setEmail(name + "@yopmail.com");
+        user.setEmail(name.toLowerCase() + "@yopmail.com");
         user.setDateofBirth(new Date(117, 0, 17, 17, 17));
         user.setFirstName(name);
         user.setLastName("Corea");

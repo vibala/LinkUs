@@ -145,8 +145,9 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/removeFriend", params = {"friendId"}, method = RequestMethod.POST)
-    public ResponseEntity friendRequestDecision(@RequestParam(value = "friendId") String friendId) {
+    @RequestMapping(value = "/removeFriend", method = RequestMethod.POST)
+    public ResponseEntity friendRequestDecision(@RequestBody String friendId) {
+        friendId = friendId.replace("\"","");
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
@@ -186,24 +187,24 @@ public class UserController {
         return friend.toString();
     }
 
-    @RequestMapping(value = "/searchFriend", params = {"text"})
-    public String searchFriend(@RequestParam("text") String text){
+    @RequestMapping(value = "/searchUser", params = {"text"})
+    public String searchUser(@RequestParam("text") String text){
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         UserService userService = new UserService(userRepository);
-        List<User> userList = userService.searchUserByPartialFirstnameOrLastname(text);
+        List<User> userList = userService.searchUserByPartialFirstnameOrLastname(userId, text);
         userService.checkData(userList);
         return userList.toString();
     }
 
-    @RequestMapping(value = "/searchGroupFriend", params = {"text"})
-    public String searchGroupFriend(@RequestParam("text") String text){
-
-        FriendGroupService friendGroup = new FriendGroupService(friendGroupRepository);
-
-        List<FriendGroup> friendGroupList = friendGroup.searchGroupByPartialName(text);
-        return friendGroupList.toString();
+    @RequestMapping("/getPendingFriends")
+    public String getPendingFriends(){
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        UserService userService = new UserService(userRepository);
+        List<User> userList = userService.findPendingFriends(userId);
+        userService.checkData(userList);
+        return userList.toString();
     }
 
 }

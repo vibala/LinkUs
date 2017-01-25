@@ -1,14 +1,9 @@
 package pfe.ece.LinkUS.Service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pfe.ece.LinkUS.Model.FriendGroup;
-import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -42,7 +37,7 @@ public class FriendGroupService {
         return friendGroupRepository.findByOwnerId((ownerId));
     }
 
-    public FriendGroup findFriendGroupsByOwnerIdAndName(String ownerId, String name) {
+    public FriendGroup findFriendGroupByOwnerIdAndName(String ownerId, String name) {
         return friendGroupRepository.findByOwnerIdAndName(ownerId, name);
     }
 
@@ -118,7 +113,18 @@ public class FriendGroupService {
 
     public boolean deleteFriendGroup(String name, String ownerId) {
 
-        FriendGroup friendGroup = findFriendGroupsByOwnerIdAndName(ownerId, name);
+        FriendGroup friendGroup = findFriendGroupByOwnerIdAndName(ownerId, name);
+
+        if(friendGroup != null) {
+            delete(friendGroup);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteFriendGroup(String id) {
+
+        FriendGroup friendGroup = findFriendGroupById(id);
 
         if(friendGroup != null) {
             delete(friendGroup);
