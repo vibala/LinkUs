@@ -11,7 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
-import com.start_up.dev.apilinkus.GalleryActivity;
+import com.start_up.dev.apilinkus.GalleryOldActivity;
 import com.start_up.dev.apilinkus.R;
 
 import java.io.File;
@@ -20,12 +20,12 @@ import java.util.ArrayList;
 public class DataAdapterGallery extends RecyclerView.Adapter<DataAdapterGallery.GalleryViewHolder> {
     private ArrayList<File> files;
     private Context context;
-    private GalleryActivity activity;
+    private GalleryOldActivity activity;
     private CardView cardView;
     public DataAdapterGallery(Context context, ArrayList<File> files) {
         this.context = context;
         this.files = files;
-        this.activity=(GalleryActivity)context;
+        this.activity=(GalleryOldActivity)context;
         System.out.println(activity);
     }
 

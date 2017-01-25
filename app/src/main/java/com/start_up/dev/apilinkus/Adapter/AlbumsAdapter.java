@@ -83,23 +83,25 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
 
     @Override
     public void onBindViewHolder(final AlbumViewHolder holder, int position) {
-        Album album = albumList.get(position);
-        Log.d(TAG,"Album name " + album.getName());
-        holder.title.setText(album.getName());
-        holder.count.setText(album.getMoments().size() + " moments");
-        // loading album cover using Glide library
-        Glide
-                .with(mContext)
-                .load(album.getThumbnail())
-                .thumbnail(0.1f)
-                .into(holder.thumbnail);
+        if(albumList.size()>0) {
+            Album album = albumList.get(position);
+            Log.d(TAG, "Album name " + album.getName());
+            holder.title.setText(album.getName());
+            holder.count.setText(album.getMoments().size() + " moments");
+            // loading album cover using Glide library
+            Glide
+                    .with(mContext)
+                    .load(album.getThumbnail())
+                    .thumbnail(0.1f)
+                    .into(holder.thumbnail);
 
-        holder.overflow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(holder.overflow);
-            }
-        });
+            holder.overflow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showPopupMenu(holder.overflow);
+                }
+            });
+        }
     }
 
     /**

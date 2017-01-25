@@ -1,6 +1,7 @@
 package com.start_up.dev.apilinkus.Fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -14,11 +15,13 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.start_up.dev.apilinkus.Adapter.MomentsAdapater;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.R;
+import com.start_up.dev.apilinkus.SendMomentActivity;
 
 import java.util.ArrayList;
 
@@ -46,6 +49,14 @@ public class MomentFragment extends Fragment implements RecyclerViewClickListene
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Button uploadButton = (Button) momentView.findViewById(R.id.upload_button);
+
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCallback.momentFragmentOnClickButtonUpload();
+            }
+        });
         recyclerView = (RecyclerView) momentView.findViewById(R.id.moment_recyclerView);
         // 2nd Arguments refer to the number of columns in the grid
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(),1);
@@ -112,10 +123,11 @@ public class MomentFragment extends Fragment implements RecyclerViewClickListene
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
+
     public interface OnMomentSelectedListener{
         public void onMomentSelected(int position);
+        public void momentFragmentOnClickButtonUpload();
     }
-
 
 
 }

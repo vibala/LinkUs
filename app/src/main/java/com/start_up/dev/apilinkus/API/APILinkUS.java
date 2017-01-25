@@ -2,7 +2,7 @@ package com.start_up.dev.apilinkus.API;
 
 import android.content.Context;
 
-import com.start_up.dev.apilinkus.Model.Instant;
+import com.start_up.dev.apilinkus.Model.FriendGroup;
 import com.start_up.dev.apilinkus.Model.Moment;
 
 /**
@@ -17,7 +17,7 @@ public class APILinkUS {
 
     public APILinkUS(Context mContext) {
         this.mContext=mContext;
-        this.BASE_URL="http://192.168.43.128:9999";
+        this.BASE_URL="http://192.168.0.10:9999";
     }
     public APILinkUS() {
     }
@@ -32,17 +32,14 @@ public class APILinkUS {
      * @param notificationToPeopleWithReadRightOnAlbum true pour envoyer une notification aux utilisateur ayant des droits de lecture sur l'album
      * @return
      */
-    public Moment addMomentToMyAlbum(Moment m, String notificationToPeopleWithReadRightOnAlbum){
+    public Moment addMomentToMyAlbum(Moment m, String albumId, String notificationToPeopleWithReadRightOnAlbum){
 
         //String query="/uploadFiles?userId="+userId+"&albumId="+albumId+"&notificationToPeopleWithReadRightOnAlbum="+notificationToPeopleWithReadRightOnAlbum;
-        String query="/uploadFiles?notificationToPeopleWithReadRightOnAlbum="+notificationToPeopleWithReadRightOnAlbum;
+        String query="/uploadFiles?albumId="+albumId+"&notificationToPeopleWithReadRightOnAlbum="+notificationToPeopleWithReadRightOnAlbum;
 
         String urlrequestAPI = BASE_URL + query;
-        System.out.println("aaaaaaaa"+urlrequestAPI);
         APIPostMoment apiPostStudent = new APIPostMoment(m);
-        System.out.println("bbbbbbbbb"+urlrequestAPI);
         apiPostStudent.execute(urlrequestAPI);
-        System.out.println("vvvvvvvv"+urlrequestAPI);
         return m;
     }
 
@@ -79,5 +76,72 @@ public class APILinkUS {
         apiPostStudent.execute(urlrequestAPI);
 
     }
+    public void sendFriendRequest(APIPostOneString_Observer obs,String idFriendUser){
 
+        String query="/user/friendRequest";
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIPostOneString(idFriendUser,obs,"sendFriendRequest").execute(urlrequestAPI);
+
+    }
+    public void createGroup(APIPostCreateGroupFriend_Observer obs,FriendGroup group){
+
+        String query="/friendGroup/add";
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIPostCreateGroupFriend(obs,group).execute(urlrequestAPI);
+
+    }
+
+    public void removeFriend(APIPostOneString_Observer obs,String idFriendUser){
+
+        String query="/user/removeFriend";
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIPostOneString(idFriendUser,obs,"removeFriend").execute(urlrequestAPI);
+
+    }
+    public void removeGroupFriend(APIPostOneString_Observer obs,String idGroupFriend){
+        String query="/friendGroup/remove";
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIPostOneString(idGroupFriend,obs,"removeGroupFriend").execute(urlrequestAPI);
+    }
+
+    public void getSearchListUser(APIGetSearchListUser_Observer fragment, String text){
+        String query="/user/searchUser?text="+text;
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIGetSearchListUser( fragment).execute(urlrequestAPI);
+    }
+
+    public void getListGroupFriend(APIGetListGroupFriend_Observer fragment){
+        String query="/user/getGroupFriends";
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIGetListGroupFriend(fragment).execute(urlrequestAPI);
+    }
+    public void getListFriend(APIGetListFriend_Observer fragment){
+        String query="/user/getFriends";
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIGetListFriend(fragment).execute(urlrequestAPI);
+    }
+    public void getPendingListFriend(APIGetPendingListFriend_Observer fragment){
+        String query="/user/getPendingFriends";
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIGetPendingListFriend(fragment).execute(urlrequestAPI);
+    }
+/** post multiple String, je sais pas encore comment gérer les multiple body avec different type, pas besoin pour l'instant
+ * MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<String, String>();
+ requestBody.add("message_id", "msgid");
+ requestBody.add("message", "qwerty");
+ requestBody.add("client_id", "111");
+ requestBody.add("secret_key", "222");
+
+ HttpEntity formEntity = new HttpEntity<MultiValueMap<String, String>>(requestBody, headers);
+
+ Sur le serveur faudra recuperer MultiValueMap<String, String> requestBody et faire requestBody.get"a")
+ */
 }

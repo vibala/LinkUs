@@ -41,6 +41,9 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.start_up.dev.apilinkus.API.APILinkUS;
+import com.start_up.dev.apilinkus.Fragments.CircleFragment;
+import com.start_up.dev.apilinkus.Fragments.CreateGroupFragment;
 import com.start_up.dev.apilinkus.Fragments.HomeFragment;
 import com.start_up.dev.apilinkus.Fragments.HomeFragment.OnPostSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.MomentFragment;
@@ -51,9 +54,15 @@ import com.start_up.dev.apilinkus.Fragments.ProfileFragment;
 import com.start_up.dev.apilinkus.Fragments.ProfileFragment.OnAlbumSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.SlideshowDialogFragment;
 import com.start_up.dev.apilinkus.Model.Album;
+import com.start_up.dev.apilinkus.Model.FriendGroup;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Service.DateUtil;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,7 +74,7 @@ import java.util.TimerTask;
  */
 
 public class HomeActivity extends AppCompatActivity
-        implements OnNavigationItemSelectedListener,OnAlbumSelectedListener,OnMomentSelectedListener,OnPostSelectedListener{
+        implements CircleFragment.onCircleInteraction ,CreateGroupFragment.onCreateGroupInteraction,OnNavigationItemSelectedListener,OnAlbumSelectedListener,OnMomentSelectedListener,OnPostSelectedListener{
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -105,7 +114,6 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         albums = new ArrayList<>(); // On initialise ici mais plus tard on le mettra ailleurs ds cette classe
         toolbar = (Toolbar) findViewById(R.id.toolbarMain);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
@@ -281,8 +289,8 @@ public class HomeActivity extends AppCompatActivity
                 profilFragment.setArguments(bundle);
                 return profilFragment;
             case 2:
-                // Proches (JE TE LAISSE A TOI VINCENT)
-                break;
+                CircleFragment circleFragment = new CircleFragment();
+                return circleFragment;
             case 3:
                 NotificationFragment notificationFragment = new NotificationFragment();
                 return notificationFragment;
@@ -619,6 +627,13 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
+    public void momentFragmentOnClickButtonUpload() {
+        Intent intent = new Intent(HomeActivity.this, GalleryActivity.class);
+        //Start details activity
+        startActivity(intent);
+    }
+
+    @Override
     public void onPostSelected(int position,View view) {
         Toast.makeText(this,"OK COOL LA PAGE d'ACCUEIL EST IMPLEMENTEE ! View id " + view.getId(),Toast.LENGTH_SHORT).show();
     }
@@ -664,6 +679,53 @@ public class HomeActivity extends AppCompatActivity
         timer.schedule(task, 0, 60*1000);  // interval of one minute
         timer.schedule(task2,0, 5*1000); // interval of five seconds
     }
+
+
+    @Override
+    public void createGroupFragmentOnButtonCreateGroup() {
+
+    }
+
+    @Override
+    public void circleFragmentOnButtonCreateGroup() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out);
+
+        // Set the CURRENT_TAG
+        CURRENT_TAG = "CreateGroup";
+
+        // The user selected the album from the lists of albums to glance at
+        // Plus tard inclure la position
+        // Check if the fragment to be shown is already present in the fragment backstack
+        Fragment fragment = fragmentManager.findFragmentByTag("CreateGroup");
+        // Si le fragment n'existe pas, il faut le créer
+        if(fragment == null){
+            Log.d(TAG,"New createGroup fragment");
+            fragment = new CreateGroupFragment();
+            Bundle args = new Bundle();
+            fragment.setArguments(args);
+            // Ajoutez le nouveau fragment (Dans ce cas précis, un fragment est déjà affiché à cet emplacement, il faut donc le remplacer et non pas l'ajouter)
+            fragmentTransaction.replace(R.id.frame,fragment,CURRENT_TAG);
+        }else{
+            Log.d(TAG,"Retour onAlbumSelected");
+            // Le fragment existe déjà, il vous suffit de l'afficher
+            fragmentTransaction.show(fragment);
+        }
+
+        //Set the toolbar name
+        toolbarTitle.setText(CURRENT_TAG);
+
+        // Ajoutez la transaction à la backstack pour la dépiler quand l'utilisateur appuiera sur back
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack so the user can navigate back
+        fragmentTransaction.addToBackStack(CURRENT_TAG);
+
+        // Commit the transaction
+        fragmentTransaction.commit();
+
+    }
+
 
     //
 

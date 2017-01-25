@@ -90,4 +90,19 @@
     <string name="privacy_policy">Politque de confidentialité</string>
     <string name="title_activity_test">test</string>
 
+
+
+    <!-- CIRCLE -->
+    <string name="invite_friend">Ajouter</string>
+    <string name="moment_description">Description du moment</string>
+    <string name="remove_friend">Supprimer</string>
+    <string name="add_friend">Ajouter</string>
+    <string name="pending_friend">Invitation envoyée</string>
+    <string name="create_group">Créé un groupe</string>
+    <string name="remove_group_friend">Supprimer</string>
+    <string name="edit_group_friend">Editer</string>
+
+    <!-- Upload moment -->
+    <string name="upload_moment_button">Upload</string>
+
 </resources>

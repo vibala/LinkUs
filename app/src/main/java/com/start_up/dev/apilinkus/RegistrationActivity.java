@@ -120,7 +120,7 @@ public class RegistrationActivity extends AbstractAsyncActivity {
             finish();
         }
 
-        Toast.makeText(this,response.getText(),Toast.LENGTH_LONG).show();
+        Toast.makeText(this,response.getText(),Toast.LENGTH_SHORT).show();
     }
 
     private class PostSecuredResourceTask extends AsyncTask<String,Void,Message> {
