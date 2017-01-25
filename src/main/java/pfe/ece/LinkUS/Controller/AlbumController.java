@@ -131,11 +131,13 @@ public class AlbumController {
         return albumService.checkData(albumService.getAlbumsOwned(userId), news, userId).toString();
     }
 
-    @RequestMapping(value = "/setwith", method = RequestMethod.POST)
-    public void addFriendToAlbumWithSpecificRight(
-            @RequestBody String friendId,
-            @RequestBody String albumId,
-            @RequestBody String right){
+    @RequestMapping(value = "/setwith",
+            params = {"friendId", "albumId", "right"},
+            method = RequestMethod.POST)
+    public ResponseEntity addFriendToAlbumWithSpecificRight(
+            @RequestParam("friendId") String friendId,
+            @RequestParam("albumId") String albumId,
+            @RequestParam("right") String right){
 
         friendId = friendId.replace("\"","");
         albumId = albumId.replace("\"","");
@@ -144,7 +146,10 @@ public class AlbumController {
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         AlbumService albumService = new AlbumService(albumRepository);
-        albumService.addFriendToAlbum(userId, friendId, albumId, right);
+        if(albumService.addFriendToAlbum(userId, friendId, albumId, right)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
     @RequestMapping(value = "/", params = {"albumId", "news"})
