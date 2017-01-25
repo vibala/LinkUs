@@ -256,6 +256,26 @@ public class AlbumService {
         }
         return urls;
     }
+
+    public List<PreviewAlbum> setPreviewAlbums(List<Album> albumList) {
+
+        List<PreviewAlbum> previewAlbumList = new ArrayList<>();
+
+        if(albumList != null) {
+            for(Album album: albumList) {
+                previewAlbumList.add(setPreviewAlbum(album));
+            }
+        }
+        return previewAlbumList;
+    }
+
+    public PreviewAlbum setPreviewAlbum(Album album) {
+        PreviewAlbum previewAlbum = new PreviewAlbum();
+        previewAlbum.setAlbumId(album.getId());
+        previewAlbum.setImgUrl(album.getImageUrl());
+        previewAlbum.setAlbumName(album.getName());
+        return previewAlbum;
+    }
     /**
      *
      * @param album

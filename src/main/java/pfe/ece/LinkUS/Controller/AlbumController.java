@@ -5,18 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
-import pfe.ece.LinkUS.Model.Album;
+import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Enum.Right;
-import pfe.ece.LinkUS.Model.FriendGroup;
-import pfe.ece.LinkUS.Model.Instant;
-import pfe.ece.LinkUS.Model.Moment;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.FriendGroupService;
-import pfe.ece.LinkUS.Service.MomentService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserEntityService.UserServiceImpl;
 
@@ -98,6 +94,33 @@ public class AlbumController {
         } else {
             return albumService.checkData(albumList, news, userId).toString();
         }
+    }
+
+    @RequestMapping(value = "/preview", produces = "application/json")
+    public String findPreviewAlbumsByUserId(@RequestParam(value = "right") String right, @RequestParam(value = "news") boolean news) {
+
+        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
+        AlbumService albumService = new AlbumService(albumRepository);
+        albumService.setSubscriptionRepository(subscriptionRepository);
+        List<Album> albumList = new ArrayList<>();
+
+        if(right == null ||"".equals(right)) {
+            right = Right.LECTURE.name();
+        }
+        // Get the current authentified user id
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        //Get the groups in which the user is.
+        List<FriendGroup> groupList = friendGroupService.findFriendGroupByUserId(userId);
+
+        // Search for users
+        albumList.addAll(albumService.findAlbumByUserIdRight(userId, right));
+        // Search for group where the user is
+        albumList.addAll(albumService.findAlbumByGroupIdRight(groupList, right));
+
+        List<PreviewAlbum> previewAlbumList = albumService.setPreviewAlbums(albumList);
+
+        return previewAlbumList.toString();
     }
 
     @RequestMapping(value = "/owned")
