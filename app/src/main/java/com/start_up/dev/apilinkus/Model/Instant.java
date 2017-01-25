@@ -3,8 +3,6 @@ package com.start_up.dev.apilinkus.Model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.bson.types.ObjectId;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;

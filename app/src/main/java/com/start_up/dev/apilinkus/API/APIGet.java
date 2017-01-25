@@ -5,6 +5,7 @@ import android.util.Log;
 
 
 import com.start_up.dev.apilinkus.Auth.Message;
+import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.ProfileActivity;
 
@@ -45,7 +46,7 @@ public abstract class  APIGet extends AsyncTask<String, Void, Integer> {
     @Override
         protected Integer doInBackground(String... params) {
             Integer result = 0;
-            final String authorization = "Bearer " + ProfileActivity.access_token;
+            final String authorization = "Bearer " + HomeActivity.access_token;
             Log.d("Authorization", authorization);
 
            /* // Create the request header

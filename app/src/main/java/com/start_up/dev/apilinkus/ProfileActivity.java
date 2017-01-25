@@ -84,7 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
         return true;
     }
 
-    public  boolean isStoragePermissionGranted() {
+    public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
                 Log.v(TAG,"Permission is granted");

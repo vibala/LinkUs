@@ -40,11 +40,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="@string/user_model_name"
+                        android:id="@+id/user_fullname_tv"
                         android:gravity="center_vertical"
                         android:layout_marginLeft="10dp"/>
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:id="@+id/edit_fullname"
                         android:paddingLeft="10dp"
                         android:layout_marginRight="15dp"
                         android:scaleType="fitEnd"
@@ -69,11 +71,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="@string/user_model_mail"
+                        android:id="@+id/user_username_tv"
                         android:gravity="center_vertical"
                         android:layout_marginLeft="10dp" />
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:id="@+id/edit_username"
                         android:layout_marginRight="15dp"
                         android:scaleType="fitEnd"
                         android:src="@drawable/ic_border_color_grey600_24dp" />
@@ -85,10 +89,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="5dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:text="@string/premium_title"
+                    android:text="@string/subscription_title"
                     android:textSize="15sp"
                     android:fontFamily="sans-serif"
                     android:textStyle="bold"
@@ -96,7 +101,98 @@
                     android:textColor="@color/white"
                     android:background="@color/blue"
 
-                    android:paddingLeft="15dp"/>
+                    android:paddingLeft="15dp"
+                    android:id="@+id/textView2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_star_circle_grey600_24dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/sub_package_friend_one"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"/>
+                    <android.support.v7.widget.SwitchCompat
+                        android:checked="false"
+                        android:id="@+id/sub_package_friend_one_switchbutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="#c0c0c0"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_star_circle_grey600_24dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/sub_package_friend_two"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"/>
+                    <android.support.v7.widget.SwitchCompat
+                        android:checked="false"
+                        android:id="@+id/sub_package_friend_two_switchbutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="#c0c0c0"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_star_circle_grey600_24dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/sub_package_description_one"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"/>
+                    <android.support.v7.widget.SwitchCompat
+                        android:checked="false"
+                        android:id="@+id/sub_package_description_one_switchbutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="#c0c0c0"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -109,11 +205,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="@string/premium_user"
+                        android:text="@string/sub_package_description_two"
                         android:gravity="center_vertical"
                         android:layout_marginLeft="10dp"/>
                     <android.support.v7.widget.SwitchCompat
                         android:checked="false"
+                        android:id="@+id/sub_package_description_two_switchbutton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"/>
@@ -154,6 +251,7 @@
                         android:layout_marginLeft="10dp"/>
                     <android.support.v7.widget.SwitchCompat
                         android:checked="true"
+                        android:id="@+id/notifications_switchbutton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"/>
@@ -195,6 +293,7 @@
                         android:layout_marginLeft="10dp"/>
                     <android.support.v7.widget.SwitchCompat
                         android:checked="false"
+                        android:id="@+id/facebook_switchbutton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"/>
@@ -221,6 +320,7 @@
                         android:layout_marginLeft="10dp"/>
                     <android.support.v7.widget.SwitchCompat
                         android:checked="false"
+                        android:id="@+id/twitter_switchbutton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"/>
@@ -246,6 +346,7 @@
                         android:layout_marginLeft="10dp"/>
                     <android.support.v7.widget.SwitchCompat
                         android:checked="false"
+                        android:id="@+id/gmail_switchbutton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"/>
@@ -272,7 +373,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp">
+                    android:layout_marginBottom="5dp"
+                    android:id="@+id/report_pb_layout">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -282,7 +384,7 @@
                         android:layout_height="match_parent"
                         android:text="@string/report_a_problem_title"
                         android:gravity="center_vertical"
-                        android:layout_marginLeft="10dp"/>
+                        android:layout_marginLeft="10dp" />
                 </LinearLayout>
                 <View
                     android:layout_width="wrap_content"
@@ -291,6 +393,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/privacy_policy_layout"
                     android:paddingLeft="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp">
@@ -312,7 +415,7 @@
             </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:layout_margin="10dp"
                 android:text="Privacy Terms - Linkus "/>

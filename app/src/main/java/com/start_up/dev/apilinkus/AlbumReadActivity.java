@@ -85,11 +85,6 @@ public class AlbumReadActivity extends AppCompatActivity implements APIGetAlbums
     }
 
     @Override
-    public void albumsFilterRight_GetResponse(JSONObject responseObject) {
-
-    }
-
-    @Override
     public void albumsFilterRight_NotifyWhenGetFinish(Integer result) {
 
         if (result == 1) {

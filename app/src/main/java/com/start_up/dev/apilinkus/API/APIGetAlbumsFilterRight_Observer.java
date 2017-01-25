@@ -9,6 +9,5 @@ import org.json.JSONObject;
 
 public interface APIGetAlbumsFilterRight_Observer {
     public void albumsFilterRight_GetResponse(JSONArray responseArray);
-    public void albumsFilterRight_GetResponse(JSONObject responseObject);
     public void albumsFilterRight_NotifyWhenGetFinish(Integer result);
 }

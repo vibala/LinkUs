@@ -41,31 +41,49 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.start_up.dev.apilinkus.API.APIGetUserProfileDetails_Observer;
+import com.start_up.dev.apilinkus.API.APILinkUS;
+import com.start_up.dev.apilinkus.Fragments.AboutUsFragment;
 import com.start_up.dev.apilinkus.Fragments.HomeFragment;
 import com.start_up.dev.apilinkus.Fragments.HomeFragment.OnPostSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.MomentFragment;
 import com.start_up.dev.apilinkus.Fragments.MomentFragment.OnMomentSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.NotificationFragment;
 import com.start_up.dev.apilinkus.Fragments.ParametreFragment;
+import com.start_up.dev.apilinkus.Fragments.ParametreFragment.OnChangeUserInformationListener;
+import com.start_up.dev.apilinkus.Fragments.PrivacyPolicyFragment;
 import com.start_up.dev.apilinkus.Fragments.ProfileFragment;
 import com.start_up.dev.apilinkus.Fragments.ProfileFragment.OnAlbumSelectedListener;
+import com.start_up.dev.apilinkus.Fragments.ReportProblemFragment;
 import com.start_up.dev.apilinkus.Fragments.SlideshowDialogFragment;
 import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
+import com.start_up.dev.apilinkus.Model.Subscription;
 import com.start_up.dev.apilinkus.Service.DateUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static java.lang.System.out;
+
+
 /**
  * Created by Vignesh on 1/15/2017.
  */
 
 public class HomeActivity extends AppCompatActivity
-        implements OnNavigationItemSelectedListener,OnAlbumSelectedListener,OnMomentSelectedListener,OnPostSelectedListener{
+        implements OnNavigationItemSelectedListener,
+                    OnAlbumSelectedListener,
+                        OnMomentSelectedListener,
+                            OnPostSelectedListener,
+                                OnChangeUserInformationListener,
+                                APIGetUserProfileDetails_Observer{
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -75,6 +93,16 @@ public class HomeActivity extends AppCompatActivity
     private TextView txtName, txtCurrentLocalation;
     private Toolbar toolbar;
     private CoordinatorLayout coordinatorLayout;
+
+    /*TOKENS*/
+    public static String mode_auth;
+    public static String access_token;
+    public static String token_type;
+    public static String refresh_token;
+
+    /*BUNDLE FOR CERTAIN FRAGMENTS*/
+    private Bundle b;
+
 
     // index to identify current nav menu item
     public static int navItemIndex = 0;
@@ -88,6 +116,10 @@ public class HomeActivity extends AppCompatActivity
     private static final String TAG_NOTIFICATIONS = "Notifications";
     private static final String TAG_PARAMETRES = "Paramètres";
     public static String CURRENT_TAG = TAG_ACCUEIL;
+    private static final String TAG_ABOUT_US = "A propos de Linkus";
+    private static final String TAG_PRIVACY_POLICY = "Politique de confidentialité";
+
+    private String userId = "";
 
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
@@ -101,11 +133,14 @@ public class HomeActivity extends AppCompatActivity
     private ArrayList<Album> albums;
     private ArrayList<Moment> moments;
 
+    private boolean arguments_ready = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        Log.d(TAG,"HomeActivity landscape On create");
+        setContentView(R.layout.activity_main);
         albums = new ArrayList<>(); // On initialise ici mais plus tard on le mettra ailleurs ds cette classe
         toolbar = (Toolbar) findViewById(R.id.toolbarMain);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
@@ -146,6 +181,8 @@ public class HomeActivity extends AppCompatActivity
                 }
             }
         });
+
+        bottomBar.setVisibility(View.INVISIBLE);
 
         //  ActionBarDrawerToggle permettra de gérer le comportement de votre Drawer lors de sa fermeture et de son ouverture.
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -190,17 +227,30 @@ public class HomeActivity extends AppCompatActivity
 
         // If the savedInstanceState is eq. to null == when the fragment is not reconstructed from a previous saved state, the home fragment will be loaded
         if (savedInstanceState == null) {
+            Log.d(TAG,"HomeActivity landscape Saved Instance");
             navItemIndex = 0;
             CURRENT_TAG = TAG_ACCUEIL;
             loadHomeFragment();
         }
 
         //
-        if(CURRENT_TAG.contentEquals("Instants") || CURRENT_TAG.contentEquals("Paramètres")){
+        if(CURRENT_TAG.contentEquals("Instants")){
             //  Cache le toolbar au moment d'afficher l'image en diapo
             toolbar.setVisibility(View.GONE);
             // Cache le bottom bar au moment d'afficher l'image en diapo
             bottomBar.setVisibility(View.INVISIBLE);
+        }
+
+        Intent i = getIntent();
+        b = i.getExtras();
+
+        if(b!= null){
+            access_token = (String) b.get("access_token");
+            Log.d("Acess token",access_token);
+            token_type = (String) b.get("token_type");
+            refresh_token = (String) b.get("refresh_token");
+            mode_auth = b.getString("mode_auth");
+            out.println("Access token value " + access_token);
         }
 
         //setRepeatingAsyncTask();
@@ -218,6 +268,8 @@ public class HomeActivity extends AppCompatActivity
      * selected from navigation menu
      */
     private void loadHomeFragment(){
+        Log.d(TAG,"HomeActivity landscape loadHomeFragment");
+        Log.d(TAG,"HomeActivity landscape loadHomeFragment " + CURRENT_TAG);
         // selecting appropriate nav menu item
         selectNavMenu();
 
@@ -289,8 +341,16 @@ public class HomeActivity extends AppCompatActivity
             case 4:
                 // Parametres
                 bottomBar.setVisibility(View.INVISIBLE);
+                new APILinkUS().getUserProfileDetails(this,this);
                 ParametreFragment parametreFragment = new ParametreFragment();
+                while(!arguments_ready) {}
+                Log.d(TAG,b.getString("Username"));
+                parametreFragment.setArguments(b);
+                arguments_ready = false;
                 return parametreFragment;
+            case 5:
+                AboutUsFragment aboutUsFragment = new AboutUsFragment();
+                return aboutUsFragment;
             default:
                 break;
         }
@@ -402,6 +462,7 @@ public class HomeActivity extends AppCompatActivity
         navigationView.getMenu().getItem(navItemIndex).setChecked(true);
     }
 
+
     /*Setting the action bar's title*/
     private void setActionBarTitle(){
         Log.d(HomeActivity.class.getSimpleName(),"SetActionBarTitle");
@@ -445,10 +506,10 @@ public class HomeActivity extends AppCompatActivity
             count = getSupportFragmentManager().getBackStackEntryCount();
             CURRENT_TAG = getSupportFragmentManager().getBackStackEntryAt(count-2).getName();
             Log.d(TAG,"CURRENTLY DISPLAYED TAG = " + CURRENT_TAG);
-            if(!CURRENT_TAG.contentEquals("Instants") && !CURRENT_TAG.contentEquals("Paramètres")){
+            if(!CURRENT_TAG.contentEquals("Instants")){
                 // Etre sur que le toolbar et le bottomBar st bien visibles
                 toolbar.setVisibility(View.VISIBLE);
-                bottomBar.setVisibility(View.VISIBLE);
+                //bottomBar.setVisibility(View.VISIBLE);
                 toolbarTitle.setText(CURRENT_TAG);
             }else{
                 toolbarTitle.setText(CURRENT_TAG);
@@ -511,13 +572,8 @@ public class HomeActivity extends AppCompatActivity
                 CURRENT_TAG = TAG_PARAMETRES ;
                 break;
             case R.id.nav_about_us:
-                // launch new intent instead of loading fragment
-                startActivity(new Intent(HomeActivity.this,AboutUsActivity.class));
-                drawer.closeDrawer(GravityCompat.START);
-                break;
-            case R.id.nav_privacy_policy:
-                // launch new intent instead of loading fragment
-                startActivity(new Intent(HomeActivity.this,PrivacyPolicyActivity.class));
+                navItemIndex = 5;
+                CURRENT_TAG = TAG_ABOUT_US;
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             default:
@@ -533,6 +589,11 @@ public class HomeActivity extends AppCompatActivity
         }
 
         item.setChecked(true);
+
+        if(id == R.id.nav_about_us){
+            item.setChecked(false);
+        }
+
         loadHomeFragment();
 
         return true;
@@ -663,6 +724,114 @@ public class HomeActivity extends AppCompatActivity
 
         timer.schedule(task, 0, 60*1000);  // interval of one minute
         timer.schedule(task2,0, 5*1000); // interval of five seconds
+    }
+
+    @Override
+    public void userDetails_GetResponse(JSONObject responseJSON) {
+        System.out.println(responseJSON);
+        b = new Bundle();
+
+        try {
+            userId = responseJSON.getString("id");
+            b.putString("Full name",responseJSON.get("lastName") + " " + responseJSON.get("firstName"));
+            b.putString("Username",(String)responseJSON.get("email"));
+            arguments_ready = true;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void userDetails_NotifyWhenGetFinish(Integer result) {
+        if (result == 1) {
+            Log.d(TAG,"Fetch successfully data from server spring");
+        } else {
+            Toast.makeText(this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onChangeUserInformation(String key, String[] value) {
+        if(key.contentEquals("Fullname")){
+            new APILinkUS().changeUserFullName(value[0],value[1]);
+        }else{
+            new APILinkUS().changeUsernameWhichisEquivalentToTheUserEmail(value[0]);
+        }
+    }
+
+    @Override
+    public void onUpdateSubscription(String type, int length, String unit) {
+
+        Subscription subscription = new Subscription(type,userId,DateUtil.getCurrentDate());
+
+        if(type.contentEquals("FRIEND")){
+            if(length == 1 && unit.contentEquals("YEAR")){
+                new APILinkUS().updateSubscription(subscription,"10");
+            }else if(length == 6 && unit.contentEquals("MONTHS")){
+                new APILinkUS().updateSubscription(subscription,"11");
+            }
+        }else if(type.contentEquals("DESCRIPTION")){
+            if(length == 1 && unit.contentEquals("YEAR")){
+                new APILinkUS().updateSubscription(subscription,"1");
+            }else if(length == 6 && unit.contentEquals("MONTHS")){
+                new APILinkUS().updateSubscription(subscription,"2");
+            }
+        }
+    }
+
+    @Override
+    public void onDeleteSubscription(String type, int length, String unit) {
+
+    }
+
+    @Override
+    public void onPressReportaProblemPage() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out);
+
+        // Set the current tag
+        CURRENT_TAG = "Signaler un problème";
+
+        //Set the toolbar name
+        toolbarTitle.setText(CURRENT_TAG);
+
+        // Check if the fragment to be shown is already present in the fragment backstack
+        Fragment fragment = new ReportProblemFragment();
+
+        // Ajoutez le nouveau fragment (Dans ce cas précis, un fragment est déjà affiché à cet emplacement, il faut donc le remplacer et non pas l'ajouter)
+        fragmentTransaction.replace(R.id.frame,fragment);
+
+        // Ajoutez la transaction à la backstack pour la dépiler quand l'utilisateur appuiera sur back
+        fragmentTransaction.addToBackStack(CURRENT_TAG);
+
+        // Faites le commit
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onPressPrivacyPolicyPage() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out);
+
+        // Set the current tag
+        CURRENT_TAG = "Politique de confidentialité";
+
+        //Set the toolbar name
+        toolbarTitle.setText(CURRENT_TAG);
+
+        // Check if the fragment to be shown is already present in the fragment backstack
+        Fragment fragment = new PrivacyPolicyFragment();
+
+        // Ajoutez le nouveau fragment (Dans ce cas précis, un fragment est déjà affiché à cet emplacement, il faut donc le remplacer et non pas l'ajouter)
+        fragmentTransaction.replace(R.id.frame,fragment);
+
+        // Ajoutez la transaction à la backstack pour la dépiler quand l'utilisateur appuiera sur back
+        fragmentTransaction.addToBackStack(CURRENT_TAG);
+
+        // Faites le commit
+        fragmentTransaction.commit();
     }
 
     //

@@ -54,15 +54,19 @@
     <string name="nav_proches">Proches</string>
     <string name="nav_notifications">Notifications</string>
     <string name="nav_parametres">Paramètres</string>
-    <string name="nav_about_us">A propos de nous</string>
+    <string name="nav_about_us">A propos de Linkus</string>
+    <string name="nav_privacy_policy">Politique de confidentialité</string>
     <!--  Settings tabs -->
     <string name="profile_title">PROFIL</string>
-    <string name="premium_title">PREMIUM</string>
+    <string name="subscription_title">SUBSCRIPTION PACKAGES</string>
     <string name="notifications">NOTIFICATIONS</string>
     <string name="social_title">SOCIAL</string>
     <string name="support_title">SUPPORT</string>
-    <!-- Premium -->
-    <string name="premium_user">Premium User</string>
+    <!-- Subscription packages -->
+    <string name="sub_package_friend_one">Abonnement Friends - 1 an</string>
+    <string name="sub_package_friend_two">Abonnement Friends - 6 mois</string>
+    <string name="sub_package_description_one">Abonnement Description - 1 an</string>
+    <string name="sub_package_description_two">Abonnement Description - 6 mois</string>
     <!-- Notifications -->
     <string name="text_notification">Activiter les notifications</string>
     <!-- SOCIAL -->
@@ -80,9 +84,10 @@
         <item>Proches</item>
         <item>Notifications</item>
         <item>Paramètres</item>
+        <item>A propos de Linkus</item>
     </string-array>
 
-    <string name="activity_title_about_us">A propos de nous</string>
+    <string name="activity_title_about_us">A propos de Linkus</string>
     <string name="activity_title_privacy_policy">Politique de confidentialité</string>
     <string name="action_clear_all">Effacer tout</string>
     <string name="action_logout">Se deconnecter</string>

@@ -8,32 +8,30 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.Auth.AbstractAsyncActivity;
-import com.start_up.dev.apilinkus.Auth.ClickSpan;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
-import com.facebook.AccessToken;
-import com.facebook.FacebookException;
-import com.facebook.Profile;
-import com.twitter.sdk.android.core.TwitterAuthToken;
+
 import io.fabric.sdk.android.Fabric;
 
 
@@ -64,10 +62,9 @@ public class MainActivity extends AbstractAsyncActivity {
         super.onCreate(savedInstanceState);
 
         /*******-------------********/
-        //Intent i = new Intent(MainActivity.this,ProfileActivity.class);
-        Intent i = new Intent(MainActivity.this,HomeActivity.class);
+        /*Intent i = new Intent(MainActivity.this,HomeActivity.class);
         startActivity(i);
-        finish();
+        finish();*/
         /******--------------******/
 
         /*Social conf settings */

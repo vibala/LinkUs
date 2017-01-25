@@ -1,9 +1,11 @@
 package com.start_up.dev.apilinkus.API;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
+import com.start_up.dev.apilinkus.Model.Subscription;
 
 /**
  * Created by Huong on 06/11/2016.
@@ -12,12 +14,13 @@ import com.start_up.dev.apilinkus.Model.Moment;
 public class APILinkUS {
 
     private Context mContext;
+    private final String TAG = APILinkUS.class.getSimpleName();
     public static String BASE_URL;
     //private String userId="1";
 
     public APILinkUS(Context mContext) {
         this.mContext=mContext;
-        this.BASE_URL="http://192.168.43.128:9999";
+        this.BASE_URL="http://192.168.137.77:9999";
     }
     public APILinkUS() {
     }
@@ -73,11 +76,40 @@ public class APILinkUS {
     public void addFriendByMail(String album_read_mail_friend){
 
         String query="/album/setwith?email="+album_read_mail_friend;
-
         String urlrequestAPI = BASE_URL + query;
         APIPostAddFriendByMail apiPostStudent = new APIPostAddFriendByMail(album_read_mail_friend);
         apiPostStudent.execute(urlrequestAPI);
 
     }
 
+    public void getUserProfileDetails(APIGetUserProfileDetails_Observer activityObserver, Context mContext){
+
+        String query="/user/";
+        String urlrequestAPI = BASE_URL + query;
+        APIGetUserProfileDetails apiGetUserProfileDetails = new APIGetUserProfileDetails(activityObserver,mContext);
+        apiGetUserProfileDetails.execute(urlrequestAPI);
+    }
+
+    public void changeUsernameWhichisEquivalentToTheUserEmail(String username){
+        Log.d(TAG,"cccccccccccccccccc");
+        String query = "/user/changeUsername?email=" + username;
+        String urlrequestAPI = BASE_URL + query;
+        APIPostChangeUsername apiPostChangeUsername = new APIPostChangeUsername();
+        apiPostChangeUsername.execute(urlrequestAPI);
+    }
+
+    public void changeUserFullName(String lastName, String firstName){
+        String query = "/user/changeFullname?lastName="+lastName+"&firstName="+firstName;
+        String urlrequestAPI = BASE_URL + query;
+        APIPostChangeFullName apiPostChangeFullName = new APIPostChangeFullName();
+        apiPostChangeFullName.execute(urlrequestAPI);
+
+    }
+
+    public void updateSubscription(Subscription subscription, String subscriptionTypeId){
+        String query = "/subscription/update?subscriptionTypeId="+ subscriptionTypeId;
+        String urlrequestAPI = BASE_URL + query;
+        APIPostAddSubscription apiPostAddSubscription = new APIPostAddSubscription(subscription);
+        apiPostAddSubscription.execute(urlrequestAPI);
+    }
 }

@@ -12,12 +12,13 @@ import com.start_up.dev.apilinkus.Auth.AsyncResponse;
 import com.start_up.dev.apilinkus.Auth.FetchSecuredFacebookResourceTask;
 import com.start_up.dev.apilinkus.Auth.FetchSecuredResourceTask;
 import com.start_up.dev.apilinkus.Auth.FetchSecuredTwitterResourceTask;
+import com.start_up.dev.apilinkus.Fragments.HomeFragment;
 import com.twitter.sdk.android.core.TwitterCore;
 
 /**
  * Created by Vignesh on 12/15/2016.
  */
-/*Cette activité se chargera en tâche de fond de récupérer les tokens et de le passer ensuite au ProfileActivity */
+/*Cette activité se chargera en tâche de fond pour récupérer les tokens et de le passer ensuite au HomeActivity */
 public class BlankLoadingActivity extends AppCompatActivity {
 
     private static final String
@@ -27,7 +28,7 @@ public class BlankLoadingActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_blank_loading_activity);
-        setTitle("LinkUs");
+
     }
 
     @Override
@@ -42,7 +43,7 @@ public class BlankLoadingActivity extends AppCompatActivity {
         Bundle b = i.getExtras();
 
         if(b!= null){
-            if(b.containsKey("twitter_token_standard") && b.containsKey("twitter_token_secret")){
+            if(b.containsKey("twitter_token_standard") && b.containsKey("twitter_token_secret")){ // LOGIN FROM TWITTER
                 String twitter_token_standard = b.getString("twitter_token_standard");
                 String twitter_token_secret = b.getString("twitter_token_secret");
 
@@ -50,7 +51,8 @@ public class BlankLoadingActivity extends AppCompatActivity {
                     @Override
                     public void processFinish(String token_entity) {
                         if(token_entity != null && !token_entity.isEmpty() && !token_entity.contains("Error")){
-                            Intent intent = new Intent(BlankLoadingActivity.this,ProfileActivity.class);
+                            //Intent intent = new Intent(BlankLoadingActivity.this,ProfileActivity.class);
+                            Intent intent = new Intent(BlankLoadingActivity.this,HomeActivity.class);
                             String[] results = token_entity.split(";");
                             Log.i(TAG,"Access_token : " + results[1]);
                             intent.putExtra("access_token",results[1]);
@@ -76,13 +78,14 @@ public class BlankLoadingActivity extends AppCompatActivity {
 
                 task.execute(twitter_token_standard,twitter_token_secret);
 
-            }else if(b.containsKey("username") && b.containsKey("password")){
+            }else if(b.containsKey("username") && b.containsKey("password")){ // CLASSICAL LOGIN
                 /*En amont, on a fait les tests nécessaires pour s'assurer que l'utilisateur ne soument pas un username ou un pwd vide*/
                 FetchSecuredResourceTask task = new FetchSecuredResourceTask(BlankLoadingActivity.this, new AsyncResponse() {
                     @Override
                     public void processFinish(String token_entity) {
                         if(token_entity != null && !token_entity.isEmpty() && !token_entity.contains("Error")){
-                            Intent intent = new Intent(BlankLoadingActivity.this,ProfileActivity.class);
+                            //Intent intent = new Intent(BlankLoadingActivity.this,ProfileActivity.class);
+                            Intent intent = new Intent(BlankLoadingActivity.this,HomeActivity.class);
                             String[] results = token_entity.split(";");
                             Log.i(TAG,"Access_token : " + results[1]);
                             intent.putExtra("access_token",results[1]);
@@ -106,14 +109,15 @@ public class BlankLoadingActivity extends AppCompatActivity {
                 });
                 task.execute(b.getString("username"),b.getString("password"));
 
-            }else if(b.containsKey("facebook_access_token")){
+            }else if(b.containsKey("facebook_access_token")){ // LOGIN FROM FACEBOOK
                 // Facebook renvoie l'utilisateur vers cette activité une fois qu'il a réussi à s'authentifier
                 String facebook_access_token_value = b.getString("facebook_access_token_value");
                 FetchSecuredFacebookResourceTask task = new FetchSecuredFacebookResourceTask(BlankLoadingActivity.this, new AsyncResponse() {
                     @Override
                     public void processFinish(String token_entity) {
                         if(token_entity != null && !token_entity.isEmpty() &&  !token_entity.contains("Error")){
-                            Intent intent = new Intent(BlankLoadingActivity.this,ProfileActivity.class);
+                            //Intent intent = new Intent(BlankLoadingActivity.this,ProfileActivity.class);
+                            Intent intent = new Intent(BlankLoadingActivity.this,HomeActivity.class);
                             String[] results = token_entity.split(";");
                             Log.i(TAG,"Access_token : " + results[1]);
                             intent.putExtra("access_token",results[1]);
