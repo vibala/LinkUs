@@ -106,8 +106,7 @@ public class UserService {
     }
 
     public void save(User user) {
-        // Set to null not to erase another object with the same Id (new object)
-        user.setId(null);
+
         LOGGER.info("Saving new user" + user.toString());
         userRepository.save(user);
     }

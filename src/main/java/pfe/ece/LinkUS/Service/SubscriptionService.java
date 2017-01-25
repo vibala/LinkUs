@@ -35,8 +35,16 @@ public class SubscriptionService {
         this.subscriptionRepository = subscriptionRepository;
     }
 
-    public Subscription findSubscription(String id, String type) {
+    public Subscription findSubscriptionByUserIdAndType(String id, String type) {
         Subscription subscription = subscriptionRepository.findByUserIdAndType(id, type);
+        if (subscription == null) {
+            throw new SubscriptionNotFoundException(id);
+        }
+        return subscription;
+    }
+
+    public Subscription findSubscriptionById(String id) {
+        Subscription subscription = subscriptionRepository.findOne(id);
         if (subscription == null) {
             throw new SubscriptionNotFoundException(id);
         }
@@ -95,7 +103,7 @@ public class SubscriptionService {
 
     public void updateSubscription(String userId, SubscriptionType subscriptionType) {
 
-        Subscription subscription = findSubscription(userId, subscriptionType.getType());
+        Subscription subscription = findSubscriptionByUserIdAndType(userId, subscriptionType.getType());
 
         // Update subscription dates
         updateSubscriptionDates(subscription, subscriptionType);
@@ -155,8 +163,7 @@ public class SubscriptionService {
     }
 
     private void save(Subscription subscription) {
-        // Set to null not to erase another object with the same Id (new object)
-        subscription.setId(null);
+
         LOGGER.info("Saving new subscription" + subscription.toString() + ".");
         subscriptionRepository.save(subscription);
     }

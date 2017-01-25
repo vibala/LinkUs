@@ -83,8 +83,7 @@ public class SubscriptionTypeService {
     }
 
     private void save(SubscriptionType subscriptionType) {
-        // Set to null not to erase another object with the same Id (new object)
-        subscriptionType.setId(null);
+
         LOGGER.info("Saving new subscriptionType" + subscriptionType.toString());
         subscriptionTypeRepository.save(subscriptionType);
     }

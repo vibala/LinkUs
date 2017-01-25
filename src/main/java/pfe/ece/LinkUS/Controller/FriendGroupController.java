@@ -57,7 +57,7 @@ public class FriendGroupController {
         return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-    @RequestMapping(value = "/add",  method = RequestMethod.POST)
+    @RequestMapping(value = "/addFilled",  method = RequestMethod.POST)
     public ResponseEntity addFilledFriendGroup(@RequestBody FriendGroup friendGroup) {
 
         String name=friendGroup.getName();
@@ -72,7 +72,7 @@ public class FriendGroupController {
 
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/addEmpty", method = RequestMethod.POST)
     public ResponseEntity addFriendGroup(@RequestBody String name) {
         name=name.replace("\"","");
         String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();

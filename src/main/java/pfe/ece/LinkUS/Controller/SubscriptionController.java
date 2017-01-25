@@ -42,7 +42,7 @@ public class SubscriptionController {
 
         // Call service function
         SubscriptionService subscriptionService = new SubscriptionService(subscriptionRepository);
-        return subscriptionService.findSubscription(id, type);
+        return subscriptionService.findSubscriptionById(id);
     }
 
     @RequestMapping(method = RequestMethod.POST,
@@ -65,6 +65,7 @@ public class SubscriptionController {
     }
 
     @RequestMapping(value = "/update",
+            method = RequestMethod.POST,
             params = {"subscriptionTypeId"})
     public void updateSubscription(@RequestParam("subscriptionTypeId") String subscriptionTypeId) {
 

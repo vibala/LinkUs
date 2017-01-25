@@ -76,8 +76,6 @@ public class FriendGroupService {
     }
 
     private void save(FriendGroup friendGroup) {
-        // Set to null not to erase another object with the same Id (new object)
-        friendGroup.setId(null);
         LOGGER.info("Saving new friendGroup: " + friendGroup.toString());
         friendGroupRepository.save(friendGroup);
     }

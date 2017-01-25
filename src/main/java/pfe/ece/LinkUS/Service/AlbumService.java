@@ -16,8 +16,6 @@ import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -266,7 +264,6 @@ public class AlbumService {
         // Set to null not to erase another object with the same Id (new object)
         LOGGER.info("Saving new album" + album.toString());
         fillEmptyIds(album);
-        album.setId(null);
         albumRepository.save(album);
     }
 
@@ -583,7 +580,7 @@ public class AlbumService {
     public List<Album> checkDataAutorization(List<Album> albumList, String userId) {
 
         SubscriptionService subscriptionService = new SubscriptionService(subscriptionRepository);
-        Subscription subscription = subscriptionService.findSubscription(userId, SubscriptionTypeEnum.DESCRIPTION.name());
+        Subscription subscription = subscriptionService.findSubscriptionByUserIdAndType(userId, SubscriptionTypeEnum.DESCRIPTION.name());
 
         if ((subscription.getDateFin() != null && subscription.getDateFin().compareTo(new Date()) < 0) ||
                 subscription.getDateDebut().compareTo(new Date()) > 0) {
