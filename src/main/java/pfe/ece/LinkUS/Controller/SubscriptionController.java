@@ -29,6 +29,8 @@ public class SubscriptionController {
     SubscriptionRepository subscriptionRepository;
     @Autowired
     SubscriptionTypeRepository subscriptionTypeRepository;
+    @Autowired
+    AccessTokenService accessTokenService;
 
 
     @RequestMapping("/")
@@ -69,7 +71,6 @@ public class SubscriptionController {
             params = {"subscriptionTypeId"})
     public void updateSubscription(@RequestParam("subscriptionTypeId") String subscriptionTypeId) {
 
-        AccessTokenService accessTokenService = new AccessTokenService();
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         // Get the subscription type
         SubscriptionTypeService subscriptionTypeService = new SubscriptionTypeService(subscriptionTypeRepository);

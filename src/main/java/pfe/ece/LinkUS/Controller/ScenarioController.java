@@ -81,7 +81,7 @@ public class ScenarioController {
                 subscriptionService.deleteUserSubscriptions(user.getId());
 
             }
-            userService.createFakeUser(name);
+            userService.createFakeUser(subscriptionService, name);
         }
 
 

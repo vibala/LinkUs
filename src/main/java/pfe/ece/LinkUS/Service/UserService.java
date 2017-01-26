@@ -276,7 +276,8 @@ public class UserService {
         return new PageRequest(page, 20, Sort.Direction.ASC, "lastName", "firstName");
     }
 
-    public String createFakeUser(String name) throws EmailExistsException, ParseException {
+    public String createFakeUser(SubscriptionService subscriptionService, String name)
+            throws EmailExistsException, ParseException {
         pfe.ece.LinkUS.Service.UserEntityService.UserService userService = new UserServiceImpl(userRepository);
         User user = new User();
         user.setEmail(name.toLowerCase() + "@yopmail.com");
@@ -294,6 +295,8 @@ public class UserService {
         user.setEnabled(true);
 
         save(user);
+
+        subscriptionService.addUserToAllSubscriptions(user);
 
         // PARTIE LOCALE
         File directory = new File("./images/" + user.getId());

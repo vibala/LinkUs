@@ -51,7 +51,7 @@ public class SubscriptionService {
         return subscription;
     }
 
-    public void addUserToAllSubscription(User user) {
+    public void addUserToAllSubscriptions(User user) {
 
         // On crée des subscriptions par défaut pour le user
         for(SubscriptionTypeEnum subscriptionTypeEnum: SubscriptionTypeEnum.values()) {

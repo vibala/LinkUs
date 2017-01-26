@@ -104,7 +104,7 @@ public class RegisterController {
         LOGGER.info("confirmRegistration (Album create) - STEP II - Album creation");
         albumService.createAlbumForNewRegisteredUser(registeredUser.getId());
         LOGGER.info("confirmRegistration (Album create) - STEP III - Subscriptions creation");
-        subscriptionService.addUserToAllSubscription(registeredUser);
+        subscriptionService.addUserToAllSubscriptions(registeredUser);
 
         return new ResponseEntity(new Message(200, "message.regSucc", "Hello we need to verify your mail " + email + " for the Linkus account"),HttpStatus.CREATED);
     }
