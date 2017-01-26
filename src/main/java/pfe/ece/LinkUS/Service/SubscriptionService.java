@@ -35,16 +35,23 @@ public class SubscriptionService {
         this.subscriptionRepository = subscriptionRepository;
     }
 
-    public Subscription findSubscription(String id, String type) {
-        System.out.println("User id " + id);
-        Subscription subscription = subscriptionRepository.findOneByTypeAndUserId(type,id);
+    public Subscription findSubscriptionByUserIdAndType(String id, String type) {
+        Subscription subscription = subscriptionRepository.findByUserIdAndType(id, type);
         if (subscription == null) {
             throw new SubscriptionNotFoundException(id);
         }
         return subscription;
     }
 
-    public void addUserToAllSubscription(User user) {
+    public Subscription findSubscriptionById(String id) {
+        Subscription subscription = subscriptionRepository.findOne(id);
+        if (subscription == null) {
+            throw new SubscriptionNotFoundException(id);
+        }
+        return subscription;
+    }
+
+    public void addUserToAllSubscriptions(User user) {
 
         // On crée des subscriptions par défaut pour le user
         for(SubscriptionTypeEnum subscriptionTypeEnum: SubscriptionTypeEnum.values()) {
@@ -90,13 +97,13 @@ public class SubscriptionService {
 
     public boolean findMatchingSubscription(Subscription subscription) {
 
-        return subscriptionRepository.findOneByTypeAndUserId(
+        return subscriptionRepository.findSubscriptionByTypeAndUserId(
                 subscription.getType(), subscription.getUserId()) != null;
     }
 
     public void updateSubscription(String userId, SubscriptionType subscriptionType) {
 
-        Subscription subscription = findSubscription(userId, subscriptionType.getType());
+        Subscription subscription = findSubscriptionByUserIdAndType(userId, subscriptionType.getType());
 
         // Update subscription dates
         updateSubscriptionDates(subscription, subscriptionType);
@@ -156,8 +163,7 @@ public class SubscriptionService {
     }
 
     private void save(Subscription subscription) {
-        // Set to null not to erase another object with the same Id (new object)
-        subscription.setId(null);
+
         LOGGER.info("Saving new subscription" + subscription.toString() + ".");
         subscriptionRepository.save(subscription);
     }

@@ -79,8 +79,9 @@ public class ScenarioController {
                 User user = userService.findUserByEmail(email);
                 userService.removeUser(user);
                 subscriptionService.deleteUserSubscriptions(user.getId());
+
             }
-            userService.createFakeUser(name);
+            userService.createFakeUser(subscriptionService, name);
         }
 
 

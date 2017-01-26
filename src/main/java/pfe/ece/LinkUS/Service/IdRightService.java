@@ -20,7 +20,7 @@ public class IdRightService {
     public boolean addUserToIdRight(IdRight idRight, String userId) {
 
         if(!idRight.getUserIdList().contains(userId)) {
-            LOGGER.info("Adding User : " + idRight + "to right: " + idRight.getRight());
+            LOGGER.info("Adding User : " + userId + " to right: " + idRight.getRight());
             idRight.getUserIdList().add(userId);
             return true;
         }
@@ -45,7 +45,7 @@ public class IdRightService {
     }
 
     public boolean addIdRightToAlbum(Album album, IdRight idRight) {
-        LOGGER.info("Adding IdRight: " + idRight + "to album: " + album.getId());
+        LOGGER.info("Adding IdRight: " + idRight.getRight() + "to album: " + album.getId());
         if(findByRight(album, idRight.getRight()) == null) {
             album.getIdRight().add(idRight);
             return true;

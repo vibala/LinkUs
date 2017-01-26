@@ -2,92 +2,51 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fc5719f7-e6a6-4011-8684-de26858fae55" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/addSubscriptionType.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/NotificationServerController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/ScenarioController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UserAlarmController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Notification.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/UserAlarm.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/NotificationRepository.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserAlarmRepository.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/NotificationService.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserAlarmService.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/mongoRepository.PNG" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/typeBSon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/NbAlbumsAndNbProches.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/PreviewAlbum.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/App.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig$AuthorizationServerConfiguration.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig$ResourceServerConfiguration.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/RegisterController.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/SubscriptionTypeController.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/UserController.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Description.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Right.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Role.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/ServerService/NotificationService.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/CurrentUserService/CurrentUserDetailsService.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/FriendGroupService.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/SubscriptionService.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/public/confirmationMessage.html" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/ServerService/NotificationService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/ServerService/NotificationServerService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig$AuthorizationServerConfiguration.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig$AuthorizationServerConfiguration.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig$ResourceServerConfiguration.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig$ResourceServerConfiguration.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/AlbumController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/AlbumController.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/FriendGroupController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/FriendGroupController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/NotificationController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/NotificationController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/PasswordController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/PasswordController.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/SubscriptionController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/SubscriptionController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/SubscriptionTypeController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/SubscriptionTypeController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/UploadingController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/UploadingController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/UserController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/UserController.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Album.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Album.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Comment.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Comment.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/CurrentUser.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/CurrentUser.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/FacebookUserCreateForm.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/FacebookUserCreateForm.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/FriendGroup.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/FriendGroup.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/IdRight.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/IdRight.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Moment.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Moment.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Subscription.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Subscription.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/SubscriptionType.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/SubscriptionType.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/User.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/User.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/UserCreateForm.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/UserCreateForm.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/FriendGroupRepository.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/FriendGroupRepository.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserRepository.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserRepository.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/AlbumService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/AlbumService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/CurrentUserService/CurrentUserServiceImpl.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/CurrentUserService/CurrentUserServiceImpl.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/FriendGroupService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/FriendGroupService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/SubscriptionService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/SubscriptionService.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/SubscriptionTypeService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/SubscriptionTypeService.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/TokenService/AccessTokenService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/TokenService/AccessTokenService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/UserEntityService/UserServiceImpl.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/UserEntityService/UserServiceImpl.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/UserService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/UserService.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Config/OAuth2ServerConfig.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Config/OAuth2ServerConfig.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/FriendGroupController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/FriendGroupController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/NotificationController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/NotificationController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/PasswordController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/PasswordController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/RegisterController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/RegisterController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/ScenarioController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/ScenarioController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/SubscriptionTypeController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/SubscriptionTypeController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UploadingController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UploadingController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UserController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UserController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Album.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Album.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Comment.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Comment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Enum/Right.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Enum/Right.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/FriendGroup.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/FriendGroup.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/IdRight.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/IdRight.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Instant.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Instant.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Moment.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Moment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Subscription.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Subscription.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/SubscriptionType.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/SubscriptionType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/User.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/User.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/FriendGroupRepository.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/FriendGroupRepository.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserRepository.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserRepository.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/CurrentUserService/CurrentUserServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/CurrentUserService/CurrentUserServiceImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/FriendGroupService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/FriendGroupService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/IdRightService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/IdRightService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/InstantService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/InstantService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/MomentService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/MomentService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionTypeService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionTypeService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/TokenService/AccessTokenService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/TokenService/AccessTokenService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserEntityService/UserServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserEntityService/UserServiceImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/Service/MomentTest.java" afterPath="$PROJECT_DIR$/src/test/java/Service/MomentTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/application.properties" afterPath="$PROJECT_DIR$/target/classes/application.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/templates/confirmationMessage.html" afterPath="$PROJECT_DIR$/target/classes/templates/confirmationMessage.html" />
     </list>
     <ignored path="LinkUs.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -129,56 +88,27 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SubscriptionController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1156">
-              <caret line="79" column="40" selection-start-line="79" selection-start-column="40" selection-end-line="79" selection-end-column="40" />
-              <folding>
-                <element signature="imports" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="SubscriptionService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="43" column="28" selection-start-line="43" selection-start-column="28" selection-end-line="43" selection-end-column="28" />
+            <state relative-caret-position="-457">
+              <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
               <folding>
-                <element signature="imports" expanded="false" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AlbumController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AlbumService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="91">
-              <caret line="538" column="26" selection-start-line="538" selection-start-column="26" selection-end-line="538" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserService.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="UserService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-448">
-              <caret line="38" column="32" selection-start-line="38" selection-start-column="32" selection-end-line="38" selection-end-column="32" />
-              <folding />
+            <state relative-caret-position="283">
+              <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+              <folding>
+                <element signature="e#8362#8363#0" expanded="true" />
+                <element signature="e#8405#8406#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -197,7 +127,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Album.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
-              <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+              <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -215,14 +145,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SubscriptionRepository.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SubscriptionRepository.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
-              <folding>
-                <element signature="imports" expanded="false" />
-              </folding>
+            <state relative-caret-position="119">
+              <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -301,10 +229,10 @@
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java" />
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java" />
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java" />
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java" />
       </list>
     </option>
   </component>
@@ -462,198 +390,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUS" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUS" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Service" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUS" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Service" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="UserEntityService" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUS" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Repository" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUS" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Repository" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="OtherMongoDBRepo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUS" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinkUS" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Controller" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1166,7 +902,14 @@
       <option name="project" value="LOCAL" />
       <updated>1485286329742</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Merge branch 'server_linkus' of https://github.com/vibala/Linkus into server_linkus&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/UserController.java&#10;">
+      <created>1485445085304</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1485445085304</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1215,7 +958,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="80" y="-8" width="1294" height="784" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1224,12 +967,12 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.48219585" sideWeight="0.5070422" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.46735904" sideWeight="0.49295774" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46735904" sideWeight="0.49295774" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32789317" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.49785408" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27230048" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27230048" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1294,7 +1037,8 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="Gestion différente des credentials - Authentification + Inscription" />
     <MESSAGE value="Small changes done while implementing the network part of SettingsFragment" />
-    <option name="LAST_COMMIT_MESSAGE" value="Small changes done while implementing the network part of SettingsFragment" />
+    <MESSAGE value="Merge branch 'server_linkus' of https://github.com/vibala/Linkus into server_linkus&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/UserController.java&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'server_linkus' of https://github.com/vibala/Linkus into server_linkus&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/UserController.java&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1665,26 +1409,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="107">
           <caret line="29" column="28" selection-start-line="29" selection-start-column="28" selection-end-line="29" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1156">
-          <caret line="79" column="40" selection-start-line="79" selection-start-column="40" selection-end-line="79" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1699,7 +1424,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Album.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -1756,34 +1481,55 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="91">
-          <caret line="538" column="26" selection-start-line="538" selection-start-column="26" selection-end-line="538" selection-end-column="26" />
+        <state relative-caret-position="380">
+          <caret line="555" column="13" selection-start-line="555" selection-start-column="13" selection-end-line="555" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="43" column="28" selection-start-line="43" selection-start-column="28" selection-end-line="43" selection-end-column="28" />
+        <state relative-caret-position="347">
+          <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="false" />
+            <marker date="1485445146569" expanded="true" signature="6545:6715" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-448">
-          <caret line="38" column="32" selection-start-line="38" selection-start-column="32" selection-end-line="38" selection-end-column="32" />
+        <state relative-caret-position="283">
+          <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+          <folding>
+            <element signature="e#8362#8363#0" expanded="true" />
+            <element signature="e#8405#8406#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="15" column="3" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-457">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
           <folding />
         </state>
       </provider>

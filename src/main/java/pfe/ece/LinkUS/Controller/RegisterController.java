@@ -56,11 +56,13 @@ public class RegisterController {
     public ResponseEntity<Void> registerUserAccount(@RequestBody @Valid UserCreateForm form, BindingResult bindingResult, WebRequest request){
         LOGGER.info("UserController - createUser");
         List<Message> messages = new ArrayList<Message>();
-        String username = "";
+        String email = "";
 
         if(form==null){
             LOGGER.error("User is null");
         }
+        // Email en lowercase toujours
+        form.setEmail(form.getEmail().toLowerCase());
 
         // contents as before
         if (bindingResult.hasErrors()) {
@@ -77,18 +79,18 @@ public class RegisterController {
 
         try{
 
-            username = form.getEmail();
+            email = form.getEmail();
 
             String appUrl = request.getContextPath();
 
-            if((userService.getUserByEmail(username).isPresent() && userService.getUserByEmail(username).get().isEnabled())
-                    || (userService.getUserByEmail(username).isPresent() &&
-                    !userService.getUserByEmail(username).get().isEnabled() && verificationTokenService.existsTokenAssociatedToUsername(username))){
+            if((userService.getUserByEmail(email).isPresent() && userService.getUserByEmail(email).get().isEnabled())
+                    || (userService.getUserByEmail(email).isPresent() &&
+                    !userService.getUserByEmail(email).get().isEnabled() && verificationTokenService.existsTokenAssociatedToUsername(email))){
                 messages.add(new Message(417,"msg.Failure","A user with this email address already exists in the DB"));
                 return new ResponseEntity(messages.get(0), HttpStatus.CONFLICT);
 
             }else{
-                eventPublisher.publishEvent(new OnRegistrationCompleteEvent(username,request.getLocale(),appUrl,1));
+                eventPublisher.publishEvent(new OnRegistrationCompleteEvent(email,request.getLocale(),appUrl,1));
             }
         }catch(MailSendException e ){
             messages.add(new Message(417,"msg.Failure",e.getMessage()));
@@ -102,9 +104,9 @@ public class RegisterController {
         LOGGER.info("confirmRegistration (Album create) - STEP II - Album creation");
         albumService.createAlbumForNewRegisteredUser(registeredUser.getId());
         LOGGER.info("confirmRegistration (Album create) - STEP III - Subscriptions creation");
-        subscriptionService.addUserToAllSubscription(registeredUser);
+        subscriptionService.addUserToAllSubscriptions(registeredUser);
 
-        return new ResponseEntity(new Message(200, "message.regSucc", "Hello we need to verify your mail " + username + " for the Linkus account"),HttpStatus.CREATED);
+        return new ResponseEntity(new Message(200, "message.regSucc", "Hello we need to verify your mail " + email + " for the Linkus account"),HttpStatus.CREATED);
     }
 
     /*Retourne une page HTML au client lorsque ce dernier clique sur l'url présent dans le mail de confirmation*/

@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
 
-    List<User> findByFirstNameLikeOrLastNameLike(String firstname, String lastname, Pageable pageable);
+    List<User> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndEnabledTrue(String firstname, String lastname, Pageable pageable);
     /**
      * Find Users by lastName, ignoring case
      * @param lastName

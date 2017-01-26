@@ -6,11 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Model.FriendGroup;
+import pfe.ece.LinkUS.Model.NbAlbumsAndNbProches;
 import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
+import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.FriendGroupService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
@@ -26,13 +28,15 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    AlbumRepository albumRepository;
+    AlbumService albumService;
     @Autowired
     FriendGroupRepository friendGroupRepository;
     @Autowired
     SubscriptionRepository subscriptionRepository;
     @Autowired
-    private AccessTokenService accessTokenService;
+    AccessTokenService accessTokenService;
+    @Autowired
+    UserService userService;
 
     private static final Logger LOGGER = Logger.getLogger(UserController.class);
 
@@ -40,7 +44,6 @@ public class UserController {
     public String getMyProfile() {
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        UserService userService = new UserService(userRepository);
         User user = userService.findUserById(userId);
 
         userService.checkData(user);
@@ -51,7 +54,7 @@ public class UserController {
 
 //    @RequestMapping(params = {"name"})
 //    public String findUserByName(@RequestParam("name") String name) {
-//        UserService userService = new UserService(userRepository);
+//
 //
 //        List<User> userList = userService.findUsersByLastName(name);
 //
@@ -64,8 +67,7 @@ public class UserController {
 //
 //    @RequestMapping(value = "/albumOwner", params = {"albumId"})
 //    public User findOwnerUserByAlbumId(@RequestParam("albumId") String albumId) {
-//        AlbumService albumService = new AlbumService(albumRepository);
-//        UserService userService = new UserService(userRepository);
+//
 //
 //        return userService.findUserById(albumService.getAlbumOwnerId(albumId));
 //    }
@@ -75,8 +77,7 @@ public class UserController {
 //                                    @RequestParam(value = "right") String right) {
 //
 //        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
-//        AlbumService albumService = new AlbumService(albumRepository);
-//        UserService userService = new UserService(userRepository);
+//
 //        List<User> userList = new ArrayList<>();
 //
 //        if(right == null ||"".equals(right)) {
@@ -111,7 +112,6 @@ public class UserController {
         friendId = friendId.replace("\"","");
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        UserService userService = new UserService(userRepository);
         if(userService.friendRequest(userId, friendId)) {
             return new ResponseEntity(HttpStatus.OK);
         }
@@ -130,7 +130,6 @@ public class UserController {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        UserService userService = new UserService(userRepository);
         if(decision) {
             if(userService.acceptFriend(userId, friendId)) {
                 return new ResponseEntity(HttpStatus.OK);
@@ -145,12 +144,12 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/removeFriend", params = {"friendId"}, method = RequestMethod.POST)
-    public ResponseEntity friendRequestDecision(@RequestParam(value = "friendId") String friendId) {
+    @RequestMapping(value = "/removeFriend", method = RequestMethod.POST)
+    public ResponseEntity friendRequestDecision(@RequestBody String friendId) {
+        friendId = friendId.replace("\"","");
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        UserService userService = new UserService(userRepository);
         if(userService.removeFriend(userId, friendId)) {
             return new ResponseEntity(HttpStatus.OK);
         }
@@ -160,7 +159,6 @@ public class UserController {
     @RequestMapping("/getFriends")
     public String getFriends(){
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-        UserService userService = new UserService(userRepository);
         List<User> userList = userService.findFriends(userId);
         userService.checkData(userList);
         return userList.toString();
@@ -170,7 +168,6 @@ public class UserController {
     public String getGroupFriends(){
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        UserService userService = new UserService(userRepository);
         return userService.findFriendGroupsOwned(friendGroupRepository, userId).toString();
     }
 
@@ -178,7 +175,6 @@ public class UserController {
     public String getFriend(@RequestParam("friendId") String friendId){
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-        UserService userService = new UserService(userRepository);
 
         User friend = userService.findFriend(userId, friendId);
         userService.checkData(friend);
@@ -186,24 +182,31 @@ public class UserController {
         return friend.toString();
     }
 
-    @RequestMapping(value = "/searchFriend", params = {"text"})
-    public String searchFriend(@RequestParam("text") String text){
+    @RequestMapping(value = "/searchUser", params = {"text"})
+    public String searchUser(@RequestParam("text") String text){
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        UserService userService = new UserService(userRepository);
-        List<User> userList = userService.searchUserByPartialFirstnameOrLastname(text);
+        List<User> userList = userService.searchUserByPartialFirstnameOrLastname(userId, text);
         userService.checkData(userList);
         return userList.toString();
     }
 
-    @RequestMapping(value = "/searchGroupFriend", params = {"text"})
-    public String searchGroupFriend(@RequestParam("text") String text){
+    @RequestMapping("/getPendingFriends")
+    public String getPendingFriends(){
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        List<User> userList = userService.findPendingFriends(userId);
+        userService.checkData(userList);
+        return userList.toString();
+    }
 
-        FriendGroupService friendGroup = new FriendGroupService(friendGroupRepository);
+    @RequestMapping("/getProchesAndAlbums")
+    public String getProchesAndAlbums() {
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        List<FriendGroup> friendGroupList = friendGroup.searchGroupByPartialName(text);
-        return friendGroupList.toString();
+        User user = userService.findUserById(userId);
+
+        return new NbAlbumsAndNbProches(user.getFriendList().size(), albumService.getAlbumsOwned(userId).size()).toString();
     }
 
 

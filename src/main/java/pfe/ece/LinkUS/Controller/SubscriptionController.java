@@ -32,6 +32,7 @@ public class SubscriptionController {
     @Autowired
     AccessTokenService accessTokenService;
 
+
     @RequestMapping("/")
     public String userDefaultCall() {
         return "Not implemented yet.";
@@ -43,7 +44,7 @@ public class SubscriptionController {
 
         // Call service function
         SubscriptionService subscriptionService = new SubscriptionService(subscriptionRepository);
-        return subscriptionService.findSubscription(id, type);
+        return subscriptionService.findSubscriptionById(id);
     }
 
     @RequestMapping(method = RequestMethod.POST,
@@ -66,11 +67,11 @@ public class SubscriptionController {
     }
 
     @RequestMapping(value = "/update",
+            method = RequestMethod.POST,
             params = {"subscriptionTypeId"})
     public void updateSubscription(@RequestParam("subscriptionTypeId") String subscriptionTypeId) {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-        System.out.println("User id " + userId);
         // Get the subscription type
         SubscriptionTypeService subscriptionTypeService = new SubscriptionTypeService(subscriptionTypeRepository);
         SubscriptionType subscriptionType = subscriptionTypeService.findSubscriptionTypeById(subscriptionTypeId);

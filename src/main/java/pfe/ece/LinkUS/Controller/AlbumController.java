@@ -5,9 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
-import pfe.ece.LinkUS.Model.Album;
+import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Enum.Right;
-import pfe.ece.LinkUS.Model.FriendGroup;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
@@ -31,7 +30,7 @@ public class AlbumController {
 
     private Logger LOGGER = Logger.getLogger("LinkUS.Controller.AlbumController");
     @Autowired
-    UserRepository usersRepository;
+    UserRepository userRepository;
     @Autowired
     AlbumRepository albumRepository;
     @Autowired
@@ -97,6 +96,33 @@ public class AlbumController {
         }
     }
 
+    @RequestMapping(value = "/preview", produces = "application/json")
+    public String findPreviewAlbumsByUserId(@RequestParam(value = "right") String right, @RequestParam(value = "news") boolean news) {
+
+        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
+        AlbumService albumService = new AlbumService(albumRepository);
+        albumService.setSubscriptionRepository(subscriptionRepository);
+        List<Album> albumList = new ArrayList<>();
+
+        if(right == null ||"".equals(right)) {
+            right = Right.LECTURE.name();
+        }
+        // Get the current authentified user id
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        //Get the groups in which the user is.
+        List<FriendGroup> groupList = friendGroupService.findFriendGroupByUserId(userId);
+
+        // Search for users
+        albumList.addAll(albumService.findAlbumByUserIdRight(userId, right));
+        // Search for group where the user is
+        albumList.addAll(albumService.findAlbumByGroupIdRight(groupList, right));
+
+        List<PreviewAlbum> previewAlbumList = albumService.setPreviewAlbums(albumList);
+
+        return previewAlbumList.toString();
+    }
+
     @RequestMapping(value = "/owned")
     public String findAlbumsOwnedByUser(@RequestParam(value = "news") boolean news) {
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
@@ -105,31 +131,34 @@ public class AlbumController {
         return albumService.checkData(albumService.getAlbumsOwned(userId), news, userId).toString();
     }
 
-    @RequestMapping(value = "/setwith", method = RequestMethod.POST)
-    public void addFriendToAlbumWithSpecificRight(
-            @RequestBody String friendId,
-            @RequestParam("albumid") String albumId,
-            @RequestParam("rigth") String right){
+    @RequestMapping(value = "/setwith",
+            params = {"friendId", "albumId", "right"},
+            method = RequestMethod.POST)
+    public ResponseEntity addFriendToAlbumWithSpecificRight(
+            @RequestParam("friendId") String friendId,
+            @RequestParam("albumId") String albumId,
+            @RequestParam("right") String right){
 
-        friendId = friendId.replace("\"","");
-        albumId = albumId.replace("\"","");
-        right = right.replace("\"","");
+//        friendId = friendId.replace("\"","");
+//        albumId = albumId.replace("\"","");
+//        right = right.replace("\"","");
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-        System.out.println("friendId " + friendId);
 
-
-        albumService.addFriendToAlbum(userId, friendId, albumId, right);
+        AlbumService albumService = new AlbumService(albumRepository);
+        if(albumService.addFriendToAlbum(userRepository, userId, friendId, albumId, right)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-    @RequestMapping(value = "/searchAlbum", params = {"albumId", "news"},method = RequestMethod.GET)
+    @RequestMapping(value = "/", params = {"albumId", "news"})
     public String getAlbumById(@RequestParam(value = "albumId") String albumId,
                                @RequestParam(value = "news") boolean news){
 
-        System.out.println("Album id " + albumId);
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         Album album = albumService.findAlbumById(albumId);
-        System.out.println("Album name " + album.getName());
+
         List<Album> albumList = new ArrayList<>();
         albumList.add(album);
 

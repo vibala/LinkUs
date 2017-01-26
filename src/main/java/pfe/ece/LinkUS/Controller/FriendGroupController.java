@@ -57,7 +57,7 @@ public class FriendGroupController {
         return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-    @RequestMapping(value = "/addfilled",  method = RequestMethod.POST)
+    @RequestMapping(value = "/addFilled",  method = RequestMethod.POST)
     public ResponseEntity addFilledFriendGroup(@RequestBody FriendGroup friendGroup) {
 
         String name=friendGroup.getName();
@@ -72,7 +72,7 @@ public class FriendGroupController {
 
     }
 
-    @RequestMapping(value = "/addempty", method = RequestMethod.POST)
+    @RequestMapping(value = "/addEmpty", method = RequestMethod.POST)
     public ResponseEntity addFriendGroup(@RequestBody String name) {
         name=name.replace("\"","");
         String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
@@ -84,13 +84,25 @@ public class FriendGroupController {
         return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-    @RequestMapping(value = "/remove",method = RequestMethod.POST)
-    public ResponseEntity removeFriendGroup(@RequestBody String name) {
+    @RequestMapping(value = "/removeByName",method = RequestMethod.POST)
+    public ResponseEntity removeFriendGroupbyName(@RequestBody String name) {
         name=name.replace("\"","");
         String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
         if(friendGroupService.deleteFriendGroup(name, ownerId)){
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
+    }
+
+    @RequestMapping(value = "/remove",method = RequestMethod.POST)
+    public ResponseEntity removeFriendGroupById(@RequestBody String id) {
+        id=id.replace("\"","");
+        String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
+        if(friendGroupService.deleteFriendGroup(id)){
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.CONFLICT);

@@ -31,22 +31,14 @@ public class AlbumService {
 
     Logger LOGGER = Logger.getLogger("LinkUS.Service.AlbumService");
 
-    @Autowired
     AlbumRepository albumRepository;
 
-    @Autowired
     UserRepository userRepository;
 
-    @Autowired
     SubscriptionRepository subscriptionRepository;
-
-    @Autowired
-    UserService userService;
 
     ApplicationContext ctx;
     MongoOperations operations;
-
-    public AlbumService(){}
 
     public AlbumService(AlbumRepository albumRepository) {
         ctx = new AnnotationConfigApplicationContext(MyMongoConfig.class);
@@ -261,6 +253,26 @@ public class AlbumService {
         }
         return urls;
     }
+
+    public List<PreviewAlbum> setPreviewAlbums(List<Album> albumList) {
+
+        List<PreviewAlbum> previewAlbumList = new ArrayList<>();
+
+        if(albumList != null) {
+            for(Album album: albumList) {
+                previewAlbumList.add(setPreviewAlbum(album));
+            }
+        }
+        return previewAlbumList;
+    }
+
+    public PreviewAlbum setPreviewAlbum(Album album) {
+        PreviewAlbum previewAlbum = new PreviewAlbum();
+        previewAlbum.setAlbumId(album.getId());
+        previewAlbum.setImgUrl(album.getImageUrl());
+        previewAlbum.setAlbumName(album.getName());
+        return previewAlbum;
+    }
     /**
      *
      * @param album
@@ -269,7 +281,6 @@ public class AlbumService {
         // Set to null not to erase another object with the same Id (new object)
         LOGGER.info("Saving new album" + album.toString());
         fillEmptyIds(album);
-        album.setId(null);
         albumRepository.save(album);
     }
 
@@ -328,6 +339,7 @@ public class AlbumService {
 
             Album album = createCompleteAlbum(name, ownerId, null, null, null, null);
             album.setActive(true);
+            addUserToAlbumAllIdRight(album, ownerId);
             save(album);
             return album.getId();
         }
@@ -523,21 +535,26 @@ public class AlbumService {
      * @param right
      * @return
      */
-    public boolean addFriendToAlbum(String userId, String friendId, String albumId, String right) {
+    public boolean addFriendToAlbum(UserRepository userRepository,
+                                    String userId, String friendId, String albumId, String right) {
+
+        this.userRepository = userRepository;
 
         // Récupération album
         Album album = findAlbumById(albumId);
 
         // Récupération du user
+        UserService userService = new UserService(userRepository);
         User user = userService.findUserById(userId);
 
         // Si l'ami est bien dans la liste d'amis
         if(userService.checkFriend(user, friendId)) {
 
             // Ajout du friend au right
-            addUserToAlbumIdRight(album, friendId, right);
-            update(album);
-            return true;
+            if(addUserToAlbumIdRight(album, friendId, right)) {
+                update(album);
+                return true;
+            }
         }
         return false;
     }
@@ -586,7 +603,7 @@ public class AlbumService {
     public List<Album> checkDataAutorization(List<Album> albumList, String userId) {
 
         SubscriptionService subscriptionService = new SubscriptionService(subscriptionRepository);
-        Subscription subscription = subscriptionService.findSubscription(userId, SubscriptionTypeEnum.DESCRIPTION.name());
+        Subscription subscription = subscriptionService.findSubscriptionByUserIdAndType(userId, SubscriptionTypeEnum.DESCRIPTION.name());
 
         if ((subscription.getDateFin() != null && subscription.getDateFin().compareTo(new Date()) < 0) ||
                 subscription.getDateDebut().compareTo(new Date()) > 0) {
@@ -673,6 +690,10 @@ public class AlbumService {
      * @param userId
      */
     public boolean addUserToAlbumAllIdRight(Album album, String userId){
+
+        if(album.getIdRight().isEmpty()) {
+            addAllIdRightToAlbum(album);
+        }
 
         boolean bool = true;
 

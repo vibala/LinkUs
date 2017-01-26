@@ -32,7 +32,7 @@ public class AccessTokenService {
         return userId;
     }
 
-    public String getUserIdWithToken(){
+    private String getUserIdWithToken(){
 
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = ((OAuth2Authentication) a).getUserAuthentication().getName();
