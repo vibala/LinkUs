@@ -50,7 +50,7 @@ public class UserService {
     }
 
     public User findUserByEmail(String email) {
-        Optional<User> user = userRepository.findOneByEmail(email);
+        Optional<User> user = userRepository.findOneByEmail(email.toLowerCase());
         if(!user.isPresent() || user.get() == null) {
             throw new UserNotFoundException(email);
         } else {
@@ -59,7 +59,7 @@ public class UserService {
     }
 
     public boolean checkUserByEmail(String email) {
-        Optional<User> user = userRepository.findOneByEmail(email);
+        Optional<User> user = userRepository.findOneByEmail(email.toLowerCase());
         if(!user.isPresent() || user.get() == null) {
             return false;
         } else {

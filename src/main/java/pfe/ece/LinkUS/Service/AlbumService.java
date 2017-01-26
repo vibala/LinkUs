@@ -31,13 +31,10 @@ public class AlbumService {
 
     Logger LOGGER = Logger.getLogger("LinkUS.Service.AlbumService");
 
-    @Autowired
     AlbumRepository albumRepository;
 
-    @Autowired
     UserRepository userRepository;
 
-    @Autowired
     SubscriptionRepository subscriptionRepository;
 
     ApplicationContext ctx;
@@ -342,6 +339,7 @@ public class AlbumService {
 
             Album album = createCompleteAlbum(name, ownerId, null, null, null, null);
             album.setActive(true);
+            addUserToAlbumAllIdRight(album, ownerId);
             save(album);
             return album.getId();
         }
@@ -537,7 +535,10 @@ public class AlbumService {
      * @param right
      * @return
      */
-    public boolean addFriendToAlbum(String userId, String friendId, String albumId, String right) {
+    public boolean addFriendToAlbum(UserRepository userRepository,
+                                    String userId, String friendId, String albumId, String right) {
+
+        this.userRepository = userRepository;
 
         // Récupération album
         Album album = findAlbumById(albumId);
@@ -550,8 +551,10 @@ public class AlbumService {
         if(userService.checkFriend(user, friendId)) {
 
             // Ajout du friend au right
-            addUserToAlbumIdRight(album, friendId, right);
-            return true;
+            if(addUserToAlbumIdRight(album, friendId, right)) {
+                update(album);
+                return true;
+            }
         }
         return false;
     }
@@ -687,6 +690,10 @@ public class AlbumService {
      * @param userId
      */
     public boolean addUserToAlbumAllIdRight(Album album, String userId){
+
+        if(album.getIdRight().isEmpty()) {
+            addAllIdRightToAlbum(album);
+        }
 
         boolean bool = true;
 

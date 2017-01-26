@@ -30,7 +30,7 @@ public class AlbumController {
 
     private Logger LOGGER = Logger.getLogger("LinkUS.Controller.AlbumController");
     @Autowired
-    UserRepository usersRepository;
+    UserRepository userRepository;
     @Autowired
     AlbumRepository albumRepository;
     @Autowired
@@ -139,14 +139,14 @@ public class AlbumController {
             @RequestParam("albumId") String albumId,
             @RequestParam("right") String right){
 
-        friendId = friendId.replace("\"","");
-        albumId = albumId.replace("\"","");
-        right = right.replace("\"","");
+//        friendId = friendId.replace("\"","");
+//        albumId = albumId.replace("\"","");
+//        right = right.replace("\"","");
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         AlbumService albumService = new AlbumService(albumRepository);
-        if(albumService.addFriendToAlbum(userId, friendId, albumId, right)) {
+        if(albumService.addFriendToAlbum(userRepository, userId, friendId, albumId, right)) {
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.CONFLICT);
