@@ -20,14 +20,19 @@ public class IdRight {
     private ArrayList<String> groupIdList = new ArrayList<>();
 
     public IdRight(){
-        ObjectId objectId = new ObjectId();
-        setId(objectId.toString());
+        setRandomId();
+    }
+
+    public void setRandomId() {
+        if(getId()== null || getId().equals("")) {
+            ObjectId objectId = new ObjectId();
+            setId(objectId.toString());
+        }
     }
 
     public IdRight(String right) {
         this.right = right;
-        ObjectId objectId = new ObjectId();
-        setId(objectId.toString());
+        setRandomId();
     }
 
     @Override
@@ -60,5 +65,22 @@ public class IdRight {
 
     public ArrayList<String> getGroupIdList() {
         return groupIdList;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IdRight idRight = (IdRight) o;
+
+        return right.equals(idRight.right);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return right.hashCode();
     }
 }

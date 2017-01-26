@@ -1,18 +1,30 @@
 package pfe.ece.LinkUS.Service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pfe.ece.LinkUS.Exception.EmailExistsException;
 import pfe.ece.LinkUS.Exception.UnauthorizedInformationException;
 import pfe.ece.LinkUS.Exception.UserNotFoundException;
+import pfe.ece.LinkUS.Model.Enum.Role;
 import pfe.ece.LinkUS.Model.FriendGroup;
 import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
+import pfe.ece.LinkUS.Service.UserEntityService.UserServiceImpl;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -21,19 +33,16 @@ import java.util.logging.Logger;
 @Service
 public class UserService {
 
-    Logger LOGGER = Logger.getLogger("LinkUS.Controller.UserService");
+    Logger LOGGER = Logger.getLogger("LinkUS.Service.UserService");
 
+    @Autowired
     UserRepository userRepository;
-
-    FriendGroupRepository friendGroupRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public void setFriendGroupRepository(FriendGroupRepository friendGroupRepository) {
-        this.friendGroupRepository = friendGroupRepository;
-    }
+    public UserService(){}
 
     public User findUserById(String userId) {
         User user = userRepository.findOne(userId);
@@ -44,14 +53,32 @@ public class UserService {
         }
     }
 
-    /*public User findUserByEmail(String email) {
+    public User findUserByEmail(String email) {
         Optional<User> user = userRepository.findOneByEmail(email);
-        if(user.get() == null) {
+        if(!user.isPresent() || user.get() == null) {
             throw new UserNotFoundException(email);
         } else {
             return user.get();
         }
-    }*/
+    }
+
+    public boolean checkUserByEmail(String email) {
+        Optional<User> user = userRepository.findOneByEmail(email);
+        if(!user.isPresent() || user.get() == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean checkUserById(String userId) {
+        User user = userRepository.findOne(userId);
+        if(user != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public List<User> searchUserByPartialFirstnameOrLastname(String textToFind) {
 
@@ -61,7 +88,7 @@ public class UserService {
         return userList;
     }
 
-    public List<User> findUsersByName(String name) {
+    public List<User> findUsersByLastName(String name) {
         List<User> userList = userRepository.findByLastNameIgnoreCase(name);
 
         if(userList == null || userList.isEmpty()) {
@@ -82,7 +109,7 @@ public class UserService {
         return userList;
     }
 
-    private void save(User user) {
+    public void save(User user) {
         // Set to null not to erase another object with the same Id (new object)
         user.setId(null);
         LOGGER.info("Saving new user" + user.toString());
@@ -108,11 +135,13 @@ public class UserService {
 
         User user = findUserById(userId);
 
-        if(!user.getFriendPendingList().contains(friendId)) {
-            LOGGER.info("New friend request with friendID: " + friendId);
-            user.getFriendPendingList().add(friendId);
-            update(user);
-            return true;
+        if(checkUserById(friendId)) {
+            if(!user.getFriendPendingList().contains(friendId)) {
+                LOGGER.info("New friend request with friendID: " + friendId);
+                user.getFriendPendingList().add(friendId);
+                update(user);
+                return true;
+            }
         }
         return false;
     }
@@ -174,7 +203,7 @@ public class UserService {
         }
     }
 
-    public List<FriendGroup> findFriendGroupsOwned(String userId) {
+    public List<FriendGroup> findFriendGroupsOwned(FriendGroupRepository friendGroupRepository ,String userId) {
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
         return friendGroupService.findFriendGroupsByOwnerId(userId);
@@ -221,6 +250,59 @@ public class UserService {
     }
 
     private Pageable createPageRequest(int page) {
-        return new PageRequest(page, 10, Sort.Direction.ASC, "lastName", "firstName");
+        return new PageRequest(page, 20, Sort.Direction.ASC, "lastName", "firstName");
+    }
+
+    public String createFakeUser(String name) throws EmailExistsException, ParseException {
+        pfe.ece.LinkUS.Service.UserEntityService.UserService userService = new UserServiceImpl(userRepository);
+        User user = new User();
+        user.setEmail(name + "@yopmail.com");
+        user.setDateofBirth(new Date(117, 0, 17, 17, 17));
+        user.setFirstName(name);
+        user.setLastName("Corea");
+        user.setSexe("Male");
+        user.setRole(Role.USER);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Pattern corresponding to ISO Format
+        Date timestamp = dateFormat.parse(dateFormat.format(new Date()));
+
+        user.setDateofRegistration(timestamp); // Setting the date of the registration
+        user.setPasswordHash(new BCryptPasswordEncoder().encode("1".concat(timestamp.toString())));
+        user.setEnabled(true);
+
+        save(user);
+
+        // PARTIE LOCALE
+        File directory = new File("./images/" + user.getId());
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+
+        return user.getId();
+    }
+
+    public boolean removeUser(User user) throws IOException {
+
+        deleteDirectory(new File("./images/" + user.getId()));
+
+        delete(user);
+
+        return true;
+    }
+
+    private void deleteDirectory(File file) {
+        File[] contents = file.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                deleteDirectory(f);
+            }
+        }
+        file.delete();
+    }
+
+    public void addFakeFriend(String userId, String friendId) {
+
+        friendRequest(userId, friendId);
+        acceptFriend(userId, friendId);
     }
 }

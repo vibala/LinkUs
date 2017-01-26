@@ -18,8 +18,14 @@ public class Comment {
     private boolean seen = false;
 
     public Comment() {
-        ObjectId objectId = new ObjectId();
-        setId(objectId.toString());
+        setRandomId();
+    }
+
+    public void setRandomId() {
+        if(getId()== null || getId().equals("")) {
+            ObjectId objectId = new ObjectId();
+            setId(objectId.toString());
+        }
     }
 
     @Override
@@ -72,5 +78,24 @@ public class Comment {
 
     public void setSeen(boolean seen) {
         this.seen = seen;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Comment comment = (Comment) o;
+
+        if (!userId.equals(comment.userId)) return false;
+        return date.equals(comment.date);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userId.hashCode();
+        result = 31 * result + date.hashCode();
+        return result;
     }
 }

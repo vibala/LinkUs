@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
@@ -20,19 +21,28 @@ public class Subscription {
     private int free;
 
     public Subscription() {
+        setRandomId();
     }
 
     public Subscription(String type, String userId) {
         this.type = type;
         this.userId = userId;
+        setRandomId();
     }
 
     public Subscription(String type, String userId, Date dateBegin) {
         this.type = type;
         this.userId = userId;
         this.dateBegin = dateBegin;
+        setRandomId();
     }
 
+    public void setRandomId() {
+        if(getId()== null || getId().equals("")) {
+            ObjectId objectId = new ObjectId();
+            setId(objectId.toString());
+        }
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

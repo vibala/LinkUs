@@ -1,48 +1,31 @@
 package pfe.ece.LinkUS.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import pfe.ece.LinkUS.Model.NotificationToken;
-import pfe.ece.LinkUS.Service.NotificationTokenService;
-import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import pfe.ece.LinkUS.Model.Notification;
+import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.NotificationRepository;
+import pfe.ece.LinkUS.Service.NotificationService;
 
 /**
- * Created by Huong on 11/12/2016.
+ * Created by DamnAug on 24/01/2017.
  */
-
-@RestController
-@RequestMapping("/notification")
+@RequestMapping("/userNotification")
 public class NotificationController {
 
-    private NotificationTokenService notificationTokenService;
-    private AccessTokenService accessTokenService;
 
     @Autowired
-    public NotificationController(NotificationTokenService notificationTokenService,AccessTokenService accessTokenService) {
-        this.notificationTokenService = notificationTokenService;
-        this.accessTokenService=accessTokenService;
-    }
+    NotificationRepository notificationRepository;
 
     @RequestMapping("/")
-    public String unused() {
-        return "Not implemented yet.";
-    }
+    public String getNotificationObject(@RequestParam("notificationId") String notificationId) {
 
-    /* Persistence des tokens */
-    @RequestMapping(value = "/token", method = RequestMethod.POST)
-    @ResponseBody
-    ResponseEntity<String> sendNotificationToken(@RequestBody String notification_token) {
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-        notification_token=notification_token.replace("\"","");
-        NotificationToken token = new NotificationToken(userId,notification_token);
+        NotificationService notificationService = new NotificationService(notificationRepository);
 
-        try {
-            notificationTokenService.registerNotificationTokenEntity(token);
-        } catch (Exception e) {
-            return new ResponseEntity<String>("msg.Fail : Error creating the token : " + e.toString(), HttpStatus.OK);
+        Notification notification = notificationService.findNotification(notificationId);
+        if(notification != null) {
+            return notification.getObject().toString();
         }
-        return new ResponseEntity<String>("msg.Success : Token successfully created", HttpStatus.OK);
+        return null;
     }
 }

@@ -45,6 +45,7 @@ public class PasswordController {
 
     @RequestMapping(value = "/forgotPassword",method = RequestMethod.POST)
     public ResponseEntity<Message> changePasswordFirstStep(@RequestBody String mail,HttpServletRequest request){
+        mail=mail.replace("\"","");
 
         // Message to be dispatched to be sent back
         Message message = null;

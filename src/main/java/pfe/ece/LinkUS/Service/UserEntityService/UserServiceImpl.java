@@ -26,9 +26,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    /*public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }*/
+    }
 
     @Override
     public Optional<User> getUserById(String id) {
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     public User registerNewUserAccount(UserCreateForm form) throws EmailExistsException {
 
         if(emailExist(form.getEmail())){
-            throw new EmailExistsException("There is an account with that email address");
+            throw new EmailExistsException("There is an account with that email address: " + form.getEmail());
         }
 
         User user = new User();

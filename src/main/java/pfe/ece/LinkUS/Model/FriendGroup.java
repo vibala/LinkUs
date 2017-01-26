@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
@@ -17,6 +18,18 @@ public class FriendGroup {
     private String ownerId;
     private String name;
     private List<String> members = new ArrayList<>();
+    private String groupImgUrl;
+
+    public FriendGroup() {
+        setRandomId();
+    }
+
+    public void setRandomId() {
+        if(getId()== null || getId().equals("")) {
+            ObjectId objectId = new ObjectId();
+            setId(objectId.toString());
+        }
+    }
 
     public String toString(){
         String str = "";
@@ -61,6 +74,13 @@ public class FriendGroup {
         return members;
     }
 
+    public String getGroupImgUrl() {
+        return groupImgUrl;
+    }
+
+    public void setGroupImgUrl(String groupImgUrl) {
+        this.groupImgUrl = groupImgUrl;
+    }
 
     /**
      * Check on ownerId & name

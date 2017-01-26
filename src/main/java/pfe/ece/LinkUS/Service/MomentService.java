@@ -6,6 +6,8 @@ import pfe.ece.LinkUS.Model.Instant;
 import pfe.ece.LinkUS.Model.Moment;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -14,13 +16,7 @@ import java.util.logging.Logger;
 @Service
 public class MomentService {
 
-    Logger LOGGER = Logger.getLogger("LinkUS.Controller.MomentService");
-
-    AlbumRepository albumRepository;
-
-    public void setAlbumRepository(AlbumRepository albumRepository) {
-        this.albumRepository = albumRepository;
-    }
+    Logger LOGGER = Logger.getLogger("LinkUS.Service.MomentService");
 
     public Moment newDefaultMoment() {
         LOGGER.info("Creating new default moment.");
@@ -29,14 +25,11 @@ public class MomentService {
         moment.setName("Default");
         return moment;
     }
-
-    public boolean createMomentSaveToAlbum(String albumId, String name) {
-
-        AlbumService albumService = new AlbumService(albumRepository);
-        Album album = albumService.findAlbumById(albumId);
+/*
+    public String createMomentSaveToAlbum(Album album, String name) {
 
         if(album != null) {
-            Moment moment = createMoment(name);
+            Moment moment = createMoment(name, null);
 
             // Temporaire
             Instant instant = new Instant();
@@ -45,19 +38,22 @@ public class MomentService {
             instantService.addInstantToMoment(moment, instant);
             //
 
-            album.getMoments().add(moment);
-            albumService.update(album);
-            return true;
-        }
-        return false;
-    }
+            MomentService momentService = new MomentService();
+            momentService.addMomentToAlbum(album, moment);
 
-    public Moment createMoment(String name) {
+            return moment.getId();
+        }
+        return null;
+    }*/
+
+    public Moment createMoment(String name, ArrayList<Instant> instantList) {
 
         Moment moment = new Moment();
 
         moment.setName(name);
-
+        if(instantList != null && !instantList.isEmpty()) {
+            moment.setInstantList(instantList);
+        }
         return moment;
 
     }
@@ -73,6 +69,23 @@ public class MomentService {
         return false;
     }
 
+
+/*    public String saveInstantToAlbumMoment(Album album, String momentId, Instant instant) {
+
+        MomentService momentService = new MomentService();
+        Moment moment = momentService.findMomentInAlbum(album, momentId);
+
+        return saveInstantToAlbumMoment(moment, instant);
+    }*/
+
+/*    public String saveInstantToAlbumMoment(Moment moment, Instant instant) {
+
+        InstantService instantService = new InstantService();
+
+        instantService.addInstantToMoment(moment, instant);
+
+        return instant.getId();
+    }*/
     /**
      *
      * @param album
@@ -90,16 +103,11 @@ public class MomentService {
     }
 
     public boolean deleteMomentFromAlbum(Album album, Moment moment) {
-        return deleteMomentFromAlbum(album, moment.getId());
-    }
-
-    public boolean deleteMomentFromAlbum(Album album, String momentId) {
-
         boolean bool = false;
         Moment foundMoment = null;
-        for(Moment moment: album.getMoments()) {
-            if(moment.getId().equals(momentId)) {
-                foundMoment = moment;
+        for(Moment momentItr: album.getMoments()) {
+            if(momentItr.equals(moment)) {
+                foundMoment = momentItr;
             }
         }
         if(foundMoment != null) {
@@ -109,7 +117,7 @@ public class MomentService {
 
         // Si il n'y a plus de moments on en rajoute 1 par défaut
         if(album.getMoments().isEmpty()) {
-            LOGGER.info("Removing moment: " + momentId + " from album: " + album.getName());
+            LOGGER.info("Removing moment: " + foundMoment.getId() + " from album: " + album.getName());
             album.getMoments().add(newDefaultMoment());
         }
         return bool;
@@ -135,6 +143,23 @@ public class MomentService {
             if (moment.isNews() != news) {
                 deleteMomentFromAlbum(album, moment);
             }
+        }
+    }
+
+    public void setMainInstantUsingCotation(Moment moment) {
+
+        Instant bestInstant = null;
+        double bestCotation = -1;
+        if(moment.getInstantList() != null) {
+            for(Instant instant: moment.getInstantList()) {
+                if(instant.getCotation() > bestCotation) {
+                    bestCotation = instant.getCotation();
+                    bestInstant = instant;
+                }
+            }
+            moment.setMainInstant(bestInstant.getId());
+        } else {
+            moment.setMainInstant("");
         }
     }
 }

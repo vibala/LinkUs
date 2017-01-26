@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 @Service
 public class IdRightService {
 
-    Logger LOGGER = Logger.getLogger("LinkUS.Controller.IdRightService");
+    Logger LOGGER = Logger.getLogger("LinkUS.Service.IdRightService");
 
     public boolean addUserToIdRight(IdRight idRight, String userId) {
 

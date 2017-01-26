@@ -3,10 +3,8 @@ package pfe.ece.LinkUS.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pfe.ece.LinkUS.Model.FriendGroup;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
@@ -37,29 +35,33 @@ public class FriendGroupController {
     @Autowired
     private AccessTokenService accessTokenService;
 
-    @RequestMapping(value = "/addUser", params = {"friendGroupId", "userId"}, method = RequestMethod.POST)
-    public ResponseEntity addUserToFriendGroup(@RequestParam("friendGroupId") String friendGroupId, @RequestParam("userId") String userId) {
-
-        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
-        if(friendGroupService.addUserToFriendGroup(friendGroupId, userId)){
-            return new ResponseEntity(HttpStatus.OK);
+    @RequestMapping(value = "/addUser", params = {"userId"}, method = RequestMethod.POST)
+    public ResponseEntity addUserToFriendGroup(@RequestBody FriendGroup friendGroup,@RequestParam String userId) {
+        if(friendGroup != null && userId != null && !userId.equals("")) {
+            FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
+            if(friendGroupService.addUserToFriendGroup(friendGroup.getId(), userId)){
+                return new ResponseEntity(HttpStatus.OK);
+            }
         }
         return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-    @RequestMapping(value = "/removeUser", params = {"friendGroupId", "userId"}, method = RequestMethod.POST)
-    public ResponseEntity removeUserToFriendGroup(@RequestParam("friendGroupId") String friendGroupId, @RequestParam("userId") String userId) {
-
-        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
-        if(friendGroupService.removeUserToFriendGroup(friendGroupId, userId)){
-            return new ResponseEntity(HttpStatus.OK);
+    @RequestMapping(value = "/removeUser", params = {"userId"}, method = RequestMethod.POST)
+    public ResponseEntity removeUserToFriendGroup(@RequestBody FriendGroup friendGroup,@RequestParam String userId) {
+        if(friendGroup != null && userId != null && !userId.equals("")) {
+            FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
+            if (friendGroupService.removeUserToFriendGroup(friendGroup.getId(), userId)) {
+                return new ResponseEntity(HttpStatus.OK);
+            }
         }
         return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-    @RequestMapping(value = "/add", params = {"name", "userIdList"}, method = RequestMethod.POST)
-    public ResponseEntity addFilledFriendGroup(String name, List<String> userIdList) {
+    @RequestMapping(value = "/addfilled",  method = RequestMethod.POST)
+    public ResponseEntity addFilledFriendGroup(@RequestBody FriendGroup friendGroup) {
 
+        String name=friendGroup.getName();
+        List<String> userIdList=friendGroup.getMembers();
         String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
@@ -69,9 +71,10 @@ public class FriendGroupController {
         return new ResponseEntity(HttpStatus.CONFLICT);
 
     }
-    @RequestMapping(value = "/add", params = {"name"}, method = RequestMethod.POST)
-    public ResponseEntity addFriendGroup(String name) {
 
+    @RequestMapping(value = "/addempty", method = RequestMethod.POST)
+    public ResponseEntity addFriendGroup(@RequestBody String name) {
+        name=name.replace("\"","");
         String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
@@ -79,7 +82,17 @@ public class FriendGroupController {
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.CONFLICT);
-
     }
 
+    @RequestMapping(value = "/remove",method = RequestMethod.POST)
+    public ResponseEntity removeFriendGroup(@RequestBody String name) {
+        name=name.replace("\"","");
+        String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
+        if(friendGroupService.deleteFriendGroup(name, ownerId)){
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
+    }
 }

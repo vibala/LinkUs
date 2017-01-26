@@ -1,11 +1,8 @@
 package pfe.ece.LinkUS.Service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pfe.ece.LinkUS.Model.FriendGroup;
-import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +14,7 @@ import java.util.logging.Logger;
 @Service
 public class FriendGroupService {
 
-    Logger LOGGER = Logger.getLogger("LinkUS.Controller.FriendGroupService");
+    Logger LOGGER = Logger.getLogger("LinkUS.Service.FriendGroupService");
 
     FriendGroupRepository friendGroupRepository;
 
@@ -38,6 +35,10 @@ public class FriendGroupService {
         List<FriendGroup> friendGroupList = new ArrayList<>();
 
         return friendGroupRepository.findByOwnerId((ownerId));
+    }
+
+    public FriendGroup findFriendGroupsByOwnerIdAndName(String ownerId, String name) {
+        return friendGroupRepository.findByOwnerIdAndName(ownerId, name);
     }
 
     public FriendGroup findFriendGroupById(String id) {
@@ -101,10 +102,23 @@ public class FriendGroupService {
             friendGroup.setMembers(userIdList);
         }
 
+        //TODO: Temporaire
+        //friendGroup.setGroupImgUrl("http://" + Inet4Address.getLocalHost().getHostAddress() + ":9999/images?name="+);
         // Recherche d'un friendGroup deja existant pour l'owner
         List<FriendGroup> friendGroupList = findFriendGroupByOwnerId(ownerId);
         if(!existingFriendGroup(friendGroupList, friendGroup)) {
             save(friendGroup);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteFriendGroup(String name, String ownerId) {
+
+        FriendGroup friendGroup = findFriendGroupsByOwnerIdAndName(ownerId, name);
+
+        if(friendGroup != null) {
+            delete(friendGroup);
             return true;
         }
         return false;
@@ -145,5 +159,13 @@ public class FriendGroupService {
             return true;
         }
         return false;
+    }
+
+    public List<FriendGroup> searchGroupByPartialName(String textToFind) {
+
+        List<FriendGroup> userList = friendGroupRepository.findFriendGroupByNameLikeIgnoreCase(textToFind);
+        // TODO: Tester pageable
+
+        return userList;
     }
 }

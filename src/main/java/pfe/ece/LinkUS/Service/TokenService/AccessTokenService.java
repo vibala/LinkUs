@@ -23,16 +23,16 @@ public class AccessTokenService {
 
     private final Logger logger = Logger.getLogger(AccessTokenService.class);
 
-    public String getUserIdWithToken() {
+    public String getUserIdOftheAuthentifiedUser() {
 
-        String userId = getUserIdOftheAuthentifiedUser();
+        String userId = getUserIdWithToken();
         if(userId == null) {
             throw new UserNotFoundException();
         }
         return userId;
     }
 
-    public String getUserIdOftheAuthentifiedUser(){
+    public String getUserIdWithToken(){
 
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = ((OAuth2Authentication) a).getUserAuthentication().getName();

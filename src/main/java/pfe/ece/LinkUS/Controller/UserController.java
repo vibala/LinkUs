@@ -4,15 +4,14 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pfe.ece.LinkUS.Model.FriendGroup;
 import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
+import pfe.ece.LinkUS.Service.FriendGroupService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
 
@@ -50,138 +49,11 @@ public class UserController {
     }
 
 
-    /**
-     * Create friend request
-     *
-     * @param friendId
-     */
-    @RequestMapping(value = "/friendRequest", params = {"friendId"}, method = RequestMethod.POST)
-    public ResponseEntity friendRequest(@RequestParam(value = "friendId") String friendId) {
-
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-
-        UserService userService = new UserService(userRepository);
-        if(userService.friendRequest(userId, friendId)) {
-            return new ResponseEntity(HttpStatus.OK);
-        }
-        return new ResponseEntity(HttpStatus.CONFLICT);
-    }
-
-    /**
-     * Accept or decline fiend request
-     *
-     * @param friendId
-     * @param decision
-     */
-    @RequestMapping(value = "/friendRequestDecision", params = {"friendId", "decision"}, method = RequestMethod.POST)
-    public ResponseEntity friendRequestDecision(@RequestParam(value = "friendId") String friendId, @RequestParam(value = "decision") Boolean decision) {
-
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-
-        UserService userService = new UserService(userRepository);
-        if(decision) {
-            if(userService.acceptFriend(userId, friendId)) {
-                return new ResponseEntity(HttpStatus.OK);
-            } else {
-                return new ResponseEntity(HttpStatus.CONFLICT);
-            }
-        } else {
-            if(userService.refuseFriend(userId, friendId)){
-                return new ResponseEntity(HttpStatus.OK);
-            }
-            return new ResponseEntity(HttpStatus.CONFLICT);
-        }
-    }
-
-    @RequestMapping(value = "/removeFriend", params = {"friendId"}, method = RequestMethod.POST)
-    public ResponseEntity friendRequestDecision(@RequestParam(value = "friendId") String friendId) {
-
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-
-        UserService userService = new UserService(userRepository);
-        if(userService.removeFriend(userId, friendId)) {
-            return new ResponseEntity(HttpStatus.OK);
-        }
-        return new ResponseEntity(HttpStatus.CONFLICT);
-    }
-
-    @RequestMapping("/getFriends")
-    public String getFriends(){
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-        UserService userService = new UserService(userRepository);
-        List<User> userList = userService.findFriends(userId);
-        userService.checkData(userList);
-        return userList.toString();
-    }
-
-    @RequestMapping("/getGroupFriends")
-    public String getGroupFriends(){
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-
-        UserService userService = new UserService(userRepository);
-        userService.setFriendGroupRepository(friendGroupRepository);
-        return userService.findFriendGroupsOwned(userId).toString();
-    }
-
-    @RequestMapping(value = "/getFriend", params = {"friendId"})
-    public String getFriend(@RequestParam("friendId") String friendId){
-
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-        UserService userService = new UserService(userRepository);
-
-        User friend = userService.findFriend(userId, friendId);
-        userService.checkData(friend);
-
-        return friend.toString();
-    }
-
-    @RequestMapping(value = "/searchFriend", params = {"text"})
-    public String searchFriend(@RequestParam("text") String text){
-
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-
-        UserService userService = new UserService(userRepository);
-        List<User> userList = userService.searchUserByPartialFirstnameOrLastname(text);
-        userService.checkData(userList);
-        return userList.toString();
-    }
-
-    @RequestMapping(value = "/changeFullname", params = {"lastName","firstName"}, method = RequestMethod.POST)
-    public ResponseEntity<String> changeFullname(@RequestParam("lastName") String lastName, @RequestParam("firstName") String firstName){
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-
-        UserService userService = new UserService(userRepository);
-        User user = userService.findUserById(userId);
-        user.setLastName(lastName);
-        user.setFirstName(firstName);
-        User tmp = userRepository.save(user);
-        if(tmp == null){
-            return new ResponseEntity<String>("Full name not updated",HttpStatus.NOT_MODIFIED);
-        }
-
-        return new ResponseEntity<String>("Full name updated",HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/changeUsername", params = {"email"}, method = RequestMethod.POST)
-    public ResponseEntity<String> changeEmailUsername(@RequestParam("email") String email){
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-
-        UserService userService = new UserService(userRepository);
-        User user = userService.findUserById(userId);
-        user.setEmail(email);
-        User tmp = userRepository.save(user);
-        if(tmp == null){
-            return new ResponseEntity<String>("Username name not updated",HttpStatus.NOT_MODIFIED);
-        }
-
-        return new ResponseEntity<String>("Username updated",HttpStatus.OK);
-    }
-
-    //    @RequestMapping(params = {"name"})
+//    @RequestMapping(params = {"name"})
 //    public String findUserByName(@RequestParam("name") String name) {
 //        UserService userService = new UserService(userRepository);
 //
-//        List<User> userList = userService.findUsersByName(name);
+//        List<User> userList = userService.findUsersByLastName(name);
 //
 //        if(userList == null || userList.isEmpty()) {
 //            throw new AlbumNotFoundException(name);
@@ -228,5 +100,146 @@ public class UserController {
 //            return userList.toString();
 //        }
 //    }
+
+    /**
+     * Create friend request
+     *
+     * @param friendId
+     */
+    @RequestMapping(value = "/friendRequest", method = RequestMethod.POST)
+    public ResponseEntity friendRequest(@RequestBody String friendId) {
+        friendId = friendId.replace("\"","");
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        if(userService.friendRequest(userId, friendId)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
+    }
+
+    /**
+     * Accept or decline fiend request
+     *
+     * @param friendId
+     * @param decision
+     */
+    @RequestMapping(value = "/friendRequestDecision", params = {"decision"}, method = RequestMethod.POST)
+    public ResponseEntity friendRequestDecision(@RequestBody String friendId,  @RequestParam("decision") boolean decision) {
+        friendId = friendId.replace("\"","");
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        if(decision) {
+            if(userService.acceptFriend(userId, friendId)) {
+                return new ResponseEntity(HttpStatus.OK);
+            } else {
+                return new ResponseEntity(HttpStatus.CONFLICT);
+            }
+        } else {
+            if(userService.refuseFriend(userId, friendId)){
+                return new ResponseEntity(HttpStatus.OK);
+            }
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
+    }
+
+    @RequestMapping(value = "/removeFriend", params = {"friendId"}, method = RequestMethod.POST)
+    public ResponseEntity friendRequestDecision(@RequestParam(value = "friendId") String friendId) {
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        if(userService.removeFriend(userId, friendId)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
+    }
+
+    @RequestMapping("/getFriends")
+    public String getFriends(){
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        UserService userService = new UserService(userRepository);
+        List<User> userList = userService.findFriends(userId);
+        userService.checkData(userList);
+        return userList.toString();
+    }
+
+    @RequestMapping("/getGroupFriends")
+    public String getGroupFriends(){
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        return userService.findFriendGroupsOwned(friendGroupRepository, userId).toString();
+    }
+
+    @RequestMapping(value = "/getFriend", params = {"friendId"})
+    public String getFriend(@RequestParam("friendId") String friendId){
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        UserService userService = new UserService(userRepository);
+
+        User friend = userService.findFriend(userId, friendId);
+        userService.checkData(friend);
+
+        return friend.toString();
+    }
+
+    @RequestMapping(value = "/searchFriend", params = {"text"})
+    public String searchFriend(@RequestParam("text") String text){
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        List<User> userList = userService.searchUserByPartialFirstnameOrLastname(text);
+        userService.checkData(userList);
+        return userList.toString();
+    }
+
+    @RequestMapping(value = "/searchGroupFriend", params = {"text"})
+    public String searchGroupFriend(@RequestParam("text") String text){
+
+        FriendGroupService friendGroup = new FriendGroupService(friendGroupRepository);
+
+        List<FriendGroup> friendGroupList = friendGroup.searchGroupByPartialName(text);
+        return friendGroupList.toString();
+    }
+
+
+
+
+
+    @RequestMapping(value = "/changeFullname", params = {"lastName","firstName"}, method = RequestMethod.POST)
+    public ResponseEntity<String> changeFullname(@RequestParam("lastName") String lastName, @RequestParam("firstName") String firstName){
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        User user = userService.findUserById(userId);
+        user.setLastName(lastName);
+        user.setFirstName(firstName);
+        User tmp = userRepository.save(user);
+        if(tmp == null){
+            return new ResponseEntity<String>("Full name not updated",HttpStatus.NOT_MODIFIED);
+        }
+
+        return new ResponseEntity<String>("Full name updated",HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/changeUsername", params = {"email"}, method = RequestMethod.POST)
+    public ResponseEntity<String> changeEmailUsername(@RequestParam("email") String email){
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        UserService userService = new UserService(userRepository);
+        User user = userService.findUserById(userId);
+        user.setEmail(email);
+        User tmp = userRepository.save(user);
+        if(tmp == null){
+            return new ResponseEntity<String>("Username name not updated",HttpStatus.NOT_MODIFIED);
+        }
+
+        return new ResponseEntity<String>("Username updated",HttpStatus.OK);
+    }
+
 
 }

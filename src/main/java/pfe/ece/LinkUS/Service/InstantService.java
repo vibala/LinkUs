@@ -6,6 +6,7 @@ import pfe.ece.LinkUS.Model.IdRight;
 import pfe.ece.LinkUS.Model.Instant;
 import pfe.ece.LinkUS.Model.Moment;
 
+import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -14,7 +15,16 @@ import java.util.logging.Logger;
 @Service
 public class InstantService {
 
-    Logger LOGGER = Logger.getLogger("LinkUS.Controller.InstantService");
+    Logger LOGGER = Logger.getLogger("LinkUS.Service.InstantService");
+
+
+    public Instant createInstant(String name) {
+
+        Instant instant = new Instant();
+        instant.setName(name);
+        instant.setPublishDate(new Date());
+        return instant;
+    }
 
     public boolean addInstantToMoment(Moment moment, Instant instant) {
         if(!moment.getInstantList().contains(instant)) {
@@ -35,20 +45,15 @@ public class InstantService {
     }
 
     public boolean deleteInstantFromMoment(Moment moment, Instant instant) {
-        return deleteInstantFromMoment(moment, instant.getId());
-    }
-
-    public boolean deleteInstantFromMoment(Moment moment, String instantId) {
-
         Instant foundInstant = null;
-        for(Instant instant: moment.getInstantList()) {
-            if(instant.getId().equals(instantId)) {
-                foundInstant = instant;
+        for(Instant instantItr: moment.getInstantList()) {
+            if(instantItr.equals(instant)) {
+                foundInstant = instantItr;
             }
         }
 
         if(foundInstant != null) {
-            LOGGER.info("Removing instant: " + instantId + "from moment: " + moment.getId());
+            LOGGER.info("Removing instant: " + foundInstant.getId() + "from moment: " + moment.getId());
             moment.getInstantList().remove(foundInstant);
             return true;
         }

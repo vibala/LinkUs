@@ -12,6 +12,7 @@ import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
 @Service
 public class SubscriptionService {
 
-    Logger LOGGER = Logger.getLogger("LinkUS.Controller.SubscriptionService");
+    Logger LOGGER = Logger.getLogger("LinkUS.Service.SubscriptionService");
     @Autowired
     SubscriptionRepository subscriptionRepository;
 
@@ -35,7 +36,8 @@ public class SubscriptionService {
     }
 
     public Subscription findSubscription(String id, String type) {
-        Subscription subscription = subscriptionRepository.findByUserIdAndType(id, type);
+        System.out.println("User id " + id);
+        Subscription subscription = subscriptionRepository.findOneByTypeAndUserId(type,id);
         if (subscription == null) {
             throw new SubscriptionNotFoundException(id);
         }
@@ -51,10 +53,17 @@ public class SubscriptionService {
         }
     }
 
+    /**
+     * Fonctionne pas je pense
+     *
+     * @param subscription
+     * @return
+     */
     public boolean addSubscription(Subscription subscription) {
         boolean matching = findMatchingSubscription(subscription);
 
         if(matching) {
+            //updateSubscription()
             // Existing object
             LOGGER.info("Subscription existing for user id " + subscription.getUserId() +
                     ": Type: " + subscription.getType() +
@@ -81,7 +90,7 @@ public class SubscriptionService {
 
     public boolean findMatchingSubscription(Subscription subscription) {
 
-        return subscriptionRepository.findSubscriptionByTypeAndUserId(
+        return subscriptionRepository.findOneByTypeAndUserId(
                 subscription.getType(), subscription.getUserId()) != null;
     }
 
@@ -132,6 +141,18 @@ public class SubscriptionService {
             LOGGER.warning("No subscription matching to deleteMomentFromAlbum.");
             return false;
         }
+    }
+
+    public boolean deleteUserSubscriptions(String userId) {
+
+        List<Subscription> subscriptionList = subscriptionRepository.findByUserId(userId);
+        if(subscriptionList != null && !subscriptionList.isEmpty()) {
+            for(Subscription subscription: subscriptionList) {
+                deleteSubscription(subscription);
+            }
+            return true;
+        }
+        return false;
     }
 
     private void save(Subscription subscription) {

@@ -14,11 +14,19 @@ public class Moment {
     private String id;
     private String name;
     private ArrayList<Instant> instantList = new ArrayList();
+    private ArrayList<KeyValue> descriptionsList = new ArrayList<>();
     private boolean news = true;
+    private String mainInstant;
 
     public Moment() {
-        ObjectId objectId = new ObjectId();
-        setId(objectId.toString());
+        setRandomId();
+    }
+
+    public void setRandomId() {
+        if(getId()== null || getId().equals("")) {
+            ObjectId objectId = new ObjectId();
+            setId(objectId.toString());
+        }
     }
 
     @Override
@@ -65,6 +73,22 @@ public class Moment {
         this.news = news;
     }
 
+    public String getMainInstant() {
+        return mainInstant;
+    }
+
+    public void setMainInstant(String mainInstant) {
+        this.mainInstant = mainInstant;
+    }
+
+    public ArrayList<KeyValue> getDescriptionsList() {
+        return descriptionsList;
+    }
+
+    public void setDescriptionsList(ArrayList<KeyValue> descriptionsList) {
+        this.descriptionsList = descriptionsList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -72,12 +96,12 @@ public class Moment {
 
         Moment moment = (Moment) o;
 
-        return name.equals(moment.name);
+        return instantList.equals(moment.instantList);
 
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return instantList.hashCode();
     }
 }

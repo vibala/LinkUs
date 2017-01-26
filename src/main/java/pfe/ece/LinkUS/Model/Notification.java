@@ -5,19 +5,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
+import java.util.Date;
+
 /**
- * Created by DamnAug on 22/11/2016.
+ * Created by DamnAug on 24/01/2017.
  */
-public class SubscriptionType {
+public class Notification {
 
     @Id
     private String id;
-    private String length;
+    private String userId;
+    private String albumId;
+    private String momentId;
     private String type;
-    private String unit;
-    private String price;
+    private Date creationDate = new Date();
+    private Object object;
 
-    public SubscriptionType() {
+    public Notification() {
         setRandomId();
     }
 
@@ -48,6 +52,22 @@ public class SubscriptionType {
         this.id = id;
     }
 
+    public String getAlbumId() {
+        return albumId;
+    }
+
+    public void setAlbumId(String albumId) {
+        this.albumId = albumId;
+    }
+
+    public String getMomentId() {
+        return momentId;
+    }
+
+    public void setMomentId(String momentId) {
+        this.momentId = momentId;
+    }
+
     public String getType() {
         return type;
     }
@@ -56,27 +76,27 @@ public class SubscriptionType {
         this.type = type;
     }
 
-    public String getLength() {
-        return length;
+    public Date getCreationDate() {
+        return creationDate;
     }
 
-    public void setLength(String length) {
-        this.length = length;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
-    public String getUnit() {
-        return unit;
+    public Object getObject() {
+        return object;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setObject(Object object) {
+        this.object = object;
     }
 
-    public String getPrice() {
-        return price;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
