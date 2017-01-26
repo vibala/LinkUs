@@ -12,7 +12,7 @@ public interface SubscriptionRepository extends MongoRepository<Subscription, St
 
    Subscription findByUserIdAndType(String userId, String type);
 
-   Subscription findOneByTypeAndUserId(String type, String userId);
+   Subscription findSubscriptionByTypeAndUserId(String type, String userId);
 
    List<Subscription> findByUserId(String userId);
 }

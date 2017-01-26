@@ -2,51 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fc5719f7-e6a6-4011-8684-de26858fae55" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/mongoRepository.PNG" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/typeBSon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/NbAlbumsAndNbProches.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/PreviewAlbum.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/App.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig$AuthorizationServerConfiguration.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig$ResourceServerConfiguration.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/RegisterController.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/SubscriptionTypeController.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/UserController.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Description.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Right.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Role.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/ServerService/NotificationService.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/CurrentUserService/CurrentUserDetailsService.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/FriendGroupService.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/SubscriptionService.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/public/confirmationMessage.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/AlbumController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/AlbumController.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig$ResourceServerConfiguration.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Config/OAuth2ServerConfig$ResourceServerConfiguration.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/FriendGroupController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/FriendGroupController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/SubscriptionController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/SubscriptionController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Album.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Model/Album.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserRepository.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserRepository.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/AlbumService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/AlbumService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/SubscriptionTypeService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/SubscriptionTypeService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/TokenService/AccessTokenService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/TokenService/AccessTokenService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/UserService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/UserService.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/RegisterController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/RegisterController.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/UserController.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Controller/UserController.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/AlbumRepository.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/AlbumRepository.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/FriendGroupService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/FriendGroupService.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/SubscriptionService.class" afterPath="$PROJECT_DIR$/target/classes/pfe/ece/LinkUS/Service/SubscriptionService.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Config/OAuth2ServerConfig.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Config/OAuth2ServerConfig.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/FriendGroupController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/FriendGroupController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/RegisterController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/RegisterController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/ScenarioController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/ScenarioController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UserController.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UserController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Album.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Album.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserRepository.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserRepository.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/AlbumRepository.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/AlbumRepository.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/FriendGroupService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/FriendGroupService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/IdRightService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/IdRightService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionTypeService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionTypeService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/TokenService/AccessTokenService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/TokenService/AccessTokenService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java" afterPath="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java" />
     </list>
     <ignored path="LinkUs.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -91,33 +65,58 @@
       <file leaf-file-name="SubscriptionService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-457">
-              <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="230">
+              <caret line="47" column="33" selection-start-line="47" selection-start-column="33" selection-end-line="47" selection-end-column="33" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java">
+      <file leaf-file-name="AlbumService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="283">
-              <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
-              <folding>
-                <element signature="e#8362#8363#0" expanded="true" />
-                <element signature="e#8405#8406#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="118">
+              <caret line="605" column="0" selection-start-line="605" selection-start-column="0" selection-end-line="605" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserRepository.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserRepository.java">
+      <file leaf-file-name="SubscriptionRepository.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="10" column="3" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
+            <state relative-caret-position="238">
+              <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UserController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-239">
+              <caret line="215" column="44" selection-start-line="215" selection-start-column="30" selection-end-line="215" selection-end-column="44" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AlbumController.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="84">
+              <caret line="163" column="11" selection-start-line="163" selection-start-column="11" selection-end-line="163" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NbAlbumsAndNbProches.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/NbAlbumsAndNbProches.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -141,16 +140,6 @@
               <folding>
                 <element signature="e#1870#1871#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SubscriptionRepository.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -182,7 +171,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/CurrentUserService/CurrentUserDetailsService.java" />
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/TokenService/VerificationTokenServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/TokenService/VerificationTokenService.java" />
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserEntityService/UserServiceImpl.java" />
@@ -227,12 +215,13 @@
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UserController.java" />
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/FriendGroupController.java" />
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/AlbumRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java" />
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java" />
         <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java" />
       </list>
     </option>
   </component>
@@ -340,10 +329,6 @@
               <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -363,11 +348,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
+              <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
+              <option name="myItemId" value="LinkUS" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -390,6 +375,14 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinkUS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Controller" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -909,7 +902,14 @@
       <option name="project" value="LOCAL" />
       <updated>1485445085304</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Merge branch 'server_linkus' of https://github.com/vibala/Linkus into server_linkus&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/FriendGroupController.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Service/AlbumService.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java&#10;">
+      <created>1485445430439</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1485445430439</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -958,21 +958,21 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="80" y="-8" width="1294" height="784" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32344213" sideWeight="0.49785408" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.48219585" sideWeight="0.5070422" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.541543" sideWeight="0.5101721" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46735904" sideWeight="0.49295774" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35014838" sideWeight="0.48982784" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32789317" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.49785408" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27230048" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27230048" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -994,30 +994,37 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32937685" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.541543" sideWeight="0.5101721" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32937685" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40943193" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32344213" sideWeight="0.49785408" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4050445" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942098" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32937685" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2370892" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32937685" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35014838" sideWeight="0.48982784" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32789317" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32939914" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.49570817" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.49785408" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27230048" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="false" weight="0.3299356" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
     </layout-to-restore>
   </component>
@@ -1038,7 +1045,8 @@
     <MESSAGE value="Gestion différente des credentials - Authentification + Inscription" />
     <MESSAGE value="Small changes done while implementing the network part of SettingsFragment" />
     <MESSAGE value="Merge branch 'server_linkus' of https://github.com/vibala/Linkus into server_linkus&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/UserController.java&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'server_linkus' of https://github.com/vibala/Linkus into server_linkus&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/UserController.java&#10;" />
+    <MESSAGE value="Merge branch 'server_linkus' of https://github.com/vibala/Linkus into server_linkus&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/FriendGroupController.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Service/AlbumService.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'server_linkus' of https://github.com/vibala/Linkus into server_linkus&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/FriendGroupController.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Service/AlbumService.java&#10;#&#9;src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1051,20 +1059,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Enum/Role.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="12" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/InstantService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="34" column="19" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Enum/DescriptionInstant.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
@@ -1196,6 +1190,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1664">
           <caret line="105" column="17" selection-start-line="105" selection-start-column="17" selection-end-line="105" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1227,6 +1222,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1397,14 +1393,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UserController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="586">
-          <caret line="242" column="0" selection-start-line="242" selection-start-column="0" selection-end-line="242" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionTypeService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="107">
@@ -1426,16 +1414,6 @@
         <state relative-caret-position="136">
           <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Instant.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="804">
-          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-          <folding>
-            <element signature="e#1870#1871#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1471,43 +1449,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="10" column="3" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="555" column="13" selection-start-line="555" selection-start-column="13" selection-end-line="555" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
-          <folding>
-            <marker date="1485445146569" expanded="true" signature="6545:6715" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
-          <folding>
-            <element signature="e#8362#8363#0" expanded="true" />
-            <element signature="e#8405#8406#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/SubscriptionController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -1516,20 +1457,87 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/UserService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-457">
-          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+        <state relative-caret-position="844">
+          <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#8362#8363#0" expanded="false" />
+            <element signature="e#8405#8406#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/NbAlbumsAndNbProches.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Model/Instant.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="804">
+          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+          <folding>
+            <element signature="e#1870#1871#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/UserRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/AlbumRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Repository/OtherMongoDBRepo/SubscriptionRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+        <state relative-caret-position="238">
+          <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/UserController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-239">
+          <caret line="215" column="44" selection-start-line="215" selection-start-column="30" selection-end-line="215" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/SubscriptionService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="47" column="33" selection-start-line="47" selection-start-column="33" selection-end-line="47" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Service/AlbumService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="605" column="0" selection-start-line="605" selection-start-column="0" selection-end-line="605" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pfe/ece/LinkUS/Controller/AlbumController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="163" column="11" selection-start-line="163" selection-start-column="11" selection-end-line="163" selection-end-column="11" />
           <folding />
         </state>
       </provider>

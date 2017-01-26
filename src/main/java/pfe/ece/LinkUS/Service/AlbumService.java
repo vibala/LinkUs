@@ -1,6 +1,5 @@
 package pfe.ece.LinkUS.Service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -34,6 +33,7 @@ public class AlbumService {
     AlbumRepository albumRepository;
 
     UserRepository userRepository;
+
 
     SubscriptionRepository subscriptionRepository;
 

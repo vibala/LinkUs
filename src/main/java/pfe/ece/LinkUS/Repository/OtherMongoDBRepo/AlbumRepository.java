@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.Repository.OtherMongoDBRepo;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.stereotype.Repository;
 import pfe.ece.LinkUS.Model.Album;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 /**
  * Created by DamnAug on 14/10/2016.
  */
+@Repository
 public interface AlbumRepository extends MongoRepository<Album, String> {
 
 

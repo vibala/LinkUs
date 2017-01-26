@@ -31,11 +31,28 @@ public class SubscriptionService {
     @Value("${subscription.friend.free}")
     private int friendFree;
 
+    public SubscriptionService(){}
+
     public SubscriptionService(SubscriptionRepository subscriptionRepository) {
         this.subscriptionRepository = subscriptionRepository;
     }
 
     public Subscription findSubscriptionByUserIdAndType(String id, String type) {
+        if(subscriptionRepository == null ){
+            System.out.println("MEDE*1");
+        }
+
+        if(id == null){
+            System.out.println("MEDE*2");
+        }else{
+            System.out.println(id);
+        }
+
+        if(type == null){
+            System.out.println("MEDE*3");
+        }else{
+            System.out.println(type);
+        }
         Subscription subscription = subscriptionRepository.findByUserIdAndType(id, type);
         if (subscription == null) {
             throw new SubscriptionNotFoundException(id);

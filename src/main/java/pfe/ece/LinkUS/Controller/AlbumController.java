@@ -152,19 +152,20 @@ public class AlbumController {
         return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-    @RequestMapping(value = "/", params = {"albumId", "news"})
+    @RequestMapping(value = "/searchAlbum", params = {"albumId", "news"},method = RequestMethod.GET)
     public String getAlbumById(@RequestParam(value = "albumId") String albumId,
                                @RequestParam(value = "news") boolean news){
 
+        System.out.println("Album id " + albumId);
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         Album album = albumService.findAlbumById(albumId);
-
+        albumService.setSubscriptionRepository(subscriptionRepository);
+        System.out.println("Album name " + album.getName());
         List<Album> albumList = new ArrayList<>();
         albumList.add(album);
 
         return albumService.checkData(albumList, news, userId).get(0).toString();
     }
-
     @RequestMapping(value = "/momentUrls", params = {"albumId", "momentId"})
     public String getUrlsFromMoment(@RequestParam(value = "albumId") String albumId,
                                     @RequestParam(value = "momentId") String momentId){
