@@ -12,7 +12,7 @@ import java.util.Optional;
  */
 public interface UserRepository extends MongoRepository<User, String> {
 
-    List<User> findByFirstNameLikeOrLastNameLike(String firstname, String lastname, Pageable pageable);
+    List<User> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String firstname, String lastname, Pageable pageable);
     /**
      * Find Users by lastName, ignoring case
      * @param lastName

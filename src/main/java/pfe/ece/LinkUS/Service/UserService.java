@@ -78,7 +78,7 @@ public class UserService {
 
     public List<User> searchUserByPartialFirstnameOrLastname(String userId, String textToFind) {
 
-        List<User> userList = userRepository.findByFirstNameLikeOrLastNameLike(textToFind, textToFind, createPageRequest());
+        List<User> userList = userRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(textToFind, textToFind, createPageRequest());
         // TODO: Tester pageable
 
         // Ne pas renvoyer le user faisant la demande
