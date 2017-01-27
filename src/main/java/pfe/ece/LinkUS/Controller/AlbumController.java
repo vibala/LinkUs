@@ -159,7 +159,7 @@ public class AlbumController {
     }
 
     @RequestMapping(value = "/shareWithFriendGroup",
-            params = {"friendId", "albumId", "right"},
+            params = {"friendGroupId", "albumId", "right"},
             method = RequestMethod.POST)
     public ResponseEntity addFriendGroupToAlbumWithSpecificRight(
             @RequestParam("friendGroupId") String friendGroupId,
