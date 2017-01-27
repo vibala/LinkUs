@@ -70,7 +70,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
     /*Listener qui sera implémenté dans la classe ProfileActivity*/
     public interface ClickListener{
         void onClick(View view, int position);
-        void OnShareOwnedAlbumListener(int position);
+        void OnShareOwnedAlbumListener(int position,String scope);
     }
 
     public AlbumsAdapter(Context mContext, ArrayList<Album> albumList,RecyclerViewClickListener itemListener,ClickListener listener) {
@@ -133,11 +133,12 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.action_share_gpf:
-                    Log.d(TAG,"Share this album with group friends");
+                    Log.d(TAG,"Share this album with group of friends");
+                    mCallback.OnShareOwnedAlbumListener(selected_album_position,"friendGroup");
                     return true;
                 case R.id.action_share_f:
                     Log.d(TAG,"Share this album with friends");
-                    mCallback.OnShareOwnedAlbumListener(selected_album_position);
+                    mCallback.OnShareOwnedAlbumListener(selected_album_position,"friends");
                     return true;
                 default:
             }

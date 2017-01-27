@@ -9,6 +9,8 @@ import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.ProfileActivity;
 
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -39,8 +41,9 @@ public class APIPostCreateAlbum extends AsyncTask {
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
             HttpEntity<Album> request = new HttpEntity<Album>(album, headers);
-
-            result= restTemplate.postForObject((String) params[0], request, String.class);
+            ResponseEntity<String> response = restTemplate.postForEntity((String) params[0], request, String.class);
+            HttpStatus status = response.getStatusCode();
+            result = String.valueOf(status.value());
         }catch (Exception e){
             Log.e("ServicePostAPIa", e.getMessage());
             Log.e("ServicePostAPIb", result);

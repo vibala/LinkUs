@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -35,6 +36,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +44,11 @@ import java.util.Map;
  * Created by Vignesh on 1/25/2017.
  */
 
-public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickListener,APIGetAlbumsOwned_Observer,AlbumsAdapter.ClickListener,APIGetListFriend_Observer {
+public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickListener,
+        APIGetAlbumsOwned_Observer,
+            AlbumsAdapter.ClickListener,
+                APIGetListFriend_Observer,
+                    APIGetListGroupFriend_Observer {
 
     private View myView;
     protected static final String TAG = OwnedAlbumsFragment.class.getSimpleName();
@@ -53,8 +59,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     private APILinkUS api;
     private Album selected_album;
     private Map<String,String> list_friends = new HashMap<>();
-
-
+    private Map<String,String> list_friendsgroup = new HashMap<>();
 
     // Container Activity must implement this interface
     public interface OnOwnedAlbumSelectedListener{
@@ -86,7 +91,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
             owned_albums = (ArrayList<Album>) savedInstanceState.getSerializable("owned_albums");
         }
         else {
-            System.out.println("Size " + owned_albums.size());
+            Log.d(TAG,"Owned album size " + owned_albums.size());
             if(owned_albums.isEmpty()) {
                 api.getAlbumsOwned(this);
             }
@@ -204,6 +209,8 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
             }
 
         }
+
+        Log.d(TAG,"Owned album size " + owned_albums);
     }
 
     public void albumsOwned_GetResponse(JSONObject responseObject){}
@@ -223,10 +230,15 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     public void onClick(View view, int position) {}
 
     @Override
-    public void OnShareOwnedAlbumListener(int position) {
+    public void OnShareOwnedAlbumListener(int position,String scope) {
         selected_album = owned_albums.get(position);
         Log.d(TAG,"Selected album name " + selected_album.getName());
-        api.getListFriend(this);
+        if(scope.contains("friendGroup")){
+            api.getListGroupFriend(this);
+        }else{
+            api.getListFriend(this);
+        }
+
     }
 
     @Override
@@ -237,13 +249,17 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
                 JSONObject friend_response= responseArray.optJSONObject(i);
                 list_friends.put(friend_response.getString("lastName") + " "+ friend_response.getString("firstName"),friend_response.getString("id"));
             }
-            Log.d(TAG,"List frineds size " + list_friends.size());
+            Log.d(TAG,"List friends size " + list_friends.size());
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-
+    public void synchronizeActionLinkedtoAlbum(){
+        Log.d(TAG,"SsynchronizeActionLinkedtoAlbum");
+        clearData();
+        api.getAlbumsOwned(this);
+    }
 
     @Override
     public void getListFriend_NotifyWhenGetFinish(Integer result) {
@@ -267,7 +283,6 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
                                 }
                     });
 
-                    final List<String> selectedUserList = new ArrayList<String>();
                     builderDialog.setPositiveButton("OK",
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -296,9 +311,98 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
                 }
             });
         }else{
-            Log.d(TAG,"Failed to fetch data");
+           Toast.makeText(getContext(),"Failed to fetch your friends list",Toast.LENGTH_LONG).show();
         }
     }
 
+    @Override
+    public void getListGroupFriend_GetResponse(JSONArray responseArray) {
+        try {
+            System.out.println(responseArray);
+            for(int i=0;i<responseArray.length();i++){
+                JSONObject friend_response = responseArray.optJSONObject(i);
+                list_friendsgroup.put(friend_response.getString("name"),friend_response.getString("id"));
+            }
+            Log.d(TAG,"List group of friends size " + list_friendsgroup.size());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getListGroupFriend_NotifyWhenGetFinish(Integer result) {
+        if(result == 1){
+            Log.d(TAG,"Sucessfully fetching data");
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // Intialize  readable sequence of char values
+                    final CharSequence[] dialogList=  list_friendsgroup.keySet().toArray(new CharSequence[list_friendsgroup.size()]);
+                    final AlertDialog.Builder builderDialog = new AlertDialog.Builder(getContext());
+                    builderDialog.setTitle("Share with");
+                    int count = dialogList.length;
+                    boolean[] is_checked = new boolean[count];
+
+
+                    // Creating multiple selection by using setMutliChoiceItem method
+                    builderDialog.setMultiChoiceItems(dialogList, is_checked,
+                            new DialogInterface.OnMultiChoiceClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton, boolean isChecked) {
+                                }
+                            });
+
+                    builderDialog.setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which){
+                                    ListView list = ((AlertDialog) dialog).getListView();
+
+                                    for (int i = 0; i < list.getCount(); i++) {
+                                        boolean checked = list.isItemChecked(i);
+
+                                        if (checked) {
+                                            Log.d(TAG,"Id : " + list_friendsgroup.get(list.getItemAtPosition(i)));
+                                            String result = api.shareAlbumWithGroupFriend(list_friendsgroup.get(list.getItemAtPosition(i)),selected_album.getId(),"LECTURE");
+                                            if(result.contentEquals("200")){
+                                                Toast.makeText(getContext(),"L'album vient d'etre partagé avec le groupe " + list.getItemAtPosition(i),Toast.LENGTH_SHORT).show();
+                                            }else{
+                                                Toast.makeText(getContext(),"L'album n'a pas pu être partagé avec le groupe " + list.getItemAtPosition(i),Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }
+
+
+                                }
+                            }
+                    );
+
+                    builderDialog.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog alert = builderDialog.create();
+                    alert.show();
+                }
+            });
+        }else{
+            Toast.makeText(getContext(),"Failed to fetch your group of friends list",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void clearData(){
+        Iterator<Album> it = owned_albums.iterator();
+        int i = 0;
+        while(it.hasNext()){
+            it.next();
+            it.remove();
+            adapter.notifyItemRemoved(i);
+            adapter.notifyItemRangeChanged(i, owned_albums.size());
+            i++;
+        }
+
+    }
 
 }

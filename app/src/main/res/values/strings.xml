@@ -56,6 +56,7 @@
     <string name="nav_notifications">Notifications</string>
     <string name="nav_parametres">Paramètres</string>
     <string name="nav_about_us">A propos de Linkus</string>
+    <string name="nav_logout">Se deconnecter</string>
     <string name="nav_privacy_policy">Politique de confidentialité</string>
     <!--  Settings tabs -->
     <string name="profile_title">PROFIL</string>
@@ -86,6 +87,7 @@
         <item>Notifications</item>
         <item>Paramètres</item>
         <item>A propos de Linkus</item>
+        <item>Se deconnecter</item>
     </string-array>
 
     <string name="activity_title_about_us">A propos de Linkus</string>

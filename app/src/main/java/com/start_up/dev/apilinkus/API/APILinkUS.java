@@ -8,6 +8,8 @@ import com.start_up.dev.apilinkus.Model.FriendGroup;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Model.Subscription;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * Created by Huong on 06/11/2016.
  */
@@ -53,6 +55,14 @@ public class APILinkUS {
         String urlrequestAPI = BASE_URL + query;
         APIGetAlbumsOwned apiGetAlbum = new APIGetAlbumsOwned(activity);
         apiGetAlbum.execute(urlrequestAPI);
+    }
+
+    public void logout(){
+        String query="/oauth/revoke-token";
+
+        String urlrequestAPI = BASE_URL + query;
+        APIGetRevokeToken revokeToken = new APIGetRevokeToken();
+        revokeToken.execute();
     }
 
     public void getAlbumByAlbumId(APIGetAlbumByAlbumId_Observer activity, String albumId){
@@ -177,18 +187,44 @@ public class APILinkUS {
 
     }
 
-    public void createNewAlbum(Album album){
-        String query = "/save";
+    public String createNewAlbum(Album album){
+        String query = "/album/save";
         String urlrequestAPI = BASE_URL + query;
         APIPostCreateAlbum apiPostCreateAlbum = new APIPostCreateAlbum(album);
-        apiPostCreateAlbum.execute(urlrequestAPI);
+        String result = "";
+        try {
+            result = apiPostCreateAlbum.execute(urlrequestAPI).get().toString();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     public void shareAlbumWithFriend(String friendId, String albumId, String rigth){
         String query = "/album/setwith?albumId="+albumId+"&right="+rigth+"&friendId="+friendId;
         String urlrequestAPI = BASE_URL + query;
-        APIPostShareAlbumWithFriend apiPostShareAlbumWithFriend = new APIPostShareAlbumWithFriend();
+        APIPostShareAlbumWith apiPostShareAlbumWithFriend = new APIPostShareAlbumWith();
         apiPostShareAlbumWithFriend.execute(urlrequestAPI);
+    }
+
+    public String shareAlbumWithGroupFriend(String friendGroupId, String albumId, String rigth){
+        String query = "/album/shareWithFriendGroup?albumId="+albumId+"&right="+rigth+"&friendGroupId="+friendGroupId;
+        String urlrequestAPI = BASE_URL + query;
+        APIPostShareAlbumWith apiPostShareAlbumWithGroupFriend = new APIPostShareAlbumWith();
+        String result = "";
+        try {
+            result = apiPostShareAlbumWithGroupFriend.execute(urlrequestAPI).get().toString();
+            Log.d(TAG,"Result from the request : " + result);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     public void updateSubscription(Subscription subscription, String subscriptionTypeId){

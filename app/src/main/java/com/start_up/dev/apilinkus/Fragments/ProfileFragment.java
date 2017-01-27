@@ -39,6 +39,7 @@ import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.Adapter.AlbumsAdapter;
 import com.start_up.dev.apilinkus.Adapter.ViewPagerAdapter;
 import com.start_up.dev.apilinkus.Model.Album;
+import com.start_up.dev.apilinkus.Model.IdRight;
 import com.start_up.dev.apilinkus.R;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 
@@ -64,6 +65,7 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
     private APILinkUS api;
     private FloatingActionButton fab;
     private EditText nameBox,countrynameBox,placenameBox;
+    private OwnedAlbumsFragment ownedAlbumsFragment;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.activity_userprofile,container,false);
@@ -95,7 +97,8 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
 
     private void setupViewPager(ViewPager viewPager){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFrag(new OwnedAlbumsFragment(), "OWNED ALBUMS");
+        ownedAlbumsFragment = new OwnedAlbumsFragment();
+        adapter.addFrag(ownedAlbumsFragment, "OWNED ALBUMS");
         SharedAlbumsFragment s = new SharedAlbumsFragment();
         Bundle b = new Bundle();
         b.putString("userId",userId);
@@ -151,7 +154,34 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
                             album.setName(nameBox.getText().toString());
                             album.setCountryName(countrynameBox.getText().toString());
                             album.setPlaceName(placenameBox.getText().toString());
-                            api.createNewAlbum(album);
+
+                            IdRight adminRight = new IdRight("ADMIN");
+                            adminRight.getUserIdList().add(userId);
+
+                            IdRight commentRight = new IdRight("COMMENT");
+                            commentRight.getUserIdList().add(userId);
+
+                            IdRight writeRight = new IdRight("WRITE");
+                            writeRight.getUserIdList().add(userId);
+
+                            IdRight lectureRight = new IdRight("LECTURE");
+                            lectureRight.getUserIdList().add(userId);
+
+                            album.getIdRight().add(writeRight);
+                            album.getIdRight().add(commentRight);
+                            album.getIdRight().add(lectureRight);
+                            album.getIdRight().add(adminRight);
+
+                            String result = api.createNewAlbum(album);
+
+                            if(result.contains("200")){
+                                Toast.makeText(getContext(),"Vous venez de créer un nouvel album",Toast.LENGTH_SHORT).show();
+                                ownedAlbumsFragment.synchronizeActionLinkedtoAlbum();
+                            }else{
+                                Toast.makeText(getContext(),"L'album n'a pas pu être créé ! Merci de refaire plus tard",Toast.LENGTH_SHORT).show();
+                            }
+
+
                         }else{
 
                         }

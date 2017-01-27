@@ -581,6 +581,15 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
                 CURRENT_TAG = TAG_ABOUT_US;
                 drawer.closeDrawer(GravityCompat.START);
                 break;
+            case R.id.nav_logout:
+            case 6:
+                drawer.closeDrawer(GravityCompat.START);
+                api.logout();
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish(); // call this to finish the current activity
+                break;
             default:
                 navItemIndex = 0;
         }
