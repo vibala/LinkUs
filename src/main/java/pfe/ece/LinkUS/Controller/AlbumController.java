@@ -36,7 +36,7 @@ public class AlbumController {
     @Autowired
     AlbumRepository albumRepository;
     @Autowired
-    FriendGroupRepository friendGroupRepository;
+    FriendGroupService friendGroupService;
     @Autowired
     SubscriptionRepository subscriptionRepository;
     @Autowired
@@ -78,7 +78,6 @@ public class AlbumController {
     @RequestMapping(value = "/right", produces = "application/json")
     public String findAlbumsByUserId(@RequestParam(value = "right") String right, @RequestParam(value = "news") boolean news) {
 
-        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
         AlbumService albumService = new AlbumService(albumRepository);
         albumService.setSubscriptionRepository(subscriptionRepository);
         List<Album> albumList = new ArrayList<>();
@@ -107,7 +106,6 @@ public class AlbumController {
     @RequestMapping(value = "/preview", produces = "application/json")
     public String findPreviewAlbumsByUserId(@RequestParam(value = "right") String right, @RequestParam(value = "news") boolean news) {
 
-        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
         AlbumService albumService = new AlbumService(albumRepository);
         albumService.setSubscriptionRepository(subscriptionRepository);
         List<Album> albumList = new ArrayList<>();
@@ -155,6 +153,27 @@ public class AlbumController {
 
         AlbumService albumService = new AlbumService(albumRepository);
         if(albumService.addFriendToAlbum(new UserService(userRepository), userId, friendId, albumId, right)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
+    }
+
+    @RequestMapping(value = "/shareWithFriendGroup",
+            params = {"friendId", "albumId", "right"},
+            method = RequestMethod.POST)
+    public ResponseEntity addFriendGroupToAlbumWithSpecificRight(
+            @RequestParam("friendGroupId") String friendGroupId,
+            @RequestParam("albumId") String albumId,
+            @RequestParam("right") String right){
+
+//        friendGroup = friendGroup.replace("\"","");
+//        albumId = albumId.replace("\"","");
+//        right = right.replace("\"","");
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        AlbumService albumService = new AlbumService(albumRepository);
+        if(albumService.addGroupFriendToAlbum(userService, friendGroupService, userId, friendGroupId, albumId, right)) {
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.CONFLICT);

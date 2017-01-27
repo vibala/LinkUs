@@ -551,8 +551,7 @@ public class AlbumService {
     }
 
     public boolean addGroupFriendToAlbum(UserService userService, FriendGroupService friendGroupService,
-                                         String userId,
-                                         String friendGroupId, String albumId, String right) {
+                                         String userId, String friendGroupId, String albumId, String right) {
 
         // Récupération album
         Album album = findAlbumById(albumId);
