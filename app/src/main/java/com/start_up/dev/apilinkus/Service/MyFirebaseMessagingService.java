@@ -8,12 +8,10 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.start_up.dev.apilinkus.BaseActivity;
-import com.start_up.dev.apilinkus.GalleryActivity;
 import com.start_up.dev.apilinkus.MainActivity;
 import com.start_up.dev.apilinkus.R;
 

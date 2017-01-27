@@ -46,15 +46,18 @@ public class MomentsAdapater extends RecyclerView.Adapter<MomentsAdapater.Moment
 
     @Override
     public void onBindViewHolder(MomentViewHolder holder, int position) {
-        Moment moment = momentList.get(position);
-        Log.i(TAG,moment.getName());
-        holder.moment_title.setText(moment.getName());
-        /* TODO A REMPLACER defaultSliderView par  TextSliderView */
-        for (Instant instant: moment.getInstantList()) {
-            TextSliderView textSliderView = new TextSliderView(mContext);
-            textSliderView.image(instant.getUrl());
-            textSliderView.description(instant.getName() + " - " + instant.getPublishDate().toString()); // On récupère uniquement la description pour l'instant
-            holder.sliderShow.addSlider(textSliderView);
+        if(momentList.size()>0) {
+            Moment moment = momentList.get(position);
+            Log.i(TAG, moment.getName());
+            holder.moment_title.setText(moment.getName());
+            if(moment.getInstantList() != null && !moment.getInstantList().isEmpty()){
+                for (Instant instant : moment.getInstantList()) {
+                    TextSliderView textSliderView = new TextSliderView(mContext);
+                    textSliderView.image(instant.getUrl());
+                    textSliderView.description(instant.getName() + " - " + instant.getPublishDate().toString()); // On récupère uniquement la description pour l'instant
+                    holder.sliderShow.addSlider(textSliderView);
+                }
+            }
         }
 
     }

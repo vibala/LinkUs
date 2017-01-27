@@ -17,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 
 public class APIPostTokenNotification extends AsyncTask {
     private final String TAG = APIPostTokenNotification.class.getSimpleName();
-    private RestTemplate restTemplate = new RestTemplate();
     private String tokenObjectNotification;
 
     public APIPostTokenNotification() {

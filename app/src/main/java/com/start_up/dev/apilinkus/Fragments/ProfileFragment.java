@@ -1,11 +1,20 @@
 package com.start_up.dev.apilinkus.Fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
+import android.support.design.widget.TabLayout.OnTabSelectedListener;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,48 +24,143 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.start_up.dev.apilinkus.API.APIGetUserNbFriendsAndNbOwnedAlbums_Observer;
+import com.start_up.dev.apilinkus.API.APIGetUserProfileDetails_Observer;
+import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.Adapter.AlbumsAdapter;
+import com.start_up.dev.apilinkus.Adapter.ViewPagerAdapter;
 import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.R;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
  * Created by Vignesh on 1/15/2017.
  */
 
-public class ProfileFragment extends Fragment implements RecyclerViewClickListener {
+public class ProfileFragment extends Fragment implements OnTabSelectedListener,APIGetUserProfileDetails_Observer,APIGetUserNbFriendsAndNbOwnedAlbums_Observer {
 
     private View myView;
     protected static final String TAG = ProfileFragment.class.getSimpleName();
-    private RecyclerView recyclerView;
-    private AlbumsAdapter adapter;
-    private ArrayList<Album> albums;
     private FrameLayout titleLayout;
     private CircularImageView circularImageView;
-    private OnAlbumSelectedListener mCallback;
-
-    // Container Activity must implement this interface
-    public interface OnAlbumSelectedListener{
-        public void onAlbumSelected(int position);
-    }
-
+    private TextView nbProches_tv, nbAlbumOwned_tv,tvusername;
+    private ViewPager viewPager;
+    private String userId = "588684c8a0256820bce312d4";
+    private String username = "", nbProches = "", nbAlbumsOwned = "";
+    private APILinkUS api;
+    private FloatingActionButton fab;
+    private EditText nameBox,countrynameBox,placenameBox;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.activity_userprofile,container,false);
+        api = new APILinkUS();
+        if(savedInstanceState != null){
+            userId = savedInstanceState.getString("userId");
+            username = savedInstanceState.getString("username");
+        }else{
+            api.getUserProfileDetails(this,getContext());
+            api.getNbofFriendsAndAlbumOwned(this);
+        }
+        nbProches_tv = (TextView) myView.findViewById(R.id.tv_friends);
+        nbAlbumOwned_tv = (TextView) myView.findViewById(R.id.tv_posts);
+        tvusername = (TextView) myView.findViewById(R.id.tvusername);
         titleLayout = (FrameLayout) myView.findViewById(R.id.main_framelayout_title);
         circularImageView = (CircularImageView) myView.findViewById(R.id.circularImageView);
-        recyclerView = (RecyclerView) myView.findViewById(R.id.recycler_view);
+        viewPager = (ViewPager) myView.findViewById(R.id.tabanim_viewpager);
+        setupViewPager(viewPager);
+        TabLayout tabLayout = (TabLayout) myView.findViewById(R.id.tabanim_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        fab = (FloatingActionButton) myView.findViewById(R.id.fab);
         return myView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    private void setupViewPager(ViewPager viewPager){
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter.addFrag(new OwnedAlbumsFragment(), "OWNED ALBUMS");
+        SharedAlbumsFragment s = new SharedAlbumsFragment();
+        Bundle b = new Bundle();
+        b.putString("userId",userId);
+        s.setArguments(b);
+        adapter.addFrag(s, "SHARED ALBUMS");
+        viewPager.setAdapter(adapter);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog dialog = createDialog();
+                dialog.show();
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int threeshold = 0;
+                        //save info where you want it
+                        if( nameBox.getText().toString().trim().equals(""))
+                        {
+                            nameBox.setError( "Album name is required!" );
+                            nameBox.setHint("Album name");
+                        } else {
+                            threeshold++;
+                        }
+
+                        if( countrynameBox.getText().toString().trim().equals(""))
+                        {
+                            countrynameBox.setError( "Country name is required!" );
+                            countrynameBox.setHint("Country name");
+                        } else {
+                            threeshold++;
+                        }
+
+                        if(placenameBox.getText().toString().trim().equals(""))
+                        {
+                            placenameBox.setError( "Place name is required!" );
+                            placenameBox.setHint("Place name");
+                        } else {
+                            threeshold++;
+                        }
+
+                        if(threeshold==3){
+                            dialog.dismiss();
+                            Log.d(TAG,"TT EST BON");
+                            Album album = new Album();
+                            album.setName(nameBox.getText().toString());
+                            album.setCountryName(countrynameBox.getText().toString());
+                            album.setPlaceName(placenameBox.getText().toString());
+                            api.createNewAlbum(album);
+                        }else{
+
+                        }
+
+                    }
+                });
+            }
+        });
+
         /******************************************************************************************/
         /*DONT TOUCH THIS PART !!!! IT'S FOR DISPLAYING CORRECTLY THE CIRCULARVIEW IN ANY PLATFORM*/
         /******************************************************************************************/
@@ -74,108 +178,54 @@ public class ProfileFragment extends Fragment implements RecyclerViewClickListen
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(marginParams);
         circularImageView.setLayoutParams(layoutParams);
         circularImageView.requestLayout();
+    }
 
-        /******************************************************************************************/
-        /******************** RECYCLERVIEX DEFINITION ******************/
-        /******************************************************************************************/
-        albums = (ArrayList<Album>) this.getArguments().get("albums");
-        adapter = new AlbumsAdapter(getContext(),albums,this);
-
-        /////////////////////////////////////////////////////////////////////
-        // A LayoutManager is responsible for measuring and positionning items within a RecyclerView as well as determining
-        // the policy when to recycle items
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(),2);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+    public AlertDialog createDialog(){
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View layout = inflater.inflate(R.layout.alert_dialog_create_album,null);
+        nameBox = (EditText) layout.findViewById(R.id.album_name_edit_text);
+        countrynameBox = (EditText) layout.findViewById(R.id.album_place_name_edit_text);
+        placenameBox = (EditText) layout.findViewById(R.id.album_country_name_edit_text);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(layout);
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+            public void onClick(DialogInterface dialog, int which) {
 
             }
         });
-        /*recyclerView.addOnScrollListener(new HideShowOnScrollListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onHide() {
-                //bottomNavigationView.setVisibility(INVISIBLE); // just want to hide the view
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
-
-            @Override
-            public void onShow() {
-                // bottomNavigationView.setVisibility(VISIBLE); // just want to hide the view
-            }
-        });*/
-
+        });
+       return builder.create();
 
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnAlbumSelectedListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
-        }
-    }
-
-
-    /***
-     * Class for designing each item that will be inserted into the recyclerView
-     */
-    class GridSpacingItemDecoration extends RecyclerView.ItemDecoration{
-
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
-
-        public GridSpacingItemDecoration(int spanCount,int spacing,boolean includeEdge){
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
+    public void onTabSelected(TabLayout.Tab tab) {
+        switch(tab.getPosition()){
+            case 0:
+                // Owned Albums
+                break;
+            case 1:
+                // Shared Albums
+                break;
         }
 
-        /*Retrieve any offsets for the given item.
-        * Need to modify this function if you want that the item decoration affects the positionning
-         * of items views */
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
-
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
-
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
-            }
-        }
+        viewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
-    public void recyclerViewListClicked(View v, int position) {
-        Log.d(TAG,"Position of album " + position);
-        // Send the event to the host activity
-        mCallback.onAlbumSelected(position);
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
     }
 
     /**
@@ -184,5 +234,59 @@ public class ProfileFragment extends Fragment implements RecyclerViewClickListen
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+    @Override
+    public void userDetails_GetResponse(JSONObject responseJSON) {
+        try {
+            String fn = responseJSON.getString("firstName");
+            username = responseJSON.getString("lastName").toUpperCase() + " " + fn.replace(fn.charAt(0),String.valueOf(fn.charAt(0)).toUpperCase().charAt(0));
+            userId = responseJSON.getString("id");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void userDetails_NotifyWhenGetFinish(Integer result) {
+        if (result == 1) {
+            Log.d(TAG,"Sucessfully fetching data");
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tvusername.setText(username);
+                }
+            });
+        } else {
+            Log.d(TAG,"Failed to fetch data!");
+        }
+    }
+
+    @Override
+    public void userNbProchesAndOwnedAlbums_GetResponse(JSONObject responseJSON) {
+        try {
+            System.out.println(responseJSON);
+            nbAlbumsOwned = responseJSON.getString("nbAlbumsOwned");
+            nbProches = responseJSON.getString("nbProches");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void userNbProchesAndOwnedAlbums_NotifyWhenGetFinish(Integer result) {
+        if (result == 1) {
+            Log.d(TAG,"Sucessfully fetching data");
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    nbProches_tv.setText(nbProches);
+                    nbAlbumOwned_tv.setText(nbAlbumsOwned);
+                }
+            });
+        } else {
+            Log.d(TAG,"Failed to fetch data!");
+        }
     }
 }

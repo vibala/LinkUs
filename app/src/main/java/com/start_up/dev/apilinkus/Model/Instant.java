@@ -2,7 +2,6 @@ package com.start_up.dev.apilinkus.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,8 +22,7 @@ public class Instant implements Serializable {
     private byte[] imgByte;
 
     public Instant(){
-        //ObjectId objectId = new ObjectId();
-        //setId(objectId.toString());
+
 
     }
 

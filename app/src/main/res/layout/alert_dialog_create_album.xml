@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="40dp"
+    android:paddingRight="40dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:inputType="text"
+            android:layout_height="wrap_content"
+            android:id="@+id/album_name_edit_text"
+            android:hint="@string/album_name_textfield"
+            android:textSize="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/dark_grey"
+            android:fontFamily="sans-serif"
+            />
+        <EditText
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/album_place_name_edit_text"
+            android:hint="@string/album_place_name_textfield"
+            android:textSize="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/dark_grey"
+            android:fontFamily="sans-serif"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/album_country_name_edit_text"
+            android:hint="@string/album_country_name_textfield"
+            android:textSize="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/dark_grey"
+            android:fontFamily="sans-serif"/>
+    <!-- <Button
+        android:text="@string/submit_button_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/submitCreateAlbumFormButton"
+        android:background="@color/red"
+        android:textColor="@android:color/white"/> -->
+
+</LinearLayout>

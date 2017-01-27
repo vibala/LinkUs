@@ -89,7 +89,7 @@ public class BaseActivity extends AppCompatActivity {
         buttonGoGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BaseActivity.this, GalleryActivity.class);
+                Intent intent = new Intent(BaseActivity.this, GalleryOldActivity.class);
                 //Start details activity
                 startActivity(intent);
             }
@@ -112,7 +112,7 @@ public class BaseActivity extends AppCompatActivity {
                     ArrayList<Instant> listInstant=new ArrayList<Instant>();
                     listInstant.add(instant);
                     moment.setInstantList(listInstant);
-                    new APILinkUS().addMomentToMyAlbum(moment,"true");
+                    new APILinkUS().addMomentToMyAlbum(moment,"albumId","true");
 
                 Snackbar.make(findViewById(R.id.main_snackbar), "Image sent for uploading",
                         Snackbar.LENGTH_SHORT)
@@ -152,7 +152,7 @@ public class BaseActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(),
                             "merde",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                     Log.e(e.getClass().getName(), e.getMessage(), e);
                 }
                 return true;
@@ -183,7 +183,7 @@ public class BaseActivity extends AppCompatActivity {
                     filePath = filemanagerstring;
                 } else {
                     Toast.makeText(getApplicationContext(), "Unknown path",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                     Log.e("Bitmap", "Unknown path");
                 }
 
@@ -200,7 +200,7 @@ public class BaseActivity extends AppCompatActivity {
 
             } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), "Internal error",
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
                 Log.e(e.getClass().getName(), e.getMessage(), e);
             }
         }

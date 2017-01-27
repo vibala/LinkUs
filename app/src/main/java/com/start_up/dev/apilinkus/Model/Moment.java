@@ -14,6 +14,7 @@ public class Moment implements Serializable {
     private String id;
     private String name;
     private ArrayList<Instant> instantList = new ArrayList();
+    private ArrayList<KeyValue> descriptionsList = new ArrayList();
 
     public Moment() {
     }
@@ -28,6 +29,10 @@ public class Moment implements Serializable {
             e.printStackTrace();
         }
         return str;
+    }
+
+    public void setDescriptionsList(ArrayList<KeyValue> descriptionsList) {
+        this.descriptionsList = descriptionsList;
     }
 
     public String getId() {

@@ -1,278 +1,273 @@
 package com.start_up.dev.apilinkus;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.Display;
+import android.view.Surface;
 import android.view.View;
+import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.start_up.dev.apilinkus.API.APILinkUS;
-import com.start_up.dev.apilinkus.Model.Instant;
-import com.start_up.dev.apilinkus.Model.Moment;
-import com.start_up.dev.apilinkus.Tool.DataAdapterGallery;
+import com.start_up.dev.apilinkus.Adapter.GalleryAdapter;
+import com.start_up.dev.apilinkus.Adapter.GalleryFolderAdapter;
+import com.start_up.dev.apilinkus.Adapter.RecyclerViewFolderItem;
+import com.start_up.dev.apilinkus.Adapter.RecyclerViewItem;
+import com.start_up.dev.apilinkus.Listener.RecyclerViewGalleryClickListener;
+import com.start_up.dev.apilinkus.Listener.RecyclerViewGalleryFolderClickListener;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import static java.lang.String.valueOf;
 
 /**
  * Created by Huong on 12/12/2016.
  */
 
-public class GalleryActivity  extends AppCompatActivity implements View.OnLongClickListener{
+public class GalleryActivity extends AppCompatActivity implements RecyclerViewGalleryFolderClickListener,RecyclerViewGalleryClickListener {
     private static final String TAG = GalleryActivity.class.getSimpleName();
-    private String directory="/Pictures/Messenger/";
-    private Toolbar toolbar;
+    private String current_directory;
     private ProgressBar mProgressBar;
-    private ArrayList<File> files;
-    private DataAdapterGallery adapter ;
-    private EditText gallery_path ;
-    private RecyclerView recyclerView ;
-    private FloatingActionButton gallery_path_icon ;
-    private ArrayList<File> selection_list=new ArrayList<>();
-    private int counter=0;
+    private ArrayList<RecyclerViewItem> currentList=new ArrayList<>();
+    private RecyclerView currentRecyclerView ;
+    private GalleryAdapter currentAdapter ;
+    private ArrayList<RecyclerViewItem> selectedList=new ArrayList<>();
+    private RecyclerView selectedRecyclerView ;
+    private GalleryAdapter selectedAdapter ;
+    private ArrayList<RecyclerViewFolderItem> folderList=new ArrayList<>();
+    private RecyclerView folderRecyclerView ;
+    private GalleryFolderAdapter folderAdapter ;
     private String ExternalStorageDirectoryPath;
-    //private String FEED_URL = "http://javatechig.com/?json=get_recent_posts&count=45";
 
-    // tuto selection multiple - checkbox
-    public boolean is_in_action_mode=false;
-    public TextView counter_text_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gallery);
+        setContentView(R.layout.activity_gallery_folder);
         ExternalStorageDirectoryPath = Environment
                 .getExternalStorageDirectory()
                 .getAbsolutePath();
+
         mProgressBar = (ProgressBar) findViewById(R.id.gallery_progressBar);
 
         mProgressBar.setVisibility(View.VISIBLE);
 
-        initViews();
+        initViews(savedInstanceState);
 
         mProgressBar.setVisibility(View.GONE);
     }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
 
-    private void initViews(){
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+        savedInstanceState.putSerializable("selectedList",  selectedList);
+        savedInstanceState.putSerializable("currentList",  currentList);
+        savedInstanceState.putSerializable("folderList",  folderList);
+        savedInstanceState.putString("current_directory",  current_directory);
+        // etc.
+        super.onSaveInstanceState(savedInstanceState);
+    }
 
-        gallery_path = (EditText) findViewById(R.id.gallery_set_path);
-        gallery_path_icon=(FloatingActionButton) findViewById(R.id.gallery_set_path_icon);
-        gallery_path_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (is_in_action_mode) {
-                    clearActionMode();
-                    adapter.notifyDataSetChanged();
-                }
-                String directoryTmp = valueOf(gallery_path.getText());
-                setGalleryDisplay(directoryTmp);
+    private void initViews(Bundle savedInstanceState){
 
-            }
+        current_directory=ExternalStorageDirectoryPath+"/Pictures/Messenger/";
+        currentAdapter = new GalleryAdapter(this,currentList,"current");
+        if (savedInstanceState == null)
+            folderList = getDirectoryWithImages(ExternalStorageDirectoryPath);
+        else
+            folderList = (ArrayList<RecyclerViewFolderItem>) savedInstanceState.getSerializable("folderList");
 
+        folderAdapter = new GalleryFolderAdapter(this,folderList);
+        selectedAdapter = new GalleryAdapter(this,selectedList,"selected");
 
-        });
+        if (savedInstanceState != null) {
+            selectedList = (ArrayList<RecyclerViewItem>) savedInstanceState.getSerializable("selectedList");
+            currentList = (ArrayList<RecyclerViewItem>) savedInstanceState.getSerializable("currentList");
+            current_directory = savedInstanceState.getString("current_directory");
+            System.out.println(selectedAdapter);
+            System.out.println(selectedList);
+            selectedAdapter.setGridData(selectedList);
+            currentAdapter.setGridData(currentList);
+            folderAdapter.setGridData(folderList);
+        }
+        currentRecyclerView = (RecyclerView) findViewById(R.id.gallery_current_recycler_view);
+        Display display = ((WindowManager)getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+        if( display.getRotation()== Surface.ROTATION_0)
+            currentRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),3));
+        else
+            currentRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),4));
+        currentRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        currentRecyclerView.setAdapter(currentAdapter);
 
+        folderRecyclerView = (RecyclerView) findViewById(R.id.gallery_list_folder);
+        folderRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),1, GridLayoutManager.HORIZONTAL, false));
+        folderRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        folderRecyclerView.setAdapter(folderAdapter);
 
-        recyclerView = (RecyclerView)findViewById(R.id.gallery_card_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),2);
-        recyclerView.setLayoutManager(layoutManager);
+        selectedRecyclerView = (RecyclerView) findViewById(R.id.gallery_selected_list_recycler_view);
+        selectedRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),1, GridLayoutManager.HORIZONTAL, false));
+        selectedRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        selectedRecyclerView.setAdapter(selectedAdapter);
 
-        setGalleryDisplay(directory);
-
-
-
-        // tuto selection multiple - TOOLbar
-        toolbar =(Toolbar)findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        counter_text_view=(TextView) findViewById(R.id.counter_text);
-        counter_text_view.setVisibility(View.GONE);
+        setGalleryDisplay(current_directory);
 
         //-----------BUTTON - ACTION --- Send selected photos to Server -> Server side : upload then notification to readers
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.send_gallery);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                for(File file : selection_list){
-
-                    Instant instant=new Instant();
-                    instant.setName(file.getName());
-                    System.out.println(instant.getName());
-                    FileInputStream fis = null;
-                    try {
-                        fis = new FileInputStream(file);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    //System.out.println(file.exists() + "!!");
-                    //InputStream in = resource.openStream();
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    byte[] buf = new byte[1024];
-                    try {
-                        for (int readNum; (readNum = fis.read(buf)) != -1;) {
-                            bos.write(buf, 0, readNum); //no doubt here is 0
-                            //Writes len bytes from the specified byte array starting at offset off to this byte array output stream.
-                            System.out.println("read " + readNum + " bytes,");
-                        }
-                    } catch (IOException ex) {
-                        ex.getMessage();
-                    }
-                    byte[] imgByte = bos.toByteArray();
-
-                    instant.setImgByte(imgByte);
-                    Moment moment=new Moment();
-                    moment.setName("Moment_"+instant.getName());
-                    ArrayList<Instant> listInstant=new ArrayList<Instant>();
-                    listInstant.add(instant);
-                    moment.setInstantList(listInstant);
-                    new APILinkUS().addMomentToMyAlbum(moment,"true");
-                }
-
-                if(selection_list.isEmpty())
-                    Snackbar.make(findViewById(R.id.gallery_snackbar_and_fab), "No Image Selected", Snackbar.LENGTH_SHORT).show();
-                else{
-                    if(is_in_action_mode) { //Condition normalement inutile. Si c'est pas vide il est forcement en action mode
-                        String plural = "s";
-                        if (selection_list.size() == 1)
-                            plural = "";
-                        Snackbar.make(findViewById(R.id.gallery_snackbar_and_fab), "Image" + plural + " sent, check your album",
-                                Snackbar.LENGTH_SHORT)
-                                .show();
-                        clearActionMode();
-                        adapter.notifyDataSetChanged();
-                    }
-                }
-
+                if(needRequirementBeforeContinue()) return;
+                Intent intent = new Intent(GalleryActivity.this, SendMomentActivity.class);
+                intent.putExtra("selectedList",selectedList);
+                //Start details activity
+                startActivity(intent);
             }
         });
-
     }
 
-    // tuto selection multiple - toolbar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_activity_gallery,menu);
-        return true;
+    public boolean needRequirementBeforeContinue() {
+        if (selectedList == null | selectedList.size() == 0){
+            Toast.makeText(getApplicationContext(), "Vous devez selectionner au moins 1 photo", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
     }
+    private ArrayList<RecyclerViewFolderItem> getDirectoryWithImages(String path) {
+        ArrayList<RecyclerViewFolderItem> folderListLocal=new ArrayList<RecyclerViewFolderItem>();
+        File targetDirector = new File(path);
+        File[] files_list = targetDirector.listFiles();
+        for (File file : files_list) {
+            if (file.isDirectory())
+                folderListLocal.addAll(getDirectoryWithImages(file.getAbsolutePath()));
+            else {
+                String absolutePath = file.getAbsolutePath();
+                String suffix = absolutePath.substring(absolutePath.lastIndexOf('.') + 1).toLowerCase();
+                if (!file.isDirectory())
+                    if (suffix.length() == 0 | suffix.equals("svg"))
+                        continue;
 
-    private void setGalleryDisplay(String directoryTmp){
+                String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(suffix);
+                if (mime == null)
+                    continue;
+                if (mime.contains("image")) {
+                    String folderName = absolutePath.substring(0, absolutePath.lastIndexOf('/') + 1);
+                    String[] names=folderName.split("/");
+                    //on enleve les dossiers caché et les petits ss dossier. si la permiere lettre du dossier n'est pas une maj on considere que ce dossier ne contient pas des photos
+                    if (!folderName.contains(".") && Character.isUpperCase((names.length>1?names[names.length-1]:names[0]).charAt(0))) {
+                        boolean exist = false;
+                        ////System.out.println("Ajout du dossier: " + folderName);
+                        for (RecyclerViewFolderItem item : folderListLocal)
+                            if (item.getPath().equals(folderName)) {
+                                exist = true;
+                                break;
+                            }
+                        if (!exist)
+                            folderListLocal.add(new RecyclerViewFolderItem((absolutePath.length() > 1 ? absolutePath.substring(0, absolutePath.lastIndexOf('/') + 1) : "/")));
 
-        File fileTest = new File(ExternalStorageDirectoryPath + directoryTmp);
-        if (fileTest.exists() && fileTest.isDirectory()) {
-            directory = directoryTmp;
-
-        String targetPath = ExternalStorageDirectoryPath+directory;
-        System.out.println(targetPath);
-            try {
-                File targetDirector = new File(targetPath);
-                File[] files_list = targetDirector.listFiles();
-                files = new ArrayList<File>();
-                for (File file : files_list) {
-                    if(!file.isDirectory())
-                        files.add(file);
+                    }
                 }
-                adapter = new DataAdapterGallery(GalleryActivity.this, files);
-                recyclerView.setAdapter(adapter);
-                recyclerView.setHasFixedSize(true);
-                Toast.makeText(getApplicationContext(), targetPath, Toast.LENGTH_LONG).show();
-                adapter.notifyDataSetChanged();
-            }catch(Exception e){
-                Toast.makeText(getApplicationContext(), "Le chemin n'est pas valide.", Toast.LENGTH_LONG).show();
             }
-        } else {
-            Toast.makeText(getApplicationContext(), "Le dossier n'existe pas.", Toast.LENGTH_LONG).show();
         }
+        return folderListLocal;
+    }
+
+    private void setGalleryDisplay(String directory){
+
+        File fileTest = new File(directory);
+        if (fileTest.exists() && fileTest.isDirectory()) {
+            current_directory=directory;
+            String targetPath = directory;
+            //System.out.println(targetPath);
+                try {
+                    File targetDirector = new File(targetPath);
+                    File[] files_list = targetDirector.listFiles();
+                    currentList.clear();
+                    for (File file : files_list) {
+                        if(!file.isDirectory()) {
+                            boolean exist = false;
+                            String absPath=file.getAbsolutePath();
+                            for (RecyclerViewItem item : selectedList) {
+                                if (item.getId().equals(absPath)) {
+                                    exist = true;
+                                    break;
+                                }
+                            }
+                            currentList.add(new RecyclerViewItem(absPath.toLowerCase(), absPath.substring(absPath.lastIndexOf('/') +1).toLowerCase(), file, exist));
+                        }
+                    }
+                    currentAdapter.setGridData(currentList);
+                    Toast.makeText(getApplicationContext(), targetPath, Toast.LENGTH_SHORT).show();
+                }catch(Exception e){
+                    Toast.makeText(getApplicationContext(), "Le chemin n'est pas valide.", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "Le dossier n'existe pas.", Toast.LENGTH_SHORT).show();
+            }
     }
 
 
     @Override
-    public boolean onLongClick(View v) {
-        toolbar.getMenu().clear();
-        toolbar.inflateMenu(R.menu.menu_action_mode);
-        counter_text_view.setVisibility(View.VISIBLE);
-        is_in_action_mode=true;
-        adapter.notifyDataSetChanged();
-        //add home button to toolbar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        return true;
-    }
-
-    public void prepareSelection(View view, int position){
-        if(((CheckBox)view).isChecked()){
-
-            selection_list.add(files.get(position));
-            counter=counter+1;
-            updateCounter(counter);
+    public void recyclerViewGalleryListClicked(View viewCheckBox,  String path) {
+        RecyclerViewItem item=null;
+        for(RecyclerViewItem item_tmp : currentList){
+            if(item_tmp.getId().equals(path))
+                item=item_tmp;
+        }
+        if(item!=null){
+        //System.out.println("name "+item.getName());
+        if(((CheckBox)viewCheckBox).isChecked()){
+            item.setChecked(true);
+            selectedList.add(item);
+            System.out.println("add "+item.getId());
         }
         else{
-            selection_list.remove(files.get(position));
-            counter=counter-1;
-            updateCounter(counter);
-        }
-    }
+            item.setChecked(false);
+            for (RecyclerViewItem i : selectedList) {
+                if (i.getId().equals(path)) {
+                    i.setChecked(false);
+                    //l'item de la selected list et current list ne soit pas toujours les meme a cause des cahngement de directory
+                    item.setChecked(false);
+                    selectedList.remove(i);
+                    //System.out.println("remove "+i.getName());
+                    break;
+                }
+            }
+            //System.out.println("remove "+item.getName());
 
-    public void updateCounter(int counter){
-        if(counter==0){
-            counter_text_view.setText("0 item selected");
         }
-        else{
-            counter_text_view.setText(counter + "items selected");
+            currentAdapter.setGridData(currentList);
         }
+        else if(!((CheckBox)viewCheckBox).isChecked()) {
+            for (RecyclerViewItem i : selectedList) {
+                if (i.getId().equals(path)) {
+                    i.setChecked(false);
+                    selectedList.remove(i);
+                    //System.out.println("remove "+i.getName());
+                    break;
+                }
+            }
+
+        }
+
+
+        selectedRecyclerView.scrollToPosition(0);
+        selectedAdapter.setGridData(selectedList);
+
+
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        if(item.getItemId()==R.id.item_delete){
-
-            DataAdapterGallery adapterGallery_bis=(DataAdapterGallery)adapter;
-            System.out.println("ezfzef"+selection_list);
-            adapterGallery_bis.updateAdapter(selection_list);
-            clearActionMode();
-        }
-        else if(item.getItemId()==android.R.id.home){
-            clearActionMode();
-            adapter.notifyDataSetChanged();
-        }
-        return true;
-    }
-
-    public void clearActionMode(){
-        is_in_action_mode=false;
-        toolbar.getMenu().clear();
-        toolbar.inflateMenu(R.menu.menu_activity_gallery);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        counter_text_view.setVisibility(View.GONE);
-        counter_text_view.setText(" 0 item selected");
-        counter=0;
-        selection_list.clear();
-    }
-
-    @Override
-    public void onBackPressed(){
-        if(is_in_action_mode){
-            clearActionMode();
-            adapter.notifyDataSetChanged();
-        }
-        else{
-            super.onBackPressed();
-        }
+    public void recyclerViewFolderListClicked(View v, String path) {
+        //System.out.println(path);
+        setGalleryDisplay(path);
     }
 }

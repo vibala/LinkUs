@@ -59,7 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
         goTuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProfileActivity.this, BaseActivity.class);
+                Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
                 //Start details activity
                 startActivity(intent);
             }

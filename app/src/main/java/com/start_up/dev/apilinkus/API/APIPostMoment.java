@@ -20,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 public class APIPostMoment extends AsyncTask {
 
     private Moment moment;
-    private RestTemplate restTemplate = new RestTemplate();
     public APIPostMoment(Moment m) {
         this.moment=m;
     }
@@ -30,22 +29,16 @@ public class APIPostMoment extends AsyncTask {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
         headers.add("Authorization", "Bearer " + ProfileActivity.access_token);
         headers.add("Content-Type", "application/json");
-         String result="";
+        String result="";
+        try{
+            RestTemplate restTemplate = new RestTemplate();
 
-        System.out.println("zzzzzzz");
-     try{
-        RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-         System.out.println("ccccccccccc"+restTemplate);
-        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+            HttpEntity<Moment> request = new HttpEntity<Moment>(moment, headers);
 
-         System.out.println("cccccccc demi ");
-        HttpEntity<Moment> request = new HttpEntity<Moment>(moment, headers);
+            result= restTemplate.postForObject((String) params[0], request, String.class);
 
-         System.out.println("ddddddddddddddd"+request);
-        result= restTemplate.postForObject((String) params[0], request, String.class);
-
-         System.out.println("eeeeeeeeeeeee"+result);
         }catch (Exception e){
             Log.e("ServicePostAPIa", e.getMessage());
             Log.e("ServicePostAPIb", result);
@@ -70,7 +63,8 @@ public class APIPostMoment extends AsyncTask {
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             restTemplate.postForObject((String) params[0], moment, String.class);
         }catch (Exception e){
-            Log.e("ServicePostAPI", e.getMessage(), e);
+            Log.e("ServicePostAPI", e.get
+            Message(), e);
         }
         return null;       */
     }

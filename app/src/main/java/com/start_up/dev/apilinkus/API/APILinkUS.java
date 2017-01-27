@@ -3,7 +3,8 @@ package com.start_up.dev.apilinkus.API;
 import android.content.Context;
 import android.util.Log;
 
-import com.start_up.dev.apilinkus.Model.Instant;
+import com.start_up.dev.apilinkus.Model.Album;
+import com.start_up.dev.apilinkus.Model.FriendGroup;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Model.Subscription;
 
@@ -35,30 +36,36 @@ public class APILinkUS {
      * @param notificationToPeopleWithReadRightOnAlbum true pour envoyer une notification aux utilisateur ayant des droits de lecture sur l'album
      * @return
      */
-    public Moment addMomentToMyAlbum(Moment m, String notificationToPeopleWithReadRightOnAlbum){
+    public Moment addMomentToMyAlbum(Moment m, String albumId, String notificationToPeopleWithReadRightOnAlbum){
 
         //String query="/uploadFiles?userId="+userId+"&albumId="+albumId+"&notificationToPeopleWithReadRightOnAlbum="+notificationToPeopleWithReadRightOnAlbum;
-        String query="/uploadFiles?notificationToPeopleWithReadRightOnAlbum="+notificationToPeopleWithReadRightOnAlbum;
+        String query="/uploadFiles?albumId="+albumId+"&notificationToPeopleWithReadRightOnAlbum="+notificationToPeopleWithReadRightOnAlbum;
 
         String urlrequestAPI = BASE_URL + query;
-        System.out.println("aaaaaaaa"+urlrequestAPI);
         APIPostMoment apiPostStudent = new APIPostMoment(m);
-        System.out.println("bbbbbbbbb"+urlrequestAPI);
         apiPostStudent.execute(urlrequestAPI);
-        System.out.println("vvvvvvvv"+urlrequestAPI);
         return m;
     }
 
     public void getAlbumsOwned(APIGetAlbumsOwned_Observer activity){
-        //String query="/album/Owned?userId="+userId;
-        String query="/album/owned";
+        String query="/album/owned?news=true";
 
         String urlrequestAPI = BASE_URL + query;
         APIGetAlbumsOwned apiGetAlbum = new APIGetAlbumsOwned(activity);
         apiGetAlbum.execute(urlrequestAPI);
     }
+
+    public void getAlbumByAlbumId(APIGetAlbumByAlbumId_Observer activity, String albumId){
+        String query="/album/searchAlbum?albumId="+albumId+"&news=true";
+
+        String urlrequestAPI = BASE_URL + query;
+        APIGetAlbumByAlbumId apiGetAlbumByAlbumId = new APIGetAlbumByAlbumId(activity);
+        apiGetAlbumByAlbumId.execute(urlrequestAPI);
+    }
+
+
     public void getAlbumsFilter(APIGetAlbumsFilterRight_Observer activity, String right){
-        String query="/album/right?right="+right;
+        String query="/album/right?right="+right+"&news=true";
 
         String urlrequestAPI = BASE_URL + query;
         APIGetAlbumsFilterRight apiGetAlbum = new APIGetAlbumsFilterRight(activity);
@@ -81,12 +88,76 @@ public class APILinkUS {
         apiPostStudent.execute(urlrequestAPI);
 
     }
+    public void sendFriendRequest(APIPostOneString_Observer obs,String idFriendUser){
+
+        String query="/user/friendRequest";
+        String urlrequestAPI = BASE_URL + query;
+        new APIPostOneString(idFriendUser,obs,"sendFriendRequest").execute(urlrequestAPI);
+
+    }
+    public void createGroup(APIPostCreateGroupFriend_Observer obs,FriendGroup group){
+
+        String query="/friendGroup/add";
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIPostCreateGroupFriend(obs,group).execute(urlrequestAPI);
+
+    }
+
+    public void removeFriend(APIPostOneString_Observer obs,String idFriendUser){
+
+        String query="/user/removeFriend";
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIPostOneString(idFriendUser,obs,"removeFriend").execute(urlrequestAPI);
+
+    }
+    public void removeGroupFriend(APIPostOneString_Observer obs,String idGroupFriend){
+        String query="/friendGroup/remove";
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIPostOneString(idGroupFriend,obs,"removeGroupFriend").execute(urlrequestAPI);
+    }
+
+    public void getSearchListUser(APIGetSearchListUser_Observer fragment, String text){
+        String query="/user/searchUser?text="+text;
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIGetSearchListUser( fragment).execute(urlrequestAPI);
+    }
+
+    public void getListGroupFriend(APIGetListGroupFriend_Observer fragment){
+        String query="/user/getGroupFriends";
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIGetListGroupFriend(fragment).execute(urlrequestAPI);
+    }
+    public void getListFriend(APIGetListFriend_Observer fragment){
+        String query="/user/getFriends";
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIGetListFriend(fragment).execute(urlrequestAPI);
+    }
+    public void getPendingListFriend(APIGetPendingListFriend_Observer fragment){
+        String query="/user/getPendingFriends";
+
+        String urlrequestAPI = BASE_URL + query;
+        new APIGetPendingListFriend(fragment).execute(urlrequestAPI);
+    }
 
     public void getUserProfileDetails(APIGetUserProfileDetails_Observer activityObserver, Context mContext){
 
         String query="/user/";
         String urlrequestAPI = BASE_URL + query;
         APIGetUserProfileDetails apiGetUserProfileDetails = new APIGetUserProfileDetails(activityObserver,mContext);
+        apiGetUserProfileDetails.execute(urlrequestAPI);
+    }
+
+    public void getNbofFriendsAndAlbumOwned(APIGetUserNbFriendsAndNbOwnedAlbums_Observer activityObserver){
+
+        String query="/user/getProchesAndAlbums";
+        String urlrequestAPI = BASE_URL + query;
+        APIGetUserNbFriendsAndNbOwnedAlbums apiGetUserProfileDetails = new APIGetUserNbFriendsAndNbOwnedAlbums(activityObserver);
         apiGetUserProfileDetails.execute(urlrequestAPI);
     }
 
@@ -106,6 +177,20 @@ public class APILinkUS {
 
     }
 
+    public void createNewAlbum(Album album){
+        String query = "/save";
+        String urlrequestAPI = BASE_URL + query;
+        APIPostCreateAlbum apiPostCreateAlbum = new APIPostCreateAlbum(album);
+        apiPostCreateAlbum.execute(urlrequestAPI);
+    }
+
+    public void shareAlbumWithFriend(String friendId, String albumId, String rigth){
+        String query = "/album/setwith?albumId="+albumId+"&right="+rigth+"&friendId="+friendId;
+        String urlrequestAPI = BASE_URL + query;
+        APIPostShareAlbumWithFriend apiPostShareAlbumWithFriend = new APIPostShareAlbumWithFriend();
+        apiPostShareAlbumWithFriend.execute(urlrequestAPI);
+    }
+
     public void updateSubscription(Subscription subscription, String subscriptionTypeId){
         String query = "/subscription/update?subscriptionTypeId="+ subscriptionTypeId;
         String urlrequestAPI = BASE_URL + query;
@@ -113,3 +198,16 @@ public class APILinkUS {
         apiPostAddSubscription.execute(urlrequestAPI);
     }
 }
+
+
+/** post multiple String, je sais pas encore comment gérer les multiple body avec different type, pas besoin pour l'instant
+ * MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<String, String>();
+ requestBody.add("message_id", "msgid");
+ requestBody.add("message", "qwerty");
+ requestBody.add("client_id", "111");
+ requestBody.add("secret_key", "222");
+
+ HttpEntity formEntity = new HttpEntity<MultiValueMap<String, String>>(requestBody, headers);
+
+ Sur le serveur faudra recuperer MultiValueMap<String, String> requestBody et faire requestBody.get"a")
+ */

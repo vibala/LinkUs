@@ -3,6 +3,7 @@ package com.start_up.dev.apilinkus.Adapter;
 import android.content.Context;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -32,18 +33,13 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
     private ArrayList<Album> albumList;
     private RecyclerViewClickListener itemListener;
     protected static final String TAG = AlbumsAdapter.class.getSimpleName();
-    private String MODE_AUTH;
-    public static String access_token;
-    public static String token_type;
-    public static String refresh_token;
-    private TextView profileTextView;
-
-
-
+    private ClickListener mCallback;
+    private int selected_album_position;
 
     public class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView title, count;
         public ImageView thumbnail, overflow;
+
 
         public AlbumViewHolder(View itemView) {
             super(itemView);
@@ -52,25 +48,36 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
             thumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
             thumbnail.setOnClickListener(this);
             overflow = (ImageView) itemView.findViewById(R.id.overflow);
+            overflow.setOnClickListener(this);
         }
 
 
         @Override
         public void onClick(View view) {
-            itemListener.recyclerViewListClicked(view,this.getAdapterPosition());
+            switch(view.getId()){
+                case R.id.thumbnail:
+                    itemListener.recyclerViewListClicked(view,this.getAdapterPosition());
+                    break;
+                case R.id.overflow:
+                    selected_album_position = this.getAdapterPosition();
+                    Log.d(TAG,"Selected album position " + selected_album_position);
+                    break;
+            }
+
         }
     }
 
     /*Listener qui sera implémenté dans la classe ProfileActivity*/
     public interface ClickListener{
         void onClick(View view, int position);
-        void onLongClick(View view, int position);
+        void OnShareOwnedAlbumListener(int position);
     }
 
-    public AlbumsAdapter(Context mContext, ArrayList<Album> albumList,RecyclerViewClickListener itemListener) {
+    public AlbumsAdapter(Context mContext, ArrayList<Album> albumList,RecyclerViewClickListener itemListener,ClickListener listener) {
         this.mContext = mContext;
         this.albumList = albumList;
         this.itemListener = itemListener;
+        this.mCallback = listener;
     }
 
     @Override
@@ -83,23 +90,25 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
 
     @Override
     public void onBindViewHolder(final AlbumViewHolder holder, int position) {
-        Album album = albumList.get(position);
-        Log.d(TAG,"Album name " + album.getName());
-        holder.title.setText(album.getName());
-        holder.count.setText(album.getMoments().size() + " moments");
-        // loading album cover using Glide library
-        Glide
-                .with(mContext)
-                .load(album.getThumbnail())
-                .thumbnail(0.1f)
-                .into(holder.thumbnail);
+        if(albumList.size()>0) {
+            Album album = albumList.get(position);
+            Log.d(TAG, "Album name " + album.getName());
+            holder.title.setText(album.getName());
+            holder.count.setText(album.getCountryName());
+            // loading album cover using Glide library
+            Glide
+                    .with(mContext)
+                    .load(album.getThumbnail())
+                    .thumbnail(0.1f)
+                    .into(holder.thumbnail);
 
-        holder.overflow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(holder.overflow);
-            }
-        });
+            holder.overflow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showPopupMenu(holder.overflow);
+                }
+            });
+        }
     }
 
     /**
@@ -123,61 +132,16 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
-                case R.id.action_comment:
-                    Toast.makeText(mContext, "Leave a comment", Toast.LENGTH_SHORT).show();
+                case R.id.action_share_gpf:
+                    Log.d(TAG,"Share this album with group friends");
                     return true;
-                case R.id.action_share:
-                    Toast.makeText(mContext, "Share", Toast.LENGTH_SHORT).show();
+                case R.id.action_share_f:
+                    Log.d(TAG,"Share this album with friends");
+                    mCallback.OnShareOwnedAlbumListener(selected_album_position);
                     return true;
                 default:
             }
             return false;
-        }
-    }
-
-    // A retirer
-    static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener{
-
-        AlbumsAdapter.ClickListener clickListener;
-        // Detects various gestures and events using the supplied MotionEvents.
-        GestureDetector dectector;
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView,final AlbumsAdapter.ClickListener clickListener){
-            this.clickListener = clickListener;
-            this.dectector = new GestureDetector(context,new GestureDetector.SimpleOnGestureListener(){
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    View child = recyclerView.findChildViewUnder(e.getX(),e.getY());
-                    if(child != null && clickListener != null){
-                        clickListener.onLongClick(child,recyclerView.getChildAdapterPosition(child));
-                    }
-                }
-
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    Log.d(AlbumsAdapter.class.getSimpleName(),"From onSingleTapUp");
-                    return true;
-                }
-            });
-
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-            View child = rv.findChildViewUnder(e.getX(), e.getY());
-            if (child != null && clickListener != null && dectector.onTouchEvent(e)) {
-                clickListener.onClick(child, rv.getChildAdapterPosition(child));
-            }
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
         }
     }
 

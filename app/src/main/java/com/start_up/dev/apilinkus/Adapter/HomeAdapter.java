@@ -71,42 +71,44 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
 
     @Override
     public void onBindViewHolder(HomeViewHolder holder, int position) {
-        Instant instant = instants.get(position);
-        Long[] time_elapsed_details = DateUtil.printDifference(instant.getPublishDate(),DateUtil.getCurrentDate());
-        if(time_elapsed_details[0] > 0){
-            if(time_elapsed_details[0] == 1) {
-                holder.time_elapsed.setText(time_elapsed_details[0] + " day ago");
-            }else{
-                holder.time_elapsed.setText(time_elapsed_details[0] + " days ago");
-            }
-        }else{
-            if(time_elapsed_details[1] > 0) {
-                if(time_elapsed_details[1] == 1) {
-                    holder.time_elapsed.setText(time_elapsed_details[1] + " hour ago");
-                }else{
-                    holder.time_elapsed.setText(time_elapsed_details[1] + " hours ago");
+        if(instants.size()>0) {
+            Instant instant = instants.get(position);
+            Long[] time_elapsed_details = DateUtil.printDifference(instant.getPublishDate(), DateUtil.getCurrentDate());
+            if (time_elapsed_details[0] > 0) {
+                if (time_elapsed_details[0] == 1) {
+                    holder.time_elapsed.setText(time_elapsed_details[0] + " day ago");
+                } else {
+                    holder.time_elapsed.setText(time_elapsed_details[0] + " days ago");
                 }
-            }else{
-                if(time_elapsed_details[2] > 0) {
-                    if(time_elapsed_details[2] == 1) {
-                        holder.time_elapsed.setText(time_elapsed_details[2] + " minute ago");
-                    }else{
-                        holder.time_elapsed.setText(time_elapsed_details[2] + " minutes ago");
+            } else {
+                if (time_elapsed_details[1] > 0) {
+                    if (time_elapsed_details[1] == 1) {
+                        holder.time_elapsed.setText(time_elapsed_details[1] + " hour ago");
+                    } else {
+                        holder.time_elapsed.setText(time_elapsed_details[1] + " hours ago");
                     }
-                }else{
-                    if(time_elapsed_details[3] > 0) {
-                        if (time_elapsed_details[3] == 1) {
-                            holder.time_elapsed.setText(time_elapsed_details[3] + " second ago");
+                } else {
+                    if (time_elapsed_details[2] > 0) {
+                        if (time_elapsed_details[2] == 1) {
+                            holder.time_elapsed.setText(time_elapsed_details[2] + " minute ago");
                         } else {
-                            holder.time_elapsed.setText(time_elapsed_details[3] + " seconds ago");
+                            holder.time_elapsed.setText(time_elapsed_details[2] + " minutes ago");
                         }
-                    }else if(time_elapsed_details[3] == 0){
-                        holder.time_elapsed.setText("now");
+                    } else {
+                        if (time_elapsed_details[3] > 0) {
+                            if (time_elapsed_details[3] == 1) {
+                                holder.time_elapsed.setText(time_elapsed_details[3] + " second ago");
+                            } else {
+                                holder.time_elapsed.setText(time_elapsed_details[3] + " seconds ago");
+                            }
+                        } else if (time_elapsed_details[3] == 0) {
+                            holder.time_elapsed.setText("now");
+                        }
                     }
-                }
 
+                }
             }
-        }
+
 
         // A implementer avec ce qui a été fait ds le cas réeal avec description, classe comment,etc.
         // loading album cover using Glide library
@@ -114,7 +116,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
                 .with(context)
                 .load(instant.getUrl())
                 .into(holder.imagePost);
-
+        }
     }
 
     @Override

@@ -8,6 +8,6 @@ import org.json.JSONObject;
 
 public interface APIGetUserProfileDetails_Observer {
 
-    public void userDetails_GetResponse(JSONObject responseJSON);
-    public void userDetails_NotifyWhenGetFinish(Integer result);
+    void userDetails_GetResponse(JSONObject responseJSON);
+    void userDetails_NotifyWhenGetFinish(Integer result);
 }

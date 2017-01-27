@@ -24,7 +24,8 @@
     <string name="profileintrotext">Profile:</string>
     <string name="facebook_app_id">355532101482697</string>
     <string name="action_comment">Leave a comment</string>
-    <string name="action_share">Share</string>
+    <string name="action_share_friends_only">Partager avec amis </string>
+    <string name="action_share_gpfriends_only">Partager avec groupes d amis </string>
     <string name="lblCount">Label Count</string>
     <string name="lblProfile">Profile</string>
     <string name="lblMoment">Moment</string>
@@ -95,4 +96,31 @@
     <string name="privacy_policy">Politque de confidentialité</string>
     <string name="title_activity_test">test</string>
 
+
+
+    <!-- CIRCLE -->
+    <string name="invite_friend">Ajouter</string>
+    <string name="moment_description">Description du moment</string>
+    <string name="remove_friend">Supprimer</string>
+    <string name="add_friend">Ajouter</string>
+    <string name="pending_friend">Invitation envoyée</string>
+    <string name="create_group">Créé un groupe</string>
+    <string name="remove_group_friend">Supprimer</string>
+    <string name="edit_group_friend">Editer</string>
+
+    <!-- Upload moment -->
+    <string name="upload_moment_button">Upload</string>
+    
+    <string name="filter_prompt">Filtrer</string>
+    <string-array name="rigths_arrays">
+        <item>Aucun</item>
+        <item>Par droit de lecture</item>
+        <item>Par droit de commentaire</item>
+        <item>Par droit d écriture</item>
+    </string-array>
+
+  <string name="album_name_textfield">Name:</string>
+  <string name="album_place_name_textfield">Place Name:</string>
+  <string name="album_country_name_textfield">Country Name:</string>
+    <string name="submit_button_title">Submit</string>
 </resources>

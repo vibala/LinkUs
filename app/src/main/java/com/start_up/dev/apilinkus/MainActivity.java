@@ -61,12 +61,6 @@ public class MainActivity extends AbstractAsyncActivity {
 
         super.onCreate(savedInstanceState);
 
-        /*******-------------********/
-        /*Intent i = new Intent(MainActivity.this,HomeActivity.class);
-        startActivity(i);
-        finish();*/
-        /******--------------******/
-
         /*Social conf settings */
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new TwitterCore(authConfig));
@@ -129,7 +123,7 @@ public class MainActivity extends AbstractAsyncActivity {
         if(intent_calling_a_new_activity != null){
             Bundle extra = intent_calling_a_new_activity.getExtras();
             if(extra != null && !extra.isEmpty() && extra.getString("msg.Error") != null){
-                //Toast.makeText(this,extra.getString("msg.Error"),Toast.LENGTH_LONG).show();
+                //Toast.makeText(this,extra.getString("msg.Error"),Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -175,7 +169,7 @@ public class MainActivity extends AbstractAsyncActivity {
                             // LOGGED IN
                         }else{
                             // LOGGED OUT
-                            Toast.makeText(MainActivity.this,"Current Access Token : NULL ! Need to login with Facebook",Toast.LENGTH_LONG);
+                            Toast.makeText(MainActivity.this,"Current Access Token : NULL ! Need to login with Facebook",Toast.LENGTH_SHORT);
                             Log.i(TAG,"Current Access Token : NULL ! Need to login with Facebook");
 
                         }
@@ -288,7 +282,7 @@ public class MainActivity extends AbstractAsyncActivity {
                 alertDialog.show();
             }else if(resultCode == RESULT_CANCELED && data != null){
                 Bundle extra = data.getExtras();
-                Toast.makeText(this,extra.getString("reason"),Toast.LENGTH_LONG).show();
+                Toast.makeText(this,extra.getString("reason"),Toast.LENGTH_SHORT).show();
             }
         }else if(requestCode == TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE){
             twitterLoginButton.onActivityResult(requestCode,resultCode,data);
