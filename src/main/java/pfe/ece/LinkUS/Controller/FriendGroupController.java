@@ -65,7 +65,7 @@ public class FriendGroupController {
         String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
-        if(friendGroupService.addFilledFriendGroup(name, ownerId, userIdList)){
+        if(friendGroupService.addFilledFriendGroup(name, ownerId, userIdList) != null){
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.CONFLICT);
@@ -78,14 +78,14 @@ public class FriendGroupController {
         String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
-        if(friendGroupService.addFilledFriendGroup(name, ownerId, null)){
+        if(friendGroupService.addFilledFriendGroup(name, ownerId, null) != null){
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
     @RequestMapping(value = "/removeByName",method = RequestMethod.POST)
-    public ResponseEntity removeFriendGroupbyName(@RequestBody String name) {
+    public ResponseEntity removeFriendGroupByName(@RequestBody String name) {
         name=name.replace("\"","");
         String ownerId = accessTokenService.getUserIdOftheAuthentifiedUser();
 

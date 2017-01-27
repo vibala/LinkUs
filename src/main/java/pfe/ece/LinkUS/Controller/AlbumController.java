@@ -13,8 +13,10 @@ import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.FriendGroupService;
+import pfe.ece.LinkUS.Service.IdRightService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserEntityService.UserServiceImpl;
+import pfe.ece.LinkUS.Service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +42,11 @@ public class AlbumController {
     @Autowired
     private AccessTokenService accessTokenService;
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
     @Autowired
     private AlbumService albumService;
+    @Autowired
+    private IdRightService idRightService;
 
 
     @RequestMapping(value= "/update", method= RequestMethod.POST)
@@ -50,7 +54,9 @@ public class AlbumController {
 
         AlbumService albumService = new AlbumService(albumRepository);
 
-        if(albumService.checkUpdateAlbum(album)) {
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        if(idRightService.checkUserInIdRight(idRightService.findByRight(album, Right.ADMIN.name()), userId)) {
+            albumService.checkUpdateAlbum(album);
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -61,7 +67,9 @@ public class AlbumController {
 
         AlbumService albumService = new AlbumService(albumRepository);
 
-        if(albumService.checkSaveAlbum(album)) {
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        if(idRightService.checkUserInIdRight(idRightService.findByRight(album, Right.ADMIN.name()), userId)) {
+            albumService.checkSaveAlbum(album);
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.CONFLICT);
@@ -146,7 +154,7 @@ public class AlbumController {
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         AlbumService albumService = new AlbumService(albumRepository);
-        if(albumService.addFriendToAlbum(userRepository, userId, friendId, albumId, right)) {
+        if(albumService.addFriendToAlbum(new UserService(userRepository), userId, friendId, albumId, right)) {
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.CONFLICT);

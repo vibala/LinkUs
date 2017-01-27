@@ -27,6 +27,24 @@ public class IdRightService {
         return false;
     }
 
+    public boolean checkUserInIdRight(IdRight idRight, String userId) {
+
+        if(idRight.getUserIdList().contains(userId)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addFriendGroupToIdRight(IdRight idRight, String friendGroupId) {
+
+        if(!idRight.getGroupIdList().contains(friendGroupId)) {
+            LOGGER.info("Adding FriendGroup : " + friendGroupId + " to right: " + idRight.getRight());
+            idRight.getGroupIdList().add(friendGroupId);
+            return true;
+        }
+        return false;
+    }
+
     /**
      *
      *

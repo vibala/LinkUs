@@ -142,16 +142,24 @@ public class UserService {
         return user.getFriendList().contains(friendId);
     }
 
+    public boolean checkFriendGroup(User user, String friendGroupId) {
+
+        return user.getFriendGroupIdList().contains(friendGroupId);
+    }
+
     public boolean friendRequest(String userId, String friendId) {
 
-        User user = findUserById(userId);
-
         if(checkUserById(friendId)) {
-            if(!user.getFriendPendingList().contains(friendId) &&
-                    !user.getFriendList().contains(friendId)) {
+            User friend = findUserById(friendId);
+            User user = findUserById(userId);
+
+            if(!friend.getFriendPendingList().contains(userId) &&
+                    !friend.getFriendList().contains(userId)) {
                 LOGGER.info("New friend request with friendID: " + friendId);
-                user.getFriendPendingList().add(friendId);
+                user.getFriendRequestPendingList().add(friendId);
+                friend.getFriendPendingList().add(userId);
                 update(user);
+                update(friend);
                 return true;
             }
         }
@@ -161,12 +169,18 @@ public class UserService {
     public boolean acceptFriend(String userId, String friendId) {
 
         User user = findUserById(userId);
-
-        if(user.getFriendPendingList().contains(friendId)) {
+        User friend = findUserById(friendId);
+        if(friend.getFriendPendingList().contains(userId)) {
             LOGGER.info("New friend with friendID: " + friendId);
+            user.getFriendRequestPendingList().remove(friendId);
+            friend.getFriendPendingList().remove(userId);
+
+            // Ajout dans les amis
             user.getFriendList().add(friendId);
-            user.getFriendPendingList().remove(friendId);
+            friend.getFriendList().add(userId);
+
             update(user);
+            update(friend);
             return true;
         }
         return false;
@@ -175,11 +189,14 @@ public class UserService {
     public boolean refuseFriend(String userId, String friendId) {
 
         User user = findUserById(userId);
+        User friend = findUserById(friendId);
+        if(friend.getFriendPendingList().contains(userId)) {
+            LOGGER.info("Refuse friend with friendID: " + friendId);
+            user.getFriendRequestPendingList().remove(friendId);
+            friend.getFriendPendingList().remove(userId);
 
-        if(user.getFriendPendingList().contains(friendId)) {
-            LOGGER.info("Friend request refused with friendID: " + friendId);
-            user.getFriendPendingList().remove(friendId);
             update(user);
+            update(friend);
             return true;
         }
         return false;

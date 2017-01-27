@@ -85,7 +85,7 @@ public class FriendGroupService {
         friendGroupRepository.delete(friendGroup);
     }
 
-    public boolean addFilledFriendGroup(String name, String ownerId, List<String> userIdList) {
+    public String addFilledFriendGroup(String name, String ownerId, List<String> userIdList) {
 
         // Initialisation du nouveau friendGroup
         FriendGroup friendGroup = new FriendGroup();
@@ -103,12 +103,12 @@ public class FriendGroupService {
         //TODO: Temporaire
         //friendGroup.setGroupImgUrl("http://" + Inet4Address.getLocalHost().getHostAddress() + ":9999/images?name="+);
         // Recherche d'un friendGroup deja existant pour l'owner
-        List<FriendGroup> friendGroupList = findFriendGroupByOwnerId(ownerId);
-        if(!existingFriendGroup(friendGroupList, friendGroup)) {
+        FriendGroup friendGroupInDb = findFriendGroupByOwnerIdAndName(ownerId, name);
+        if(friendGroupInDb == null) {
             save(friendGroup);
-            return true;
+            return friendGroup.getId();
         }
-        return false;
+        return null;
     }
 
     public boolean deleteFriendGroup(String name, String ownerId) {

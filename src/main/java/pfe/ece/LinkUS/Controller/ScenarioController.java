@@ -6,11 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pfe.ece.LinkUS.Exception.EmailExistsException;
+import pfe.ece.LinkUS.Model.Enum.Right;
 import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
+import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.AlbumService;
+import pfe.ece.LinkUS.Service.FriendGroupService;
 import pfe.ece.LinkUS.Service.SubscriptionService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
@@ -37,6 +40,8 @@ public class ScenarioController {
     private UserRepository userRepository;
     @Autowired
     private SubscriptionRepository subscriptionRepository;
+    @Autowired
+    private FriendGroupRepository friendGroupRepository;
 
     @RequestMapping(value = "/filledAlbum")
     public ResponseEntity createFilledAlbum() {
@@ -91,6 +96,7 @@ public class ScenarioController {
         String idC = userService.findUserByEmail(userList.get(2)+"@yopmail.com").getId();
         String idD = userService.findUserByEmail(userList.get(3)+"@yopmail.com").getId();
 
+        // FRIENDS
         userService.addFakeFriend(idA, idB);
         userService.addFakeFriend(idA, idC);
         userService.addFakeFriend(idA, idD);
@@ -103,7 +109,8 @@ public class ScenarioController {
         userService.addFakeFriend(idD, idA);
         userService.addFakeFriend(idD, idB);
 
-
+        // FRIENDGROUP
+        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
 
 
         String url = "http://" + Inet4Address.getLocalHost().getHostAddress() + ":9999/images?name=";
@@ -115,6 +122,27 @@ public class ScenarioController {
         if (!directory.exists()) {
             directory.mkdir();
         }
+        albumService.addFriendToAlbum(userService, idA, idB, albumId, Right.LECTURE.name());
+        albumService.addFriendToAlbum(userService, idA, idC, albumId, Right.LECTURE.name());
+        List<String> listFG = new ArrayList<String>();
+        listFG.add(idA);
+        listFG.add(idB);
+        listFG.add(idC);
+        albumService.addGroupFriendToAlbum(userService, friendGroupService, idA,
+                friendGroupService.addFilledFriendGroup("FG IdA 1", idA, listFG),
+                albumId, Right.LECTURE.name());
+        listFG = new ArrayList<String>();
+        listFG.add(idA);
+        listFG.add(idC);
+        albumService.addGroupFriendToAlbum(userService,friendGroupService, idA,
+                friendGroupService.addFilledFriendGroup("FG IdA 2", idA, listFG),
+                albumId, Right.LECTURE.name());
+        listFG = new ArrayList<String>();
+        listFG.add(idA);
+        listFG.add(idB);
+        albumService.addGroupFriendToAlbum(userService,friendGroupService, idA,
+                friendGroupService.addFilledFriendGroup("FG IdA 3", idA, listFG),
+                albumId, Right.LECTURE.name());
         String moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite du palais TajMahl");
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de soleil", url+moment1+"_photo"+1+".jpeg&albumId="+albumId);
         albumService.saveFakePhoto(idA, albumId, moment1, 1);
@@ -141,6 +169,9 @@ public class ScenarioController {
         if (!directory.exists()) {
             directory.mkdir();
         }
+        albumService.addFriendToAlbum(userService, idA, idB, albumId, Right.LECTURE.name());
+        albumService.addFriendToAlbum(userService, idA, idC, albumId, Right.LECTURE.name());
+
         moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite du azepalais TajMahl");
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de solei12l", url+moment1+"_photo"+1+".jpeg&albumId="+albumId);
         albumService.saveFakePhoto(idA, albumId, moment1, 1);
@@ -180,6 +211,13 @@ public class ScenarioController {
             directory.mkdir();
         }
         moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite du palais TajMahl");
+        listFG = new ArrayList<String>();
+        listFG.add(idA);
+        listFG.add(idB);
+        listFG.add(idD);
+        albumService.addGroupFriendToAlbum(userService,friendGroupService, idB,
+                friendGroupService.addFilledFriendGroup("FG IdB 1", idB, listFG),
+                albumId, Right.LECTURE.name());
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de soleil", url+moment1+"_photo"+2+".jpeg&albumId="+albumId);
         albumService.saveFakePhoto(idB, albumId, moment1, 2);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dizerzel", url+moment1+"_photo"+4+".jpeg&albumId="+albumId);
@@ -202,7 +240,6 @@ public class ScenarioController {
         albumService.saveFakePhoto(idB, albumId, moment1, 6);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dizegggl", url+moment1+"_photo"+2+".jpeg&albumId="+albumId);
         albumService.saveFakePhoto(idB, albumId, moment1, 2);
-
 
         return new ResponseEntity(HttpStatus.OK);
     }

@@ -60,8 +60,12 @@ public class User implements Serializable {
     @Field("friendList")
     private ArrayList<String> friendList = new ArrayList<>();
 
+    //Lorsqu'un user B recoit une demande, elle est placée dans userB.friendPendingList
     @Field("friendPendingList")
     private ArrayList<String> friendPendingList = new ArrayList<>();
+
+    //Lorsqu'un user A envoie une demande, elle est placée dans userA.friendRequestPendingList
+    private ArrayList<String> friendRequestPendingList = new ArrayList<>();
 
     @Field("profilImgUrl")
     private String profilImgUrl;
@@ -228,5 +232,13 @@ public class User implements Serializable {
 
     public void setConfigUser(ConfigUser configUser) {
         this.configUser = configUser;
+    }
+
+    public ArrayList<String> getFriendRequestPendingList() {
+        return friendRequestPendingList;
+    }
+
+    public void setFriendRequestPendingList(ArrayList<String> friendRequestPendingList) {
+        this.friendRequestPendingList = friendRequestPendingList;
     }
 }

@@ -79,22 +79,14 @@ public class AlbumService {
      */
     public boolean checkUpdateAlbum(Album album) {
 
-        if(checkAlbumByOwnerIdAndName(album.getOwnerId(), album.getName())) {
-            update(album);
-            return true;
-        } else {
-            save(album);
-            return false;
-        }
+        update(album);
+        return true;
     }
 
     public boolean checkSaveAlbum(Album album) {
 
-        if(!checkAlbumByOwnerIdAndName(album.getOwnerId(), album.getName())) {
-            save(album);
-            return true;
-        }
-        return false;
+        save(album);
+        return true;
     }
 
     /**
@@ -535,7 +527,7 @@ public class AlbumService {
      * @param right
      * @return
      */
-    public boolean addFriendToAlbum(UserRepository userRepository,
+    public boolean addFriendToAlbum(UserService userService,
                                     String userId, String friendId, String albumId, String right) {
 
         this.userRepository = userRepository;
@@ -544,7 +536,6 @@ public class AlbumService {
         Album album = findAlbumById(albumId);
 
         // Récupération du user
-        UserService userService = new UserService(userRepository);
         User user = userService.findUserById(userId);
 
         // Si l'ami est bien dans la liste d'amis
@@ -552,6 +543,30 @@ public class AlbumService {
 
             // Ajout du friend au right
             if(addUserToAlbumIdRight(album, friendId, right)) {
+                update(album);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean addGroupFriendToAlbum(UserService userService, FriendGroupService friendGroupService,
+                                         String userId,
+                                         String friendGroupId, String albumId, String right) {
+
+        // Récupération album
+        Album album = findAlbumById(albumId);
+
+        // Récupération du user
+        User user = userService.findUserById(userId);
+
+        IdRightService idRightService = new IdRightService();
+        // Si le user est bien l'owner,
+        //  et si le user est admin de l'album
+        if(friendGroupService.findFriendGroupById(friendGroupId).getOwnerId().equals(userId) &&
+                idRightService.checkUserInIdRight(idRightService.findByRight(album, Right.ADMIN.name()), userId)) {
+
+            if(addFriendGroupToAlbumIdRight(album, friendGroupId, right)){
                 update(album);
                 return true;
             }
@@ -569,6 +584,11 @@ public class AlbumService {
     public boolean  addUserToAlbumIdRight(Album album, String userId, String right) {
         IdRightService idRightService = new IdRightService();
         return idRightService.addUserToIdRight(idRightService.findByRight(album, right), userId);
+    }
+
+    public boolean  addFriendGroupToAlbumIdRight(Album album, String friendGroupId, String right) {
+        IdRightService idRightService = new IdRightService();
+        return idRightService.addFriendGroupToIdRight(idRightService.findByRight(album, right), friendGroupId);
     }
 
     /**

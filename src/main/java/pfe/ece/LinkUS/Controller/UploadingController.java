@@ -122,7 +122,6 @@ public class UploadingController {
             // Ajout du user à tous les droits de l'instant
             InstantService instantService = new InstantService();
             instantService.addUserToInstantAllIdRight(instant, userId);
-
         }
         // Ajout du nouveau moment a la BDD
         albumService.addSaveMoment(moment, albumId);

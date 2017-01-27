@@ -106,9 +106,9 @@ public class HomeController {
     public ResponseEntity<Message> getHomePage(){
         LOGGER.info("UserController - getHomePage");
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = ((OAuth2Authentication) a).getUserAuthentication().getName();
+        String userEmail = ((OAuth2Authentication) a).getUserAuthentication().getName().toLowerCase();
         User user = userService.getUserByEmail(userEmail).
-                orElseThrow(() -> new UsernameNotFoundException(String.format("User with email=%s was not found",userEmail)));
+                orElseThrow(() -> new UsernameNotFoundException(String.format("User with email=%s was not found: ", userEmail)));
 
 
         Message homemsg = new Message(100,"Message de bienvenue","Bienvenue " + user.getFirstName() + "[ID: " + user.getId() + "] à notre application");

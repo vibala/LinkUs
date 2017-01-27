@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by DamnAug on 05/01/2017.
@@ -13,6 +14,7 @@ public class Moment {
 
     private String id;
     private String name;
+    private Date publishDate = new Date();
     private ArrayList<Instant> instantList = new ArrayList();
     private ArrayList<KeyValue> descriptionsList = new ArrayList<>();
     private boolean news = true;
@@ -87,6 +89,14 @@ public class Moment {
 
     public void setDescriptionsList(ArrayList<KeyValue> descriptionsList) {
         this.descriptionsList = descriptionsList;
+    }
+
+    public Date getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(Date publishDate) {
+        this.publishDate = publishDate;
     }
 
     @Override

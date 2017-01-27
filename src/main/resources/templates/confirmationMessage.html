@@ -3,7 +3,7 @@
     <head>
         <link rel="stylesheet" href="http://localhost:9999/bootstrap/css/bootstrap.min.css" />
     </head>
-    <body background="http://localhost:9999/images/background.jpg">
+    <body background="../public/images/background.jpg">
 
     <div class="container">
         <div style="height:20px;"></div>
@@ -13,8 +13,8 @@
         <div class="row" th:each="message, status : ${messages_confirmation}">
             <div style="height:30px;"></div>
             <div class="col-md-4 col-xs-5" >
-                <img src="http://localhost:9999/images/greenCheck.png" class="img-responsive center-block" alt="Green check" width="250" height="250" th:if="${message.user_registred}">
-                <img src="http://localhost:9999/images/redCross.png" class="img-responsive center-block" alt="Red cross" width="250" height="250" th:unless="${message.user_registred}">
+                <img src="../public/images/greenCheck.png" class="img-responsive center-block" alt="Green check" width="250" height="250" th:if="${message.user_registred}">
+                <img src="../public/images/redCross.png" class="img-responsive center-block" alt="Red cross" width="250" height="250" th:unless="${message.user_registred}">
             </div>
             <div class="col-md-8 col-xs-7">
                 <div style="height:30px;"></div>
