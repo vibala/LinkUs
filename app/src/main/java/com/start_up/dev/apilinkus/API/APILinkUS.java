@@ -187,6 +187,13 @@ public class APILinkUS {
 
     }
 
+    public void getSubscriptionList(APIGetSubscriptionList_Observer activity){
+        String query = "/subscription/getsubliste";
+        String urlrequestAPI = BASE_URL + query;
+        APIGetSubscriptionList apiGetSubscriptionList = new APIGetSubscriptionList(activity);
+        apiGetSubscriptionList.execute(urlrequestAPI);
+    }
+
     public String createNewAlbum(Album album){
         String query = "/album/save";
         String urlrequestAPI = BASE_URL + query;

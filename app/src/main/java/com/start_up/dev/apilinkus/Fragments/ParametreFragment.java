@@ -22,9 +22,14 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.start_up.dev.apilinkus.API.APIGetSubscriptionList_Observer;
+import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.Calendar;
@@ -35,10 +40,10 @@ import java.util.regex.Pattern;
  * Created by Vignesh on 1/17/2017.
  */
 
-public class ParametreFragment extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+public class ParametreFragment extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener,APIGetSubscriptionList_Observer {
 
     private View parametreView;
-    private TextView user_fullname_tv,user_username_tv;
+    private TextView user_fullname_tv,user_username_tv,remaining_friends_tv,remaining_description_tv;
     private ImageView edit_fullname, edit_username;
     private OnChangeUserInformationListener mCallback;
     private String username,userfullname;
@@ -47,6 +52,9 @@ public class ParametreFragment extends Fragment implements CompoundButton.OnChec
     private final String TAG = ParametreFragment.class.getSimpleName();
     private static boolean cancel_action = false;
     private LinearLayout report_pb_layout,privacy_policy_layout;
+    private String free_friends, free_description;
+    private boolean sub_des_one = false, sub_des_two = false, sub_frd_one = false, sub_frd_two = false;
+    private APILinkUS api;
 
     public interface OnChangeUserInformationListener{
         void onChangeUserInformation(String key, String[] value);
@@ -75,6 +83,9 @@ public class ParametreFragment extends Fragment implements CompoundButton.OnChec
         sub_package_description_two_switchbutton = (SwitchCompat) parametreView.findViewById(R.id.sub_package_description_two_switchbutton);
         report_pb_layout = (LinearLayout) parametreView.findViewById(R.id.report_pb_layout);
         privacy_policy_layout = (LinearLayout) parametreView.findViewById(R.id.privacy_policy_layout);
+        remaining_friends_tv = (TextView) parametreView.findViewById(R.id.remaining_friends_tv);
+        remaining_description_tv = (TextView) parametreView.findViewById(R.id.remaining_description_tv);
+        api = new APILinkUS();
 
         return parametreView;
     }
@@ -89,13 +100,32 @@ public class ParametreFragment extends Fragment implements CompoundButton.OnChec
             Log.d(TAG,"Restore last state " + savedInstanceState.getString("Full name"));
             user_fullname_tv.setText(savedInstanceState.getString("Full name"));
             user_username_tv.setText(savedInstanceState.getString("Username"));
+            remaining_description_tv.setText(savedInstanceState.getString("nb_desc_remaining"));
+            remaining_friends_tv.setText(savedInstanceState.getString("nb_friends_remaining"));
+            sub_frd_one = savedInstanceState.getBoolean("sub_frd_one");
+            sub_des_one =  savedInstanceState.getBoolean("sub_des_one");
+            sub_frd_two = savedInstanceState.getBoolean("sub_frd_two");
+            sub_des_two = savedInstanceState.getBoolean("sub_des_two");
+
+            if(!sub_frd_one && !sub_frd_two){sub_package_friend_one_switchbutton.setChecked(false); sub_package_friend_two_switchbutton.setChecked(false);}
+            else if(sub_frd_one){sub_package_friend_one_switchbutton.setChecked(true); sub_package_friend_two_switchbutton.setEnabled(false);}
+            else{sub_package_friend_two_switchbutton.setChecked(true); sub_package_friend_one_switchbutton.setEnabled(false);}
+            if(!sub_des_one && !sub_des_two){sub_package_description_one_switchbutton.setChecked(false); sub_package_description_two_switchbutton.setChecked(false);}
+            else if(sub_des_one){sub_package_description_one_switchbutton.setChecked(true); sub_package_description_two_switchbutton.setEnabled(false);}
+            else{sub_package_description_two_switchbutton.setChecked(true); sub_package_description_one_switchbutton.setEnabled(false);}
+
+
         } else {
             user_fullname_tv.setText(getArguments().getString("Full name"));
             user_username_tv.setText(getArguments().getString("Username"));
+            api.getSubscriptionList(this);
         }
 
         userfullname = String.valueOf(user_fullname_tv.getText());
         username = String.valueOf(user_username_tv.getText());
+        free_description = String.valueOf(remaining_description_tv.getText());
+        free_friends = String.valueOf(remaining_friends_tv.getText());
+
 
         edit_fullname.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -424,16 +454,24 @@ public class ParametreFragment extends Fragment implements CompoundButton.OnChec
                 gmail_switchbutton.setChecked(true);
                 break;
             default:
+                facebook_switchbutton.setEnabled(false);
+                twitter_switchbutton.setEnabled(false);
+                gmail_switchbutton.setEnabled(false);
                 break;
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         outState.putString("Username", username);
         outState.putString("Full name", userfullname);
-
+        outState.putString("nb_friends_remaining",free_friends);
+        outState.putString("nb_desc_remaining",free_description);
+        outState.putBoolean("sub_frd_one",sub_frd_one);
+        outState.putBoolean("sub_frd_two",sub_frd_two);
+        outState.putBoolean("sub_des_one",sub_des_one);
+        outState.putBoolean("sub_des_two",sub_des_two);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -474,6 +512,50 @@ public class ParametreFragment extends Fragment implements CompoundButton.OnChec
 
             matcher = pattern.matcher(hex);
             return matcher.matches();
+
+        }
+    }
+
+    @Override
+    public void subscriptionList_GetResponse(JSONArray responseArray) {
+        String datefin = "";
+        try {
+
+            JSONObject friendsObject = responseArray.optJSONObject(0);
+            free_friends = friendsObject.getString("free");
+            datefin = friendsObject.getString("dateFin");
+            if(datefin!=null){
+                // format de la date est mauvaise
+            }
+
+            JSONObject descriptionObject = responseArray.optJSONObject(1);
+            free_description = descriptionObject.getString("free");
+            datefin = descriptionObject.getString("dateFin");
+            if(datefin!=null){
+                // format de la date est mauvaise
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void subscriptionList_NotifyWhenGetFinish(Integer result) {
+        if(result==1){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    remaining_friends_tv.setText(free_friends);
+                    remaining_description_tv.setText(free_description);
+                    if(sub_des_one){sub_package_description_one_switchbutton.setChecked(true); sub_package_description_two_switchbutton.setEnabled(true);}
+                    if(sub_des_two){sub_package_description_two_switchbutton.setChecked(true); sub_package_description_one_switchbutton.setEnabled(true);}
+                    if(sub_frd_one){sub_package_friend_one_switchbutton.setChecked(true); sub_package_friend_two_switchbutton.setEnabled(true);}
+                    if(sub_frd_two){sub_package_friend_two_switchbutton.setChecked(true); sub_package_friend_one_switchbutton.setEnabled(true);}
+                }
+            });
+        }else{
 
         }
     }

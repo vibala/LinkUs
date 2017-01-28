@@ -69,6 +69,8 @@
     <string name="sub_package_friend_two">Abonnement Friends - 6 mois</string>
     <string name="sub_package_description_one">Abonnement Description - 1 an</string>
     <string name="sub_package_description_two">Abonnement Description - 6 mois</string>
+    <string name="remaining_friends_request">Nombre restant d invitations amis:</string>
+    <string name="remaining_description_request">Nombre restant de descriptions:</string>
     <!-- Notifications -->
     <string name="text_notification">Activiter les notifications</string>
     <!-- SOCIAL -->
