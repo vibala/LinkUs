@@ -23,7 +23,7 @@ public class APILinkUS {
 
     public APILinkUS(Context mContext) {
         this.mContext=mContext;
-        this.BASE_URL="http://192.168.137.77:9999";
+        this.BASE_URL="http://192.168.43.46:9999";
     }
     public APILinkUS() {
     }
@@ -107,7 +107,7 @@ public class APILinkUS {
     }
     public void createGroup(APIPostCreateGroupFriend_Observer obs,FriendGroup group){
 
-        String query="/friendGroup/add";
+        String query="/friendGroup/addFilled";
 
         String urlrequestAPI = BASE_URL + query;
         new APIPostCreateGroupFriend(obs,group).execute(urlrequestAPI);
@@ -148,8 +148,8 @@ public class APILinkUS {
         String urlrequestAPI = BASE_URL + query;
         new APIGetListFriend(fragment).execute(urlrequestAPI);
     }
-    public void getPendingListFriend(APIGetPendingListFriend_Observer fragment){
-        String query="/user/getPendingFriends";
+    public void getRequestPendingListFriend(APIGetRequestPendingListFriend_Observer fragment){
+        String query="/user/getRequestPendingFriends";
 
         String urlrequestAPI = BASE_URL + query;
         new APIGetPendingListFriend(fragment).execute(urlrequestAPI);
@@ -172,7 +172,6 @@ public class APILinkUS {
     }
 
     public void changeUsernameWhichisEquivalentToTheUserEmail(String username){
-        Log.d(TAG,"cccccccccccccccccc");
         String query = "/user/changeUsername?email=" + username;
         String urlrequestAPI = BASE_URL + query;
         APIPostChangeUsername apiPostChangeUsername = new APIPostChangeUsername();

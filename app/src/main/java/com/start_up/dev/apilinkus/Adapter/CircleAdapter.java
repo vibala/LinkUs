@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.API.APIPostOneString_Observer;
+import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewCircleClickListener;
 import com.start_up.dev.apilinkus.R;
 
@@ -102,7 +103,7 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.CircleView
                     });
                     button_2.setVisibility(View.GONE);
                     break;
-                case "my_friend_pending":
+                case "my_friend_request_pending":
                     button_1.setText(R.string.pending_friend);
                     button_1.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -144,7 +145,7 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.CircleView
             holder.type.setText(example.getType());
             Glide
                     .with(context)
-                    .load(example.getUrl())
+                    .load(example.getUrl()+"&userId="+ HomeActivity.userId)
                     .into(holder.imagePost);
 
             holder.update();

@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.start_up.dev.apilinkus.API.APIGetListFriend_Observer;
 import com.start_up.dev.apilinkus.API.APIGetListGroupFriend_Observer;
-import com.start_up.dev.apilinkus.API.APIGetPendingListFriend_Observer;
+import com.start_up.dev.apilinkus.API.APIGetRequestPendingListFriend_Observer;
 import com.start_up.dev.apilinkus.API.APIGetSearchListUser_Observer;
 import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.API.APIPostOneString_Observer;
@@ -47,7 +47,7 @@ import java.util.List;
  * Created by Huong on 17/01/2017.
  */
 
-public class CircleFragment extends Fragment implements APIGetPendingListFriend_Observer,APIPostOneString_Observer,APIGetListFriend_Observer,APIGetListGroupFriend_Observer,APIGetSearchListUser_Observer, RecyclerViewCircleClickListener,SearchView.OnQueryTextListener  {
+public class CircleFragment extends Fragment implements APIGetRequestPendingListFriend_Observer,APIPostOneString_Observer,APIGetListFriend_Observer,APIGetListGroupFriend_Observer,APIGetSearchListUser_Observer, RecyclerViewCircleClickListener,SearchView.OnQueryTextListener  {
 
 //GET DES GROUP EXISTANT
     @Override
@@ -87,7 +87,7 @@ public class CircleFragment extends Fragment implements APIGetPendingListFriend_
                     //On se casse pas la tete on recréé toute la friendList
                     //getPendingListFriend fait un clear de la liste d'ami puis appel les amis
                     //L'appel de l'api update la vue car un moment ca arrive a friend_adapter.setGridData(filter(friendList, currentQuery)); suivi d'un searchListUser(currentQuery); searchInGroupFriendList(currentQuery);
-                    api.getPendingListFriend(this);
+                    api.getRequestPendingListFriend(this);
                     Toast.makeText(getActivity(),"Votre invitation a été envoyée",Toast.LENGTH_SHORT).show();
                     break;
                 default:
@@ -116,13 +116,13 @@ public class CircleFragment extends Fragment implements APIGetPendingListFriend_
 
 
     @Override
-    public void getPendingListFriend_GetResponse(JSONArray responseArray) {
+    public void getRequestPendingListFriend_GetResponse(JSONArray responseArray) {
         friendList.clear();
         try {
             System.out.println(responseArray);
             for(int i=0;i<responseArray.length();i++){
                 JSONObject response= responseArray.optJSONObject(i);
-                RecyclerViewItem item = new RecyclerViewItem("my_friend_pending", response.getString("id"),response.getString("lastName")+" "+response.getString("firstName"), response.getString("profilImgUrl"));
+                RecyclerViewItem item = new RecyclerViewItem("my_friend_request_pending", response.getString("id"),response.getString("lastName")+" "+response.getString("firstName"), response.getString("profilImgUrl"));
                 friendList.add(item);
             }
 
@@ -132,7 +132,7 @@ public class CircleFragment extends Fragment implements APIGetPendingListFriend_
     }
 
     @Override
-    public void getPendingListFriend_NotifyWhenGetFinish(Integer result) {
+    public void getRequestPendingListFriend_NotifyWhenGetFinish(Integer result) {
         if (result == 1) {
             friend_adapter.setGridData(filter(friendList, currentQuery));
             //Une fois qu'on a les pending on prend les autres car le bouton pending par dessus bouton add
@@ -206,6 +206,7 @@ public class CircleFragment extends Fragment implements APIGetPendingListFriend_
     }
     @Override
     public void getListGroupFriend_GetResponse(JSONArray responseArray) {
+        group_friendList.clear();
         try {
             System.out.println(responseArray);
             for(int i=0;i<responseArray.length();i++){
@@ -338,7 +339,7 @@ public class CircleFragment extends Fragment implements APIGetPendingListFriend_
 */
 
         //On remplit la liste d'ami
-        api.getPendingListFriend(this);
+        api.getRequestPendingListFriend(this);
         //On remplit la liste des groupes
         api.getListGroupFriend(this);
 
@@ -367,7 +368,14 @@ public class CircleFragment extends Fragment implements APIGetPendingListFriend_
         super.onCreate(savedInstanceState);
 
     }
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(api==null)
+            api=new APILinkUS();
+        api.getListGroupFriend(this);
 
+    }
     String currentQuery="";
     @Override
     public boolean onQueryTextChange(String query) {
@@ -375,7 +383,6 @@ public class CircleFragment extends Fragment implements APIGetPendingListFriend_
         searchListUser(currentQuery);
         searchInGroupFriendList(currentQuery);
 
-        group_friends_recyclerView.scrollToPosition(0);
         group_friends_recyclerView.scrollToPosition(0);
         return true;
     }
@@ -394,8 +401,8 @@ public class CircleFragment extends Fragment implements APIGetPendingListFriend_
     }
     private void searchInGroupFriendList(String query) {
         if(!query.equals("")) {
-            group_friendList = (ArrayList<RecyclerViewItem>) filter(group_friendList, currentQuery);
-            group_friend_adapter.setGridData(group_friendList);
+            //on envoit une copie
+            group_friend_adapter.setGridData(filter(group_friendList, currentQuery));
         }else {
             group_friend_adapter.setGridData(group_friendList);
         }

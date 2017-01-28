@@ -85,9 +85,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notificationBuilder.build());
-        Intent intent2 = new Intent(this, BaseActivity.class);
-        //Start details activity
-        startActivity(intent2);
 
     }
 

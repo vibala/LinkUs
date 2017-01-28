@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
@@ -53,7 +54,9 @@ public class MomentsAdapater extends RecyclerView.Adapter<MomentsAdapater.Moment
             if(moment.getInstantList() != null && !moment.getInstantList().isEmpty()){
                 for (Instant instant : moment.getInstantList()) {
                     TextSliderView textSliderView = new TextSliderView(mContext);
-                    textSliderView.image(instant.getUrl());
+                    //#DEPENDANCE TextSliderView ne gere pas le jpeg le jpg fonctionne , les autres pas testé
+                    System.out.println("HEINNNNNNNNNNNNNN3 "+instant.getUrl()+"&userId="+ HomeActivity.userId);
+                    textSliderView.image(instant.getUrl()+"&userId="+ HomeActivity.userId);
                     textSliderView.description(instant.getName() + " - " + instant.getPublishDate().toString()); // On récupère uniquement la description pour l'instant
                     holder.sliderShow.addSlider(textSliderView);
                 }

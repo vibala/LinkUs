@@ -133,22 +133,22 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
         switch(String.valueOf(spinner.getSelectedItem())){
             case "Aucun":
                 current_selector = 0;
-                System.out.println("AUCUN");
+                //System.out.println("AUCUN");
                 updateSentSharedAlbums("nothing");
                 break;
             case "Par droit de lecture":
                 current_selector = 1;
-                System.out.println("LECTURE");
+                //System.out.println("LECTURE");
                 updateSentSharedAlbums("LECTURE");
                 break;
             case "Par droit de commentaire":
                 current_selector = 2;
-                System.out.println("COMMENT");
+                //System.out.println("COMMENT");
                 updateSentSharedAlbums("COMMENT");
                 break;
             case "Par droit d écriture":
                 current_selector = 3;
-                System.out.println("WRITE");
+                //System.out.println("WRITE");
                 updateSentSharedAlbums("WRITE");
                 break;
         }
@@ -229,8 +229,7 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
 
     @Override
     public void albumsFilterRight_GetResponse(JSONArray responseArray) {
-        System.out.println("zzz length" + responseArray.length());
-        System.out.println("zzz" + responseArray);
+        //System.out.println("albumsFilterRight_GetResponse responseArray" + responseArray);
         int length = responseArray.length();
         for(int i = 0; i < length; i++){
             JSONObject jsonObject = responseArray.optJSONObject(i);
@@ -253,17 +252,15 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
                         Log.d(TAG,"Userid " + useridobject.toString());
                         idRight.getUserIdList().add(useridobject.toString());
                     }
-                    System.out.println("cocuouc");
                     album.getIdRight().add(idRight);
                 }
 
-                System.out.println("ds la merde");
                 shared_albums.add(album);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println("cozzdsfqsdfdsqcuouc " + shared_albums.size());
+        //System.out.println("shared_albums.size() " + shared_albums.size());
 
     }
 
@@ -274,7 +271,7 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
                 for(Album a: refreshSharedAlbums(3)){
                     sent_shared_albums.add(a);
                 }
-                System.out.println("sentsharedalbumsize" + sent_shared_albums.size());
+                //System.out.println("sentsharedalbumsize" + sent_shared_albums.size());
                 adapter.notifyDataSetChanged();
                 break;
             case "COMMENT":
@@ -289,7 +286,7 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
                 for(Album a: refreshSharedAlbums(1)){
                     sent_shared_albums.add(a);
                 }
-                System.out.println("sentsharedalbumsize" + sent_shared_albums.size());
+                //System.out.println("sentsharedalbumsize" + sent_shared_albums.size());
                 adapter.notifyDataSetChanged();
                 break;
             default:
@@ -311,15 +308,15 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
      */
     public ArrayList<Album> refreshSharedAlbums(int index){
         ArrayList<Album> array_list = new ArrayList<>();
-        System.out.println("debut sharedalbulsize " + shared_albums.size());
+        //System.out.println("debut sharedalbulsize " + shared_albums.size());
         for (int i = 0; i < shared_albums.size(); i++) {
-            System.out.println("debut");
+            //System.out.println("debut");
             ArrayList<String> userIdList = shared_albums.get(i).getIdRight().get(index).getUserIdList();
-            System.out.println("debut size " + userIdList.size());
+            //System.out.println("debut size " + userIdList.size());
             if(!userIdList.isEmpty()){
-                System.out.println("la");
+                //System.out.println("la");
                 for (String id: userIdList) {
-                    System.out.println("la " + id + "userid " + userId);
+                    //System.out.println("la " + id + "userid " + userId);
                     if(id.contentEquals(userId)){array_list.add(shared_albums.get(i));}
                 }
 

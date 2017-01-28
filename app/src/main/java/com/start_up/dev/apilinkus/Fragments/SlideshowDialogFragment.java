@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.R;
 
@@ -110,7 +111,7 @@ public class SlideshowDialogFragment extends DialogFragment {
 
             Glide
                     .with(getActivity())
-                    .load(instant.getUrl())
+                    .load(instant.getUrl()+"&userId="+ HomeActivity.userId)
                     .fitCenter()
                     .crossFade() // to make the change of images more smoothly and easier on the eyer
                     .diskCacheStrategy(DiskCacheStrategy.ALL)

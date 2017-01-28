@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewCircleClickListener;
 import com.start_up.dev.apilinkus.R;
 
@@ -76,7 +77,7 @@ public class ImageAndTextListAdapter extends RecyclerView.Adapter<ImageAndTextLi
             holder.id.setText(example.getId());
             Glide
                     .with(context)
-                    .load(example.getUrl())
+                    .load(example.getUrl()+"&userId="+ HomeActivity.userId)
                     .into(holder.imagePost);
 
             holder.checkbox.setVisibility(View.VISIBLE);

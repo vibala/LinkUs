@@ -9,9 +9,9 @@ import org.json.JSONException;
 
 public class APIGetPendingListFriend extends APIGet {
 
-        private APIGetPendingListFriend_Observer activityObserver;
+        private APIGetRequestPendingListFriend_Observer activityObserver;
 
-        public APIGetPendingListFriend(APIGetPendingListFriend_Observer activityObserver) {
+        public APIGetPendingListFriend(APIGetRequestPendingListFriend_Observer activityObserver) {
             super();
             this.activityObserver = activityObserver;
         }
@@ -19,7 +19,7 @@ public class APIGetPendingListFriend extends APIGet {
         @Override
         protected void onPostExecute(Integer result) {
             // Download complete. Lets update UI
-            activityObserver.getPendingListFriend_NotifyWhenGetFinish(result);
+            activityObserver.getRequestPendingListFriend_NotifyWhenGetFinish(result);
         }
 
         /**
@@ -31,7 +31,7 @@ public class APIGetPendingListFriend extends APIGet {
         protected void parseResult(String result) {
             try {
                 JSONArray responseArray = new JSONArray(result);
-                activityObserver.getPendingListFriend_GetResponse(responseArray);
+                activityObserver.getRequestPendingListFriend_GetResponse(responseArray);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

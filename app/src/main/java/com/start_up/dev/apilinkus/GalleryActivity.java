@@ -128,6 +128,7 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewGa
                 if(needRequirementBeforeContinue()) return;
                 Intent intent = new Intent(GalleryActivity.this, SendMomentActivity.class);
                 intent.putExtra("selectedList",selectedList);
+                intent.putExtra("albumId",getIntent().getStringExtra("albumId"));
                 //Start details activity
                 startActivity(intent);
             }

@@ -3,6 +3,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.ProfileActivity;
 
 import org.springframework.http.HttpEntity;
@@ -29,7 +30,7 @@ public class APIPostTokenNotification extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] params) {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-        headers.add("Authorization", "Bearer " + ProfileActivity.access_token);
+        headers.add("Authorization", "Bearer " + HomeActivity.access_token);
         headers.add("Content-Type", "application/json");
         String result="";
         try{

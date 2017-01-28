@@ -5,8 +5,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -42,10 +46,14 @@ import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.Model.IdRight;
 import com.start_up.dev.apilinkus.R;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
+import com.start_up.dev.apilinkus.Tool.CircleTransform;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -60,12 +68,13 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
     private CircularImageView circularImageView;
     private TextView nbProches_tv, nbAlbumOwned_tv,tvusername;
     private ViewPager viewPager;
-    private String userId = "588684c8a0256820bce312d4";
+    private String userId;
     private String username = "", nbProches = "", nbAlbumsOwned = "";
     private APILinkUS api;
     private FloatingActionButton fab;
     private EditText nameBox,countrynameBox,placenameBox;
     private OwnedAlbumsFragment ownedAlbumsFragment;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.activity_userprofile,container,false);
@@ -111,8 +120,6 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,14 +128,14 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int threeshold = 0;
+                        int threshold = 0;
                         //save info where you want it
                         if( nameBox.getText().toString().trim().equals(""))
                         {
                             nameBox.setError( "Album name is required!" );
                             nameBox.setHint("Album name");
                         } else {
-                            threeshold++;
+                            threshold++;
                         }
 
                         if( countrynameBox.getText().toString().trim().equals(""))
@@ -136,7 +143,7 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
                             countrynameBox.setError( "Country name is required!" );
                             countrynameBox.setHint("Country name");
                         } else {
-                            threeshold++;
+                            threshold++;
                         }
 
                         if(placenameBox.getText().toString().trim().equals(""))
@@ -144,10 +151,10 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
                             placenameBox.setError( "Place name is required!" );
                             placenameBox.setHint("Place name");
                         } else {
-                            threeshold++;
+                            threshold++;
                         }
 
-                        if(threeshold==3){
+                        if(threshold==3){
                             dialog.dismiss();
                             Log.d(TAG,"TT EST BON");
                             Album album = new Album();

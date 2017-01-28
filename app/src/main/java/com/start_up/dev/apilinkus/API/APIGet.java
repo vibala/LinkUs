@@ -98,6 +98,7 @@ public abstract class  APIGet extends AsyncTask<String, Void, Integer> {
                     result = 0; //"Failed
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.d(TAG, "Erreur : " + e.getLocalizedMessage());
             }
 

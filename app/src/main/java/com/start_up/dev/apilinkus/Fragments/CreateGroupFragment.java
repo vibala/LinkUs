@@ -50,6 +50,8 @@ public class CreateGroupFragment extends Fragment implements APIPostCreateGroupF
     public void postCreateGroupFriend_NotifyWhenGetFinish(Boolean result) {
         if(result){
             Toast.makeText(getActivity(),"Groupe créé",Toast.LENGTH_SHORT).show();
+            //Il faut le renvoyer sur une page.
+           // mCallback.createGroupFragmentOnButtonCreateGroup();
         }else{
             Toast.makeText(getActivity(),"Une erreur de connexion s'est produite ou le groupe existe déjà",Toast.LENGTH_SHORT).show();
         }
@@ -162,8 +164,7 @@ public class CreateGroupFragment extends Fragment implements APIPostCreateGroupF
                     nameGroup = groupName.getText().toString();
                 }
                 api.createGroup(fragment,new FriendGroup(nameGroup,listId));
-                //Il faut le renvoyer sur une page.
-                mCallback.createGroupFragmentOnButtonCreateGroup();
+
             }
         });
 

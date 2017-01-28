@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.R;
@@ -114,7 +115,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         // loading album cover using Glide library
         Glide
                 .with(context)
-                .load(instant.getUrl())
+                .load(instant.getUrl()+"&userId="+ HomeActivity.userId)
                 .into(holder.imagePost);
         }
     }

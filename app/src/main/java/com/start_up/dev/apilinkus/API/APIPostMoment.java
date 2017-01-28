@@ -3,6 +3,7 @@ package com.start_up.dev.apilinkus.API;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.ProfileActivity;
@@ -27,7 +28,7 @@ public class APIPostMoment extends AsyncTask {
     @Override
     protected Object doInBackground(Object... params) {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-        headers.add("Authorization", "Bearer " + ProfileActivity.access_token);
+        headers.add("Authorization", "Bearer " + HomeActivity.access_token);
         headers.add("Content-Type", "application/json");
         String result="";
         try{

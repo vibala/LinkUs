@@ -39,6 +39,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.start_up.dev.apilinkus.API.APIGetAlbumByAlbumId_Observer;
@@ -61,10 +63,12 @@ import com.start_up.dev.apilinkus.Fragments.ReportProblemFragment;
 import com.start_up.dev.apilinkus.Fragments.SharedAlbumsFragment.OnSharedAlbumSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.SlideshowDialogFragment;
 import com.start_up.dev.apilinkus.Model.Album;
+import com.start_up.dev.apilinkus.Model.IdRight;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Model.Subscription;
 import com.start_up.dev.apilinkus.Service.DateUtil;
+import com.start_up.dev.apilinkus.Tool.JsonDateDeserializer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -127,7 +131,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     private static final String TAG_ABOUT_US = "A propos de Linkus";
     private static final String TAG_PRIVACY_POLICY = "Politique de confidentialité";
     private ArrayList<Album> albums;
-    private String userId = "";
+    public static String userId;
 
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
@@ -145,9 +149,12 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Log.d(TAG, "HomeActivity landscape On create");
         setContentView(R.layout.activity_main);
         api = new APILinkUS();
+        //Iniitalisation de userId
+        api.getUserProfileDetails(this, this);
         albums = new ArrayList<>();
         toolbar = (Toolbar) findViewById(R.id.toolbarMain);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
@@ -227,16 +234,17 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
 
         // Initialisation des albums
-        albums = prepareAlbumTestModels();
+        //albums = prepareAlbumTestModels();
 
         // Initialisation des moments
-        moments = albums.get(0).getMoments();
+        //moments = albums.get(0).getMoments();
 
         // If the savedInstanceState is eq. to null == when the fragment is not reconstructed from a previous saved state, the home fragment will be loaded
         if (savedInstanceState == null) {
             Log.d(TAG, "HomeActivity landscape Saved Instance");
-            navItemIndex = 0;
-            CURRENT_TAG = TAG_ACCUEIL;
+            navItemIndex = 1;
+            //CURRENT_TAG = TAG_ACCUEIL;
+            CURRENT_TAG = TAG_PROFIL;
             loadHomeFragment();
         }
 
@@ -627,48 +635,20 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
 
     @Override
     public void albumByAlbumId_GetResponse(JSONObject responseObject) {
-        try {
-            JSONObject jsonObject = responseObject;
-            selectedAlbum = new Album();
-            selectedAlbum.setId(jsonObject.getString("id"));
-            selectedAlbum.setName(jsonObject.getString("name"));
-            selectedAlbum.setThumbnail(R.drawable.australia);
-            selectedAlbum.setPlaceName(jsonObject.getString("placeName"));
-            selectedAlbum.setCountryName(jsonObject.getString("countryName"));
-            selectedAlbum.setOwnerId(jsonObject.getString("ownerId"));
-            JSONArray momentsArray = jsonObject.optJSONArray("moments");
-            for (int i = 0; i < momentsArray.length(); i++){
-                JSONObject momentObject = momentsArray.optJSONObject(i);
-                System.out.println("cocu3");
-                Moment moment = new Moment();
-                moment.setName(momentObject.getString("name"));
-                System.out.println("cocu3 " + momentObject.getString("name"));
-                moment.setId(momentObject.getString("id"));
-                System.out.println("cocu9 " + momentObject.getString("id"));
-                selectedAlbum.getMoments().add(moment);
-                JSONArray instantsArray = momentObject.optJSONArray("instantList");
-                System.out.println("cocu10 " + instantsArray.length());
-                for (int j = 0; j < instantsArray.length(); j++){
-                    JSONObject instantObject = instantsArray.optJSONObject(j);
-                    Instant instant = new Instant();
-                    instant.setName(instantObject.getString("name"));
-                    instant.setUrl(instantObject.getString("url"));
-                    instant.setPublishDate((Date) instantObject.get("publishDate"));
-                }
-            }
-            JSONArray idRigths = jsonObject.optJSONArray("idRight");
+        //Le gson ne gere pas le format date de base il faut contourner le bail avec une classe JsonFateDeserializer ou Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create(); (not tested)
+        Gson gson=new GsonBuilder().registerTypeAdapter(Date.class, new JsonDateDeserializer()).create();
 
-        } catch (JSONException e) {
-
-            e.printStackTrace();
-        }
+        Log.d("response",responseObject.toString());
+        selectedAlbum = gson.fromJson(responseObject.toString(), Album.class);
+        Log.d("gson",gson.toString());
+        Log.d("SELECTED ALBUM",selectedAlbum.toString());
 
     }
 
 
     @Override
     public void albumByAlbumId_NotifyWhenGetFinish(Integer result) {
-        Log.d(TAG,"Result value " + result);
+        Log.d(TAG,"Result value albumByAlbumId_NotifyWhenGetFinish" + result);
         if (result == 1) {
                 ArrayList<Moment> moments = selectedAlbum.getMoments();
                 if(moments == null ||moments.isEmpty()){
@@ -719,7 +699,9 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
 
     @Override
     public void onMomentSelected(int position) {
-        ArrayList<Instant> instants = selectedAlbum.getMoments().get(position).getInstantList();
+        moments = selectedAlbum.getMoments();
+        ArrayList<Instant> instants = moments.get(position).getInstantList();
+
         if(instants == null || instants.isEmpty()){
             Snackbar snackbar = Snackbar
                     .make(coordinatorLayout, "Le moment ne contient aucun instants enregistrés", Snackbar.LENGTH_LONG);
@@ -814,11 +796,14 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
 
     @Override
     public void userDetails_GetResponse(JSONObject responseJSON) {
+
         System.out.println(responseJSON);
         b = new Bundle();
 
         try {
+
             userId = responseJSON.getString("id");
+            System.out.println("YEAHHHHHHHHHHHHHHHHHHHH"+ userId);
             b.putString("Full name", responseJSON.get("lastName") + " " + responseJSON.get("firstName"));
             b.putString("Username", (String) responseJSON.get("email"));
             arguments_ready = true;
@@ -870,7 +855,8 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
 
     @Override
     public void createGroupFragmentOnButtonCreateGroup () {
-        }
+        //onBackPressed();
+    }
 
     @Override
     public void circleFragmentOnButtonCreateGroup() {
