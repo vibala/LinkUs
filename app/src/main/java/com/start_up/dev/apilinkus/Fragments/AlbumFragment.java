@@ -67,11 +67,11 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
         clearData();
 
         // Repaint (en vrai on appelle le refresh dans albumByAlbumId_NotifyWhenGetFinish)
-        //api.getAlbumByAlbumId(this,selectedAlbum.getId()); (Décommenter cette ligne !!!!!!!!!!!!!!!!!!  UNE FOIS QUE T'AS LANCE LE PROGRAMME LA PREMIERE FOIS )
+        api.getAlbumByAlbumId(this,selectedAlbum.getId());
 
         /*RETIER CELA UNE FOIS QUE T'AS VU QUE CA MARCHE DE TON COTE - HISTOIRE D AFFICHAGE DE 3 MOMENTS SUCCESSIFS*/
         /*Etape 2 : Création de deux moments*/
-        Moment moment_first = new Moment();
+        /*Moment moment_first = new Moment();
         moment_first.setId("A001M001");
         moment_first.setName("Visit of the palace Taj Mahal");
 
@@ -109,7 +109,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
         instant_third.setUrl("http://hubchi.com/wp-content/uploads/2015/08/that-desert-tour-4.jpg");
         instants_third.add(instant_third);
         moment_third.setInstantList(instants_third);
-        moments.add(moment_third);
+        moments.add(moment_third);*/
 
 
         // GARDER CELA PARCE QU ELLE PERMET DE METTRE A JOUR L ADAPTER
@@ -150,7 +150,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //mCallback.momentFragmentOnClickButtonUpload(selectedAlbum.getId()); (DECOMMENTER EGALEMENT CELA APRES LE PREMIER LANCEMEENT)
+                mCallback.momentFragmentOnClickButtonUpload(selectedAlbum.getId());
                 refresh_album_fragment();
             }
         });
