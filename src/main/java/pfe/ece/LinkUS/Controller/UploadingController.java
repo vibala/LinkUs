@@ -39,9 +39,7 @@ import java.util.logging.Logger;
 public class UploadingController {
 
     @Autowired
-    AlbumRepository albumRepository;
-    @Autowired
-    UserRepository userRepository;
+    UserService userService;
     @Autowired
     NotificationTokenRepository notificationTokenRepository;
     @Autowired
@@ -49,7 +47,7 @@ public class UploadingController {
     @Autowired
     AlbumService albumService;
     @Autowired
-    NotificationRepository notificationRepository;
+    NotificationService notificationService;
 
     @RequestMapping(value = "/uploadFiles", method = RequestMethod.POST)
     @ResponseBody
@@ -57,9 +55,8 @@ public class UploadingController {
                                                  @RequestParam("albumId") String albumId,
                                                  @RequestParam("notificationToPeopleWithReadRightOnAlbum") String notificationToPeopleWithReadRightOnAlbum) throws IOException {
 
-        Logger LOGGER = Logger.getLogger("LinkUS.Controller.AlbumController");
+        Logger LOGGER = Logger.getLogger("LinkUS.Controller.UploadingController");
 
-        AlbumService albumService = new AlbumService(albumRepository);
         FileOutputStream fos;
 
         // On fetche grâce au access token service
@@ -73,6 +70,9 @@ public class UploadingController {
             return new ResponseEntity<String>(
                     "You have no right to upload photos on that album: " + albumId, HttpStatus.FORBIDDEN);
         }
+
+        // Ajoute les personne de moment.IdRight à album.IdRight
+        albumService.checkAddUsersFromMomentToAlbum(albumId, moment);
 
 
         /** ----------------------UPLOAD IMAGE----------*/
@@ -145,7 +145,6 @@ public class UploadingController {
         if(notificationToPeopleWithReadRightOnAlbum.equals("true")) { // TODO @Vincent implementer ca dans le controleur et appeler le controleurNotification ici
 
             /**------------------------ NOTIFICATION--------------*/
-            UserService userService = new UserService(userRepository);
 
             NotificationServerService notificationServerService = new NotificationServerService(userService,notificationTokenRepository);
             //Retrouver l'album contenant l'instant envoyé (avec moment et instants ajoutés
@@ -163,8 +162,6 @@ public class UploadingController {
             //Pn récupere les token de ces utilisateurs dans une liste
             //Liste qui a pour but de lister les token des utilisateurs ayant le droit de lecture
             ArrayList<String> tokenUserListWithReadRight = notificationServerService.getTokenUserListFromIdUserList(listUserIdListWithReadRight);
-
-            NotificationService notificationService = new NotificationService(notificationRepository);
 
             Notification notification = notificationService.createSaveNotification(userId, albumId, moment.getId(), moment);
 

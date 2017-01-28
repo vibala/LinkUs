@@ -145,7 +145,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/removeFriend", method = RequestMethod.POST)
-    public ResponseEntity friendRequestDecision(@RequestBody String friendId) {
+    public ResponseEntity removeFriend(@RequestBody String friendId) {
         friendId = friendId.replace("\"","");
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
@@ -196,6 +196,14 @@ public class UserController {
     public String getPendingFriends(){
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         List<User> userList = userService.findPendingFriends(userId);
+        userService.checkData(userList);
+        return userList.toString();
+    }
+
+    @RequestMapping("/getRequestPendingFriends")
+    public String getRequestPendingFriends(){
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        List<User> userList = userService.findRequestPendingFriends(userId);
         userService.checkData(userList);
         return userList.toString();
     }

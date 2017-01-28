@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 
@@ -21,15 +22,11 @@ import java.nio.file.Paths;
 @Controller
 public class Images {
 
-    @Autowired
-    private AccessTokenService accessTokenService;
-
-    @RequestMapping(value = "/images")
+    @RequestMapping(value = "/images", method = RequestMethod.GET)
     public void returnImage(HttpServletResponse response,
                             @RequestParam("name") String name,
-                            @RequestParam("albumId") String albumId) throws IOException {
-
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+                            @RequestParam("albumId") String albumId,
+                            @RequestParam("userId") String userId) throws IOException {
 
         Path path = Paths.get("./images/" + userId + "/" + albumId + "/" + name);
         InputStream in = new FileInputStream(path.toString());

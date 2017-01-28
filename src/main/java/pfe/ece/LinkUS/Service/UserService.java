@@ -155,9 +155,11 @@ public class UserService {
         if(checkUserById(friendId)) {
             User friend = findUserById(friendId);
             User user = findUserById(userId);
-
             if(!friend.getFriendPendingList().contains(userId) &&
-                    !friend.getFriendList().contains(userId)) {
+                    !friend.getFriendList().contains(userId) &&
+                    !user.getFriendList().contains(friendId) &&
+                    !user.getFriendRequestPendingList().contains(friendId)
+                    ) {
                 LOGGER.info("New friend request with friendID: " + friendId);
                 user.getFriendRequestPendingList().add(friendId);
                 friend.getFriendPendingList().add(userId);
@@ -169,11 +171,19 @@ public class UserService {
         return false;
     }
 
+    public List<User> findRequestPendingFriends(String userId) {
+
+        User user = findUserById(userId);
+        return findUsersByIds(user.getFriendRequestPendingList());
+
+    }
+
+
     public boolean acceptFriend(String userId, String friendId) {
 
         User user = findUserById(userId);
         User friend = findUserById(friendId);
-        if(friend.getFriendPendingList().contains(userId)) {
+        if (friend.getFriendPendingList().contains(userId)) {
             LOGGER.info("New friend with friendID: " + friendId);
             user.getFriendRequestPendingList().remove(friendId);
             friend.getFriendPendingList().remove(userId);
@@ -208,11 +218,14 @@ public class UserService {
     public boolean removeFriend(String userId, String friendId) {
 
         User user = findUserById(userId);
+        User friend = findUserById(friendId);
 
-        if(user.getFriendList().contains(friendId)) {
+        if(user.getFriendList().contains(friendId) && !friend.getFriendList().contains(user)) {
             LOGGER.info("Friend with friendID: " + friendId + " removed.");
             user.getFriendList().remove(friendId);
+            friend.getFriendList().remove(userId);
             update(user);
+            update(friend);
             return true;
         }
         return false;

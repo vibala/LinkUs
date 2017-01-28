@@ -9,14 +9,8 @@ import pfe.ece.LinkUS.Model.Album;
 import pfe.ece.LinkUS.Model.Enum.Right;
 import pfe.ece.LinkUS.Model.FriendGroup;
 import pfe.ece.LinkUS.Model.PreviewAlbum;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
-import pfe.ece.LinkUS.Service.AlbumService;
-import pfe.ece.LinkUS.Service.FriendGroupService;
-import pfe.ece.LinkUS.Service.IdRightService;
+import pfe.ece.LinkUS.Service.*;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
-import pfe.ece.LinkUS.Service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +26,9 @@ public class AlbumController {
 
     private Logger LOGGER = Logger.getLogger("LinkUS.Controller.AlbumController");
     @Autowired
-    UserRepository userRepository;
+    private FriendGroupService friendGroupService;
     @Autowired
-    AlbumRepository albumRepository;
-    @Autowired
-    FriendGroupService friendGroupService;
-    @Autowired
-    SubscriptionRepository subscriptionRepository;
+    private SubscriptionService subscriptionService;
     @Autowired
     private AccessTokenService accessTokenService;
     @Autowired
@@ -52,8 +42,6 @@ public class AlbumController {
     @RequestMapping(value= "/update", method= RequestMethod.POST)
     public ResponseEntity updateAlbum(@RequestBody Album album) {
 
-        AlbumService albumService = new AlbumService(albumRepository);
-
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         if(idRightService.checkUserInIdRight(idRightService.findByRight(album, Right.ADMIN.name()), userId)) {
             albumService.checkUpdateAlbum(album);
@@ -64,8 +52,6 @@ public class AlbumController {
 
     @RequestMapping(value= "/save", method= RequestMethod.POST)
     public ResponseEntity saveAlbum(@RequestBody Album album) {
-
-        AlbumService albumService = new AlbumService(albumRepository);
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         System.out.println("UserId " + userId );
@@ -80,8 +66,6 @@ public class AlbumController {
     @RequestMapping(value = "/right", produces = "application/json")
     public String findAlbumsByUserId(@RequestParam(value = "right") String right, @RequestParam(value = "news") boolean news) {
 
-        AlbumService albumService = new AlbumService(albumRepository);
-        albumService.setSubscriptionRepository(subscriptionRepository);
         List<Album> albumList = new ArrayList<>();
 
         if(right == null ||"".equals(right)) {
@@ -101,15 +85,13 @@ public class AlbumController {
         if(albumList == null || albumList.isEmpty()) {
             throw  new AlbumNotFoundException(userId);
         } else {
-            return albumService.checkData(albumList, news, userId).toString();
+            return albumService.checkData(subscriptionService, albumList, news, userId).toString();
         }
     }
 
     @RequestMapping(value = "/preview", produces = "application/json")
     public String findPreviewAlbumsByUserId(@RequestParam(value = "right") String right, @RequestParam(value = "news") boolean news) {
 
-        AlbumService albumService = new AlbumService(albumRepository);
-        albumService.setSubscriptionRepository(subscriptionRepository);
         List<Album> albumList = new ArrayList<>();
 
         if(right == null ||"".equals(right)) {
@@ -134,9 +116,7 @@ public class AlbumController {
     @RequestMapping(value = "/owned")
     public String findAlbumsOwnedByUser(@RequestParam(value = "news") boolean news) {
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-        AlbumService albumService = new AlbumService(albumRepository);
-        albumService.setSubscriptionRepository(subscriptionRepository);
-        return albumService.checkData(albumService.getAlbumsOwned(userId), news, userId).toString();
+        return albumService.checkData(subscriptionService, albumService.getAlbumsOwned(userId), news, userId).toString();
     }
 
     @RequestMapping(value = "/setwith",
@@ -153,8 +133,7 @@ public class AlbumController {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        AlbumService albumService = new AlbumService(albumRepository);
-        if(albumService.addFriendToAlbum(new UserService(userRepository), userId, friendId, albumId, right)) {
+        if(albumService.addFriendToAlbum(userService, userId, friendId, albumId, right)) {
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.CONFLICT);
@@ -174,7 +153,6 @@ public class AlbumController {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        AlbumService albumService = new AlbumService(albumRepository);
         if(albumService.addGroupFriendToAlbum(userService, friendGroupService, userId, friendGroupId, albumId, right)) {
             return new ResponseEntity(HttpStatus.OK);
         }
@@ -185,15 +163,14 @@ public class AlbumController {
     public String getAlbumById(@RequestParam(value = "albumId") String albumId,
                                @RequestParam(value = "news") boolean news){
 
-        System.out.println("Album id " + albumId);
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         Album album = albumService.findAlbumById(albumId);
-        albumService.setSubscriptionRepository(subscriptionRepository);
-        System.out.println("Album name " + album.getName());
+
+        // Ajout de l'album à une liste pour pouvoir utiliser la méthode de vérification des données
         List<Album> albumList = new ArrayList<>();
         albumList.add(album);
 
-        return albumService.checkData(albumList, news, userId).get(0).toString();
+        return albumService.checkData(subscriptionService, albumList, news, userId).get(0).toString();
     }
     @RequestMapping(value = "/momentUrls", params = {"albumId", "momentId"})
     public String getUrlsFromMoment(@RequestParam(value = "albumId") String albumId,

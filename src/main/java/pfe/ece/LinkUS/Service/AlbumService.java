@@ -34,9 +34,6 @@ public class AlbumService {
 
     UserRepository userRepository;
 
-
-    SubscriptionRepository subscriptionRepository;
-
     ApplicationContext ctx;
     MongoOperations operations;
 
@@ -44,14 +41,6 @@ public class AlbumService {
         ctx = new AnnotationConfigApplicationContext(MyMongoConfig.class);
         operations = (MongoOperations) ctx.getBean("mongoTemplate");
         this.albumRepository = albumRepository;
-    }
-
-    /**
-     *
-     * @param subscriptionRepository
-     */
-    public void setSubscriptionRepository(SubscriptionRepository subscriptionRepository) {
-        this.subscriptionRepository = subscriptionRepository;
     }
 
     /**
@@ -265,6 +254,23 @@ public class AlbumService {
         previewAlbum.setAlbumName(album.getName());
         return previewAlbum;
     }
+
+    public void checkAddUsersFromMomentToAlbum(String albumId, Moment moment) {
+
+        IdRightService idRightService = new IdRightService();
+        Album album = findAlbumById(albumId);
+
+        List<String> userList = new ArrayList<>();
+
+        for(Instant instant: moment.getInstantList()) {
+            userList.addAll(idRightService.getUsersFromAllIdRight(instant));
+        }
+
+        // On ajoute les user en droit LECTURE seulement
+        idRightService.addUsersToIdRight(
+                idRightService.findByRight(album, Right.LECTURE.name()), userList);
+    }
+
     /**
      *
      * @param album
@@ -393,8 +399,8 @@ public class AlbumService {
 
     public void saveFakePhoto(String userId, String albumId, String momentId, int numero) throws IOException {
 
-        Files.copy(new File("./src/main/resources/public/images/image" + numero + ".jpeg").toPath(),
-                new File("./images/" + userId + "/" + albumId + "/" + momentId + "_image" + numero + ".jpeg").toPath());
+        Files.copy(new File("./src/main/resources/public/images/image" + numero + ".jpg").toPath(),
+                new File("./images/" + userId + "/" + albumId + "/" + momentId + "_image" + numero + ".jpg").toPath());
     }
 
     /**
@@ -519,6 +525,18 @@ public class AlbumService {
         }
     }
 
+    public void defineAlbumMomentsMainInstant(String albumId) {
+        defineAlbumMomentsMainInstant(findAlbumById(albumId));
+    }
+
+    public void defineAlbumMomentsMainInstant(Album album) {
+
+        MomentService momentService = new MomentService();
+
+        for (Moment moment: album.getMoments()) {
+            momentService.setMainInstantUsingCotation(moment);
+        }
+    }
     /**
      *
      * @param userId
@@ -597,8 +615,8 @@ public class AlbumService {
      * @param userId
      * @return
      */
-    public List<Album> checkData(List<Album> albumList, boolean news, String userId) {
-        checkDataAutorization(albumList, userId);
+    public List<Album> checkData(SubscriptionService subscriptionService, List<Album> albumList, boolean news, String userId) {
+        checkDataAutorization(subscriptionService, albumList, userId);
         checkDataRight(albumList, userId);
         checkDataNews(albumList, news, userId);
         return albumList;
@@ -619,9 +637,8 @@ public class AlbumService {
      * @param userId
      * @return
      */
-    public List<Album> checkDataAutorization(List<Album> albumList, String userId) {
+    public List<Album> checkDataAutorization(SubscriptionService subscriptionService, List<Album> albumList, String userId) {
 
-        SubscriptionService subscriptionService = new SubscriptionService(subscriptionRepository);
         Subscription subscription = subscriptionService.findSubscriptionByUserIdAndType(userId, SubscriptionTypeEnum.DESCRIPTION.name());
 
         if ((subscription.getDateFin() != null && subscription.getDateFin().compareTo(new Date()) < 0) ||

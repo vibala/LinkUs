@@ -1,5 +1,6 @@
 package pfe.ece.LinkUS.Service;
 
+import org.omg.CosNaming.IstringHelper;
 import org.springframework.stereotype.Service;
 import pfe.ece.LinkUS.Model.Album;
 import pfe.ece.LinkUS.Model.Enum.Right;
@@ -7,6 +8,8 @@ import pfe.ece.LinkUS.Model.IdRight;
 import pfe.ece.LinkUS.Model.Instant;
 import pfe.ece.LinkUS.Model.Moment;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -25,6 +28,16 @@ public class IdRightService {
             return true;
         }
         return false;
+    }
+
+    public boolean addUsersToIdRight(IdRight idRight, List<String> userList) {
+        boolean bool = true;
+        for (String userId: userList) {
+            if(!addUserToIdRight(idRight, userId)) {
+                bool = false;
+            }
+        }
+        return bool;
     }
 
     public boolean checkUserInIdRight(IdRight idRight, String userId) {
@@ -126,5 +139,22 @@ public class IdRightService {
             return true;
         }
         return false;
+    }
+
+    public List<String> getUsersFromAllIdRight(Instant instant) {
+
+        List<String> usersList = new ArrayList<>();
+        for(IdRight idRight: instant.getIdRight()) {
+            usersList.addAll(getUsersFromIdRight(idRight));
+        }
+        return usersList;
+    }
+
+    public List<String> getUsersFromIdRight(IdRight idRight) {
+
+        if(idRight != null){
+            return idRight.getUserIdList();
+        }
+        return new ArrayList<>();
     }
 }
