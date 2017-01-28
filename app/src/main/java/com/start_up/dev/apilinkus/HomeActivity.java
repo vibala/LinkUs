@@ -47,12 +47,12 @@ import com.start_up.dev.apilinkus.API.APIGetAlbumByAlbumId_Observer;
 import com.start_up.dev.apilinkus.API.APIGetUserProfileDetails_Observer;
 import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.Fragments.AboutUsFragment;
+import com.start_up.dev.apilinkus.Fragments.AlbumFragment;
+import com.start_up.dev.apilinkus.Fragments.AlbumFragment.OnMomentSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.CircleFragment;
 import com.start_up.dev.apilinkus.Fragments.CreateGroupFragment;
 import com.start_up.dev.apilinkus.Fragments.HomeFragment;
 import com.start_up.dev.apilinkus.Fragments.HomeFragment.OnPostSelectedListener;
-import com.start_up.dev.apilinkus.Fragments.AlbumFragment;
-import com.start_up.dev.apilinkus.Fragments.AlbumFragment.OnMomentSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.NotificationFragment;
 import com.start_up.dev.apilinkus.Fragments.OwnedAlbumsFragment.OnOwnedAlbumSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.ParametreFragment;
@@ -63,14 +63,12 @@ import com.start_up.dev.apilinkus.Fragments.ReportProblemFragment;
 import com.start_up.dev.apilinkus.Fragments.SharedAlbumsFragment.OnSharedAlbumSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.SlideshowDialogFragment;
 import com.start_up.dev.apilinkus.Model.Album;
-import com.start_up.dev.apilinkus.Model.IdRight;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Model.Subscription;
 import com.start_up.dev.apilinkus.Service.DateUtil;
 import com.start_up.dev.apilinkus.Tool.JsonDateDeserializer;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -514,6 +512,14 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         // Pour mes tests
         for (int i = 0; i < count; i++) {
             System.out.println("Tags in BackStack " + getSupportFragmentManager().getBackStackEntryAt(i));
+        }
+
+        if(count == 1){
+            api.logout();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish(); // call this to finish the current activity
         }
 
         if (getSupportFragmentManager().getBackStackEntryCount() >= 2) {
