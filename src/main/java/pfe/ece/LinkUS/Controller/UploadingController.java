@@ -70,9 +70,9 @@ public class UploadingController {
             return new ResponseEntity<String>(
                     "You have no right to upload photos on that album: " + albumId, HttpStatus.FORBIDDEN);
         }
-
+        System.out.println("Moment envoyé par l'utilisateur " + userId+" "+moment.toString());
         // Ajoute les personne de moment.IdRight à album.IdRight
-        albumService.checkAddUsersFromMomentToAlbum(albumId, moment);
+        albumService.checkAddUsersFromMomentToAlbum(userId,albumId, moment);
 
 
         /** ----------------------UPLOAD IMAGE----------*/
@@ -161,7 +161,7 @@ public class UploadingController {
             //On dit que y a que l'utilisateur 2 qui recevra le truc (on va d'abord retrouver son tokenNotification, puis on va pouvoir lui envoyer une notif
             //Pn récupere les token de ces utilisateurs dans une liste
             //Liste qui a pour but de lister les token des utilisateurs ayant le droit de lecture
-            ArrayList<String> tokenUserListWithReadRight = notificationServerService.getTokenUserListFromIdUserList(listUserIdListWithReadRight);
+            ArrayList<String> tokenUserListWithReadRight = notificationServerService.getTokenUserListFromIdUserList(listUserIdListWithReadRight,userId);
 
             Notification notification = notificationService.createSaveNotification(userId, albumId, moment.getId(), moment);
 

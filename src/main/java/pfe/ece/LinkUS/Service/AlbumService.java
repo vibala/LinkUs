@@ -255,7 +255,7 @@ public class AlbumService {
         return previewAlbum;
     }
 
-    public void checkAddUsersFromMomentToAlbum(String albumId, Moment moment) {
+    public void checkAddUsersFromMomentToAlbum(String  userId,String albumId, Moment moment) {
 
         IdRightService idRightService = new IdRightService();
         Album album = findAlbumById(albumId);
@@ -263,12 +263,17 @@ public class AlbumService {
         List<String> userList = new ArrayList<>();
 
         for(Instant instant: moment.getInstantList()) {
+            //On ajoute le user dans tous les droits
+            for(IdRight idRight : instant.getIdRight()){
+                idRight.getUserIdList().add(userId);
+            }
             userList.addAll(idRightService.getUsersFromAllIdRight(instant));
         }
-
+        IdRight idRightLectureAlbum= idRightService.findByRight(album, Right.LECTURE.name());
         // On ajoute les user en droit LECTURE seulement
-        idRightService.addUsersToIdRight(
-                idRightService.findByRight(album, Right.LECTURE.name()), userList);
+        idRightService.addUsersToIdRight(idRightLectureAlbum, userList);
+
+        update(album);
     }
 
     /**

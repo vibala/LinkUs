@@ -35,22 +35,24 @@ public class NotificationServerService {
         this.notificationTokenRepository=notificationTokenRepository;
     }
 
-    public ArrayList<String> getTokenUserListFromIdUserList(ArrayList<String>  usersIdInList){
+    public ArrayList<String> getTokenUserListFromIdUserList(ArrayList<String>  usersIdInList,String userId){
         ArrayList<String> tokenUserList=new ArrayList<String>();
-
-        // TODO Recuperation du TokenNotification depuis l'identifiant
 
 
         //TEMPORAIRE A SUPPRIMER QUAND IMPLEMENTATION VIGNESH FINI
             for(String userIdInList:usersIdInList){
+                //On envoit pas la notification a l'utilsiteur qui appel cette fonction
+                if(userIdInList.equals(userId)) {
+                    continue;
+                }
+                                /*Structure de la table NotificationsTokens dans la BD : ID;USERNAME;TOKEN */
+                    String userIdFriend = userservice.findUserById(userIdInList).getId();
+                                /*Recupération du token notif de chaque utilisateur à partir de l'username*/
+                    NotificationTokenServiceImpl notificationTokenService = new NotificationTokenServiceImpl(notificationTokenRepository);
+                    String notification_token = notificationTokenService.getNotifcationTokenByUsername(userIdFriend);
+                                /*Ajout des tokens dans la liste tokenUserList*/
+                    tokenUserList.add(notification_token);
 
-                /*Structure de la table NotificationsTokens dans la BD : ID;USERNAME;TOKEN */
-                String username = userservice.findUserById(userIdInList).getId();
-                /*Recupération du token notif de chaque utilisateur à partir de l'username*/
-                NotificationTokenServiceImpl notificationTokenService=new NotificationTokenServiceImpl(notificationTokenRepository);
-                String notification_token = notificationTokenService.getNotifcationTokenByUsername(username);
-                /*Ajout des tokens dans la liste tokenUserList*/
-                tokenUserList.add(notification_token);
             }
         //-----
 
@@ -80,7 +82,7 @@ public class NotificationServerService {
              */
             String json = "{\"notification\":{\"title\":\"title-notification\"," +
                     "\"body\":\"description-notification\"}," +
-                    "\"data\":{\"description\":\""+ o.toString() +
+                    "\"data\":{\"description\":\""+ "test" +
                     "\",\"title\":\"notification\"},\"to\":\""+token+"\"}";
 
             URL url = new URL(urlServerFireBase);
