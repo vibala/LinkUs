@@ -1,5 +1,6 @@
 package pfe.ece.LinkUS.Service;
 
+import com.google.firebase.internal.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pfe.ece.LinkUS.Model.NotificationToken;
@@ -20,11 +21,20 @@ public class NotificationTokenServiceImpl implements NotificationTokenService{
 
     @Override
     public String getNotifcationTokenByUsername(String username) {
+        /**
+         *   ONE   ADDDDDDD
+         */
 
-        String token = notificationTokenRepository.findByUsername(username).getToken();
+        String token =null;
+        try {
+            token = notificationTokenRepository.findByUsername(username).getToken();
+        } catch(Exception e){
+            e.getStackTrace();
+        }
         if(token != null && !token.isEmpty()){
             return token;
         } else {
+            Log.d("ERROR","token not found from user : " + username);
             return null;
         }
     }

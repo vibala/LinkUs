@@ -21,6 +21,9 @@ import pfe.ece.LinkUS.Service.UserService;
 import java.io.File;
 import java.io.IOException;
 import java.net.Inet4Address;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,9 +121,19 @@ public class ScenarioController {
         // USER 1
         // ALBUM 1
         String albumId = albumService.createSaveAlbum(idA, "Album 1");
-        File directory = new File("./images/" + idA + "/" + albumId);
-        if (!directory.exists()) {
-            directory.mkdir();
+        Path path = Paths.get("./images/" + idA + "/" + albumId);
+        //if directory exists?
+        if (!Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+                System.out.println("Directory is created!");
+            } catch (IOException e) {
+                //fail to create directory
+
+                System.out.println("Failed to create directory!");
+                e.printStackTrace();
+
+            }
         }
         albumService.addFriendToAlbum(userService, idA, idB, albumId, Right.LECTURE.name());
         albumService.addFriendToAlbum(userService, idA, idC, albumId, Right.LECTURE.name());
@@ -165,9 +178,19 @@ public class ScenarioController {
 
         // ALBUM 2
         albumId = albumService.createSaveAlbum(idA, "Album 2");
-        directory = new File("./images/" + idA + "/" + albumId);
-        if (!directory.exists()) {
-            directory.mkdir();
+        path = Paths.get("./images/" + idA + "/" + albumId);
+        //if directory exists?
+        if (!Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+                System.out.println("Directory is created!");
+            } catch (IOException e) {
+                //fail to create directory
+
+                System.out.println("Failed to create directory!");
+                e.printStackTrace();
+
+            }
         }
         albumService.addFriendToAlbum(userService, idA, idB, albumId, Right.LECTURE.name());
         albumService.addFriendToAlbum(userService, idA, idC, albumId, Right.LECTURE.name());
@@ -206,9 +229,19 @@ public class ScenarioController {
         // USER 2
         // ALBUM 1
         albumId = albumService.createSaveAlbum(idB, "Album 1");
-        directory = new File("./images/" + idB + "/" + albumId);
-        if (!directory.exists()) {
-            directory.mkdir();
+        path = Paths.get("./images/" + idB + "/" + albumId);
+        //if directory exists?
+        if (!Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+                System.out.println("Directory is created!");
+            } catch (IOException e) {
+                //fail to create directory
+
+                System.out.println("Failed to create directory!");
+                e.printStackTrace();
+
+            }
         }
         moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite du palais TajMahl");
         listFG = new ArrayList<String>();

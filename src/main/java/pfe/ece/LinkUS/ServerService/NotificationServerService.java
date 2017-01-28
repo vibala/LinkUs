@@ -97,10 +97,16 @@ public class NotificationServerService {
             os.close();
 
             // read the response
-            InputStream input = new BufferedInputStream(conn.getInputStream());
-            //String result = IOUtils.toString(input);
+            InputStream input;
+            try {
+                // read the response
+                input = new BufferedInputStream(conn.getInputStream());
+                //String result = IOUtils.toString(input);
 
-            input.close();
+                input.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             conn.disconnect();
         }
     }

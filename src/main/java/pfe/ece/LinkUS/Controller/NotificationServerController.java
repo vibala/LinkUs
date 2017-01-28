@@ -40,6 +40,7 @@ public class NotificationServerController {
 
         try {
             notificationTokenService.registerNotificationTokenEntity(token);
+            System.out.println("Token Registered notification : "+notification_token);
         } catch (Exception e) {
             return new ResponseEntity<String>("msg.Fail : Error creating the token : " + e.toString(), HttpStatus.OK);
         }

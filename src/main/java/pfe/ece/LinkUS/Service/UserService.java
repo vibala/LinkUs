@@ -18,6 +18,9 @@ import pfe.ece.LinkUS.Service.UserEntityService.UserServiceImpl;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -321,10 +324,14 @@ public class UserService {
         subscriptionService.addUserToAllSubscriptions(user);
 
         // PARTIE LOCALE
-        File directory = new File("./images/" + user.getId());
+        /*File directory = new File("./images/" + user.getId());
         if (!directory.exists()) {
             directory.mkdir();
-        }
+        }*/
+        // PARTIE LOCALE
+        Path path = Paths.get("./images/" + user.getId());
+        if (!Files.exists(path)) { try {Files.createDirectories(path); System.out.println("Directory is created!"); } catch (IOException e) {  System.out.println("Failed to create directory!");e.printStackTrace();}}
+
 
         return user.getId();
     }

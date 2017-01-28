@@ -1,5 +1,6 @@
 package pfe.ece.LinkUS.Controller;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Inet4Address;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -83,7 +87,7 @@ public class UploadingController {
         amazonService.uploadFileByte(instant.getImgByte(),fileS3Name,"image*//*");*/
 
         // PARTIE LOCALE
-        File directory = new File("./images");
+     /*   File directory = new File("./images");
         if (!directory.exists()) {
             directory.mkdir();
         }
@@ -94,15 +98,26 @@ public class UploadingController {
         directory = new File("./images/" + userId + "/" + albumId);
         if (!directory.exists()) {
             directory.mkdir();
-        }
+        }*/
+        // PARTIE LOCALE
+        Path path = Paths.get("./images");
+        if (!Files.exists(path)) { try {Files.createDirectories(path); System.out.println("Directory is created!"); } catch (IOException e) {  System.out.println("Failed to create directory!");e.printStackTrace();}}
+        path = Paths.get("./images/" + userId);
+        if (!Files.exists(path)) { try {Files.createDirectories(path); System.out.println("Directory is created!"); } catch (IOException e) {  System.out.println("Failed to create directory!");e.printStackTrace();}}
+        path = Paths.get("./images/" + userId + "/" + albumId);
+        if (!Files.exists(path)) { try {Files.createDirectories(path); System.out.println("Directory is created!"); } catch (IOException e) {  System.out.println("Failed to create directory!");e.printStackTrace();}}
+
 
         for (Instant instant: moment.getInstantList()) {
 
-            String fileS3Name = instant.getName();
+            //generer un nom unique (hypothese que la combinaison suivante est unique dans le dossier userId/albumId
+
+            String fileS3Name = new Date().getTime()+ RandomStringUtils.randomAlphanumeric(10)+instant.getName();
 
             fos = new FileOutputStream("./images/" + userId + "/" + albumId + "/" + fileS3Name);
             fos.write(instant.getImgByte());
             fos.close();
+
 
             //**
 
