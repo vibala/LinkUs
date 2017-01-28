@@ -328,6 +328,9 @@ public boolean landscape;
                 //On verifie que l'utilisateur a renseigné correctement le formulaire
                 if(needRequirementBeforeContinue())
                     return;
+
+
+                ArrayList<Instant> listInstant=new ArrayList<Instant>();
                 for( RecyclerViewItem item: imageList){
                     File file=item.getFile();
                     Instant instant=new Instant();
@@ -374,22 +377,23 @@ System.out.println(instant.toString());
                     /*ArrayList<KeyValue> descriptionsList=new ArrayList<KeyValue>();
                     descriptionsList.add(new KeyValue())
                     instant.setDescriptionsList(item.getName());*/
-                    Moment moment=new Moment();
-                    moment.setName("Appli Android: Titre_Moment_A_DEFINIR");
-                    ArrayList<KeyValue> descriptionsList=new ArrayList<KeyValue>();
-                    descriptionsList.add(new KeyValue("Description",descriptionText.getText().toString()));
-                    moment.setDescriptionsList(descriptionsList);
-                    ArrayList<Instant> listInstant=new ArrayList<Instant>();
+
                     listInstant.add(instant);
-                    moment.setInstantList(listInstant);
 
-                    System.out.println(moment.toString());
-                    if(getIntent() != null){
-                        new APILinkUS().addMomentToMyAlbum(moment,getIntent().getStringExtra("albumId"),"true");
-                    }
+                }                    Moment moment=new Moment();
+                moment.setName("Appli Android: Titre_Moment_A_DEFINIR");
+                ArrayList<KeyValue> descriptionsList=new ArrayList<KeyValue>();
+                descriptionsList.add(new KeyValue("Description",descriptionText.getText().toString()));
+                moment.setDescriptionsList(descriptionsList);
 
+                moment.setInstantList(listInstant);
+
+                System.out.println(moment.toString());
+                if(getIntent() != null){
+                    new APILinkUS().addMomentToMyAlbum(moment,getIntent().getStringExtra("albumId"),"true");
                 }
-    }
+
+            }
         });
     }
     private void dumpEvent(MotionEvent event) {
