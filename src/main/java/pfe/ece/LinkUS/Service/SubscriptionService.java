@@ -68,6 +68,14 @@ public class SubscriptionService {
         return subscription;
     }
 
+    public List<Subscription> findListSubscriptionById(String userId) {
+        List<Subscription> subscription = subscriptionRepository.findByUserId(userId);
+        if (subscription == null) {
+            throw new SubscriptionNotFoundException(userId);
+        }
+        return subscription;
+    }
+
     public void addUserToAllSubscriptions(User user) {
 
         // On crée des subscriptions par défaut pour le user

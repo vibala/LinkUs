@@ -9,6 +9,7 @@ import pfe.ece.LinkUS.Service.SubscriptionService;
 import pfe.ece.LinkUS.Service.SubscriptionTypeService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -38,13 +39,20 @@ public class SubscriptionController {
         return "Not implemented yet.";
     }
 
-
-    @RequestMapping(params = {"id", "type"})
-    public Subscription findSubscriptionByIdAndType(@RequestParam("id") String id, @RequestParam("type") String type) {
-
+    @RequestMapping(value = "/getsubliste",method = RequestMethod.GET)
+    public List<Subscription> findSubscriptionListByUserId(){
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         // Call service function
         SubscriptionService subscriptionService = new SubscriptionService(subscriptionRepository);
-        return subscriptionService.findSubscriptionById(id);
+        return subscriptionService.findListSubscriptionById(userId);
+    }
+
+    @RequestMapping(params = {"type"})
+    public Subscription findSubscriptionByIdAndType(@RequestParam("type") String type) {
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        // Call service function
+        SubscriptionService subscriptionService = new SubscriptionService(subscriptionRepository);
+        return subscriptionService.findSubscriptionById(userId);
     }
 
     @RequestMapping(method = RequestMethod.POST,

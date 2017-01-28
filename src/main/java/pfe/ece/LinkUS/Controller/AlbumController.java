@@ -5,17 +5,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
-import pfe.ece.LinkUS.Model.*;
+import pfe.ece.LinkUS.Model.Album;
 import pfe.ece.LinkUS.Model.Enum.Right;
+import pfe.ece.LinkUS.Model.FriendGroup;
+import pfe.ece.LinkUS.Model.PreviewAlbum;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.FriendGroupService;
 import pfe.ece.LinkUS.Service.IdRightService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
-import pfe.ece.LinkUS.Service.UserEntityService.UserServiceImpl;
 import pfe.ece.LinkUS.Service.UserService;
 
 import java.util.ArrayList;
@@ -68,8 +68,10 @@ public class AlbumController {
         AlbumService albumService = new AlbumService(albumRepository);
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        System.out.println("UserId " + userId );
         if(idRightService.checkUserInIdRight(idRightService.findByRight(album, Right.ADMIN.name()), userId)) {
             albumService.checkSaveAlbum(album);
+            System.out.println("okok");
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.CONFLICT);
