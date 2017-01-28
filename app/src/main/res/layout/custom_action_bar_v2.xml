@@ -4,7 +4,7 @@
     android:layout_height="?attr/actionBarSize"
     android:minHeight="?attr/actionBarSize"
     android:orientation="horizontal"
-    android:background="@color/red_flat_design">
+    android:background="@color/grey">
 
     <TextView
         android:id="@+id/toolbar_title"

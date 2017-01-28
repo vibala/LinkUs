@@ -153,8 +153,6 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         Log.d(TAG, "HomeActivity landscape On create");
         setContentView(R.layout.activity_main);
         api = new APILinkUS();
-        //Iniitalisation de userId
-        api.getUserProfileDetails(this, this);
         albums = new ArrayList<>();
         toolbar = (Toolbar) findViewById(R.id.toolbarMain);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
@@ -196,7 +194,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
             }
         });
 
-        bottomBar.setVisibility(View.INVISIBLE);
+        bottomBar.setVisibility(View.GONE);
 
         //  ActionBarDrawerToggle permettra de gérer le comportement de votre Drawer lors de sa fermeture et de son ouverture.
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -253,7 +251,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
             //  Cache le toolbar au moment d'afficher l'image en diapo
             toolbar.setVisibility(View.GONE);
             // Cache le bottom bar au moment d'afficher l'image en diapo
-            bottomBar.setVisibility(View.INVISIBLE);
+            bottomBar.setVisibility(View.GONE);
         }
 
         Intent i = getIntent();
@@ -267,6 +265,8 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
             mode_auth = b.getString("mode_auth");
             out.println("Access token value " + access_token);
         }
+        //Iniitalisation de userId
+        api.getUserProfileDetails(this, this);
 
         //setRepeatingAsyncTask();
     }
@@ -352,8 +352,8 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
                 return notificationFragment;
             case 4:
                 // Parametres
-                bottomBar.setVisibility(View.INVISIBLE);
-                new APILinkUS().getUserProfileDetails(this, this);
+                bottomBar.setVisibility(View.GONE);
+                api.getUserProfileDetails(this, this);
                 ParametreFragment parametreFragment = new ParametreFragment();
                 while (!arguments_ready) {
                 }
@@ -625,12 +625,12 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
 
     @Override
     public void onOwnedAlbumSelected(String albumId) {
-        new APILinkUS().getAlbumByAlbumId(this,albumId);
+        api.getAlbumByAlbumId(this,albumId);
     }
 
     @Override
     public void onSharedAlbumSelected(String albumId) {
-        new APILinkUS().getAlbumByAlbumId(this,albumId);
+        api.getAlbumByAlbumId(this,albumId);
     }
 
     @Override
@@ -726,7 +726,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
             toolbar.setVisibility(View.GONE);
 
             // Cache le bottom bar au moment d'afficher l'image en diapo
-            bottomBar.setVisibility(View.INVISIBLE);
+            bottomBar.setVisibility(View.GONE);
 
             // Ajoutez le nouveau fragment (Dans ce cas précis, un fragment est déjà affiché à cet emplacement, il faut donc le remplacer et non pas l'ajouter)
             fragmentTransaction.replace(R.id.frame, fragment);
@@ -797,16 +797,14 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     @Override
     public void userDetails_GetResponse(JSONObject responseJSON) {
 
-        System.out.println(responseJSON);
+        System.out.println("YYYYYYYYYYYYYY " + responseJSON.toString());
         b = new Bundle();
 
         try {
-
             userId = responseJSON.getString("id");
-            System.out.println("YEAHHHHHHHHHHHHHHHHHHHH"+ userId);
+
             b.putString("Full name", responseJSON.get("lastName") + " " + responseJSON.get("firstName"));
             b.putString("Username", (String) responseJSON.get("email"));
-            arguments_ready = true;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -816,6 +814,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     public void userDetails_NotifyWhenGetFinish(Integer result) {
         if (result == 1) {
             Log.d(TAG, "Fetch successfully data from server spring");
+            arguments_ready = true;
         } else {
             Toast.makeText(this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
         }
@@ -824,9 +823,9 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     @Override
     public void onChangeUserInformation(String key, String[] value) {
         if (key.contentEquals("Fullname")) {
-            new APILinkUS().changeUserFullName(value[0], value[1]);
+            api.changeUserFullName(value[0], value[1]);
         } else {
-            new APILinkUS().changeUsernameWhichisEquivalentToTheUserEmail(value[0]);
+            api.changeUsernameWhichisEquivalentToTheUserEmail(value[0]);
         }
     }
 
@@ -837,15 +836,15 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
 
         if (type.contentEquals("FRIEND")) {
             if (length == 1 && unit.contentEquals("YEAR")) {
-                new APILinkUS().updateSubscription(subscription, "10");
+                api.updateSubscription(subscription, "10");
             } else if (length == 6 && unit.contentEquals("MONTHS")) {
-                new APILinkUS().updateSubscription(subscription, "11");
+                api.updateSubscription(subscription, "11");
             }
         } else if (type.contentEquals("DESCRIPTION")) {
             if (length == 1 && unit.contentEquals("YEAR")) {
-                new APILinkUS().updateSubscription(subscription, "1");
+                api.updateSubscription(subscription, "1");
             } else if (length == 6 && unit.contentEquals("MONTHS")) {
-                new APILinkUS().updateSubscription(subscription, "2");
+                api.updateSubscription(subscription, "2");
             }
         }
     }

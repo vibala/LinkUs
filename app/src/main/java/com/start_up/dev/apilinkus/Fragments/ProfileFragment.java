@@ -42,6 +42,7 @@ import com.start_up.dev.apilinkus.API.APIGetUserProfileDetails_Observer;
 import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.Adapter.AlbumsAdapter;
 import com.start_up.dev.apilinkus.Adapter.ViewPagerAdapter;
+import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.Model.IdRight;
 import com.start_up.dev.apilinkus.R;
@@ -79,13 +80,6 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.activity_userprofile,container,false);
         api = new APILinkUS();
-        if(savedInstanceState != null){
-            userId = savedInstanceState.getString("userId");
-            username = savedInstanceState.getString("username");
-        }else{
-            api.getUserProfileDetails(this,getContext());
-            api.getNbofFriendsAndAlbumOwned(this);
-        }
         nbProches_tv = (TextView) myView.findViewById(R.id.tv_friends);
         nbAlbumOwned_tv = (TextView) myView.findViewById(R.id.tv_posts);
         tvusername = (TextView) myView.findViewById(R.id.tvusername);
@@ -96,11 +90,29 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
         TabLayout tabLayout = (TabLayout) myView.findViewById(R.id.tabanim_tabs);
         tabLayout.setupWithViewPager(viewPager);
         fab = (FloatingActionButton) myView.findViewById(R.id.fab);
-        return myView;
+
+        if(savedInstanceState != null){
+            userId = savedInstanceState.getString("userId");
+            username = savedInstanceState.getString("username");
+            nbProches = savedInstanceState.getString("nbProches");
+            nbAlbumsOwned = savedInstanceState.getString("nbAlbumsOwned");
+            tvusername.setText(username);
+            nbProches_tv.setText(nbProches);
+            nbAlbumOwned_tv.setText(nbAlbumsOwned);
+        }else{
+            api.getUserProfileDetails(this,getContext()); // Pour récupérer le nom complet de l'user
+            api.getNbofFriendsAndAlbumOwned(this);  // Pour récuper le nb de potos et le nb d'albums owned
+        }
+
+       return myView;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        outState.putString("userId",userId);
+        outState.putString("username",username);
+        outState.putString("nbAlbumsOwned",nbAlbumsOwned);
+        outState.putString("nbProches",nbProches);
         super.onSaveInstanceState(outState);
     }
 
@@ -109,9 +121,6 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
         ownedAlbumsFragment = new OwnedAlbumsFragment();
         adapter.addFrag(ownedAlbumsFragment, "OWNED ALBUMS");
         SharedAlbumsFragment s = new SharedAlbumsFragment();
-        Bundle b = new Bundle();
-        b.putString("userId",userId);
-        s.setArguments(b);
         adapter.addFrag(s, "SHARED ALBUMS");
         viewPager.setAdapter(adapter);
     }
@@ -201,7 +210,7 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
         /******************************************************************************************/
         /*DONT TOUCH THIS PART !!!! IT'S FOR DISPLAYING CORRECTLY THE CIRCULARVIEW IN ANY PLATFORM*/
         /******************************************************************************************/
-        int heigth = titleLayout.getHeight();
+        int heigth = titleLayout.getHeight() * 2;
         int heigth2 = (300 - (heigth*2)) - 100;
         circularImageView.getLayoutParams().height = heigth2;
         circularImageView.getLayoutParams().width = heigth2;
@@ -211,7 +220,7 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width= ((dm.widthPixels)/2) - dpToPx(heigth2/2);
         //int width2 = (width - circularImageView.getWidth())/2;
-        marginParams.setMargins(width+60, dpToPx(heigth+80), 0, 0);
+        marginParams.setMargins(width+60, dpToPx(heigth+40), 0, 0);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(marginParams);
         circularImageView.setLayoutParams(layoutParams);
         circularImageView.requestLayout();
@@ -279,6 +288,7 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
             String fn = responseJSON.getString("firstName");
             username = responseJSON.getString("lastName").toUpperCase() + " " + fn.replace(fn.charAt(0),String.valueOf(fn.charAt(0)).toUpperCase().charAt(0));
             userId = responseJSON.getString("id");
+            Log.d(TAG,"User id " + userId);
         } catch (JSONException e) {
             e.printStackTrace();
         }

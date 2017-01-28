@@ -49,37 +49,6 @@ public abstract class  APIGet extends AsyncTask<String, Void, Integer> {
             final String authorization = "Bearer " + HomeActivity.access_token;
             Log.d("Authorization", authorization);
 
-           /* // Create the request header
-            HttpHeaders requestHeaders = new HttpHeaders();
-            requestHeaders.set("Authorization", authorization);
-            requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-            // Create a new RestTemplate instance [RestTemplate is a Spring rest client]
-            RestTemplate restTemplate = new RestTemplate();
-            List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
-            // Add the Form Message converter
-            messageConverters.add(new FormHttpMessageConverter());
-            // Add the Jackson Message converter
-            messageConverters.add(new MappingJackson2HttpMessageConverter());
-            // Add the message converters to the restTemplate
-            restTemplate.setMessageConverters(messageConverters);
-
-            try {
-                // Make the network request
-                Log.d(TAG, url);
-                ResponseEntity<Album[]> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<ArrayList<Album>>(requestHeaders), Album[].class);
-                System.out.println(response);
-                parseResult(response.getBody().toString());
-                System.out.println(response.getBody().toString());
-                return 1;
-            } catch (HttpClientErrorException e) {
-                Log.e(TAG, e.getLocalizedMessage(), e);
-            } catch (ResourceAccessException e) {
-                Log.e(TAG, e.getLocalizedMessage(), e);
-            } catch (Exception e) {
-                Log.e(TAG, e.getLocalizedMessage(), e);
-            }
-            return 0;*/
             try {
                 // Create Apache HttpClient
                 URL url = new URL(params[0]);

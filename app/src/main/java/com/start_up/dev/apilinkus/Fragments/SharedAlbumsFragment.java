@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.start_up.dev.apilinkus.API.APIGetAlbumsFilterRight_Observer;
 import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.Adapter.AlbumsAdapter;
+import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.Model.IdRight;
@@ -95,11 +96,7 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
                 api.getAlbumsFilter(this,"LECTURE");
             }
 
-            if(getArguments().getString("userId") != null){
-                userId = getArguments().getString("userId");
-            }else{
-                userId = "";
-            }
+            userId = HomeActivity.userId;
             adapter = new AlbumsAdapter(getContext(),sent_shared_albums,this,null);
             updateSentSharedAlbums("nothing");
 

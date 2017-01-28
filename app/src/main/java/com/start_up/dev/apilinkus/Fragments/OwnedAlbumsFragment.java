@@ -26,6 +26,7 @@ import com.start_up.dev.apilinkus.API.APIGetListGroupFriend_Observer;
 import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.Adapter.AlbumsAdapter;
 import com.start_up.dev.apilinkus.Adapter.RecyclerViewItem;
+import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.R;
@@ -70,6 +71,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_ownedalbums,container,false);
+        Log.d(TAG,"User id " + HomeActivity.userId);
         Log.d(TAG,"oncreateView");
         api = new APILinkUS();
         recyclerView = (RecyclerView) myView.findViewById(R.id.recycler_view_fragment_ownedalbums);

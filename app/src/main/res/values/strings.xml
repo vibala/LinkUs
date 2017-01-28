@@ -29,8 +29,8 @@
     <string name="lblCount">Label Count</string>
     <string name="lblProfile">Profile</string>
     <string name="lblMoment">Moment</string>
-    <string name="tv_friends">365</string>
-    <string name="tv_posts">1500</string>
+    <string name="tv_friends">0</string>
+    <string name="tv_posts">0</string>
     <string name="moment_title">Title:</string>
     <string name="text_favorites">Favorites</string>
     <string name="text_recents">Recents</string>
