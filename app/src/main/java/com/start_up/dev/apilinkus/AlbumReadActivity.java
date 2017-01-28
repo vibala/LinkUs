@@ -47,7 +47,7 @@ public class AlbumReadActivity extends AppCompatActivity implements APIGetAlbums
         initViews();
 
         //Start download
-        new APILinkUS().getAlbumsFilter(this, "lecture");
+        new APILinkUS().getAlbumsFilter(this, "LECTURE");
     }
 
     private void initViews() {

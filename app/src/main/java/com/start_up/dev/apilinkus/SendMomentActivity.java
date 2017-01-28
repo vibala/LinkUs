@@ -357,7 +357,7 @@ public boolean landscape;
                     instant.setImgByte(imgByte);
                     instant.setName(item.getName());
                     ArrayList<IdRight> idRights=new ArrayList<>();
-                    IdRight idRight=new IdRight("lecture");
+                    IdRight idRight=new IdRight("LECTURE");
                     ArrayList<String> groupIdList=new ArrayList<>();
                     ArrayList<String> userIdList=new ArrayList<>();
                     for(RecyclerViewItem friendOrGroup: friendOrGroupSelected){

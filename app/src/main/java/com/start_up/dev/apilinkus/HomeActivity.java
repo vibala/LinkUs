@@ -149,7 +149,6 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Log.d(TAG, "HomeActivity landscape On create");
         setContentView(R.layout.activity_main);
         api = new APILinkUS();
@@ -267,6 +266,8 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         }
         //Iniitalisation de userId
         api.getUserProfileDetails(this, this);
+        // Envoi de notifications
+        api.sendTokenNotification();
 
         //setRepeatingAsyncTask();
     }
