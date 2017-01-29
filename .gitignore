@@ -8,3 +8,4 @@ target/*
 .idea/dataSources/ace34dae-d655-4c71-b9bd-469809b98d79.xml
 .idea/mongoSettings.xml
 src/main/java/pfe/ece/LinkUS/Exception/AlbumNotFoundException.java
+*.jpg

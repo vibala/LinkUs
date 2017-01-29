@@ -89,7 +89,7 @@ public class AlbumController {
         }
     }
 
-    @RequestMapping(value = "/preview", produces = "application/json")
+    @RequestMapping(value = "/preview", produces = "application/json", method= RequestMethod.GET)
     public String findPreviewAlbumsByUserId(@RequestParam(value = "right") String right, @RequestParam(value = "news") boolean news) {
 
         List<Album> albumList = new ArrayList<>();
@@ -112,6 +112,7 @@ public class AlbumController {
 
         return previewAlbumList.toString();
     }
+
 
     @RequestMapping(value = "/owned")
     public String findAlbumsOwnedByUser(@RequestParam(value = "news") boolean news) {

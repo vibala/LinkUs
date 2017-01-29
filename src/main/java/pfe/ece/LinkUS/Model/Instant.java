@@ -18,6 +18,7 @@ public class Instant {
     private ArrayList<Comment> commentList = new ArrayList<>();
     private ArrayList<KeyValue> descriptionsList = new ArrayList<>();
     private Date publishDate;
+    private String timeZone;
     private ArrayList<IdRight> idRight = new ArrayList<>();
     private ArrayList<String> userIdDescriptionAvailable = new ArrayList<>();
     private byte[] imgByte;
@@ -126,6 +127,13 @@ public class Instant {
         this.cotation = cotation;
     }
 
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -15,6 +15,7 @@ public class Moment {
     private String id;
     private String name;
     private Date publishDate = new Date();
+    private String timeZone;
     private ArrayList<Instant> instantList = new ArrayList();
     private ArrayList<KeyValue> descriptionsList = new ArrayList<>();
     private boolean news = true;
@@ -97,6 +98,14 @@ public class Moment {
 
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
     }
 
     @Override

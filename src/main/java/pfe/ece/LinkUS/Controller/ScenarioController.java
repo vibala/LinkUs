@@ -125,18 +125,9 @@ public class ScenarioController {
         String albumId = albumService.createSaveAlbum(idA, "Album 1");
         Path path = Paths.get("./images/" + idA + "/" + albumId);
         //if directory exists?
-        if (!Files.exists(path)) {
-            try {
-                Files.createDirectories(path);
-                System.out.println("Directory is created!");
-            } catch (IOException e) {
-                //fail to create directory
+        createDirectory(path);
 
-                System.out.println("Failed to create directory!");
-                e.printStackTrace();
 
-            }
-        }
         albumService.addFriendToAlbum(userService, idA, idB, albumId, Right.LECTURE.name());
         albumService.addFriendToAlbum(userService, idA, idC, albumId, Right.LECTURE.name());
         List<String> listFG = new ArrayList<String>();
@@ -182,18 +173,8 @@ public class ScenarioController {
         albumId = albumService.createSaveAlbum(idA, "Album 2");
         path = Paths.get("./images/" + idA + "/" + albumId);
         //if directory exists?
-        if (!Files.exists(path)) {
-            try {
-                Files.createDirectories(path);
-                System.out.println("Directory is created!");
-            } catch (IOException e) {
-                //fail to create directory
+        createDirectory(path);
 
-                System.out.println("Failed to create directory!");
-                e.printStackTrace();
-
-            }
-        }
         albumService.addFriendToAlbum(userService, idA, idB, albumId, Right.LECTURE.name());
         albumService.addFriendToAlbum(userService, idA, idC, albumId, Right.LECTURE.name());
 
@@ -233,18 +214,7 @@ public class ScenarioController {
         albumId = albumService.createSaveAlbum(idB, "Album 1");
         path = Paths.get("./images/" + idB + "/" + albumId);
         //if directory exists?
-        if (!Files.exists(path)) {
-            try {
-                Files.createDirectories(path);
-                System.out.println("Directory is created!");
-            } catch (IOException e) {
-                //fail to create directory
-
-                System.out.println("Failed to create directory!");
-                e.printStackTrace();
-
-            }
-        }
+        createDirectory(path);
         moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite du palais TajMahl");
         listFG = new ArrayList<String>();
         listFG.add(idA);
@@ -277,5 +247,20 @@ public class ScenarioController {
         albumService.saveFakePhoto(idB, albumId, moment1, 2);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    public void createDirectory(Path path) {
+        if (!Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+                System.out.println("Directory is created!");
+            } catch (IOException e) {
+                //fail to create directory
+
+                System.out.println("Failed to create directory!");
+                e.printStackTrace();
+
+            }
+        }
     }
 }
