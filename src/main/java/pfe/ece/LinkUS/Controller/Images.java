@@ -25,10 +25,9 @@ public class Images {
     @RequestMapping(value = "/images", method = RequestMethod.GET)
     public void returnImage(HttpServletResponse response,
                             @RequestParam("name") String name,
-                            @RequestParam("albumId") String albumId,
-                            @RequestParam("userId") String userId) throws IOException {
+                            @RequestParam("albumId") String albumId) throws IOException {
 
-        Path path = Paths.get("./images/" + userId + "/" + albumId + "/" + name);
+        Path path = Paths.get("./images/" + albumId + "/" + name);
         InputStream in = new FileInputStream(path.toString());
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         IOUtils.copy(in, response.getOutputStream());

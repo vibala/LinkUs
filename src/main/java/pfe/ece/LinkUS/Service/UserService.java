@@ -336,22 +336,12 @@ public class UserService {
 
         subscriptionService.addUserToAllSubscriptions(user);
 
-        // PARTIE LOCALE
-        /*File directory = new File("./images/" + user.getId());
-        if (!directory.exists()) {
-            directory.mkdir();
-        }*/
-        // PARTIE LOCALE
-        Path path = Paths.get("./images/" + user.getId());
-        if (!Files.exists(path)) { try {Files.createDirectories(path); System.out.println("Directory is created!"); } catch (IOException e) {  System.out.println("Failed to create directory!");e.printStackTrace();}}
-
-
         return user.getId();
     }
 
     public boolean removeUser(User user) throws IOException {
 
-        deleteDirectory(new File("./images/" + user.getId()));
+        //deleteDirectory(new File("./images/" + user.getId()));
 
         delete(user);
 

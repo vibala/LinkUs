@@ -123,7 +123,7 @@ public class ScenarioController {
         // USER 1
         // ALBUM 1
         String albumId = albumService.createSaveAlbum(idA, "Album 1");
-        Path path = Paths.get("./images/" + idA + "/" + albumId);
+        Path path = Paths.get("./images/" + albumId);
         //if directory exists?
         createDirectory(path);
 
@@ -152,27 +152,27 @@ public class ScenarioController {
                 albumId, Right.LECTURE.name());
         String moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite du palais TajMahl");
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de soleil", url+moment1+"_image"+1+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 1);
+        albumService.saveFakePhoto(albumId, moment1, 1);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dizel", url+moment1+"_image"+2+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 2);
+        albumService.saveFakePhoto(albumId, moment1, 2);
 
         moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite du désert de Perse1");
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de solei12l", url+moment1+"_image"+1+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 1);
+        albumService.saveFakePhoto(albumId, moment1, 1);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dize32l", url+moment1+"_image"+2+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 2);
+        albumService.saveFakePhoto(albumId, moment1, 2);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de sole42il", url+moment1+"_image"+3+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 3);
+        albumService.saveFakePhoto(albumId, moment1, 3);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dizel77", url+moment1+"_image"+4+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 4);
+        albumService.saveFakePhoto(albumId, moment1, 4);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de 42soleil", url+moment1+"_image"+5+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 5);
+        albumService.saveFakePhoto(albumId, moment1, 5);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Di86zel", url+moment1+"_image"+6+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 6);
+        albumService.saveFakePhoto(albumId, moment1, 6);
 
         // ALBUM 2
         albumId = albumService.createSaveAlbum(idA, "Album 2");
-        path = Paths.get("./images/" + idA + "/" + albumId);
+        path = Paths.get("./images/" + albumId);
         //if directory exists?
         createDirectory(path);
 
@@ -181,39 +181,39 @@ public class ScenarioController {
 
         moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite du azepalais TajMahl");
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de solei12l", url+moment1+"_image"+1+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 1);
+        albumService.saveFakePhoto(albumId, moment1, 1);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dize32l", url+moment1+"_image"+2+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 2);
+        albumService.saveFakePhoto(albumId, moment1, 2);
         moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite du ztpalais TajMahl");
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de solei12l", url+moment1+"_image"+3+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 3);
+        albumService.saveFakePhoto(albumId, moment1, 3);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dize32l", url+moment1+"_image"+2+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 2);
+        albumService.saveFakePhoto(albumId, moment1, 2);
         moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite du zrteypalais TajMahl");
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de solei12l", url+moment1+"_image"+4+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 4);
+        albumService.saveFakePhoto(albumId, moment1, 4);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dize32l", url+moment1+"_image"+5+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 5);
+        albumService.saveFakePhoto(albumId, moment1, 5);
         moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite du fghpalais TajMahl");
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de solei12l", url+moment1+"_image"+1+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 1);
+        albumService.saveFakePhoto(albumId, moment1, 1);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dize32l", url+moment1+"_image"+6+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 6);
+        albumService.saveFakePhoto(albumId, moment1, 6);
         moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite duqs palais TajMahl");
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de solei12l", url+moment1+"_image"+5+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 5);
+        albumService.saveFakePhoto(albumId, moment1, 5);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dize32l", url+moment1+"_image"+6+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 6);
+        albumService.saveFakePhoto(albumId, moment1, 6);
         moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite du paytkjhtglais TajMahl");
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de solei12l", url+moment1+"_image"+3+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 3);
+        albumService.saveFakePhoto(albumId, moment1, 3);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dize32l", url+moment1+"_image"+6+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idA, albumId, moment1, 6);
+        albumService.saveFakePhoto(albumId, moment1, 6);
 
         // USER 2
         // ALBUM 1
         albumId = albumService.createSaveAlbum(idB, "Album 1");
-        path = Paths.get("./images/" + idB + "/" + albumId);
+        path = Paths.get("./images/" + albumId);
         //if directory exists?
         createDirectory(path);
         moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite du palais TajMahl");
@@ -225,27 +225,27 @@ public class ScenarioController {
                 friendGroupService.addFilledFriendGroup("FG IdB 1", idB, listFG),
                 albumId, Right.LECTURE.name());
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de soleil", url+moment1+"_image"+2+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idB, albumId, moment1, 2);
+        albumService.saveFakePhoto(albumId, moment1, 2);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dizerzel", url+moment1+"_image"+4+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idB, albumId, moment1, 4);
+        albumService.saveFakePhoto(albumId, moment1, 4);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Cougrhtjché de soleil", url+moment1+"_image"+5+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idB, albumId, moment1, 5);
+        albumService.saveFakePhoto(albumId, moment1, 5);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Coussdché de soleil", url+moment1+"_image"+6+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idB, albumId, moment1, 6);
+        albumService.saveFakePhoto(albumId, moment1, 6);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dizegggl", url+moment1+"_image"+1+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idB, albumId, moment1, 1);
+        albumService.saveFakePhoto(albumId, moment1, 1);
 
         moment1 = albumService.createMomentSaveToAlbum(albumId, "Laggoon");
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de soleil", url+moment1+"_image"+3+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idB, albumId, moment1, 3);
+        albumService.saveFakePhoto(albumId, moment1, 3);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dizerzel", url+moment1+"_image"+4+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idB, albumId, moment1, 4);
+        albumService.saveFakePhoto(albumId, moment1, 4);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Cougrhtjché de soleil", url+moment1+"_image"+1+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idB, albumId, moment1, 1);
+        albumService.saveFakePhoto(albumId, moment1, 1);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Coussdché de soleil", url+moment1+"_image"+6+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idB, albumId, moment1, 6);
+        albumService.saveFakePhoto(albumId, moment1, 6);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dizegggl", url+moment1+"_image"+2+".jpg&albumId="+albumId);
-        albumService.saveFakePhoto(idB, albumId, moment1, 2);
+        albumService.saveFakePhoto(albumId, moment1, 2);
 
         return new ResponseEntity(HttpStatus.OK);
     }

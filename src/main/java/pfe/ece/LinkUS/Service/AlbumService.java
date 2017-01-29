@@ -403,10 +403,10 @@ public class AlbumService {
         return null;
     }
 
-    public void saveFakePhoto(String userId, String albumId, String momentId, int numero) throws IOException {
+    public void saveFakePhoto(String albumId, String momentId, int numero) throws IOException {
 
         Files.copy(new File("./src/main/resources/public/images/image" + numero + ".jpg").toPath(),
-                new File("./images/" + userId + "/" + albumId + "/" + momentId + "_image" + numero + ".jpg").toPath());
+                new File("./images/" + albumId + "/" + momentId + "_image" + numero + ".jpg").toPath());
     }
 
     /**
