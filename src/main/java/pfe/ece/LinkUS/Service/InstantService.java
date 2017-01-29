@@ -23,6 +23,7 @@ public class InstantService {
         Instant instant = new Instant();
         instant.setName(name);
         instant.setPublishDate(new Date());
+        instant.setTimeZone("Europe/Paris");
         return instant;
     }
 

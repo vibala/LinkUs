@@ -420,7 +420,7 @@ public class AlbumService {
         Album album = findAlbumById(albumId);
 
         MomentService momentService = new MomentService();
-        Moment moment = momentService.createMoment(momentName, null);
+        Moment moment = momentService.createMoment(momentName, "Europe/Paris", null);
 
         return createMomentSaveToAlbum(album, moment);
     }

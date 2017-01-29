@@ -7,6 +7,7 @@ import pfe.ece.LinkUS.Model.Moment;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -46,11 +47,14 @@ public class MomentService {
         return null;
     }*/
 
-    public Moment createMoment(String name, ArrayList<Instant> instantList) {
+    public Moment createMoment(String name, String timezone, ArrayList<Instant> instantList) {
 
         Moment moment = new Moment();
 
         moment.setName(name);
+        moment.setTimeZone(timezone);
+        moment.setPublishDate(new Date());
+
         if(instantList != null && !instantList.isEmpty()) {
             moment.setInstantList(instantList);
         }
