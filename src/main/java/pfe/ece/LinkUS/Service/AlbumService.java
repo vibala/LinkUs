@@ -500,12 +500,21 @@ public class AlbumService {
      */
     public void createAlbumForNewRegisteredUser(String userId){
         LOGGER.info("createAlbumForEachNewRegisterUser - debut de création d'un album");
+
+        Album album = newDefaultAlbum(userId);
+
+        LOGGER.info("createAlbumForEachNewRegisterUser - fin de création d'un album");
+        save(album);
+    }
+
+    public Album newDefaultAlbum(String userId) {
         Album album = new Album();
         /** TODO A ENLEVER  **/
         album.setName("First album");
         album.setPlaceName("Earth");
         album.setCountryName("The milkey way");
         /**---------------**/
+        album.setId("0");
         album.setBeginDate(new Date());
         album.setActive(false);
         album.setOwnerId(userId);
@@ -520,10 +529,8 @@ public class AlbumService {
         MomentService momentService = new MomentService();
         momentService.addMomentToAlbum(album, momentService.newDefaultMoment());
 
-        LOGGER.info("createAlbumForEachNewRegisterUser - fin de création d'un album");
-        save(album);
+        return album;
     }
-
     /**
      * Ajoute tous les idRight (vide) à l'album (album + instants
      * @param album

@@ -170,7 +170,5 @@ public class UploadingController {
         }
         return new ResponseEntity<String>("Finished to upload files",HttpStatus.OK);
     }
-
-
 }
 
