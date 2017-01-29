@@ -129,6 +129,7 @@ public class ScenarioController {
 
 
         albumService.addFriendToAlbum(userService, idA, idB, albumId, Right.LECTURE.name());
+
         albumService.addFriendToAlbum(userService, idA, idC, albumId, Right.LECTURE.name());
         List<String> listFG = new ArrayList<String>();
         listFG.add(idA);
