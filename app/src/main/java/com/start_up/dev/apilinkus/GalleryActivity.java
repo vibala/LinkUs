@@ -146,38 +146,41 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewGa
         ArrayList<RecyclerViewFolderItem> folderListLocal=new ArrayList<RecyclerViewFolderItem>();
         File targetDirector = new File(path);
         File[] files_list = targetDirector.listFiles();
-        for (File file : files_list) {
-            if (file.isDirectory())
-                folderListLocal.addAll(getDirectoryWithImages(file.getAbsolutePath()));
-            else {
-                String absolutePath = file.getAbsolutePath();
-                String suffix = absolutePath.substring(absolutePath.lastIndexOf('.') + 1).toLowerCase();
-                if (!file.isDirectory())
-                    if (suffix.length() == 0 | suffix.equals("svg"))
+        if(files_list != null){
+            for (File file : files_list) {
+                if (file.isDirectory())
+                    folderListLocal.addAll(getDirectoryWithImages(file.getAbsolutePath()));
+                else {
+                    String absolutePath = file.getAbsolutePath();
+                    String suffix = absolutePath.substring(absolutePath.lastIndexOf('.') + 1).toLowerCase();
+                    if (!file.isDirectory())
+                        if (suffix.length() == 0 | suffix.equals("svg"))
+                            continue;
+
+                    String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(suffix);
+                    if (mime == null)
                         continue;
+                    if (mime.contains("image")) {
+                        String folderName = absolutePath.substring(0, absolutePath.lastIndexOf('/') + 1);
+                        String[] names=folderName.split("/");
+                        //on enleve les dossiers caché et les petits ss dossier. si la permiere lettre du dossier n'est pas une maj on considere que ce dossier ne contient pas des photos
+                        if (!folderName.contains(".") && Character.isUpperCase((names.length>1?names[names.length-1]:names[0]).charAt(0))) {
+                            boolean exist = false;
+                            ////System.out.println("Ajout du dossier: " + folderName);
+                            for (RecyclerViewFolderItem item : folderListLocal)
+                                if (item.getPath().equals(folderName)) {
+                                    exist = true;
+                                    break;
+                                }
+                            if (!exist)
+                                folderListLocal.add(new RecyclerViewFolderItem((absolutePath.length() > 1 ? absolutePath.substring(0, absolutePath.lastIndexOf('/') + 1) : "/")));
 
-                String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(suffix);
-                if (mime == null)
-                    continue;
-                if (mime.contains("image")) {
-                    String folderName = absolutePath.substring(0, absolutePath.lastIndexOf('/') + 1);
-                    String[] names=folderName.split("/");
-                    //on enleve les dossiers caché et les petits ss dossier. si la permiere lettre du dossier n'est pas une maj on considere que ce dossier ne contient pas des photos
-                    if (!folderName.contains(".") && Character.isUpperCase((names.length>1?names[names.length-1]:names[0]).charAt(0))) {
-                        boolean exist = false;
-                        ////System.out.println("Ajout du dossier: " + folderName);
-                        for (RecyclerViewFolderItem item : folderListLocal)
-                            if (item.getPath().equals(folderName)) {
-                                exist = true;
-                                break;
-                            }
-                        if (!exist)
-                            folderListLocal.add(new RecyclerViewFolderItem((absolutePath.length() > 1 ? absolutePath.substring(0, absolutePath.lastIndexOf('/') + 1) : "/")));
-
+                        }
                     }
                 }
             }
         }
+
         return folderListLocal;
     }
 

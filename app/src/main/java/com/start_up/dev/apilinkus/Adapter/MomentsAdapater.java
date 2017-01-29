@@ -47,6 +47,8 @@ public class MomentsAdapater extends RecyclerView.Adapter<MomentsAdapater.Moment
 
     @Override
     public void onBindViewHolder(MomentViewHolder holder, int position) {
+        Log.d(TAG,"Moment list size " + momentList.size());
+        holder.setIsRecyclable(false);
         if(momentList.size()>0) {
             Moment moment = momentList.get(position);
             Log.i(TAG, moment.getName());
@@ -57,7 +59,6 @@ public class MomentsAdapater extends RecyclerView.Adapter<MomentsAdapater.Moment
                     //#DEPENDANCE TextSliderView ne gere pas le jpeg le jpg fonctionne , les autres pas testé
                     System.out.println("HEINNNNNNNNNNNNNN3 "+instant.getUrl()+"&userId="+ HomeActivity.userId);
                     textSliderView.image(instant.getUrl()+"&userId="+ HomeActivity.userId);
-                    //textSliderView.image(R.drawable.album1);
                     textSliderView.description(instant.getName() + " - " + instant.getPublishDate().toString()); // On récupère uniquement la description pour l'instant
                     holder.sliderShow.addSlider(textSliderView);
                 }

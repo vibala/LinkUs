@@ -38,19 +38,18 @@ public class APILinkUS {
      * @param notificationToPeopleWithReadRightOnAlbum true pour envoyer une notification aux utilisateur ayant des droits de lecture sur l'album
      * @return
      */
-    public Moment addMomentToMyAlbum(Moment m, String albumId, String notificationToPeopleWithReadRightOnAlbum){
+    public Moment addMomentToMyAlbum(Moment m, String albumId, String notificationToPeopleWithReadRightOnAlbum,APIPostMoment_Observer observer,Context mContext){
 
-        //String query="/uploadFiles?userId="+userId+"&albumId="+albumId+"&notificationToPeopleWithReadRightOnAlbum="+notificationToPeopleWithReadRightOnAlbum;
         String query="/uploadFiles?albumId="+albumId+"&notificationToPeopleWithReadRightOnAlbum="+notificationToPeopleWithReadRightOnAlbum;
 
         String urlrequestAPI = BASE_URL + query;
-        APIPostMoment apiPostStudent = new APIPostMoment(m);
+        APIPostMoment apiPostStudent = new APIPostMoment(m,observer,mContext);
         apiPostStudent.execute(urlrequestAPI);
         return m;
     }
 
     public void getAlbumsOwned(APIGetAlbumsOwned_Observer activity){
-        String query="/album/owned?news=true";
+        String query="/album/preview?right=ADMIN&news=true";
 
         String urlrequestAPI = BASE_URL + query;
         APIGetAlbumsOwned apiGetAlbum = new APIGetAlbumsOwned(activity);
@@ -75,7 +74,7 @@ public class APILinkUS {
 
 
     public void getAlbumsFilter(APIGetAlbumsFilterRight_Observer activity, String right){
-        String query="/album/right?right="+right+"&news=true";
+        String query="/album/preview?right="+right+"&news=true";
 
         String urlrequestAPI = BASE_URL + query;
         APIGetAlbumsFilterRight apiGetAlbum = new APIGetAlbumsFilterRight(activity);

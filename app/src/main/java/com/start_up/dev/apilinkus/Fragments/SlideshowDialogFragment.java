@@ -48,8 +48,8 @@ public class SlideshowDialogFragment extends DialogFragment {
         instants = (ArrayList<Instant>) getArguments().getSerializable("instants");
         selectedPosition = getArguments().getInt("position");
 
-        Log.e(TAG,"position: " +  selectedPosition);
-        Log.e(TAG,"albums size: " + instants.size());
+        Log.d(TAG,"position: " +  selectedPosition);
+        Log.d(TAG,"albums size: " + instants.size());
 
         instantViewPagerAdapter = new InstantViewPagerAdapter();
         viewPager.setAdapter(instantViewPagerAdapter);

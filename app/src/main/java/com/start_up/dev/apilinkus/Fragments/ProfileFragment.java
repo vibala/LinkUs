@@ -92,6 +92,7 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
         fab = (FloatingActionButton) myView.findViewById(R.id.fab);
 
         if(savedInstanceState != null){
+            Log.d(TAG,"Je repasse");
             userId = savedInstanceState.getString("userId");
             username = savedInstanceState.getString("username");
             nbProches = savedInstanceState.getString("nbProches");

@@ -49,9 +49,10 @@
             android:name=".GalleryOldActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
-            android:name=".GalleryActivity"            >
+            android:name=".GalleryActivity"></activity>
+        <activity
+            android:name=".AfterNotificationActivity"></activity>
 
-        </activity>
         <activity
             android:name=".SendMomentActivity"
             android:configChanges="orientation|screenSize"

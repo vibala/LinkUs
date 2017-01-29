@@ -90,7 +90,6 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         OnPostSelectedListener,
         OnChangeUserInformationListener,
         APIGetUserProfileDetails_Observer,
-        APIGetAlbumByAlbumId_Observer,
         CircleFragment.onCircleInteraction,
         CreateGroupFragment.onCreateGroupInteraction {
 
@@ -228,11 +227,17 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         // showing dot next to notifications label
         navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
 
-        // Initialisation des albums
-        //albums = prepareAlbumTestModels();
+        //obtain  Intent Object send  from SenderActivity
+        Intent intent = this.getIntent();
 
-        // Initialisation des moments
-        //moments = albums.get(0).getMoments();
+        /* Obtain String from Intent  */
+        if(intent !=null) {
+            String strdata = intent.getExtras().getString("Uniqid");
+            if (strdata != null && strdata.equals("From SendMomentActivity")) {
+                //Do Something here...
+                callAlbumFragment(intent.getExtras().getString("albumId"));
+            }
+        }
 
         // If the savedInstanceState is eq. to null == when the fragment is not reconstructed from a previous saved state, the home fragment will be loaded
         if (savedInstanceState == null) {
@@ -268,6 +273,40 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         api.sendTokenNotification();
 
         //setRepeatingAsyncTask();
+    }
+
+    public void callAlbumFragment(String albumId){
+            Log.d(TAG, "callAlbumFragment AlbumId " + albumId);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+
+            // Set the CURRENT_TAG
+            CURRENT_TAG = "Albums";
+
+            // The user selected the album from the lists of albums to glance at
+            // Plus tard inclure la position
+            // Check if the fragment to be shown is already present in the fragment backstack
+                Fragment fragment = new AlbumFragment();
+                Bundle args = new Bundle();
+                args.putString("albumId",albumId);
+
+                fragment.setArguments(args);
+
+                // Ajoutez le nouveau fragment (Dans ce cas précis, un fragment est déjà affiché à cet emplacement, il faut donc le remplacer et non pas l'ajouter)
+                fragmentTransaction.replace(R.id.frame, fragment);
+
+                //Set the toolbar name
+                toolbarTitle.setText(CURRENT_TAG);
+
+                // Ajoutez la transaction à la backstack pour la dépiler quand l'utilisateur appuiera sur back
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack so the user can navigate back
+                fragmentTransaction.addToBackStack(CURRENT_TAG);
+
+                // Commit the transaction
+                fragmentTransaction.commit();
+
     }
 
     @Override
@@ -628,86 +667,19 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         return true;
     }
 
-    private Album selectedAlbum;
+
 
     @Override
-    public void onOwnedAlbumSelected(String albumId) {
-        api.getAlbumByAlbumId(this,albumId);
-    }
+    public void onOwnedAlbumSelected(String albumId) { callAlbumFragment(albumId); }
 
     @Override
     public void onSharedAlbumSelected(String albumId) {
-        api.getAlbumByAlbumId(this,albumId);
+        callAlbumFragment(albumId);
     }
 
-    @Override
-    public void albumByAlbumId_GetResponse(JSONObject responseObject) {
-        //Le gson ne gere pas le format date de base il faut contourner le bail avec une classe JsonFateDeserializer ou Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create(); (not tested)
-        Gson gson=new GsonBuilder().registerTypeAdapter(Date.class, new JsonDateDeserializer()).create();
-
-        Log.d("response",responseObject.toString());
-        selectedAlbum = gson.fromJson(responseObject.toString(), Album.class);
-        Log.d("gson",gson.toString());
-        Log.d("SELECTED ALBUM",selectedAlbum.toString());
-
-    }
-
-
-    @Override
-    public void albumByAlbumId_NotifyWhenGetFinish(Integer result) {
-        Log.d(TAG,"Result value albumByAlbumId_NotifyWhenGetFinish" + result);
-        if (result == 1) {
-                ArrayList<Moment> moments = selectedAlbum.getMoments();
-                if(moments == null ||moments.isEmpty()){
-                    Snackbar snackbar = Snackbar
-                            .make(coordinatorLayout, "L'album ne contient aucun moments", Snackbar.LENGTH_LONG);
-                    snackbar.show();
-                }else{
-                    Log.d(TAG, "Album name " + selectedAlbum.getName());
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-
-                    // Set the CURRENT_TAG
-                    CURRENT_TAG = "Albums";
-
-                    // The user selected the album from the lists of albums to glance at
-                    // Plus tard inclure la position
-                    // Check if the fragment to be shown is already present in the fragment backstack
-                    Fragment fragment = new AlbumFragment();
-                    Bundle args = new Bundle();
-                    args.putSerializable("selected_album", selectedAlbum);
-                    fragment.setArguments(args);
-
-                    // Ajoutez le nouveau fragment (Dans ce cas précis, un fragment est déjà affiché à cet emplacement, il faut donc le remplacer et non pas l'ajouter)
-                    fragmentTransaction.replace(R.id.frame, fragment);
-
-                    //Set the toolbar name
-                    toolbarTitle.setText(CURRENT_TAG);
-
-                    // Ajoutez la transaction à la backstack pour la dépiler quand l'utilisateur appuiera sur back
-                    // Replace whatever is in the fragment_container view with this fragment,
-                    // and add the transaction to the back stack so the user can navigate back
-                    fragmentTransaction.addToBackStack(CURRENT_TAG);
-
-                    // Commit the transaction
-                    fragmentTransaction.commit();
-
-                }
-        }else {
-            Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, "Problème de chargement! Merci de vérifier votre connexion réseau", Snackbar.LENGTH_LONG);
-
-            snackbar.show();
-        }
-    }
-
-
-
-    @Override
-    public void onMomentSelected(int position) {
-        moments = selectedAlbum.getMoments();
-        ArrayList<Instant> instants = moments.get(position).getInstantList();
+   @Override
+    public void onMomentSelected(Moment moment) {
+        ArrayList<Instant> instants = moment.getInstantList();
 
         if(instants == null || instants.isEmpty()){
             Snackbar snackbar = Snackbar
@@ -719,8 +691,8 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
             fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 
             Bundle bundle = new Bundle();
-            Log.d(TAG, "Moment n°" + position);
-            bundle.putSerializable("instants", moments.get(position).getInstantList());
+            Log.d(TAG, "Moment name = " + moment.getName());
+            bundle.putSerializable("instants", instants);
 
             // Set the current tag
             CURRENT_TAG = "Instants";

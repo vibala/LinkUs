@@ -117,7 +117,6 @@
     
     <string name="filter_prompt">Filtrer</string>
     <string-array name="rigths_arrays">
-        <item>Aucun</item>
         <item>Par droit de lecture</item>
         <item>Par droit de commentaire</item>
         <item>Par droit d écriture</item>

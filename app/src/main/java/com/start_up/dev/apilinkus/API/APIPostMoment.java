@@ -1,5 +1,7 @@
 package com.start_up.dev.apilinkus.API;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -18,57 +20,67 @@ import org.springframework.web.client.RestTemplate;
  * Created by Huong on 06/11/2016.
  */
 
-public class APIPostMoment extends AsyncTask {
+public class APIPostMoment extends AsyncTask<Object,Void,Boolean> {
 
     private Moment moment;
-    public APIPostMoment(Moment m) {
+    private APIPostMoment_Observer observer;
+    private final String TAG = APIPostMoment.class.getSimpleName();
+    private Context mContext;
+    private ProgressDialog dialog;
+
+
+    public APIPostMoment(Moment m,APIPostMoment_Observer observer,Context context) {
         this.moment=m;
+        this.observer = observer;
+        this.mContext = context;
+        this.dialog = new ProgressDialog(mContext);
     }
 
     @Override
-    protected Object doInBackground(Object... params) {
+    protected void onPreExecute() {
+        this.dialog.setMessage("Moment uploading ....");
+        this.dialog.show();
+    }
+
+    @Override
+    protected Boolean doInBackground(Object... params) {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
         headers.add("Authorization", "Bearer " + HomeActivity.access_token);
         headers.add("Content-Type", "application/json");
-        String result="";
-        try{
+        String result = "";
+        try {
             RestTemplate restTemplate = new RestTemplate();
 
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
             HttpEntity<Moment> request = new HttpEntity<Moment>(moment, headers);
 
-            result= restTemplate.postForObject((String) params[0], request, String.class);
+            result = restTemplate.postForObject((String) params[0], request, String.class);
+
+            Log.d(TAG, "Result post moment " + result);
 
         }catch (Exception e){
-            Log.e("ServicePostAPIa", e.getMessage());
-            Log.e("ServicePostAPIb", result);
-        }
-              return result;
-        /*// Create the request header
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.set("Authorization", authorization);
-        requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-
-        // Create a new RestTemplate instance [RestTemplate is a Spring rest client]
-        RestTemplate restTemplate = new RestTemplate();
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
-        // Add the Form Message converter
-        messageConverters.add(new FormHttpMessageConverter());
-        // Add the Jackson Message converter
-        messageConverters.add(new MappingJackson2HttpMessageConverter());
-        // Add the message converters to the restTemplate
-        restTemplate.setMessageConverters(messageConverters);
-        try {
-            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-            restTemplate.postForObject((String) params[0], moment, String.class);
-        }catch (Exception e){
-            Log.e("ServicePostAPI", e.get
-            Message(), e);
+            if(e.getMessage().contains("ould not read JSON: Unrecognized token 'Finished': was expecting ('true', 'false' or 'null')")){
+                 /*E/zzzzz ServicePostAPIa: Could not read JSON: Unrecognized token 'Finished': was expecting ('true', 'false' or 'null')
+                                                                                       at [Source: libcore.net.http.FixedLengthInputStream@41c37db0; line: 1, column: 10]; nested exception is com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'Finished': was expecting ('true', 'false' or 'null')
+                                                                                        at [Source: libcore.net.http.FixedLengthInputStream@41c37db0; line: 1, column: 10]
+                */
+                return true;
+            }
+            Log.e("zzzzz ServicePostAPIa", e.getMessage());
+            Log.e("zzzzz ServicePostAPIb", result);
+            return false;
         }
-        return null;       */
+              return true;
+
     }
 
-
+    @Override
+    protected void onPostExecute(Boolean o) {
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
+        observer.postMomentToServer_NotifyWhenGetFinish(o);
+    }
 }

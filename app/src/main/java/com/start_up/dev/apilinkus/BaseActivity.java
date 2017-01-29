@@ -1,5 +1,6 @@
 package com.start_up.dev.apilinkus;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.start_up.dev.apilinkus.API.APILinkUS;
+import com.start_up.dev.apilinkus.API.APIPostMoment_Observer;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
 
@@ -28,7 +30,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements APIPostMoment_Observer {
     private static final String TAG = "Notification-Main";
 
     private Instant instant;
@@ -37,6 +39,8 @@ public class BaseActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private APILinkUS api;
     private int albumRelativeTargeted=0;
+    private Context context = this;
+    private APIPostMoment_Observer activity = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +116,7 @@ public class BaseActivity extends AppCompatActivity {
                     ArrayList<Instant> listInstant=new ArrayList<Instant>();
                     listInstant.add(instant);
                     moment.setInstantList(listInstant);
-                    new APILinkUS().addMomentToMyAlbum(moment,"albumId","true");
+                    new APILinkUS().addMomentToMyAlbum(moment,"albumId","true",activity,context);
 
                 Snackbar.make(findViewById(R.id.main_snackbar), "Image sent for uploading",
                         Snackbar.LENGTH_SHORT)
@@ -252,4 +256,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void postMomentToServer_NotifyWhenGetFinish(Boolean result) {
+
+    }
 }

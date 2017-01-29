@@ -45,7 +45,7 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
     private RecyclerView recyclerView;
     private AlbumsAdapter adapter;
     private ArrayList<Album> shared_albums = new ArrayList<>();
-    private ArrayList<Album> sent_shared_albums = new ArrayList<>();;
+    //private ArrayList<Album> sent_shared_albums = new ArrayList<>();;
     private OnSharedAlbumSelectedListener mCallback;
     private APILinkUS api;
     private Spinner spinner;
@@ -75,7 +75,7 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putSerializable("shared_albums",shared_albums);
-        savedInstanceState.putSerializable("sent_shared_albums",sent_shared_albums);
+        //savedInstanceState.putSerializable("sent_shared_albums",sent_shared_albums);
         savedInstanceState.putString("userId",userId);
         savedInstanceState.putInt("current_selector",current_selector);
         super.onSaveInstanceState(savedInstanceState);
@@ -86,10 +86,9 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
         super.onActivityCreated(savedInstanceState);
         if(savedInstanceState!=null) {
             shared_albums = (ArrayList<Album>) savedInstanceState.getSerializable("shared_albums");
-            sent_shared_albums = (ArrayList<Album>) savedInstanceState.getSerializable("sent_shared_albums");
             userId = (String) savedInstanceState.getString("userId");
             spinner.setSelection(savedInstanceState.getInt("current_selector"));
-            adapter = new AlbumsAdapter(getContext(),sent_shared_albums,this,null);
+            adapter = new AlbumsAdapter(getContext(),shared_albums,this,null);
 
         }else {
             if(shared_albums.isEmpty()){
@@ -97,8 +96,7 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
             }
 
             userId = HomeActivity.userId;
-            adapter = new AlbumsAdapter(getContext(),sent_shared_albums,this,null);
-            updateSentSharedAlbums("nothing");
+            adapter = new AlbumsAdapter(getContext(),shared_albums,this,null);
 
         }
 
@@ -128,11 +126,6 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
     @Override
     public void onClick(View view) {
         switch(String.valueOf(spinner.getSelectedItem())){
-            case "Aucun":
-                current_selector = 0;
-                //System.out.println("AUCUN");
-                updateSentSharedAlbums("nothing");
-                break;
             case "Par droit de lecture":
                 current_selector = 1;
                 //System.out.println("LECTURE");
@@ -210,7 +203,7 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
     public void recyclerViewListClicked(View v, int position) {
         Log.d(TAG,"Position of the selected album " + position);
         // Get the album id of the selected album
-        String albumId = sent_shared_albums.get(position).getId();
+        String albumId = shared_albums.get(position).getId();
         // Send the event to the host activity
         mCallback.onSharedAlbumSelected(albumId);
     }
@@ -226,32 +219,16 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
 
     @Override
     public void albumsFilterRight_GetResponse(JSONArray responseArray) {
-        //System.out.println("albumsFilterRight_GetResponse responseArray" + responseArray);
+        System.out.println("albumsFilterRight_GetResponse responseArray" + responseArray);
         int length = responseArray.length();
         for(int i = 0; i < length; i++){
             JSONObject jsonObject = responseArray.optJSONObject(i);
             Album album = new Album();
             try {
-                album.setId(jsonObject.getString("id"));
-                album.setName(jsonObject.getString("name"));
+                album.setId(jsonObject.getString("albumId"));
+                album.setName(jsonObject.getString("albumName"));
                 album.setThumbnail(R.drawable.australia);
-                album.setCountryName(jsonObject.getString("countryName"));
-                JSONArray idRigths = jsonObject.optJSONArray("idRight");
-                for(int j = 0; j < idRigths.length(); j++){
-                    JSONObject idRigthObject = idRigths.optJSONObject(j);
-                    IdRight idRight = new IdRight();
-                    idRight.setId(idRigthObject.getString("id"));
-                    Log.d(TAG,"RIGHT FROM ALBUMS FILTER RIGTH GET RESPONSE " + idRigthObject.getString("right"));
-                    idRight.setRight(idRigthObject.getString("right"));
-                    JSONArray userIdListArray = idRigthObject.optJSONArray("userIdList");
-                    for(int k = 0; k < userIdListArray.length(); k++){
-                        String useridobject = userIdListArray.getString(k);
-                        Log.d(TAG,"Userid " + useridobject.toString());
-                        idRight.getUserIdList().add(useridobject.toString());
-                    }
-                    album.getIdRight().add(idRight);
-                }
-
+                album.setCountryName(jsonObject.getString("albumCountryName"));
                 shared_albums.add(album);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -261,67 +238,6 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
 
     }
 
-    public void updateSentSharedAlbums(String rigth){
-        switch(rigth){
-            case "LECTURE":
-                clearData();
-                for(Album a: refreshSharedAlbums(3)){
-                    sent_shared_albums.add(a);
-                }
-                //System.out.println("sentsharedalbumsize" + sent_shared_albums.size());
-                adapter.notifyDataSetChanged();
-                break;
-            case "COMMENT":
-                clearData();
-                for(Album a: refreshSharedAlbums(1)){
-                    sent_shared_albums.add(a);
-                }
-                adapter.notifyDataSetChanged();
-                break;
-            case "WRITE":
-                clearData();
-                for(Album a: refreshSharedAlbums(1)){
-                    sent_shared_albums.add(a);
-                }
-                //System.out.println("sentsharedalbumsize" + sent_shared_albums.size());
-                adapter.notifyDataSetChanged();
-                break;
-            default:
-                clearData();
-                for (Album a: shared_albums) {
-                    sent_shared_albums.add(a);
-                }
-                adapter.notifyDataSetChanged();
-
-                break;
-        }
-    }
-
-    /***
-     *
-     * @param index
-     * @return
-     * Indexes ADMIN = 0; COMMENT = 1; WRITE = 2; LECTURE = 3
-     */
-    public ArrayList<Album> refreshSharedAlbums(int index){
-        ArrayList<Album> array_list = new ArrayList<>();
-        //System.out.println("debut sharedalbulsize " + shared_albums.size());
-        for (int i = 0; i < shared_albums.size(); i++) {
-            //System.out.println("debut");
-            ArrayList<String> userIdList = shared_albums.get(i).getIdRight().get(index).getUserIdList();
-            //System.out.println("debut size " + userIdList.size());
-            if(!userIdList.isEmpty()){
-                //System.out.println("la");
-                for (String id: userIdList) {
-                    //System.out.println("la " + id + "userid " + userId);
-                    if(id.contentEquals(userId)){array_list.add(shared_albums.get(i));}
-                }
-
-            }
-        }
-        return array_list;
-    }
-
     @Override
     public void albumsFilterRight_NotifyWhenGetFinish(Integer result) {
         if (result == 1) {
@@ -329,7 +245,6 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    updateSentSharedAlbums("nothing");
                     adapter.notifyDataSetChanged();
                 }
             });
@@ -339,14 +254,31 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
         }
     }
 
+    public void updateSentSharedAlbums(String rigth){
+        switch(rigth){
+            case "LECTURE":
+                clearData();
+                api.getAlbumsFilter(this,rigth);
+                break;
+            case "COMMENT":
+                clearData();
+                api.getAlbumsFilter(this,rigth);
+                break;
+            case "WRITE":
+                clearData();
+                api.getAlbumsFilter(this,rigth);
+                break;
+        }
+    }
+
     public void clearData(){
-        Iterator<Album> it = sent_shared_albums.iterator();
+        Iterator<Album> it = shared_albums.iterator();
         int i = 0;
         while(it.hasNext()){
             it.next();
             it.remove();
             adapter.notifyItemRemoved(i);
-            adapter.notifyItemRangeChanged(i, sent_shared_albums.size());
+            adapter.notifyItemRangeChanged(i, shared_albums.size());
             i++;
         }
 

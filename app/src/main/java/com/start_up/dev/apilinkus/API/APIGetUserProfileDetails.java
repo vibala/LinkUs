@@ -28,7 +28,7 @@ public class APIGetUserProfileDetails extends APIGet {
 
     @Override
     protected void onPreExecute() {
-        this.dialog.setMessage("Progress start");
+        this.dialog.setMessage("Profile loading");
         this.dialog.show();
     }
 

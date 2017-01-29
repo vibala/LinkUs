@@ -1,5 +1,6 @@
 package com.start_up.dev.apilinkus;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 import com.start_up.dev.apilinkus.API.APIGetListFriend_Observer;
 import com.start_up.dev.apilinkus.API.APIGetListGroupFriend_Observer;
 import com.start_up.dev.apilinkus.API.APILinkUS;
+import com.start_up.dev.apilinkus.API.APIPostMoment_Observer;
 import com.start_up.dev.apilinkus.Adapter.ImageAndTextListAdapter;
 import com.start_up.dev.apilinkus.Adapter.MiniCarouselAdapter;
 import com.start_up.dev.apilinkus.Adapter.RecyclerViewItem;
@@ -59,7 +61,7 @@ import java.util.ArrayList;
  * Created by Huong on 12/12/2016.
  */
 
-public class SendMomentActivity extends AppCompatActivity implements APIGetListGroupFriend_Observer,APIGetListFriend_Observer, RecyclerViewCircleClickListener,RecyclerViewGalleryClickListener {
+public class SendMomentActivity extends AppCompatActivity implements APIGetListGroupFriend_Observer,APIGetListFriend_Observer, RecyclerViewCircleClickListener,RecyclerViewGalleryClickListener,APIPostMoment_Observer {
     private static final String TAG = SendMomentActivity.class.getSimpleName();
     private ArrayList<RecyclerViewItem> friendList=new ArrayList<>();
     private RecyclerView friendRecyclerView ;
@@ -70,6 +72,8 @@ public class SendMomentActivity extends AppCompatActivity implements APIGetListG
     private ArrayList<RecyclerViewItem> friendOrGroupSelected=new ArrayList<>();
     private ImageView imgDisplayed;
     private APILinkUS api=new APILinkUS();
+    private APIPostMoment_Observer activity = this;
+    private Context mContext = this;
 
     private void prepareTestModels() {
 
@@ -117,7 +121,7 @@ public class SendMomentActivity extends AppCompatActivity implements APIGetListG
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_moment);
 
-System.out.println("CREATE");
+        System.out.println("CREATE");
         initViews(savedInstanceState);
 
 
@@ -370,12 +374,9 @@ public boolean landscape;
                     idRight.setUserIdList(userIdList);
                     idRights.add(idRight);
                     instant.setIdRight(idRights);
-System.out.println(instant.toString());
-                    /*ArrayList<KeyValue> descriptionsList=new ArrayList<KeyValue>();
-                    descriptionsList.add(new KeyValue())
-                    instant.setDescriptionsList(item.getName());*/
+                    System.out.println(instant.toString());
                     Moment moment=new Moment();
-                    moment.setName("Appli Android: Titre_Moment_A_DEFINIR");
+                    moment.setName("WWE SURVIVOR - KANSAS CITY");
                     ArrayList<KeyValue> descriptionsList=new ArrayList<KeyValue>();
                     descriptionsList.add(new KeyValue("Description",descriptionText.getText().toString()));
                     moment.setDescriptionsList(descriptionsList);
@@ -383,9 +384,11 @@ System.out.println(instant.toString());
                     listInstant.add(instant);
                     moment.setInstantList(listInstant);
 
-                    System.out.println(moment.toString());
+                    System.out.println("Moment to string " + moment.toString());
+                    Log.d(TAG,"Llist instant size " + listInstant.size());
                     if(getIntent() != null){
-                        new APILinkUS().addMomentToMyAlbum(moment,getIntent().getStringExtra("albumId"),"true");
+
+                        new APILinkUS().addMomentToMyAlbum(moment,getIntent().getStringExtra("albumId"),"true",activity,mContext);
                     }
 
                 }
@@ -599,7 +602,6 @@ public Matrix matrixHorizontal=new Matrix();
 
 //GET DES FRIEND EXISTANT
 
-    @Override
     public void getListFriend_GetResponse(JSONArray responseArray) {
         try {
             System.out.println(responseArray);
@@ -648,13 +650,26 @@ public Matrix matrixHorizontal=new Matrix();
         }
         return super.dispatchTouchEvent(ev);
     }
-   /* @Override
-    public void onBackPressed(){
 
-        if(descriptionText.isFocused()) {
-            descriptionText.setCursorVisible(false);
-            descriptionText.clearFocus();
-        }else
-            super.onBackPressed();
-    }*/
+    @Override
+    public void postMomentToServer_NotifyWhenGetFinish(Boolean result) {
+        if(result == true){
+            Log.d(TAG,"SFGSWG?MSDFNGLKSNGLNSWDLFNSD./NFLJSDN");
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            Bundle b = new Bundle();
+            b.putString("Uniqid","From SendMomentActivity");
+            b.putString("access_token",HomeActivity.access_token);
+            b.putString("token_type",HomeActivity.token_type);
+            b.putString("refresh_token",HomeActivity.refresh_token);
+            b.putString("mode_auth",HomeActivity.mode_auth);
+            b.putString("albumId",getIntent().getStringExtra("albumId"));
+            intent.putExtras(b);
+            startActivity(intent);
+            finish(); // call this to finish the current activity
+        }else{
+            Toast.makeText(this,"Failed to upload to the server ! Please retry later",Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

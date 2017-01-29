@@ -194,17 +194,17 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
 
     @Override
     public void albumsOwned_GetResponse(JSONArray responseArray) {
-        System.out.println("zzz length" + responseArray.length());
-        System.out.println("zzz" + responseArray);
+        System.out.println("Owned albums size" + responseArray.length());
+        System.out.println("Content of owned albums" + responseArray);
         int length = responseArray.length();
         for(int i = 0; i < length; i++){
             JSONObject jsonObject = responseArray.optJSONObject(i);
             Album album = new Album();
             try {
-                album.setId(jsonObject.getString("id"));
-                album.setName(jsonObject.getString("name"));
+                album.setId(jsonObject.getString("albumId"));
+                album.setName(jsonObject.getString("albumName"));
                 album.setThumbnail(R.drawable.australia);
-                album.setCountryName(jsonObject.getString("countryName"));
+                album.setCountryName(jsonObject.getString("albumCountryName"));
                 owned_albums.add(album);
             } catch (JSONException e) {
                 e.printStackTrace();
