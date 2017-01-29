@@ -90,6 +90,24 @@ public class MomentService {
 
         return instant.getId();
     }*/
+
+    /**
+     *
+     * @param album
+     * @param momentIdList
+     * @return
+     */
+    public  List<Moment> findMomentsInAlbum(Album album, List<String> momentIdList) {
+        List<Moment> momentList = new ArrayList<>();
+
+        for (String momentId: momentIdList) {
+            Moment moment = findMomentInAlbum(album, momentId);
+            if(moment != null) {
+                momentList.add(moment);
+            }
+        }
+        return momentList;
+    }
     /**
      *
      * @param album

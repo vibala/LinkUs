@@ -483,6 +483,16 @@ public class AlbumService {
         return album;
     }
 
+    public List<Moment> findMomentsCheckRightInAlbum(String albumId, String userId, List<String> momentIdList) {
+
+        Album album = findAlbumById(albumId);
+
+        MomentService momentService = new MomentService();
+
+        // On enleve les moments auquels on a pas accès
+        momentService.checkAllMomentDataRight(album, userId);
+        return momentService.findMomentsInAlbum(album, momentIdList);
+    }
     /**
      * Method preparing the users' albums: new album, new moment
      * @param userId
@@ -660,15 +670,15 @@ public class AlbumService {
                         " subscription is not valid yet.("+subscription.getDateDebut().toString()+")");
             }
 
+            // TODO: Pas sur que le comportement soit le bon (a chaque téléchargement de l'album ca décompte)
             // gerer le cas des descriptions/friend free
             if (subscription.getFree() > 0) {
                 // Decrement
-                subscription.setFree(subscription.getFree() - 1);
-                LOGGER.info("User id " + subscription.getUserId() +
-                        " has "+ subscription.getFree() +" free description left");
+                //subscription.setFree(subscription.getFree() - 1);
+                //LOGGER.info("User id " + subscription.getUserId() +
+                //        " has "+ subscription.getFree() +" free description left");
                 // Save the object to update his value
                 // subscriptionService.update(subscription);
-
             } else {
                 LOGGER.info("User id " + subscription.getUserId() + " has no free description");
                 removePhotosDescriptionToAlbums(albumList);

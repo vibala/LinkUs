@@ -181,4 +181,11 @@ public class AlbumController {
 
         return albumService.getUrlsFromMoment(userId, albumId, momentId).toString();
     }
+
+    @RequestMapping(value = "/findMoments", params = {"albumId"})
+    public String findMomentsInAlbum(@RequestParam("albumId") String albumId, @RequestBody List<String> momentIdList) {
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        return albumService.findMomentsCheckRightInAlbum(albumId, userId, momentIdList).toString();
+    }
 }
