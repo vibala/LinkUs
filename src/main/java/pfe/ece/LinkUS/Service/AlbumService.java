@@ -282,7 +282,7 @@ public class AlbumService {
      */
     private void save(Album album) {
         // Set to null not to erase another object with the same Id (new object)
-        LOGGER.info("Saving new album" + album.toString());
+        LOGGER.info("Saving new album: " + album);
         fillEmptyIds(album);
         albumRepository.save(album);
     }
@@ -292,7 +292,7 @@ public class AlbumService {
      * @param album
      */
     private void update(Album album) {
-        LOGGER.info("Updating album" + album.toString());
+        LOGGER.info("Updating album: " + album.getName());
         fillEmptyIds(album);
         albumRepository.save(album);
     }
@@ -302,7 +302,7 @@ public class AlbumService {
      * @param album
      */
     private void delete(Album album) {
-        LOGGER.info("Deleting album" + album.toString());
+        LOGGER.info("Deleting album: " + album.getName());
         albumRepository.delete(album);
     }
 
@@ -343,6 +343,7 @@ public class AlbumService {
             Album album = createCompleteAlbum(name, ownerId, null, null, null, null);
             album.setActive(true);
             addUserToAlbumAllIdRight(album, ownerId);
+            album.setImageUrl("http://www.fr-dba.com/img/slides/groupe-illus.png");
             save(album);
             return album.getId();
         }

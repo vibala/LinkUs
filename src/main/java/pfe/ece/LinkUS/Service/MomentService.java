@@ -66,7 +66,7 @@ public class MomentService {
 
         // On cherche si le moment existe, si non: on l'ajoute
         if(!album.getMoments().contains(moment)) {
-            LOGGER.info("Adding moment: " + moment + " to album: " + album.getName());
+            LOGGER.info("Adding moment: " + moment.getId() + " to album: " + album.getName());
             album.getMoments().add(moment);
             return true;
         }

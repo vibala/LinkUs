@@ -126,17 +126,17 @@ public class UserService {
 
     public void save(User user) {
 
-        LOGGER.info("Saving new user" + user.toString());
+        LOGGER.info("Saving new user: " + user);
         userRepository.save(user);
     }
 
     private void update(User user) {
-        LOGGER.info("Updating user" + user.toString());
+        LOGGER.info("Updating user: " + user.getEmail());
         userRepository.save(user);
     }
 
     private void delete(User user) {
-        LOGGER.info("Deleting user" + user.toString());
+        LOGGER.info("Deleting user: " + user.getEmail());
         userRepository.delete(user);
     }
 

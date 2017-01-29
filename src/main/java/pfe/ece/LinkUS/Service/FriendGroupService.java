@@ -71,17 +71,17 @@ public class FriendGroupService {
     }
 
     private void save(FriendGroup friendGroup) {
-        LOGGER.info("Saving new friendGroup: " + friendGroup.toString());
+        LOGGER.info("Saving new friendGroup: " + friendGroup.getId());
         friendGroupRepository.save(friendGroup);
     }
 
     private void update(FriendGroup friendGroup) {
-        LOGGER.info("Updating friendGroup: " + friendGroup.toString());
+        LOGGER.info("Updating friendGroup: " + friendGroup.getId());
         friendGroupRepository.save(friendGroup);
     }
 
     private void delete(FriendGroup friendGroup) {
-        LOGGER.info("Deleting friendGroup: " + friendGroup.toString());
+        LOGGER.info("Deleting friendGroup: " + friendGroup.getId());
         friendGroupRepository.delete(friendGroup);
     }
 

@@ -29,7 +29,7 @@ public class InstantService {
 
     public boolean addInstantToMoment(Moment moment, Instant instant) {
         if(!moment.getInstantList().contains(instant)) {
-            LOGGER.info("Adding instant: " + instant + "to moment: " + moment.getId());
+            LOGGER.info("Adding instant: " + instant.getId() + " to moment: " + moment.getId());
             moment.getInstantList().add(instant);
             return true;
         }
@@ -54,7 +54,7 @@ public class InstantService {
         }
 
         if(foundInstant != null) {
-            LOGGER.info("Removing instant: " + foundInstant.getId() + "from moment: " + moment.getId());
+            LOGGER.info("Removing instant: " + foundInstant.getId() + " from moment: " + moment.getId());
             moment.getInstantList().remove(foundInstant);
             return true;
         }

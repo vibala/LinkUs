@@ -134,7 +134,7 @@ public class IdRightService {
     public boolean addIdRightToInstant(Instant instant, IdRight idRight) {
 
         if(findByRight(instant, idRight.getRight()) == null) {
-            LOGGER.info("Adding IdRight: " + idRight + "to instant: " + instant.getId());
+            LOGGER.info("Adding IdRight: " + idRight.getRight() + " to instant: " + instant.getId());
             instant.getIdRight().add(idRight);
             return true;
         }
