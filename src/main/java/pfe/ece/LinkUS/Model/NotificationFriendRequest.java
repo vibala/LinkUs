@@ -1,6 +1,7 @@
 package pfe.ece.LinkUS.Model;
 
 import org.bson.types.ObjectId;
+import pfe.ece.LinkUS.Model.Enum.NotificationType;
 
 /**
  * Created by DamnAug on 30/01/2017.
@@ -8,7 +9,6 @@ import org.bson.types.ObjectId;
 public class NotificationFriendRequest extends Notification {
 
     String friendId;
-    String type;
     String message;
 
     public NotificationFriendRequest() {
@@ -30,13 +30,6 @@ public class NotificationFriendRequest extends Notification {
         this.friendId = friendId;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public String getMessage() {
         return message;

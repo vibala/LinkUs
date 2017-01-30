@@ -5,6 +5,8 @@ import javax.persistence.*;
 /**
  * Created by Vignesh on 12/15/2016.
  */
+
+//N'extend pas Notification pour pas prendre de risque
 @Entity
 @Table(name = "notification_tokens")
 public class NotificationToken {

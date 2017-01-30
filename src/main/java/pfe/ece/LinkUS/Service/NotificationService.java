@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.Service;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import pfe.ece.LinkUS.Model.Enum.NotificationType;
 import pfe.ece.LinkUS.Model.Moment;
 import pfe.ece.LinkUS.Model.Notification;
 import pfe.ece.LinkUS.Model.NotificationMoment;
@@ -24,20 +25,21 @@ public class NotificationService {
     public Notification findNotification(String id) {
         return notificationRepository.findOne(id);
     }
-    public NotificationMoment createSaveNotificationMoment(String userId, String albumId, String momentId) {
-        NotificationMoment notificationMoment = createNotificationMoment(userId, albumId, momentId);
+
+    public NotificationMoment createSaveNotificationMoment(String userId, String albumId, String momentId,NotificationType type) {
+        NotificationMoment notificationMoment = createNotificationMoment(userId, albumId, momentId,type);
         if(!addNotification(notificationMoment)) {
             modifyNotification(notificationMoment);
         }
         return notificationMoment;
     }
 
-    public NotificationMoment createNotificationMoment(String userId, String albumId, String momentId) {
+    public NotificationMoment createNotificationMoment(String userId, String albumId, String momentId,NotificationType type) {
         NotificationMoment notificationMoment = new NotificationMoment();
         notificationMoment.setUserId(userId);
         notificationMoment.setAlbumId(albumId);
         notificationMoment.setMomentId(momentId);
-        notificationMoment.setType("Moment");
+        notificationMoment.setType(type);
         return notificationMoment;
     }
 

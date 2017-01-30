@@ -3,14 +3,25 @@ package pfe.ece.LinkUS.Model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.annotation.Id;
+import pfe.ece.LinkUS.Model.Enum.NotificationType;
 
 /**
  * Created by DamnAug on 30/01/2017.
  */
-public class Notification {
+public abstract class Notification {
 
     @Id
     String id;
+    NotificationType type;
+
+    public NotificationType getType() {
+        return type;
+    }
+
+    public void setType(NotificationType type) {
+        this.type = type;
+    }
+
 
     public String getId() {
         return id;

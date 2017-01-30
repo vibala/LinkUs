@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import pfe.ece.LinkUS.Model.Enum.NotificationType;
 
 import java.util.Date;
 
@@ -15,7 +16,7 @@ public class NotificationMoment extends Notification {
     private String userId;
     private String albumId;
     private String momentId;
-    private String type;
+
     private Date creationDate = new Date();
 
     public NotificationMoment() {
@@ -54,13 +55,6 @@ public class NotificationMoment extends Notification {
         this.momentId = momentId;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public Date getCreationDate() {
         return creationDate;
