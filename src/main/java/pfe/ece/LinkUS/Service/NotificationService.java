@@ -9,6 +9,7 @@ import pfe.ece.LinkUS.Model.NotificationMoment;
 import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.NotificationRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,8 +30,18 @@ public class NotificationService {
         return notificationRepository.findOne(id);
     }
 
-    public List<Notification> findNotificationByIdAndUserId(String notifId, String userId) {
-        return notificationRepository.findByIdAndUserId(notifId, userId);
+    public List<Notification> findNotificationsByIds(List<String> idList) {
+        List<Notification> notificationList = new ArrayList<>();
+
+        if(idList != null) {
+            for(String id: idList) {
+                notificationList.add(findNotification(id));
+            }
+        }
+        return notificationList;
+    }
+    public Notification findNotificationById(String notifId) {
+        return notificationRepository.findOne(notifId);
     }
 
     public NotificationMoment createSaveNotificationMoment(User user, String albumId, String momentId, NotificationType type) {
