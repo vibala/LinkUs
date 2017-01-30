@@ -102,9 +102,7 @@ public class UploadingController {
         // PARTIE LOCALE
         Path path = Paths.get("./images");
         if (!Files.exists(path)) { try {Files.createDirectories(path); System.out.println("Directory is created!"); } catch (IOException e) {  System.out.println("Failed to create directory!");e.printStackTrace();}}
-        path = Paths.get("./images/" + userId);
-        if (!Files.exists(path)) { try {Files.createDirectories(path); System.out.println("Directory is created!"); } catch (IOException e) {  System.out.println("Failed to create directory!");e.printStackTrace();}}
-        path = Paths.get("./images/" + userId + "/" + albumId);
+        path = Paths.get("./images/" + albumId);
         if (!Files.exists(path)) { try {Files.createDirectories(path); System.out.println("Directory is created!"); } catch (IOException e) {  System.out.println("Failed to create directory!");e.printStackTrace();}}
 
 
