@@ -111,7 +111,7 @@ public class SlideshowDialogFragment extends DialogFragment {
 
             Glide
                     .with(getActivity())
-                    .load(instant.getUrl()+"&userId="+ HomeActivity.userId)
+                    .load(instant.getUrl())
                     .fitCenter()
                     .crossFade() // to make the change of images more smoothly and easier on the eyer
                     .diskCacheStrategy(DiskCacheStrategy.ALL)

@@ -1,6 +1,7 @@
 package com.start_up.dev.apilinkus.Fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -20,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.start_up.dev.apilinkus.API.APIGetAlbumsOwned_Observer;
 import com.start_up.dev.apilinkus.API.APIGetListFriend_Observer;
 import com.start_up.dev.apilinkus.API.APIGetListGroupFriend_Observer;
@@ -30,12 +33,14 @@ import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.R;
+import com.start_up.dev.apilinkus.Tool.JsonDateDeserializer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -95,7 +100,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
         else {
             Log.d(TAG,"Owned album size " + owned_albums.size());
             if(owned_albums.isEmpty()) {
-                api.getAlbumsOwned(this);
+                api.getPreviewAlbumsOwned(this);
             }
         }
         adapter = new AlbumsAdapter(getContext(),owned_albums,this,this);
@@ -122,14 +127,14 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (OnOwnedAlbumSelectedListener) activity;
+            mCallback = (OnOwnedAlbumSelectedListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnAlbumSelectedListener");
         }
     }
@@ -194,17 +199,16 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
 
     @Override
     public void albumsOwned_GetResponse(JSONArray responseArray) {
-        System.out.println("Owned albums size" + responseArray.length());
         System.out.println("Content of owned albums" + responseArray);
         int length = responseArray.length();
         for(int i = 0; i < length; i++){
-            JSONObject jsonObject = responseArray.optJSONObject(i);
+            JSONObject responseObject = responseArray.optJSONObject(i);
+            Log.d("response",responseObject.toString());
             Album album = new Album();
             try {
-                album.setId(jsonObject.getString("albumId"));
-                album.setName(jsonObject.getString("albumName"));
-                album.setThumbnail(R.drawable.australia);
-                album.setCountryName(jsonObject.getString("albumCountryName"));
+                album.setId(responseObject.getString("albumId"));
+                album.setName(responseObject.getString("albumName"));
+                album.setImageUrl(responseObject.getString("imgUrl"));
                 owned_albums.add(album);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -212,7 +216,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
 
         }
 
-        Log.d(TAG,"Owned album size " + owned_albums);
+        Log.d(TAG,"Owned album " + owned_albums);
     }
 
     public void albumsOwned_GetResponse(JSONObject responseObject){}
@@ -260,7 +264,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     public void synchronizeActionLinkedtoAlbum(){
         Log.d(TAG,"SsynchronizeActionLinkedtoAlbum");
         clearData();
-        api.getAlbumsOwned(this);
+        api.getPreviewAlbumsOwned(this);
     }
 
     @Override

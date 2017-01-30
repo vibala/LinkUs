@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.start_up.dev.apilinkus.HomeActivity;
+import com.start_up.dev.apilinkus.Model.Authentification;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Model.Subscription;
 import com.start_up.dev.apilinkus.ProfileActivity;
@@ -30,7 +31,7 @@ public class APIPostAddSubscription extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] params) {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-        headers.add("Authorization", "Bearer " + HomeActivity.access_token);
+        headers.add("Authorization", "Bearer " + Authentification.getAccess_token());
         headers.add("Content-Type", "application/json");
         String result="";
 

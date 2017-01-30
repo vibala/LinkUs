@@ -16,7 +16,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
 import com.start_up.dev.apilinkus.Auth.Message;
+import com.start_up.dev.apilinkus.Model.Authentification;
 import com.twitter.sdk.android.core.TwitterCore;
 
 import org.springframework.http.HttpEntity;
@@ -43,10 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     protected static final String
             TAG = ProfileActivity.class.getSimpleName();
-    private String MODE_AUTH;
-    public static String access_token;
-    public static String token_type;
-    public static String refresh_token;
+
     private TextView profileTextView;
 
     @Override
@@ -64,17 +63,9 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Intent i = getIntent();
-        Bundle b = i.getExtras();
 
-        if(b!= null){
-            access_token = (String) b.get("access_token");
-            Log.d("Acess token",access_token);
-            token_type = (String) b.get("token_type");
-            refresh_token = (String) b.get("refresh_token");
-            MODE_AUTH = b.getString("mode_auth");
-            new FetchProfileRessourceTask().execute(access_token,token_type,refresh_token);
-        }
+        new FetchProfileRessourceTask().execute(Authentification.getAccess_token(),Authentification.getToken_type(),Authentification.getRefresh_token());
+
     }
 
     @Override
@@ -107,12 +98,12 @@ public class ProfileActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.action_logout:
                 //Inutile de differencier car jusque la on a deja detruit les token
-                if(MODE_AUTH.equals("facebook")){
+                if(Authentification.getMode_auth().equals("facebook")){
                     LoginManager.getInstance().logOut();
-                }else if(MODE_AUTH.equals("twitter")){
+                }else if(Authentification.getMode_auth().equals("twitter")){
                     TwitterCore.getInstance().logOut();
                 }
-                new aaaa().execute(access_token,token_type,refresh_token);
+                new revokeToken().execute(Authentification.getAccess_token(),Authentification.getToken_type(),Authentification.getRefresh_token());
                 System.out.println("TODO"); //TODO Vignesh implementer la fonction logout pour l'auth normal
 
                 Intent intent = new Intent(this,MainActivity.class);
@@ -124,7 +115,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    private class aaaa extends AsyncTask<String,Void,Message> {
+    private class revokeToken extends AsyncTask<String,Void,Message> {
 
         @Override
         protected void onPreExecute() {

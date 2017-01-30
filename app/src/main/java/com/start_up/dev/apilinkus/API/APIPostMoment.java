@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.start_up.dev.apilinkus.HomeActivity;
+import com.start_up.dev.apilinkus.Model.Authentification;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.ProfileActivity;
@@ -45,7 +47,7 @@ public class APIPostMoment extends AsyncTask<Object,Void,Boolean> {
     @Override
     protected Boolean doInBackground(Object... params) {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-        headers.add("Authorization", "Bearer " + HomeActivity.access_token);
+        headers.add("Authorization", "Bearer " + Authentification.getAccess_token());
         headers.add("Content-Type", "application/json");
         String result = "";
         try {
@@ -61,13 +63,7 @@ public class APIPostMoment extends AsyncTask<Object,Void,Boolean> {
 
         }catch (Exception e){
 
-            if(e.getMessage().contains("ould not read JSON: Unrecognized token 'Finished': was expecting ('true', 'false' or 'null')")){
-                 /*E/zzzzz ServicePostAPIa: Could not read JSON: Unrecognized token 'Finished': was expecting ('true', 'false' or 'null')
-                                                                                       at [Source: libcore.net.http.FixedLengthInputStream@41c37db0; line: 1, column: 10]; nested exception is com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'Finished': was expecting ('true', 'false' or 'null')
-                                                                                        at [Source: libcore.net.http.FixedLengthInputStream@41c37db0; line: 1, column: 10]
-                */
-                return true;
-            }
+            e.printStackTrace();
             Log.e("zzzzz ServicePostAPIa", e.getMessage());
             Log.e("zzzzz ServicePostAPIb", result);
             return false;

@@ -98,7 +98,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
             // loading album cover using Glide library
             Glide
                     .with(mContext)
-                    .load(album.getThumbnail())
+                    .load(album.getImageUrl())
                     .thumbnail(0.1f)
                     .into(holder.thumbnail);
 

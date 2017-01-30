@@ -1,6 +1,7 @@
 package com.start_up.dev.apilinkus.Fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.start_up.dev.apilinkus.API.APIGetAlbumsFilterRight_Observer;
 import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.Adapter.AlbumsAdapter;
@@ -26,12 +29,14 @@ import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.Model.IdRight;
 import com.start_up.dev.apilinkus.R;
+import com.start_up.dev.apilinkus.Tool.JsonDateDeserializer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -146,14 +151,14 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
 
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (OnSharedAlbumSelectedListener) activity;
+            mCallback = (OnSharedAlbumSelectedListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnAlbumSelectedListener");
         }
     }
@@ -219,23 +224,21 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
 
     @Override
     public void albumsFilterRight_GetResponse(JSONArray responseArray) {
-        System.out.println("albumsFilterRight_GetResponse responseArray" + responseArray);
+        System.out.println("Content of owned albums" + responseArray);
         int length = responseArray.length();
-        for(int i = 0; i < length; i++){
-            JSONObject jsonObject = responseArray.optJSONObject(i);
+        for (int i = 0; i < length; i++) {
+            JSONObject responseObject = responseArray.optJSONObject(i);
+            Log.d("response", responseObject.toString());
             Album album = new Album();
             try {
-                album.setId(jsonObject.getString("albumId"));
-                album.setName(jsonObject.getString("albumName"));
-                album.setThumbnail(R.drawable.australia);
-                album.setCountryName(jsonObject.getString("albumCountryName"));
+                album.setId(responseObject.getString("albumId"));
+                album.setName(responseObject.getString("albumName"));
+                album.setImageUrl(responseObject.getString("imgUrl"));
                 shared_albums.add(album);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        //System.out.println("shared_albums.size() " + shared_albums.size());
-
     }
 
     @Override

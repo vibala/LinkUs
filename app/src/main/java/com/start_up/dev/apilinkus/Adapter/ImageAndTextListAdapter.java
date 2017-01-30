@@ -77,7 +77,7 @@ public class ImageAndTextListAdapter extends RecyclerView.Adapter<ImageAndTextLi
             holder.id.setText(example.getId());
             Glide
                     .with(context)
-                    .load(example.getUrl()+"&userId="+ HomeActivity.userId)
+                    .load(example.getUrl())
                     .into(holder.imagePost);
 
             holder.checkbox.setVisibility(View.VISIBLE);

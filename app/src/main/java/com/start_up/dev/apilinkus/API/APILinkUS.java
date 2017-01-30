@@ -18,12 +18,11 @@ public class APILinkUS {
 
     private Context mContext;
     private final String TAG = APILinkUS.class.getSimpleName();
-    public static String BASE_URL;
+    public static String BASE_URL="http://192.168.43.46:9999";
     //private String userId="1";
 
     public APILinkUS(Context mContext) {
         this.mContext=mContext;
-        this.BASE_URL="http://192.168.43.46:9999";
     }
     public APILinkUS() {
     }
@@ -48,7 +47,7 @@ public class APILinkUS {
         return m;
     }
 
-    public void getAlbumsOwned(APIGetAlbumsOwned_Observer activity){
+    public void getPreviewAlbumsOwned(APIGetAlbumsOwned_Observer activity){
         String query="/album/preview?right=ADMIN&news=true";
 
         String urlrequestAPI = BASE_URL + query;

@@ -49,7 +49,7 @@ public class AlbumActivity  extends AppCompatActivity implements APIGetAlbumsOwn
         initViews();
 
         //Start download
-        new APILinkUS().getAlbumsOwned(this);
+        new APILinkUS().getPreviewAlbumsOwned(this);
     }
 
     private void initViews(){

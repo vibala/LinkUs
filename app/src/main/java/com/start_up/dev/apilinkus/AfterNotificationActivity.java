@@ -7,10 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.start_up.dev.apilinkus.API.APILinkUS;
-import com.start_up.dev.apilinkus.Adapter.MomentsAdapater;
+import com.start_up.dev.apilinkus.Adapter.MomentsAdapter;
 import com.start_up.dev.apilinkus.Fragments.AlbumFragment;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
-import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.Model.Moment;
 
 import java.util.ArrayList;
@@ -28,13 +27,13 @@ public class AfterNotificationActivity extends AppCompatActivity implements Recy
     AlbumFragment.OnMomentSelectedListener mCallback;
     private String userId;
     private APILinkUS api;
-    private MomentsAdapater adapter;
+    private MomentsAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_recyclerview_postnotif);
-        adapter = new MomentsAdapater(this,moments,this);
+        adapter = new MomentsAdapter(this,moments,this);
         recyclerView = (RecyclerView)findViewById(R.id.moment_recyclerView_post_notif);
     }
 
