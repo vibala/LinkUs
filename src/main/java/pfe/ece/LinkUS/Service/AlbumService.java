@@ -744,11 +744,8 @@ public class AlbumService {
     }
 
     public void setMainImageUrlToAlbumAndMoments(Album album, boolean updateAlbumImage) {
-        MomentService momentService = new MomentService();
+        defineAlbumMomentsMainInstant(album);
 
-        for(Moment moment: album.getMoments()) {
-            momentService.setMainInstantUsingCotation(moment);
-        }
         // Les image principales des moments sont toujours initialisées
         // (soit par une photo d'instant soit par une image par défaut)
         if(updateAlbumImage) {

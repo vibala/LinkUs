@@ -124,6 +124,34 @@ public class UserService {
         return userList;
     }
 
+    public boolean modifyUserLastNameAndFirstName(String userId, String firstName, String lastName) {
+
+        User user = findUserById(userId);
+
+        if(user.getFirstName().equals(firstName) && user.getLastName().equals(lastName)) {
+            return false;
+        } else {
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            update(user);
+            return true;
+        }
+
+    }
+
+    public boolean modifyUserEmail(String userId, String email) {
+
+        User user = findUserById(userId);
+
+        if(user.getEmail().equals(email)) {
+            return false;
+        } else {
+            user.setEmail(email);
+            update(user);
+            return true;
+        }
+    }
+
     public void save(User user) {
 
         LOGGER.info("Saving new user: " + user);

@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
     @Autowired
     AlbumService albumService;
     @Autowired
@@ -35,8 +35,7 @@ public class UserController {
     SubscriptionRepository subscriptionRepository;
     @Autowired
     AccessTokenService accessTokenService;
-    @Autowired
-    UserService userService;
+
 
     private static final Logger LOGGER = Logger.getLogger(UserController.class);
 
@@ -217,39 +216,26 @@ public class UserController {
         return new NbAlbumsAndNbProches(user.getFriendList().size(), albumService.getAlbumsOwned(userId).size()).toString();
     }
 
-
-
-
-
     @RequestMapping(value = "/changeFullname", params = {"lastName","firstName"}, method = RequestMethod.POST)
-    public ResponseEntity<String> changeFullname(@RequestParam("lastName") String lastName, @RequestParam("firstName") String firstName){
+    public ResponseEntity<String> changeFullName(@RequestParam("lastName") String lastName, @RequestParam("firstName") String firstName){
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        UserService userService = new UserService(userRepository);
-        User user = userService.findUserById(userId);
-        user.setLastName(lastName);
-        user.setFirstName(firstName);
-        User tmp = userRepository.save(user);
-        if(tmp == null){
-            return new ResponseEntity<String>("Full name not updated",HttpStatus.NOT_MODIFIED);
+        if(userService.modifyUserLastNameAndFirstName(userId, firstName, lastName)) {
+            return new ResponseEntity<String>("Full name not updated", HttpStatus.NOT_MODIFIED);
         }
-
-        return new ResponseEntity<String>("Full name updated",HttpStatus.OK);
+        return new ResponseEntity<String>("Full name updated", HttpStatus.OK);
     }
 
     @RequestMapping(value = "/changeUsername", params = {"email"}, method = RequestMethod.POST)
     public ResponseEntity<String> changeEmailUsername(@RequestParam("email") String email){
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        UserService userService = new UserService(userRepository);
-        User user = userService.findUserById(userId);
-        user.setEmail(email);
-        User tmp = userRepository.save(user);
-        if(tmp == null){
-            return new ResponseEntity<String>("Username name not updated",HttpStatus.NOT_MODIFIED);
+
+        if(userService.modifyUserEmail(userId, email)){
+            return new ResponseEntity<String>("Username name not updated", HttpStatus.NOT_MODIFIED);
         }
 
-        return new ResponseEntity<String>("Username updated",HttpStatus.OK);
+        return new ResponseEntity<String>("Username updated", HttpStatus.OK);
     }
 
 
