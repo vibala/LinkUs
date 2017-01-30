@@ -1,6 +1,7 @@
 package pfe.ece.LinkUS.ServerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import pfe.ece.LinkUS.Model.Notification;
 import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
 import pfe.ece.LinkUS.Service.NotificationTokenServiceImpl;
 import pfe.ece.LinkUS.Service.UserService;
@@ -55,7 +56,7 @@ public class NotificationServerService {
 
         return tokenUserList;
     }
-    public void sendObjectWithTokenNotification(ArrayList<String> listUserTokenNotification, Object o) throws IOException {
+    public void sendObjectWithTokenNotification(ArrayList<String> listUserTokenNotification, Notification notification) throws IOException {
         for(String token : listUserTokenNotification) {
             /**EXEMPLE
              *
@@ -79,7 +80,7 @@ public class NotificationServerService {
              */
             String json = "{\"notification\":{\"title\":\"title-notification\"," +
                     "\"body\":\"description-notification\"}," +
-                    "\"data\":{\"description\":\""+ "test" +
+                    "\"data\":{\"description\":\""+ notification.toString() +
                     "\",\"title\":\"notification\"},\"to\":\""+token+"\"}";
 
             URL url = new URL(urlServerFireBase);
@@ -109,33 +110,4 @@ public class NotificationServerService {
             conn.disconnect();
         }
     }
-
-    /*public void sendNotificationWithTokenNotification(ArrayList<String> listUserTokenNotification, NotificationMoment notification) throws IOException {
-
-        for(String token : listUserTokenNotification) {
-
-            String json = "{\"notification\":{\"title\":\"title-notification\"," +
-                    "\"body\":\"description-notification\"}," +
-                    "\"data\":{\"description\":\""+ notification.toString() +
-                    "\",\"title\":\"notification\"},\"to\":\""+token+"\"}";
-
-            URL url = new URL(urlServerFireBase);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setRequestProperty("Content-Type", "application/json;");
-            conn.setRequestProperty("Authorization", "key="+keyServerFireBase);
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            conn.setRequestMethod("POST");
-
-            OutputStream os = conn.getOutputStream();
-            os.write(json.getBytes("UTF-8"));
-            os.close();
-
-            // read the response
-            InputStream input = new BufferedInputStream(conn.getInputStream());
-            input.close();
-            conn.disconnect();
-        }
-    }*/
 }

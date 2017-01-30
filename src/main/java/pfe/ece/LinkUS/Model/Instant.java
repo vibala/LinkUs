@@ -22,7 +22,7 @@ public class Instant {
     private ArrayList<IdRight> idRight = new ArrayList<>();
     private ArrayList<String> userIdDescriptionAvailable = new ArrayList<>();
     private byte[] imgByte;
-    private double cotation;
+    private double cotation = 1;
 
     public Instant(){
         setRandomId();

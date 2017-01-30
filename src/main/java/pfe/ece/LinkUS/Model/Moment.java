@@ -20,6 +20,7 @@ public class Moment {
     private ArrayList<KeyValue> descriptionsList = new ArrayList<>();
     private boolean news = true;
     private String mainInstant;
+    private String mainImageUrl;
 
     public Moment() {
         setRandomId();
@@ -106,6 +107,14 @@ public class Moment {
 
     public void setTimeZone(String timeZone) {
         this.timeZone = timeZone;
+    }
+
+    public String getMainImageUrl() {
+        return mainImageUrl;
+    }
+
+    public void setMainImageUrl(String mainImageUrl) {
+        this.mainImageUrl = mainImageUrl;
     }
 
     @Override

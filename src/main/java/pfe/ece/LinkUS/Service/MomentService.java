@@ -24,7 +24,12 @@ public class MomentService {
         Moment moment = new Moment();
         moment.setId("0");
         moment.setName("Default");
+        setMainImageUrlDefault(moment);
         return moment;
+    }
+
+    public void setMainImageUrlDefault(Moment moment) {
+        moment.setMainImageUrl("http://www.reynoldsam.com/wordpress/wp-content/themes/ram/_images/nophoto.jpg");
     }
 /*
     public String createMomentSaveToAlbum(Album album, String name) {
@@ -172,7 +177,9 @@ public class MomentService {
 
         Instant bestInstant = null;
         double bestCotation = -1;
-        if(moment.getInstantList() != null) {
+
+        // si il y a des instants dans le moment
+        if(moment.getInstantList() != null && !moment.getInstantList().isEmpty()) {
             for(Instant instant: moment.getInstantList()) {
                 if(instant.getCotation() > bestCotation) {
                     bestCotation = instant.getCotation();
@@ -180,8 +187,22 @@ public class MomentService {
                 }
             }
             moment.setMainInstant(bestInstant.getId());
+            // best instant contient une image on rempli le moment
+            if(bestInstant.getUrl() != null && !bestInstant.getUrl().equals("")) {
+                moment.setMainImageUrl(bestInstant.getUrl());
+            }
+            // bestInstant ne contient pas d'image et moment pas d'url alors on rempli avec une image par défaut
+            if((bestInstant.getUrl() == null || bestInstant.getUrl().equals("")) &&
+                    (moment.getMainImageUrl() == null || moment.getMainImageUrl().equals(""))) {
+                // si l'instant principal n'a pas de photo
+                setMainImageUrlDefault(moment);
+            }
         } else {
-            moment.setMainInstant("");
+            // on fait rien pour moment.getMainIntant() au risque d'écraser des données
+
+            if(moment.getMainImageUrl() == null || moment.getMainImageUrl().equals("")) {
+                setMainImageUrlDefault(moment);
+            }
         }
     }
 }

@@ -11,7 +11,6 @@ import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Enum.Right;
 import pfe.ece.LinkUS.Model.Enum.SubscriptionTypeEnum;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 
 import java.io.File;
@@ -639,6 +638,7 @@ public class AlbumService {
      * @return
      */
     public List<Album> checkData(SubscriptionService subscriptionService, List<Album> albumList, boolean news, String userId) {
+        checkSaveAlbumsImg(albumList);
         checkDataAutorization(subscriptionService, albumList, userId);
         checkDataRight(albumList, userId);
         checkDataNews(albumList, news, userId);
@@ -727,6 +727,34 @@ public class AlbumService {
         return albumList;
     }
 
+    public List<Album> checkSaveAlbumsImg(List<Album> albumList) {
+        for (Album album: albumList) {
+            checkAlbumImg(album);
+            update(album);
+        }
+        return albumList;
+    }
+
+    public void checkAlbumImg(Album album) {
+        if(album.getImageUrl() == null || album.getImageUrl().equals("")) {
+            setMainImageUrlToAlbumAndMoments(album, true);
+        } else {
+            setMainImageUrlToAlbumAndMoments(album, false);
+        }
+    }
+
+    public void setMainImageUrlToAlbumAndMoments(Album album, boolean updateAlbumImage) {
+        MomentService momentService = new MomentService();
+
+        for(Moment moment: album.getMoments()) {
+            momentService.setMainInstantUsingCotation(moment);
+        }
+        // Les image principales des moments sont toujours initialisées
+        // (soit par une photo d'instant soit par une image par défaut)
+        if(updateAlbumImage) {
+            album.setImageUrl(album.getMoments().get(0).getMainImageUrl());
+        }
+    }
     /**
      *
      * @param albumList
