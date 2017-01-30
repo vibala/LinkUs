@@ -67,8 +67,8 @@ public class UploadingController {
 
         // Verify the right of the user to upload photos on this albumId
         if(!albumService.checkAlbumIdInAlbums(albumId, albumsOfByCurrentAuthentifiedUser)) {
-            return new ResponseEntity<String>(
-                    "You have no right to upload photos on that album: " + albumId, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(
+                    new String("You have no right to upload photos on that album: " + albumId), HttpStatus.FORBIDDEN);
         }
         System.out.println("Moment envoyé par l'utilisateur " + userId+" "+moment.toString());
         // Ajoute les personne de moment.IdRight à album.IdRight
@@ -114,7 +114,7 @@ public class UploadingController {
 
             String fileS3Name = new Date().getTime()+ RandomStringUtils.randomAlphanumeric(10)+instant.getName();
 
-            fos = new FileOutputStream("./images/" + userId + "/" + albumId + "/" + fileS3Name);
+            fos = new FileOutputStream("./images/" + albumId + "/" + fileS3Name);
             fos.write(instant.getImgByte());
             fos.close();
 
@@ -168,7 +168,7 @@ public class UploadingController {
             //On demande a FireBase d envoyer une notification a ces personnes (FireBase va utiliser les Token pour envoyer la notif car chaque token correspond a une appli installé sur un device.)
             notificationServerService.sendObjectWithTokenNotification(tokenUserListWithReadRight, notification);
         }
-        return new ResponseEntity<String>("Finished to upload files",HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
 
