@@ -18,7 +18,7 @@ public class APILinkUS {
 
     private Context mContext;
     private final String TAG = APILinkUS.class.getSimpleName();
-    public static String BASE_URL="http://192.168.43.45:9999";
+    public static String BASE_URL="http://192.168.43.46:9999";
     //private String userId="1";
 
     public APILinkUS(Context mContext) {

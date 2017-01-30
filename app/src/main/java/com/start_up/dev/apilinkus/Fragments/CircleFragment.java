@@ -285,11 +285,6 @@ public class CircleFragment extends Fragment implements APIGetRequestPendingList
     private SearchView searchView;
     private APILinkUS api ;
 
-    private void clearDataFragment(){
-        friendList.clear();
-        userList.clear();
-        group_friendList.clear();
-    }
     /**
      * Converting dp to pixel
      */
@@ -298,7 +293,9 @@ public class CircleFragment extends Fragment implements APIGetRequestPendingList
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         api=new APILinkUS();
         circleView = inflater.inflate(R.layout.activity_searchfriend,container,false);
-        clearDataFragment();
+
+
+
         friends_recyclerView = (RecyclerView) circleView.findViewById(R.id.friend_recycler_view);
         WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();
@@ -308,6 +305,7 @@ public class CircleFragment extends Fragment implements APIGetRequestPendingList
             friends_recyclerView.getLayoutParams().height = (int)((float)metrics.heightPixels/(4));
         }
         else {
+
             friends_recyclerView.getLayoutParams().height = (int)((float)metrics.heightPixels/(2));
         }
         friend_adapter = new CircleAdapter(getContext(),this,friendList,this);
@@ -333,7 +331,6 @@ public class CircleFragment extends Fragment implements APIGetRequestPendingList
         buttonCreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clearDataFragment();
                 mCallback.circleFragmentOnButtonCreateGroup();
                      }
         });

@@ -26,7 +26,6 @@ import com.start_up.dev.apilinkus.Listener.RecyclerViewGalleryFolderClickListene
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created by Huong on 12/12/2016.
@@ -47,16 +46,6 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewGa
     private GalleryFolderAdapter folderAdapter ;
     private String ExternalStorageDirectoryPath;
 
-
-    //Je sais pas si ca clear vraiment mais on post sur internet dit que oui http://stackoverflow.com/questions/19287346/clear-a-bitmap-from-arraytlist-using-recycle-not-working-android
-    private void clearDataFragment(){
-
-        currentList.clear();
-        folderList.clear();
-
-        currentAdapter.notifyDataSetChanged();
-        folderAdapter.notifyDataSetChanged();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,10 +129,8 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewGa
                 Intent intent = new Intent(GalleryActivity.this, SendMomentActivity.class);
                 intent.putExtra("selectedList",selectedList);
                 intent.putExtra("albumId",getIntent().getStringExtra("albumId"));
-                clearDataFragment();
                 //Start details activity
                 startActivity(intent);
-                finish();
             }
         });
     }
@@ -208,7 +195,6 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewGa
                     File targetDirector = new File(targetPath);
                     File[] files_list = targetDirector.listFiles();
                     currentList.clear();
-                    currentAdapter.notifyDataSetChanged();
                     for (File file : files_list) {
                         if(!file.isDirectory()) {
                             boolean exist = false;
@@ -287,12 +273,5 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewGa
     public void recyclerViewFolderListClicked(View v, String path) {
         //System.out.println(path);
         setGalleryDisplay(path);
-    }
-
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        clearDataFragment();
-        finish();
     }
 }

@@ -13,7 +13,6 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.Dimension;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -79,17 +78,46 @@ public class SendMomentActivity extends AppCompatActivity implements APIGetListG
     private APIPostMoment_Observer activity = this;
     private Context mContext = this;
 
+    private void prepareTestModels() {
 
-    private void clearDataFragment(){
+        api.getListFriend(this);
+        api.getListGroupFriend(this);
 
-        imageList.clear();
-        friendList.clear();
-        friendOrGroupSelected.clear();
+        RecyclerViewItem a = new RecyclerViewItem("my_friend", "1", "Maroaaon5","https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/15590012_1315905178482946_1583832953346816464_n.jpg?oh=8d20327cf060dc640b40d9c4c3c7d838&oe=59122F99");
+        friendList.add(a);
 
-        friendAdapter.notifyDataSetChanged();
-        imageAdapter.notifyDataSetChanged();
+        a = new RecyclerViewItem("my_friend", "2","Suazfzagar Ray","https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/13331054_10209337159285692_1032067942344766374_n.jpg?oh=6b53c9ddfba81a637fc22ff684814bfa&oe=5914BADA");
+        friendList.add(a);
+
+        a = new RecyclerViewItem("my_friend", "3","Bon Jazfovi", "https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/15109626_662131003967305_5228921117221664410_n.jpg?oh=4c90a007be4208180953469612e657fa&oe=58DA6FC1");
+        friendList.add(a);
+
+        a = new RecyclerViewItem("my_friend", "4", "The Corrs","https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/15109626_662131003967305_5228921117221664410_n.jpg?oh=4c90a007be4208180953469612e657fa&oe=58DA6FC1");
+        friendList.add(a);
+
+
+        a = new RecyclerViewItem("my_group_friend", "11","my_group3", "https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/15109626_662131003967305_5228921117221664410_n.jpg?oh=4c90a007be4208180953469612e657fa&oe=58DA6FC1");
+        friendList.add(a);
+
+        a = new RecyclerViewItem("my_group_friend", "12","my_group4", "https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/15109626_662131003967305_5228921117221664410_n.jpg?oh=4c90a007be4208180953469612e657fa&oe=58DA6FC1");
+        friendList.add(a);
+
+
+        /*a = new RecyclerViewItem("/storage/emulated/0/pictures/messenger/received_10211846093536911.jpeg","received_10211846093536911.jpeg", new File("/storage/emulated/0/pictures/messenger/received_10211846093536911.jpeg"),true);
+        imageList.add(a);
+
+        a = new RecyclerViewItem("/storage/emulated/0/snapchat/snapchat-5600419020900227079.jpg","snapchat-5600419020900227079.jpg", new File("/storage/emulated/0/snapchat/snapchat-5600419020900227079.jpg"),true);
+        imageList.add(a);
+
+        a = new RecyclerViewItem("/storage/emulated/0/snapchat/snapchat-8595444131681156335.jpg","snapchat-8595444131681156335.jpg", new File("/storage/emulated/0/snapchat/snapchat-8595444131681156335.jpg"),true);
+        imageList.add(a);
+        a = new RecyclerViewItem("/storage/emulated/0/whatsapp/media/whatsapp images/img-20170115-wa0001.jpg","img-20170115-wa0001.jpg", new File("/storage/emulated/0/whatsapp/media/whatsapp images/img-20170115-wa0001.jpg"),true);
+        imageList.add(a);
+        a = new RecyclerViewItem("/storage/emulated/0/pictures/screenshots/screenshot_2016-12-26-01-39-11.png","screenshot_2016-12-26-01-39-11.png", new File("/storage/emulated/0/pictures/screenshots/screenshot_2016-12-26-01-39-11.png"),true);
+        imageList.add(a);
+*/
+
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -320,7 +348,7 @@ public boolean landscape;
                     instant.setTimeZone(timeZone);
 
                     System.out.println(instant.getName());
-  /*                  FileInputStream fis = null;
+                    FileInputStream fis = null;
                     try {
                         fis = new FileInputStream(file);
                     } catch (FileNotFoundException e) {
@@ -340,12 +368,7 @@ public boolean landscape;
                         ex.getMessage();
                     }
                     byte[] imgByte = bos.toByteArray();
-*/
 
-                    Bitmap bmp = getBitmapResizeMaxFromFile(file.getAbsolutePath());
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    byte[] imgByte = stream.toByteArray();
                     instant.setImgByte(imgByte);
                     ArrayList<IdRight> idRights = new ArrayList<>();
                     IdRight idRight = new IdRight("LECTURE");
@@ -377,8 +400,9 @@ public boolean landscape;
                     moment.setPublishDate(new Date());
 
                     System.out.println("Moment to string " + moment.toString());
-                    Log.d(TAG,"List instant size " + listInstant.size());
+                    Log.d(TAG,"Llist instant size " + listInstant.size());
                     if(getIntent() != null){
+
                         new APILinkUS().addMomentToMyAlbum(moment,getIntent().getStringExtra("albumId"),"true",activity,mContext);
                     }
 
@@ -480,36 +504,6 @@ public boolean landscape;
 
         setImageDisplay(uri);
     }
-    //Plus grand ca fait outofMemory dans l'upload...
-    private final float MAX_WIDTH_UPLOAD=1024.0f;
-    private final float MAX_HEIGHT_UPLOAD=1024.0f;
-    public Bitmap getBitmapResizeMaxFromFile(String pathFile){
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        options.inSampleSize = 2;
-        Bitmap bmp = BitmapFactory.decodeFile(pathFile, options);
-
-        float widthImage = ((float) bmp.getWidth());
-        float heightImage = ((float) bmp.getHeight());
-
-        float ratio;
-        ratio = ((float) bmp.getHeight()) / ((float) bmp.getWidth());
-
-        //Normalement pas besoin car options.inSampleSize = 2; precedemment
-        if(widthImage>=MAX_WIDTH_UPLOAD){
-            float ratioReduc= ((float)widthImage)/MAX_WIDTH_UPLOAD;
-            widthImage= (int)MAX_WIDTH_UPLOAD;
-            heightImage=(int) (heightImage/ratioReduc);
-        }
-        if(heightImage>=MAX_HEIGHT_UPLOAD){
-            float ratioReduc= ((float)heightImage)/MAX_HEIGHT_UPLOAD;
-            heightImage= (int)MAX_HEIGHT_UPLOAD;
-            widthImage=(int) (widthImage/ratioReduc);
-        }
-
-            bmp = scaleBitmap(bmp, (int) widthImage, (int) heightImage);
-
-        return bmp;
-    }
     public void setImageDisplay(String uri) {
         uriDisplayed = uri;
         if (bitmapDisplayed != null) {
@@ -518,7 +512,6 @@ public boolean landscape;
         }
 
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        options.inSampleSize = 2;
         System.out.println(uriDisplayed);
         bitmapDisplayed = BitmapFactory.decodeFile(uriDisplayed, options);
 
@@ -578,30 +571,15 @@ public boolean landscape;
     public boolean vertical =true;
 public Matrix matrixVertical=new Matrix();
 public Matrix matrixHorizontal=new Matrix();
-private static float MAX_WIDTH=4096.0f;
-private static float MAX_HEIGHT=4096.0f;
-
 
     public static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHeight) {
-
-        //Normalement pas besoin car options.inSampleSize = 2; precedemment
-        if(newWidth>=MAX_WIDTH){
-            float ratioReduc= ((float)newWidth)/MAX_WIDTH;
-            newWidth= (int)MAX_WIDTH;
-            newHeight=(int) (newHeight/ratioReduc);
-        }
-        if(newHeight>=MAX_HEIGHT){
-            float ratioReduc= ((float)newHeight)/MAX_HEIGHT;
-            newHeight= (int)MAX_HEIGHT;
-            newWidth=(int) (newWidth/ratioReduc);
-        }
-
         Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
 
         float scaleX = newWidth / (float) bitmap.getWidth();
         float scaleY = newHeight / (float) bitmap.getHeight();
         float pivotX = 0;
         float pivotY = 0;
+
         Matrix scaleMatrix = new Matrix();
         scaleMatrix.setScale(scaleX, scaleY, pivotX, pivotY);
 
@@ -702,16 +680,6 @@ private static float MAX_HEIGHT=4096.0f;
         }else{
             Toast.makeText(this,"Failed to upload to the server ! Please retry later",Toast.LENGTH_SHORT).show();
         }
-    }
-
-
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        clearDataFragment();
-        Intent intent = new Intent(this, GalleryActivity.class);
-        startActivity(intent);
-        finish();
     }
 
 }
