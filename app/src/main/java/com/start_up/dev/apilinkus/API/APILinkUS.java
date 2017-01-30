@@ -23,7 +23,7 @@ public class APILinkUS {
 
     public APILinkUS(Context mContext) {
         this.mContext=mContext;
-        this.BASE_URL="http://192.168.43.46:9999";
+        this.BASE_URL="http://192.168.137.77:9999";
     }
     public APILinkUS() {
     }
