@@ -39,18 +39,16 @@ public class ScenarioController {
     @Autowired
     private AccessTokenService accessTokenService;
     @Autowired
-    private AlbumRepository albumRepository;
+    private AlbumService albumService;
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
     @Autowired
-    private SubscriptionRepository subscriptionRepository;
+    private SubscriptionService subscriptionService;
     @Autowired
-    private FriendGroupRepository friendGroupRepository;
+    private FriendGroupService friendGroupService;
 
     @RequestMapping(value = "/filledAlbum")
     public ResponseEntity createFilledAlbum() {
-
-        AlbumService albumService = new AlbumService(albumRepository);
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
@@ -71,10 +69,6 @@ public class ScenarioController {
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public ResponseEntity createUsers() throws EmailExistsException, IOException, ParseException {
 
-        AlbumService albumService = new AlbumService(albumRepository);
-        UserService userService = new UserService(userRepository);
-        SubscriptionService subscriptionService = new SubscriptionService(subscriptionRepository);
-
         List<String> userList = new ArrayList<>();
         userList.add("UserA");
         userList.add("UserB");
@@ -86,14 +80,15 @@ public class ScenarioController {
 
             if(userService.checkUserByEmail(email)) {
                 User user = userService.findUserByEmail(email);
-                userService.removeUser(user);
+                // Supprimer subscriptions by user
                 subscriptionService.deleteUserSubscriptions(user.getId());
-
-                // Supprimer friendGroupOwned by destroyed user
+                // Supprimer friendGroupOwned by user
+                friendGroupService.deleteFriendGroupByOwnerId(user.getId());
+                // Supprimer user
+                userService.removeUser(user);
             }
             userService.createFakeUser(subscriptionService, name);
         }
-
 
         // USERS
         String idA = userService.findUserByEmail(userList.get(0)+"@yopmail.com").getId();
@@ -113,10 +108,6 @@ public class ScenarioController {
 
         userService.addFakeFriend(idD, idA);
         userService.addFakeFriend(idD, idB);
-
-        // FRIENDGROUP
-        FriendGroupService friendGroupService = new FriendGroupService(friendGroupRepository);
-
 
         String url = "http://" + Inet4Address.getLocalHost().getHostAddress() + ":9999/images?name=";
         // ALBUMS

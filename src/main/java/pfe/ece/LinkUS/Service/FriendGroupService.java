@@ -80,6 +80,11 @@ public class FriendGroupService {
         friendGroupRepository.save(friendGroup);
     }
 
+    private void deleteAll(List<FriendGroup> friendGroupList) {
+        LOGGER.info("Deleting friendGroups: " + friendGroupList.toString());
+        friendGroupRepository.delete(friendGroupList);
+    }
+
     private void delete(FriendGroup friendGroup) {
         LOGGER.info("Deleting friendGroup: " + friendGroup.getId());
         friendGroupRepository.delete(friendGroup);
@@ -128,6 +133,17 @@ public class FriendGroupService {
 
         if(friendGroup != null) {
             delete(friendGroup);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteFriendGroupByOwnerId(String userId) {
+
+        List<FriendGroup> friendGroupList = friendGroupRepository.findByOwnerId(userId);
+
+        if(friendGroupList != null && !friendGroupList.isEmpty()) {
+            deleteAll(friendGroupList);
             return true;
         }
         return false;

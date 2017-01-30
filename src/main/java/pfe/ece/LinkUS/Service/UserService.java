@@ -370,9 +370,7 @@ public class UserService {
     public boolean removeUser(User user) throws IOException {
 
         //deleteDirectory(new File("./images/" + user.getId()));
-
         delete(user);
-
         return true;
     }
 

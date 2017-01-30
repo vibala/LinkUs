@@ -220,7 +220,7 @@ public class UserController {
     public ResponseEntity<String> changeFullName(@RequestParam("lastName") String lastName, @RequestParam("firstName") String firstName){
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        if(userService.modifyUserLastNameAndFirstName(userId, firstName, lastName)) {
+        if(!userService.modifyUserLastNameAndFirstName(userId, firstName, lastName)) {
             return new ResponseEntity<String>("Full name not updated", HttpStatus.NOT_MODIFIED);
         }
         return new ResponseEntity<String>("Full name updated", HttpStatus.OK);
@@ -231,7 +231,7 @@ public class UserController {
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
 
-        if(userService.modifyUserEmail(userId, email)){
+        if(!userService.modifyUserEmail(userId, email)){
             return new ResponseEntity<String>("Username name not updated", HttpStatus.NOT_MODIFIED);
         }
 
