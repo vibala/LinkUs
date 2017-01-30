@@ -9,3 +9,5 @@ target/*
 .idea/mongoSettings.xml
 src/main/java/pfe/ece/LinkUS/Exception/AlbumNotFoundException.java
 *.jpg
+*.png
+*.xml
