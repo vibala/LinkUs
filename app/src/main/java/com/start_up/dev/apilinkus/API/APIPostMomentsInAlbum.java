@@ -3,52 +3,53 @@ package com.start_up.dev.apilinkus.API;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Model.Authentification;
 import com.start_up.dev.apilinkus.Model.Moment;
-import com.start_up.dev.apilinkus.Model.Subscription;
-import com.start_up.dev.apilinkus.ProfileActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
+
 /**
- * Created by Vignesh on 1/24/2017.
+ * Created by Vignesh on 1/30/2017.
  */
 
-public class APIPostAddSubscription extends AsyncTask {
+public class APIPostMomentsInAlbum extends AsyncTask<String,Void,String> {
 
-    private RestTemplate restTemplate = new RestTemplate();
-    private Subscription subscription;
+    private APIPostMomentsInAlbum_Observer observer;
+    private final String TAG = APIPostMomentsInAlbum.class.getSimpleName();
+    private List<String> momentIdList;
 
-    public APIPostAddSubscription(Subscription subscription){
-        this.subscription = subscription;
+    public APIPostMomentsInAlbum(APIPostMomentsInAlbum_Observer observer, List<String> momentIdList){
+        this.observer = observer;
+        this.momentIdList = momentIdList;
     }
 
     @Override
-    protected Object doInBackground(Object[] params) {
+    protected String doInBackground(String[] params) {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
         headers.add("Authorization", "Bearer " + Authentification.getAccess_token());
         headers.add("Content-Type", "application/json");
         String result="";
-
-        System.out.println("zzzzzzz");
         try{
             RestTemplate restTemplate = new RestTemplate();
-
-            System.out.println("ccccccccccc"+restTemplate);
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-            System.out.println("cccccccc demi ");
-            HttpEntity<Subscription> request = new HttpEntity<Subscription>(subscription, headers);
+            HttpEntity<List<String>> request = new HttpEntity<List<String>>(momentIdList,headers);
 
-            System.out.println("ddddddddddddddd"+request);
             result= restTemplate.postForObject((String) params[0], request, String.class);
-
-            System.out.println("eeeeeeeeeeeee"+result);
         }catch (Exception e){
             Log.e("ServicePostAPIa", e.getMessage());
             Log.e("ServicePostAPIb", result);
@@ -56,4 +57,18 @@ public class APIPostAddSubscription extends AsyncTask {
         return result;
 
     }
+
+    @Override
+    protected void onPostExecute(String b) {
+        JSONArray responseArray = null;
+        try {
+            responseArray = new JSONArray(b);
+            observer.getMomentInAlbum_GetResponse(responseArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }

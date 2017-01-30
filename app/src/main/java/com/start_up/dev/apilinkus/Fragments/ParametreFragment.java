@@ -1,6 +1,7 @@
 package com.start_up.dev.apilinkus.Fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.start_up.dev.apilinkus.API.APIGetSubscriptionList_Observer;
 import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.HomeActivity;
+import com.start_up.dev.apilinkus.Model.Authentification;
 import com.start_up.dev.apilinkus.R;
 
 import org.json.JSONArray;
@@ -88,12 +90,13 @@ public class ParametreFragment extends Fragment implements CompoundButton.OnChec
     @Override
     public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        user_fullname_tv.setText(Authentification.getLastName()+ " "+Authentification.getFirstName());
+        user_username_tv.setText(Authentification.getUserName());
 
         if (savedInstanceState != null) {
             // Restore last state
             Log.d(TAG,"Restore last state " + savedInstanceState.getString("Full name"));
-            user_fullname_tv.setText(savedInstanceState.getString("Full name"));
-            user_username_tv.setText(savedInstanceState.getString("Username"));
+
             remaining_description_tv.setText(savedInstanceState.getString("nb_desc_remaining"));
             remaining_friends_tv.setText(savedInstanceState.getString("nb_friends_remaining"));
             sub_frd_one = savedInstanceState.getBoolean("sub_frd_one");
@@ -110,8 +113,6 @@ public class ParametreFragment extends Fragment implements CompoundButton.OnChec
 
 
         } else {
-            user_fullname_tv.setText(getArguments().getString("Full name"));
-            user_username_tv.setText(getArguments().getString("Username"));
             api.getSubscriptionList(this);
         }
 
@@ -437,7 +438,7 @@ public class ParametreFragment extends Fragment implements CompoundButton.OnChec
         twitter_switchbutton.setChecked(false);
         gmail_switchbutton.setChecked(false);
 
-        switch(HomeActivity.mode_auth){
+        switch(Authentification.getMode_auth()){
             case "facebook":
                 facebook_switchbutton.setChecked(true);
                 break;
@@ -469,14 +470,14 @@ public class ParametreFragment extends Fragment implements CompoundButton.OnChec
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (ParametreFragment.OnChangeUserInformationListener) activity;
+            mCallback = (ParametreFragment.OnChangeUserInformationListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
     }

@@ -11,11 +11,11 @@ import android.widget.TextView;
 
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.R;
+import com.start_up.dev.apilinkus.Tool.SimpleDateFormatTimeZone;
 
 import java.util.ArrayList;
 
@@ -23,14 +23,14 @@ import java.util.ArrayList;
  * Created by Vignesh on 1/13/2017.
  */
 
-public class MomentsAdapater extends RecyclerView.Adapter<MomentsAdapater.MomentViewHolder> {
-
+public class MomentsAdapter extends RecyclerView.Adapter<MomentsAdapter.MomentViewHolder> {
+    public SimpleDateFormatTimeZone simpleDateFormat = new SimpleDateFormatTimeZone("dd-MM-yyyy-HH");
     private Context mContext;
     private ArrayList<Moment> momentList;
-    private String TAG = MomentsAdapater.class.getSimpleName();
+    private String TAG = MomentsAdapter.class.getSimpleName();
     private RecyclerViewClickListener itemListener;
 
-    public MomentsAdapater(Context context, ArrayList<Moment> momentList, RecyclerViewClickListener itemListener){
+    public MomentsAdapter(Context context, ArrayList<Moment> momentList, RecyclerViewClickListener itemListener){
         this.mContext = context;
         this.momentList = momentList;
         this.itemListener = itemListener;
@@ -56,10 +56,9 @@ public class MomentsAdapater extends RecyclerView.Adapter<MomentsAdapater.Moment
             if(moment.getInstantList() != null && !moment.getInstantList().isEmpty()){
                 for (Instant instant : moment.getInstantList()) {
                     TextSliderView textSliderView = new TextSliderView(mContext);
-                    //#DEPENDANCE TextSliderView ne gere pas le jpeg le jpg fonctionne , les autres pas testé
-                    System.out.println("HEINNNNNNNNNNNNNN3 "+instant.getUrl()+"&userId="+ HomeActivity.userId);
-                    textSliderView.image(instant.getUrl()+"&userId="+ HomeActivity.userId);
-                    textSliderView.description(instant.getName() + " - " + instant.getPublishDate().toString()); // On récupère uniquement la description pour l'instant
+                    String date = simpleDateFormat.formatWithTimeZone(instant.getPublishDate(),instant.getTimeZone());
+                    textSliderView.image(instant.getUrl());
+                    textSliderView.description(instant.getName() + " - " + date); // On récupère uniquement la description pour l'instant
                     holder.sliderShow.addSlider(textSliderView);
                 }
             }

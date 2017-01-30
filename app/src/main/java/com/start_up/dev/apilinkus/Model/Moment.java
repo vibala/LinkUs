@@ -5,16 +5,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Huong on 06/01/2017.
  */
 
 public class Moment implements Serializable {
+
     private String id;
     private String name;
+    private Date publishDate = new Date();
+    private String timeZone;
     private ArrayList<Instant> instantList = new ArrayList();
-    private ArrayList<KeyValue> descriptionsList = new ArrayList();
+    private ArrayList<KeyValue> descriptionsList = new ArrayList<>();
+    private boolean news = true;
+    private String mainInstant;
+
 
     public Moment() {
     }
@@ -33,6 +40,42 @@ public class Moment implements Serializable {
 
     public void setDescriptionsList(ArrayList<KeyValue> descriptionsList) {
         this.descriptionsList = descriptionsList;
+    }
+
+    public Date getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(Date publishDate) {
+        this.publishDate = publishDate;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
+
+    public ArrayList<KeyValue> getDescriptionsList() {
+        return descriptionsList;
+    }
+
+    public boolean isNews() {
+        return news;
+    }
+
+    public void setNews(boolean news) {
+        this.news = news;
+    }
+
+    public String getMainInstant() {
+        return mainInstant;
+    }
+
+    public void setMainInstant(String mainInstant) {
+        this.mainInstant = mainInstant;
     }
 
     public String getId() {

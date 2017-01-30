@@ -1,12 +1,12 @@
 package com.start_up.dev.apilinkus.Fragments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -20,25 +20,29 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.start_up.dev.apilinkus.API.APIGetAlbumByAlbumId_Observer;
 import com.start_up.dev.apilinkus.API.APIGetAlbumsOwned_Observer;
 import com.start_up.dev.apilinkus.API.APIGetListFriend_Observer;
 import com.start_up.dev.apilinkus.API.APIGetListGroupFriend_Observer;
 import com.start_up.dev.apilinkus.API.APILinkUS;
+import com.start_up.dev.apilinkus.API.APIPostShareAlbumWith_Observer;
 import com.start_up.dev.apilinkus.Adapter.AlbumsAdapter;
-import com.start_up.dev.apilinkus.Adapter.RecyclerViewItem;
 import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.R;
+import com.start_up.dev.apilinkus.Tool.JsonDateDeserializer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,9 +53,13 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
         APIGetAlbumsOwned_Observer,
             AlbumsAdapter.ClickListener,
                 APIGetListFriend_Observer,
-                    APIGetListGroupFriend_Observer {
+                    APIGetListGroupFriend_Observer,
+                        APIPostShareAlbumWith_Observer,
+                            APIGetAlbumByAlbumId_Observer {
 
     private View myView;
+    private APIPostShareAlbumWith_Observer apiPostShareAlbumWithObserver = this;
+    private APIGetAlbumByAlbumId_Observer apiGetAlbumByAlbumIdObserver = this;
     protected static final String TAG = OwnedAlbumsFragment.class.getSimpleName();
     private RecyclerView recyclerView;
     private AlbumsAdapter adapter;
@@ -61,6 +69,8 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     private Album selected_album;
     private Map<String,String> list_friends = new HashMap<>();
     private Map<String,String> list_friendsgroup = new HashMap<>();
+    private String scope = "";
+
 
     // Container Activity must implement this interface
     public interface OnOwnedAlbumSelectedListener{
@@ -95,7 +105,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
         else {
             Log.d(TAG,"Owned album size " + owned_albums.size());
             if(owned_albums.isEmpty()) {
-                api.getAlbumsOwned(this);
+                api.getPreviewAlbumsOwned(this);
             }
         }
         adapter = new AlbumsAdapter(getContext(),owned_albums,this,this);
@@ -122,14 +132,14 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (OnOwnedAlbumSelectedListener) activity;
+            mCallback = (OnOwnedAlbumSelectedListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnAlbumSelectedListener");
         }
     }
@@ -194,17 +204,16 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
 
     @Override
     public void albumsOwned_GetResponse(JSONArray responseArray) {
-        System.out.println("Owned albums size" + responseArray.length());
         System.out.println("Content of owned albums" + responseArray);
         int length = responseArray.length();
         for(int i = 0; i < length; i++){
-            JSONObject jsonObject = responseArray.optJSONObject(i);
+            JSONObject responseObject = responseArray.optJSONObject(i);
+            Log.d("response",responseObject.toString());
             Album album = new Album();
             try {
-                album.setId(jsonObject.getString("albumId"));
-                album.setName(jsonObject.getString("albumName"));
-                album.setThumbnail(R.drawable.australia);
-                album.setCountryName(jsonObject.getString("albumCountryName"));
+                album.setId(responseObject.getString("albumId"));
+                album.setName(responseObject.getString("albumName"));
+                album.setImageUrl(responseObject.getString("imgUrl"));
                 owned_albums.add(album);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -212,7 +221,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
 
         }
 
-        Log.d(TAG,"Owned album size " + owned_albums);
+        Log.d(TAG,"Owned album " + owned_albums);
     }
 
     public void albumsOwned_GetResponse(JSONObject responseObject){}
@@ -233,14 +242,41 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
 
     @Override
     public void OnShareOwnedAlbumListener(int position,String scope) {
-        selected_album = owned_albums.get(position);
-        Log.d(TAG,"Selected album name " + selected_album.getName());
-        if(scope.contains("friendGroup")){
-            api.getListGroupFriend(this);
-        }else{
-            api.getListFriend(this);
-        }
+        this.scope = scope;
+        api.getAlbumByAlbumId(apiGetAlbumByAlbumIdObserver,owned_albums.get(position).getId(),getContext());
+    }
 
+    @Override
+    public void albumByAlbumId_GetResponse(JSONObject responseObject) {
+        System.out.println("Album full details " + responseObject);
+        //Le gson ne gere pas le format date de base il faut contourner le bail avec une classe JsonFateDeserializer ou Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create(); (not tested)
+        Gson gson=new GsonBuilder().registerTypeAdapter(Date.class, new JsonDateDeserializer()).create();
+        selected_album = gson.fromJson(responseObject.toString(), Album.class);
+        System.out.println("Selected album useridlist" + selected_album.getSpecificIdRight("LECTURE").getUserIdList().size());
+    }
+
+    @Override
+    public void albumByAlbumId_NotifyWhenGetFinish(Integer result) {
+        if(result == 1){
+            if(scope.contains("friendGroup")){
+                list_friendsgroup.clear();
+                Log.d(TAG,"Scope Friends Group");
+                api.getListGroupFriend(this);
+            }else{
+                list_friends.clear();
+                Log.d(TAG,"Scope Friends");
+                api.getListFriend(this);
+            }
+        }else {
+            Handler mHandler = new Handler();
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(), "Failed to fetch the details about the selected album", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
     }
 
     @Override
@@ -249,7 +285,12 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
             System.out.println(responseArray);
             for(int i=0;i<responseArray.length();i++){
                 JSONObject friend_response= responseArray.optJSONObject(i);
-                list_friends.put(friend_response.getString("lastName") + " "+ friend_response.getString("firstName"),friend_response.getString("id"));
+                // 0 : WRITE; 1: COMMENT; 2: LECTURE; 3: ADMIN
+                String friend_id = friend_response.getString("id");
+                Log.d(TAG,"Selected album userIdList size " + selected_album.getIdRight().size());
+                if(!selected_album.getSpecificIdRight("LECTURE").getUserIdList().contains(friend_id)){
+                    list_friends.put(friend_response.getString("lastName") + " "+ friend_response.getString("firstName"),friend_id);
+                }
             }
             Log.d(TAG,"List friends size " + list_friends.size());
         } catch (JSONException e) {
@@ -257,10 +298,13 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
         }
     }
 
-    public void synchronizeActionLinkedtoAlbum(){
-        Log.d(TAG,"SsynchronizeActionLinkedtoAlbum");
-        clearData();
-        api.getAlbumsOwned(this);
+    @Override
+    public void postShareAlbumWith_Notify(Boolean result) {
+        if(result){
+            Toast.makeText(getContext(),"This album has been shared successfully",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getContext(),"Internal Error ! This album cannot be shared successfully",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -295,7 +339,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
                                         boolean checked = list.isItemChecked(i);
 
                                         if (checked) {
-                                           api.shareAlbumWithFriend(list_friends.get(list.getItemAtPosition(i)),selected_album.getId(),"LECTURE");
+                                           api.shareAlbumWithFriend(list_friends.get(list.getItemAtPosition(i)),selected_album.getId(),"LECTURE",apiPostShareAlbumWithObserver);
                                         }
                                     }
                                 }
@@ -313,7 +357,14 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
                 }
             });
         }else{
-           Toast.makeText(getContext(),"Failed to fetch your friends list",Toast.LENGTH_LONG).show();
+            Handler mHandler = new Handler();
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(),"Failed to fetch your friends list",Toast.LENGTH_LONG).show();
+                }
+            });
+
         }
     }
 
@@ -323,7 +374,10 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
             System.out.println(responseArray);
             for(int i=0;i<responseArray.length();i++){
                 JSONObject friend_response = responseArray.optJSONObject(i);
-                list_friendsgroup.put(friend_response.getString("name"),friend_response.getString("id"));
+                String group_id = friend_response.getString("id");
+                if(!selected_album.getSpecificIdRight("LECTURE").getGroupIdList().contains(group_id)){
+                    list_friendsgroup.put(friend_response.getString("name"),group_id);
+                }
             }
             Log.d(TAG,"List group of friends size " + list_friendsgroup.size());
         } catch (JSONException e) {
@@ -365,12 +419,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
 
                                         if (checked) {
                                             Log.d(TAG,"Id : " + list_friendsgroup.get(list.getItemAtPosition(i)));
-                                            String result = api.shareAlbumWithGroupFriend(list_friendsgroup.get(list.getItemAtPosition(i)),selected_album.getId(),"LECTURE");
-                                            if(result.contentEquals("200")){
-                                                Toast.makeText(getContext(),"L'album vient d'etre partagé avec le groupe " + list.getItemAtPosition(i),Toast.LENGTH_SHORT).show();
-                                            }else{
-                                                Toast.makeText(getContext(),"L'album n'a pas pu être partagé avec le groupe " + list.getItemAtPosition(i),Toast.LENGTH_SHORT).show();
-                                            }
+                                            api.shareAlbumWithGroupFriend(list_friendsgroup.get(list.getItemAtPosition(i)),selected_album.getId(),"LECTURE",apiPostShareAlbumWithObserver);
                                         }
                                     }
 
@@ -390,8 +439,19 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
                 }
             });
         }else{
-            Toast.makeText(getContext(),"Failed to fetch your group of friends list",Toast.LENGTH_LONG).show();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(),"Failed to fetch your group of friends list",Toast.LENGTH_LONG).show();
+                }
+            });
         }
+    }
+
+    public void synchronizeActionLinkedtoAlbum(){
+        Log.d(TAG,"SsynchronizeActionLinkedtoAlbum");
+        clearData();
+        api.getPreviewAlbumsOwned(this);
     }
 
     public void clearData(){

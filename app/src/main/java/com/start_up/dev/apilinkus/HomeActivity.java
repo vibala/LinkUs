@@ -63,6 +63,8 @@ import com.start_up.dev.apilinkus.Fragments.ReportProblemFragment;
 import com.start_up.dev.apilinkus.Fragments.SharedAlbumsFragment.OnSharedAlbumSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.SlideshowDialogFragment;
 import com.start_up.dev.apilinkus.Model.Album;
+import com.start_up.dev.apilinkus.Model.Authentification;
+import com.start_up.dev.apilinkus.Model.DBHandler;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Model.Subscription;
@@ -89,7 +91,6 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         OnMomentSelectedListener,
         OnPostSelectedListener,
         OnChangeUserInformationListener,
-        APIGetUserProfileDetails_Observer,
         CircleFragment.onCircleInteraction,
         CreateGroupFragment.onCreateGroupInteraction {
 
@@ -102,15 +103,8 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     private Toolbar toolbar;
     private CoordinatorLayout coordinatorLayout;
 
-    /*TOKENS*/
-    public static String mode_auth;
-    public static String access_token;
-    public static String token_type;
-    public static String refresh_token;
-
-
     /*BUNDLE FOR CERTAIN FRAGMENTS*/
-    private Bundle b;
+
     private ArrayList<Moment> moments;
 
     // index to identify current nav menu item
@@ -139,8 +133,6 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     private TextView toolbarTitle;
     private BottomBar bottomBar;
 
-
-    private boolean arguments_ready = false;
     private APILinkUS api;
 
     @Override
@@ -148,6 +140,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         super.onCreate(savedInstanceState);
         Log.d(TAG, "HomeActivity landscape On create");
         setContentView(R.layout.activity_main);
+
         api = new APILinkUS();
         albums = new ArrayList<>();
         toolbar = (Toolbar) findViewById(R.id.toolbarMain);
@@ -231,7 +224,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         Intent intent = this.getIntent();
 
         /* Obtain String from Intent  */
-        if(intent !=null) {
+        if(intent !=null && intent.getExtras()!=null) {
             String strdata = intent.getExtras().getString("Uniqid");
             if (strdata != null && strdata.equals("From SendMomentActivity")) {
                 //Do Something here...
@@ -256,19 +249,6 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
             bottomBar.setVisibility(View.GONE);
         }
 
-        Intent i = getIntent();
-        b = i.getExtras();
-
-        if (b != null) {
-            access_token = (String) b.get("access_token");
-            Log.d("Acess token", access_token);
-            token_type = (String) b.get("token_type");
-            refresh_token = (String) b.get("refresh_token");
-            mode_auth = b.getString("mode_auth");
-            out.println("Access token value " + access_token);
-        }
-        //Iniitalisation de userId
-        api.getUserProfileDetails(this, this);
         // Envoi de notifications
         api.sendTokenNotification();
 
@@ -312,7 +292,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Log.d("HomeActivity", CURRENT_TAG);
+        Log.d(TAG, CURRENT_TAG);
         toolbarTitle.setText(CURRENT_TAG);
     }
 
@@ -391,13 +371,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
             case 4:
                 // Parametres
                 bottomBar.setVisibility(View.GONE);
-                api.getUserProfileDetails(this, this);
                 ParametreFragment parametreFragment = new ParametreFragment();
-                while (!arguments_ready) {
-                }
-                Log.d(TAG, b.getString("Username"));
-                parametreFragment.setArguments(b);
-                arguments_ready = false;
                 return parametreFragment;
             case 5:
                 AboutUsFragment aboutUsFragment = new AboutUsFragment();
@@ -409,104 +383,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         return new HomeFragment();
     }
 
-    /**
-     * Adding few AlbumTestModels for testing
-     */
-    private ArrayList<Album> prepareAlbumTestModels() {
-        ArrayList<Album> albums = new ArrayList<>();
-        Album a = new Album();
 
-        /*Etape 1 : Creation d'un album*/
-        a.setActive(true);
-        a.setName("Trip to India");
-        a.setId("A001");
-        a.setOwnerId("001");
-        a.setCountryName("India");
-        a.setPlaceName("Mumbai");
-        a.setThumbnail(R.drawable.india);
-        Date date = DateUtil.getCurrentDate();
-        Log.d(TAG, "Current Date: " + date.toString());
-        a.setBeginDate(date);
-        a.setEndDate(DateUtil.addDays(date, 90)); // 3 mois a peu près
-
-        /*Etape 2 : Création de deux moments*/
-        Moment moment_first = new Moment();
-        moment_first.setId("A001M001");
-        moment_first.setName("Visit of the palace Taj Mahal");
-
-        Moment moment_second = new Moment();
-        moment_second.setId("A001M002");
-        moment_second.setName("Dromedary ride in the desert of Rajasthan");
-
-        /*Etape 3 : Creation de deux instants*/
-        ArrayList<Instant> instants_first = new ArrayList<>();
-        ArrayList<Instant> instants_second = new ArrayList<>();
-        Instant instant_first = new Instant();
-
-        instant_first.setName("Visiting Taj Mahal with Cxxx");
-        instant_first.setUrl("http://whc.unesco.org/uploads/thumbs/site_0252_0008-750-0-20151104113424.jpg");
-        instants_first.add(instant_first);
-        instant_first.setPublishDate(DateUtil.getCurrentDate());
-        moment_first.setInstantList(instants_first);
-
-        Instant instant_second = new Instant();
-        instant_second.setName("Fun Ride with dromedaries");
-        instant_second.setPublishDate(DateUtil.getCurrentDate());
-        instants_second.add(instant_second);
-        instant_second.setUrl("http://hubchi.com/wp-content/uploads/2015/08/that-desert-tour-4.jpg");
-        moment_second.setInstantList(instants_second);
-
-        /*Ajout*/
-        ArrayList<Moment> moments = new ArrayList<>();
-        moments.add(moment_first);
-        moments.add(moment_second);
-        a.setMoments(moments);
-        albums.add(a);
-
-        Album b = new Album();
-        b.setActive(true);
-        b.setName("Trip to Australia");
-        b.setId("2");
-        b.setOwnerId("001");
-        b.setCountryName("Australia");
-        b.setPlaceName("Sydney");
-        b.setThumbnail(R.drawable.australia);
-        date = DateUtil.getCurrentDate();
-        Log.d(TAG, "Current Date: " + date.toString());
-        b.setBeginDate(date);
-        b.setEndDate(DateUtil.addDays(date, 90)); // 3 mois a peu près
-        albums.add(b);
-
-        Album c = new Album();
-        c.setActive(true);
-        c.setName("Trip to Malaysia");
-        c.setId("3");
-        c.setOwnerId("001");
-        c.setCountryName("Malaysia");
-        c.setPlaceName("Kualampur");
-        date = DateUtil.getCurrentDate();
-        Log.d(TAG, "Current Date: " + date.toString());
-        c.setThumbnail(R.drawable.malaysia);
-        c.setBeginDate(date);
-        c.setEndDate(DateUtil.addDays(date, 90)); // 3 mois a peu près
-        albums.add(c);
-
-        Album d = new Album();
-        d.setActive(true);
-        d.setName("Trip to New Zealand");
-        d.setId("4");
-        d.setOwnerId("001");
-        d.setCountryName("New Zealand");
-        d.setPlaceName("Auckland");
-        d.setThumbnail(R.drawable.newzeland);
-        date = DateUtil.getCurrentDate();
-        Log.d(TAG, "Current Date: " + date.toString());
-        d.setBeginDate(date);
-        d.setEndDate(DateUtil.addDays(date, 90)); // 3 mois a peu près
-        albums.add(d);
-
-        return albums;
-    }
 
     /*Selecting the index in the navigation's menu*/
     private void selectNavMenu() {
@@ -773,31 +650,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         timer.schedule(task2, 0, 5 * 1000); // interval of five seconds
     }
 
-    @Override
-    public void userDetails_GetResponse(JSONObject responseJSON) {
 
-        System.out.println("YYYYYYYYYYYYYY " + responseJSON.toString());
-        b = new Bundle();
-
-        try {
-            userId = responseJSON.getString("id");
-
-            b.putString("Full name", responseJSON.get("lastName") + " " + responseJSON.get("firstName"));
-            b.putString("Username", (String) responseJSON.get("email"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void userDetails_NotifyWhenGetFinish(Integer result) {
-        if (result == 1) {
-            Log.d(TAG, "Fetch successfully data from server spring");
-            arguments_ready = true;
-        } else {
-            Toast.makeText(this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public void onChangeUserInformation(String key, String[] value) {
@@ -950,6 +803,203 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
 
             }
         }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Adding few AlbumTestModels for testing
+ */
+  /*  private ArrayList<Album> prepareAlbumTestModels() {
+        ArrayList<Album> albums = new ArrayList<>();
+        Album a = new Album();
+
+        //Etape 1 : Creation d'un album
+        a.setActive(true);
+        a.setName("Trip to India");
+        a.setId("A001");
+        a.setOwnerId("001");
+        a.setCountryName("India");
+        a.setPlaceName("Mumbai");
+        a.setThumbnail(R.drawable.india);
+        Date date = DateUtil.getCurrentDate();
+        Log.d(TAG, "Current Date: " + date.toString());
+        a.setBeginDate(date);
+        a.setEndDate(DateUtil.addDays(date, 90)); // 3 mois a peu près
+
+        //Etape 2 : Création de deux moments
+        Moment moment_first = new Moment();
+        moment_first.setId("A001M001");
+        moment_first.setName("Visit of the palace Taj Mahal");
+
+        Moment moment_second = new Moment();
+        moment_second.setId("A001M002");
+        moment_second.setName("Dromedary ride in the desert of Rajasthan");
+
+        //Etape 3 : Creation de deux instants
+        ArrayList<Instant> instants_first = new ArrayList<>();
+        ArrayList<Instant> instants_second = new ArrayList<>();
+        Instant instant_first = new Instant();
+
+        instant_first.setName("Visiting Taj Mahal with Cxxx");
+        instant_first.setUrl("http://whc.unesco.org/uploads/thumbs/site_0252_0008-750-0-20151104113424.jpg");
+        instants_first.add(instant_first);
+        instant_first.setPublishDate(DateUtil.getCurrentDate());
+        moment_first.setInstantList(instants_first);
+
+        Instant instant_second = new Instant();
+        instant_second.setName("Fun Ride with dromedaries");
+        instant_second.setPublishDate(DateUtil.getCurrentDate());
+        instants_second.add(instant_second);
+        instant_second.setUrl("http://hubchi.com/wp-content/uploads/2015/08/that-desert-tour-4.jpg");
+        moment_second.setInstantList(instants_second);
+
+        //Ajout
+        ArrayList<Moment> moments = new ArrayList<>();
+        moments.add(moment_first);
+        moments.add(moment_second);
+        a.setMoments(moments);
+        albums.add(a);
+
+        Album b = new Album();
+        b.setActive(true);
+        b.setName("Trip to Australia");
+        b.setId("2");
+        b.setOwnerId("001");
+        b.setCountryName("Australia");
+        b.setPlaceName("Sydney");
+        b.setThumbnail(R.drawable.australia);
+        date = DateUtil.getCurrentDate();
+        Log.d(TAG, "Current Date: " + date.toString());
+        b.setBeginDate(date);
+        b.setEndDate(DateUtil.addDays(date, 90)); // 3 mois a peu près
+        albums.add(b);
+
+        Album c = new Album();
+        c.setActive(true);
+        c.setName("Trip to Malaysia");
+        c.setId("3");
+        c.setOwnerId("001");
+        c.setCountryName("Malaysia");
+        c.setPlaceName("Kualampur");
+        date = DateUtil.getCurrentDate();
+        Log.d(TAG, "Current Date: " + date.toString());
+        c.setThumbnail(R.drawable.malaysia);
+        c.setBeginDate(date);
+        c.setEndDate(DateUtil.addDays(date, 90)); // 3 mois a peu près
+        albums.add(c);
+
+        Album d = new Album();
+        d.setActive(true);
+        d.setName("Trip to New Zealand");
+        d.setId("4");
+        d.setOwnerId("001");
+        d.setCountryName("New Zealand");
+        d.setPlaceName("Auckland");
+        d.setThumbnail(R.drawable.newzeland);
+        date = DateUtil.getCurrentDate();
+        Log.d(TAG, "Current Date: " + date.toString());
+        d.setBeginDate(date);
+        d.setEndDate(DateUtil.addDays(date, 90)); // 3 mois a peu près
+        albums.add(d);
+
+        return albums;
+    }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

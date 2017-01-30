@@ -53,7 +53,7 @@ public class MiniCarouselAdapter extends RecyclerView.Adapter<MiniCarouselAdapte
             //On commence par la derniere image du repertoire (last date)
 
             if (type.equals("url")) {
-                Picasso.with(context).load(example.getUrl()+"&userId="+ HomeActivity.userId).centerCrop().resize(width / 2, width / 2).into(holder.img_android);
+                Picasso.with(context).load(example.getUrl()).centerCrop().resize(width / 2, width / 2).into(holder.img_android);
                 holder.uri.setText(example.getUrl());
             }
             if (type.equals("file")) {

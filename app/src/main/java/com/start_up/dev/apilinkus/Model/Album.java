@@ -20,11 +20,10 @@ public class Album implements Serializable {
     private String placeName;
     private Date beginDate;
     private Date endDate;
-    private int thumbnail; // a remplacer par private byte[] imgByte;
     private ArrayList<Moment> moments = new ArrayList<>();
     private ArrayList<IdRight> idRight = new ArrayList<>();
     private boolean active = false;
-
+    private String imageUrl;
 
     public void setName(String name) {
         this.name = name;
@@ -130,12 +129,11 @@ public class Album implements Serializable {
         return str;
     }
 
-
-    public int getThumbnail() {
-        return thumbnail;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setThumbnail(int thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

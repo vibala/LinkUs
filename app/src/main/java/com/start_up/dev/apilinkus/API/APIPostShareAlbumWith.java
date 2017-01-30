@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.start_up.dev.apilinkus.HomeActivity;
+import com.start_up.dev.apilinkus.Model.Authentification;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -17,14 +18,18 @@ import org.springframework.web.client.RestTemplate;
  * Created by Vignesh on 1/26/2017.
  */
 
-public class APIPostShareAlbumWith extends AsyncTask {
+public class APIPostShareAlbumWith extends AsyncTask<Object,Void,Boolean> {
 
-    private RestTemplate restTemplate = new RestTemplate();
+    private APIPostShareAlbumWith_Observer observer;
+
+    public APIPostShareAlbumWith(APIPostShareAlbumWith_Observer observer){
+        this.observer = observer;
+    }
 
     @Override
-    protected Object doInBackground(Object[] params) {
+    protected Boolean doInBackground(Object[] params) {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-        headers.add("Authorization", "Bearer " + HomeActivity.access_token);
+        headers.add("Authorization", "Bearer " + Authentification.getAccess_token());
         headers.add("Content-Type", "application/json");
         String result="";
         try{
@@ -40,8 +45,14 @@ public class APIPostShareAlbumWith extends AsyncTask {
         }catch (Exception e){
             Log.e("ServicePostAPIa", e.getMessage());
             Log.e("ServicePostAPIb", result);
+            return false;
         }
-        return result;
+        return true;
 
+    }
+
+    @Override
+    protected void onPostExecute(Boolean o) {
+        observer.postShareAlbumWith_Notify(o);
     }
 }

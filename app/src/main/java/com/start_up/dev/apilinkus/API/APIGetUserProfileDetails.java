@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 /**
  * Created by Vignesh on 1/23/2017.
  */
@@ -24,16 +25,19 @@ public class APIGetUserProfileDetails extends APIGet {
         this.mContext = mContext;
         this.activityObserver = activityObserver;
         this.dialog = new ProgressDialog(mContext);
+        System.out.println("aaa");
     }
 
     @Override
     protected void onPreExecute() {
+        System.out.println("azea");
         this.dialog.setMessage("Profile loading");
         this.dialog.show();
     }
 
     @Override
     protected void onPostExecute(Integer integer) {
+
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
@@ -49,7 +53,7 @@ public class APIGetUserProfileDetails extends APIGet {
     protected void parseResult(String result) {
         try {
             JSONObject responseJSON = new JSONObject(result);
-            Log.d("ZZZZZZZZZZZZZZ",responseJSON.toString());
+            Log.d("responseJSON.toString()",responseJSON.toString());
             activityObserver.userDetails_GetResponse(responseJSON);
         } catch (JSONException e) {
             e.printStackTrace();

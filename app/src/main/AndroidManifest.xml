@@ -20,7 +20,10 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".AlbumReadActivity" />
@@ -49,10 +52,7 @@
             android:name=".GalleryActivity"></activity>
         <activity
             android:name=".AfterNotificationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <activity
@@ -64,7 +64,10 @@
         <activity
             android:name=".AlbumActivityIntentMomentDetailed"
             android:theme="@style/Theme.AppCompat" />
-        <activity android:name=".HomeActivity" />
+
+        <activity android:name=".HomeActivity">
+
+        </activity>
 
         <!-- Firebase -->
         <service android:name=".Service.MyFirebaseMessagingService">

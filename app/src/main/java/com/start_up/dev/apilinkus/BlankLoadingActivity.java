@@ -1,33 +1,84 @@
 package com.start_up.dev.apilinkus;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
+import com.start_up.dev.apilinkus.API.APIGetUserProfileDetails_Observer;
+import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.Auth.AsyncResponse;
 import com.start_up.dev.apilinkus.Auth.FetchSecuredFacebookResourceTask;
 import com.start_up.dev.apilinkus.Auth.FetchSecuredResourceTask;
 import com.start_up.dev.apilinkus.Auth.FetchSecuredTwitterResourceTask;
 import com.start_up.dev.apilinkus.Fragments.HomeFragment;
+import com.start_up.dev.apilinkus.Model.Authentification;
+import com.start_up.dev.apilinkus.Model.DBHandler;
 import com.twitter.sdk.android.core.TwitterCore;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.concurrent.Semaphore;
 
 /**
  * Created by Vignesh on 12/15/2016.
  */
 /*Cette activité se chargera en tâche de fond pour récupérer les tokens et de le passer ensuite au HomeActivity */
-public class BlankLoadingActivity extends AppCompatActivity {
-
-    private static final String
-            TAG = BlankLoadingActivity.class.getSimpleName();
+public class BlankLoadingActivity extends AppCompatActivity implements
+        APIGetUserProfileDetails_Observer {
+    private boolean arguments_ready = false;
+    private static final String TAG = BlankLoadingActivity.class.getSimpleName();
+    private String userId;
+    private String userName;
+    private String lastName;
+    private String firstName;
+    private APIGetUserProfileDetails_Observer observer;
+    private Context context;
+    public Semaphore semaphore=new Semaphore(1);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_blank_loading_activity);
+        observer=this;
+        context=BlankLoadingActivity.this;
+        try {
+            semaphore.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void userDetails_GetResponse(JSONObject responseJSON) {
+
+        try {
+            userId = responseJSON.getString("id");
+            userName =responseJSON.getString("email");
+            lastName =responseJSON.getString("lastName");
+            firstName =responseJSON.getString("firstName");
+            //#WTF Si je relache pas ici userDetails_NotifyWhenGetFinish n'est pas appelé
+            semaphore.release();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void userDetails_NotifyWhenGetFinish(Integer result) {
+        if (result == 1) {
+            Log.d(TAG, "Fetch successfully data from server spring");
+            arguments_ready = true;
+
+        } else {
+            Toast.makeText(this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -55,10 +106,24 @@ public class BlankLoadingActivity extends AppCompatActivity {
                             Intent intent = new Intent(BlankLoadingActivity.this,HomeActivity.class);
                             String[] results = token_entity.split(";");
                             Log.i(TAG,"Access_token : " + results[1]);
-                            intent.putExtra("access_token",results[1]);
-                            intent.putExtra("token_type",results[3]);
-                            intent.putExtra("refresh_token",results[5]);
-                            intent.putExtra("mode_auth","twitter");
+                            //On attend que le userId s'actualise
+                            DBHandler dbLocal= new DBHandler(context);
+                            //On est obliger de set le token
+                            dbLocal.writeOnlyAccessTokenInBD(results[1]);
+                            //Iniitalisation de userId
+                            new APILinkUS().getUserProfileDetails(observer, context);
+                            try {
+                                semaphore.acquire();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            semaphore.release();
+                            dbLocal.writeAuthentificationInBD(
+                                    userId,
+                                    userName,
+                                    lastName,
+                                    firstName,
+                                    "twitter",results[1],results[3],results[5]);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                             finish();
@@ -88,10 +153,23 @@ public class BlankLoadingActivity extends AppCompatActivity {
                             Intent intent = new Intent(BlankLoadingActivity.this,HomeActivity.class);
                             String[] results = token_entity.split(";");
                             Log.i(TAG,"Access_token : " + results[1]);
-                            intent.putExtra("access_token",results[1]);
-                            intent.putExtra("token_type",results[3]);
-                            intent.putExtra("refresh_token",results[5]);
-                            intent.putExtra("mode_auth","normal");
+                            DBHandler dbLocal= new DBHandler(context);
+                            //On est obliger de set le token
+                            dbLocal.writeOnlyAccessTokenInBD(results[1]);
+                            //Iniitalisation de userId
+                            new APILinkUS().getUserProfileDetails(observer, context);
+                            try {
+                                semaphore.acquire();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            semaphore.release();
+                            dbLocal.writeAuthentificationInBD(
+                                    userId,
+                                    userName,
+                                    lastName,
+                                    firstName,
+                                    "normal",results[1],results[3],results[5]);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                             finish();
@@ -120,10 +198,23 @@ public class BlankLoadingActivity extends AppCompatActivity {
                             Intent intent = new Intent(BlankLoadingActivity.this,HomeActivity.class);
                             String[] results = token_entity.split(";");
                             Log.i(TAG,"Access_token : " + results[1]);
-                            intent.putExtra("access_token",results[1]);
-                            intent.putExtra("token_type",results[3]);
-                            intent.putExtra("refresh_token",results[5]);
-                            intent.putExtra("mode_auth","facebook");
+                            DBHandler dbLocal= new DBHandler(context);
+                            //On est obliger de set le token
+                            dbLocal.writeOnlyAccessTokenInBD(results[1]);
+                            //Iniitalisation de userId
+                            new APILinkUS().getUserProfileDetails(observer, context);
+                            try {
+                                semaphore.acquire();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            semaphore.release();
+                            dbLocal.writeAuthentificationInBD(
+                                    userId,
+                                    userName,
+                                    lastName,
+                                    firstName,
+                                    "facebook",results[1],results[3],results[5]);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                             finish();

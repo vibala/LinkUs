@@ -1,14 +1,11 @@
 package com.start_up.dev.apilinkus.Fragments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,14 +21,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.start_up.dev.apilinkus.API.APIGetAlbumByAlbumId_Observer;
 import com.start_up.dev.apilinkus.API.APILinkUS;
-import com.start_up.dev.apilinkus.Adapter.MomentsAdapater;
+import com.start_up.dev.apilinkus.Adapter.MomentsAdapter;
 import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Album;
-import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.R;
-import com.start_up.dev.apilinkus.Service.DateUtil;
 import com.start_up.dev.apilinkus.Tool.JsonDateDeserializer;
 
 import org.json.JSONObject;
@@ -47,7 +42,7 @@ import java.util.Iterator;
 public class AlbumFragment extends Fragment implements RecyclerViewClickListener,APIGetAlbumByAlbumId_Observer{
 
     private RecyclerView recyclerView;
-    private MomentsAdapater adapter;
+    private MomentsAdapter adapter;
     // A remplacer par les moments
     private ArrayList<Moment> moments = new ArrayList<>();
     private String TAG = AlbumFragment.class.getSimpleName();
@@ -70,20 +65,9 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
     public void albumByAlbumId_GetResponse(JSONObject responseObject) {
         //Le gson ne gere pas le format date de base il faut contourner le bail avec une classe JsonFateDeserializer ou Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create(); (not tested)
         Gson gson=new GsonBuilder().registerTypeAdapter(Date.class, new JsonDateDeserializer()).create();
-
-        Log.d("response",responseObject.toString());
         selectedAlbum = gson.fromJson(responseObject.toString(), Album.class);
-        Log.d("gson",gson.toString());
-        Log.d("SELECTED ALBUM",selectedAlbum.toString());
         clearData();
-        moments.clear();
-
-        Log.d(TAG,"Moment size "  + moments.size());
-        /*for (Moment m: selectedAlbum.getMoments()) {
-            moments.add(m);
-        }*/
         moments.addAll(selectedAlbum.getMoments());
-        Log.d(TAG,"Moment n 1 "  + moments.get(0).getName());
     }
 
     @Override
@@ -97,13 +81,16 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
                 adapter.notifyDataSetChanged();
             }
         }else{
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(getContext(),"Failed to synchronize ! Please retry later",Toast.LENGTH_SHORT).show();
-                }
-            });
-
+            try {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "Failed to synchronize ! Please retry later", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -117,7 +104,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
             moments = selectedAlbum.getMoments();
         }else{
             Log.d(TAG,"Album id value " + getArguments().getString("albumId"));
-            api.getAlbumByAlbumId(this,getArguments().getString("albumId"));
+            api.getAlbumByAlbumId(this,getArguments().getString("albumId"),getContext());
         }
 
         Button uploadButton = (Button) momentView.findViewById(R.id.upload_button);
@@ -125,7 +112,9 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCallback.momentFragmentOnClickButtonUpload(selectedAlbum.getId());
+                //L'album peut ne pas avoir encore été téléchargé
+                if(selectedAlbum!=null)
+                    mCallback.momentFragmentOnClickButtonUpload(selectedAlbum.getId());
             }
         });
         recyclerView = (RecyclerView) momentView.findViewById(R.id.moment_recyclerView);
@@ -136,7 +125,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(dpToPx(10),1));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         Log.d(TAG,"Moments size in on activity created " + moments.size());
-        adapter = new MomentsAdapater(getContext(),moments,this);
+        adapter = new MomentsAdapter(getContext(),moments,this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -147,14 +136,14 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (OnMomentSelectedListener) activity;
+            mCallback = (OnMomentSelectedListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
     }

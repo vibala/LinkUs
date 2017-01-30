@@ -17,13 +17,32 @@ public class Instant implements Serializable {
     private ArrayList<Comment> commentList = new ArrayList<>();
     private ArrayList<KeyValue> descriptionsList = new ArrayList<>();
     private Date publishDate;
+    private String timeZone;
     private ArrayList<IdRight> idRight = new ArrayList<>();
     private ArrayList<String> userIdDescriptionAvailable = new ArrayList<>();
     private byte[] imgByte;
+    private double cotation;
+
 
     public Instant(){
 
 
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
+
+    public double getCotation() {
+        return cotation;
+    }
+
+    public void setCotation(double cotation) {
+        this.cotation = cotation;
     }
 
     @Override

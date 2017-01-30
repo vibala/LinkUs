@@ -145,7 +145,7 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.CircleView
             holder.type.setText(example.getType());
             Glide
                     .with(context)
-                    .load(example.getUrl()+"&userId="+ HomeActivity.userId)
+                    .load(example.getUrl())
                     .into(holder.imagePost);
 
             holder.update();

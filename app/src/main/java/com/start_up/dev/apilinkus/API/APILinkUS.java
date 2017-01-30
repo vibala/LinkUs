@@ -8,6 +8,7 @@ import com.start_up.dev.apilinkus.Model.FriendGroup;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Model.Subscription;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -48,7 +49,7 @@ public class APILinkUS {
         return m;
     }
 
-    public void getAlbumsOwned(APIGetAlbumsOwned_Observer activity){
+    public void getPreviewAlbumsOwned(APIGetAlbumsOwned_Observer activity){
         String query="/album/preview?right=ADMIN&news=true";
 
         String urlrequestAPI = BASE_URL + query;
@@ -64,11 +65,11 @@ public class APILinkUS {
         revokeToken.execute();
     }
 
-    public void getAlbumByAlbumId(APIGetAlbumByAlbumId_Observer activity, String albumId){
+    public void getAlbumByAlbumId(APIGetAlbumByAlbumId_Observer activity, String albumId,Context context){
         String query="/album/searchAlbum?albumId="+albumId+"&news=true";
 
         String urlrequestAPI = BASE_URL + query;
-        APIGetAlbumByAlbumId apiGetAlbumByAlbumId = new APIGetAlbumByAlbumId(activity);
+        APIGetAlbumByAlbumId apiGetAlbumByAlbumId = new APIGetAlbumByAlbumId(activity,context);
         apiGetAlbumByAlbumId.execute(urlrequestAPI);
     }
 
@@ -208,28 +209,18 @@ public class APILinkUS {
         return result;
     }
 
-    public void shareAlbumWithFriend(String friendId, String albumId, String rigth){
+    public void shareAlbumWithFriend(String friendId, String albumId, String rigth,APIPostShareAlbumWith_Observer observer){
         String query = "/album/setwith?albumId="+albumId+"&right="+rigth+"&friendId="+friendId;
         String urlrequestAPI = BASE_URL + query;
-        APIPostShareAlbumWith apiPostShareAlbumWithFriend = new APIPostShareAlbumWith();
+        APIPostShareAlbumWith apiPostShareAlbumWithFriend = new APIPostShareAlbumWith(observer);
         apiPostShareAlbumWithFriend.execute(urlrequestAPI);
     }
 
-    public String shareAlbumWithGroupFriend(String friendGroupId, String albumId, String rigth){
+    public void shareAlbumWithGroupFriend(String friendGroupId, String albumId, String rigth,APIPostShareAlbumWith_Observer observer){
         String query = "/album/shareWithFriendGroup?albumId="+albumId+"&right="+rigth+"&friendGroupId="+friendGroupId;
         String urlrequestAPI = BASE_URL + query;
-        APIPostShareAlbumWith apiPostShareAlbumWithGroupFriend = new APIPostShareAlbumWith();
-        String result = "";
-        try {
-            result = apiPostShareAlbumWithGroupFriend.execute(urlrequestAPI).get().toString();
-            Log.d(TAG,"Result from the request : " + result);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        return result;
+        APIPostShareAlbumWith apiPostShareAlbumWithGroupFriend = new APIPostShareAlbumWith(observer);
+        apiPostShareAlbumWithGroupFriend.execute(urlrequestAPI);
     }
 
     public void updateSubscription(Subscription subscription, String subscriptionTypeId){
@@ -237,6 +228,13 @@ public class APILinkUS {
         String urlrequestAPI = BASE_URL + query;
         APIPostAddSubscription apiPostAddSubscription = new APIPostAddSubscription(subscription);
         apiPostAddSubscription.execute(urlrequestAPI);
+    }
+
+    public void findMomentsInAlbum(String albumId, List<String> momentIdList, APIPostMomentsInAlbum_Observer observer){
+        String query = "/findMoments?albumId="+albumId;
+        String urlrequestAPI = BASE_URL + query;
+        APIPostMomentsInAlbum apiPostMomentsInAlbum = new APIPostMomentsInAlbum(observer,momentIdList);
+        apiPostMomentsInAlbum.execute(urlrequestAPI);
     }
 }
 

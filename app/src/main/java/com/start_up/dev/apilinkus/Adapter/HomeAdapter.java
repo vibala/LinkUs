@@ -115,7 +115,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         // loading album cover using Glide library
         Glide
                 .with(context)
-                .load(instant.getUrl()+"&userId="+ HomeActivity.userId)
+                .load(instant.getUrl())
                 .into(holder.imagePost);
         }
     }

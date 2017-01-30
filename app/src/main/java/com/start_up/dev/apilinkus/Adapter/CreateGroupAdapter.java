@@ -82,7 +82,7 @@ public class CreateGroupAdapter extends RecyclerView.Adapter<CreateGroupAdapter.
             holder.type.setText(example.getType());
             Glide
                     .with(context)
-                    .load(example.getUrl()+"&userId="+ HomeActivity.userId)
+                    .load(example.getUrl())
                     .into(holder.imagePost);
 
             holder.checkbox.setVisibility(View.VISIBLE);

@@ -39,6 +39,7 @@ import com.start_up.dev.apilinkus.Adapter.MiniCarouselAdapter;
 import com.start_up.dev.apilinkus.Adapter.RecyclerViewItem;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewCircleClickListener;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewGalleryClickListener;
+import com.start_up.dev.apilinkus.Model.Authentification;
 import com.start_up.dev.apilinkus.Model.IdRight;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.KeyValue;
@@ -56,6 +57,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Huong on 12/12/2016.
@@ -197,7 +200,7 @@ public boolean landscape;
         heightScreen = getApplicationContext().getResources().getDisplayMetrics().heightPixels;
         /*scrollview=(ScrollView) findViewById(R.id.send_moment_scroll_image_displayed);
         scrollview.getLayoutParams().height= height/2;*/
-        //ON SUPPOSE QU IL EST PORTRAIT TODO
+        //ON SUPPOSE QU IL EST EN PORTRAIT au départ... TODO
         if (widthScreen>heightScreen) {
             HEIGHT_IMG_DISPLAYED=heightScreen/3.0f*2.0f;
             landscape=true;
@@ -332,10 +335,18 @@ public boolean landscape;
                 //On verifie que l'utilisateur a renseigné correctement le formulaire
                 if(needRequirementBeforeContinue())
                     return;
-                for( RecyclerViewItem item: imageList){
-                    File file=item.getFile();
-                    Instant instant=new Instant();
+
+                String timeZone = Calendar.getInstance().getTimeZone().getID();
+
+                ArrayList<Instant> listInstant=new ArrayList<Instant>();
+                for( RecyclerViewItem item: imageList) {
+                    File file = item.getFile();
+                    Instant instant = new Instant();
                     instant.setName(file.getName());
+
+                    instant.setPublishDate(new Date());
+                    instant.setTimeZone(timeZone);
+
                     System.out.println(instant.getName());
                     FileInputStream fis = null;
                     try {
@@ -348,7 +359,7 @@ public boolean landscape;
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     byte[] buf = new byte[1024];
                     try {
-                        for (int readNum; (readNum = fis.read(buf)) != -1;) {
+                        for (int readNum; (readNum = fis.read(buf)) != -1; ) {
                             bos.write(buf, 0, readNum); //no doubt here is 0
                             //Writes len bytes from the specified byte array starting at offset off to this byte array output stream.
                             System.out.println("read " + readNum + " bytes,");
@@ -359,30 +370,34 @@ public boolean landscape;
                     byte[] imgByte = bos.toByteArray();
 
                     instant.setImgByte(imgByte);
-                    instant.setName(item.getName());
-                    ArrayList<IdRight> idRights=new ArrayList<>();
-                    IdRight idRight=new IdRight("LECTURE");
-                    ArrayList<String> groupIdList=new ArrayList<>();
-                    ArrayList<String> userIdList=new ArrayList<>();
-                    for(RecyclerViewItem friendOrGroup: friendOrGroupSelected){
-                        if(friendOrGroup.getType().equals("my_group_friend"))
+                    ArrayList<IdRight> idRights = new ArrayList<>();
+                    IdRight idRight = new IdRight("LECTURE");
+                    ArrayList<String> groupIdList = new ArrayList<>();
+                    ArrayList<String> userIdList = new ArrayList<>();
+                    for (RecyclerViewItem friendOrGroup : friendOrGroupSelected) {
+                        if (friendOrGroup.getType().equals("my_group_friend"))
                             groupIdList.add(friendOrGroup.getId());
-                        if(friendOrGroup.getType().equals("my_friend"))
+                        if (friendOrGroup.getType().equals("my_friend"))
                             userIdList.add(friendOrGroup.getId());
                     }
+
                     idRight.setGroupIdList(groupIdList);
                     idRight.setUserIdList(userIdList);
                     idRights.add(idRight);
                     instant.setIdRight(idRights);
-                    System.out.println(instant.toString());
+
+                    listInstant.add(instant);
+                }
                     Moment moment=new Moment();
-                    moment.setName("WWE SURVIVOR - KANSAS CITY");
+                    moment.setName("Appli Android: Titre_Moment_A_DEFINIR");
                     ArrayList<KeyValue> descriptionsList=new ArrayList<KeyValue>();
                     descriptionsList.add(new KeyValue("Description",descriptionText.getText().toString()));
                     moment.setDescriptionsList(descriptionsList);
-                    ArrayList<Instant> listInstant=new ArrayList<Instant>();
-                    listInstant.add(instant);
+
                     moment.setInstantList(listInstant);
+
+                    moment.setTimeZone(timeZone);
+                    moment.setPublishDate(new Date());
 
                     System.out.println("Moment to string " + moment.toString());
                     Log.d(TAG,"Llist instant size " + listInstant.size());
@@ -392,7 +407,7 @@ public boolean landscape;
                     }
 
                 }
-    }
+
         });
     }
     private void dumpEvent(MotionEvent event) {
@@ -654,15 +669,10 @@ public Matrix matrixHorizontal=new Matrix();
     @Override
     public void postMomentToServer_NotifyWhenGetFinish(Boolean result) {
         if(result == true){
-            Log.d(TAG,"SFGSWG?MSDFNGLKSNGLNSWDLFNSD./NFLJSDN");
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             Bundle b = new Bundle();
             b.putString("Uniqid","From SendMomentActivity");
-            b.putString("access_token",HomeActivity.access_token);
-            b.putString("token_type",HomeActivity.token_type);
-            b.putString("refresh_token",HomeActivity.refresh_token);
-            b.putString("mode_auth",HomeActivity.mode_auth);
             b.putString("albumId",getIntent().getStringExtra("albumId"));
             intent.putExtras(b);
             startActivity(intent);

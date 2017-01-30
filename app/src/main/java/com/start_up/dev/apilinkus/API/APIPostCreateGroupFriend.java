@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.start_up.dev.apilinkus.HomeActivity;
+import com.start_up.dev.apilinkus.Model.Authentification;
 import com.start_up.dev.apilinkus.Model.FriendGroup;
 import com.start_up.dev.apilinkus.ProfileActivity;
 
@@ -29,7 +30,7 @@ public class APIPostCreateGroupFriend extends AsyncTask<Object, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Object... params) {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-        headers.add("Authorization", "Bearer " + HomeActivity.access_token);
+        headers.add("Authorization", "Bearer " + Authentification.getAccess_token());
         headers.add("Content-Type", "application/json");
         String result="";
         try{

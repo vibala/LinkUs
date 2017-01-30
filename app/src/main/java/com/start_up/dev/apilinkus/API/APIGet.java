@@ -7,6 +7,7 @@ import android.util.Log;
 import com.start_up.dev.apilinkus.Auth.Message;
 import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Model.Album;
+import com.start_up.dev.apilinkus.Model.Authentification;
 import com.start_up.dev.apilinkus.ProfileActivity;
 
 import org.json.JSONArray;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 /**
  * Created by Huong on 12/12/2016.
  */
@@ -43,10 +45,10 @@ public abstract class  APIGet extends AsyncTask<String, Void, Integer> {
 
 
 
-    @Override
+        @Override
         protected Integer doInBackground(String... params) {
             Integer result = 0;
-            final String authorization = "Bearer " + HomeActivity.access_token;
+            final String authorization = "Bearer " + Authentification.getAccess_token();
             Log.d("Authorization", authorization);
 
             try {
