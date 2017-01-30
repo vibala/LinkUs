@@ -100,7 +100,7 @@
     <string name="privacy_policy">Politque de confidentialité</string>
     <string name="title_activity_test">test</string>
 
-
+    <string name="menu_simple"> Menu simple </string>
 
     <!-- CIRCLE -->
     <string name="invite_friend">Ajouter</string>
