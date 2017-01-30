@@ -46,7 +46,7 @@
                 android:textSize="@dimen/songs_count" />
 
             <ImageView
-                android:id="@+id/overflow"
+                android:id="@+id/image_view_overflow"
                 android:layout_width="@dimen/ic_album_overflow_width"
                 android:layout_height="@dimen/ic_album_overflow_height"
                 android:layout_alignParentRight="true"

@@ -18,8 +18,6 @@ import org.springframework.web.client.RestTemplate;
 
 public class APIPostChangeFullName extends AsyncTask {
 
-    private RestTemplate restTemplate = new RestTemplate();
-
     @Override
     protected Object doInBackground(Object[] params) {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();

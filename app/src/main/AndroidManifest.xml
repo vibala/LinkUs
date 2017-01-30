@@ -51,7 +51,9 @@
         <activity
             android:name=".GalleryActivity"></activity>
         <activity
-            android:name=".AfterNotificationActivity"></activity>
+            android:name=".AfterNotificationActivity">
+
+        </activity>
 
         <activity
             android:name=".SendMomentActivity"
@@ -62,7 +64,10 @@
         <activity
             android:name=".AlbumActivityIntentMomentDetailed"
             android:theme="@style/Theme.AppCompat" />
-        <activity android:name=".HomeActivity" />
+
+        <activity android:name=".HomeActivity">
+
+        </activity>
 
         <!-- Firebase -->
         <service android:name=".Service.MyFirebaseMessagingService">

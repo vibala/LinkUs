@@ -36,7 +36,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
     private ClickListener mCallback;
     private int selected_album_position;
 
-    public class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class AlbumViewHolder extends RecyclerView.ViewHolder{
         public TextView title, count;
         public ImageView thumbnail, overflow;
 
@@ -46,25 +46,17 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
             title = (TextView) itemView.findViewById(R.id.title);
             count = (TextView) itemView.findViewById(R.id.countRelatives);
             thumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
-            thumbnail.setOnClickListener(this);
-            overflow = (ImageView) itemView.findViewById(R.id.overflow);
-            overflow.setOnClickListener(this);
-        }
-
-
-        @Override
-        public void onClick(View view) {
-            switch(view.getId()){
-                case R.id.thumbnail:
-                    itemListener.recyclerViewListClicked(view,this.getAdapterPosition());
-                    break;
-                case R.id.overflow:
-                    selected_album_position = this.getAdapterPosition();
-                    Log.d(TAG,"Selected album position " + selected_album_position);
-                    break;
-            }
+            thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    itemListener.recyclerViewListClicked(view,getAdapterPosition());
+                }
+            });
+            overflow = (ImageView) itemView.findViewById(R.id.image_view_overflow);
 
         }
+
+
     }
 
     /*Listener qui sera implémenté dans la classe ProfileActivity*/
@@ -105,6 +97,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
             holder.overflow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    selected_album_position = holder.getAdapterPosition();
+                    Log.d(TAG,"Selected album position after" + selected_album_position);
                     showPopupMenu(holder.overflow);
                 }
             });
@@ -133,11 +127,11 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.action_share_gpf:
-                    Log.d(TAG,"Share this album with group of friends");
+                    Log.d(TAG,"Share this album with group of friends " + selected_album_position);
                     mCallback.OnShareOwnedAlbumListener(selected_album_position,"friendGroup");
                     return true;
                 case R.id.action_share_f:
-                    Log.d(TAG,"Share this album with friends");
+                    Log.d(TAG,"Share this album with friends " + selected_album_position);
                     mCallback.OnShareOwnedAlbumListener(selected_album_position,"friends");
                     return true;
                 default:

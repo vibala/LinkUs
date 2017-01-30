@@ -65,16 +65,9 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
     public void albumByAlbumId_GetResponse(JSONObject responseObject) {
         //Le gson ne gere pas le format date de base il faut contourner le bail avec une classe JsonFateDeserializer ou Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create(); (not tested)
         Gson gson=new GsonBuilder().registerTypeAdapter(Date.class, new JsonDateDeserializer()).create();
-
-        Log.d("response",responseObject.toString());
         selectedAlbum = gson.fromJson(responseObject.toString(), Album.class);
         clearData();
-
-        moments.clear();
-        Log.d(TAG,"Moment size "  + moments.size());
-
         moments.addAll(selectedAlbum.getMoments());
-        Log.d(TAG,"Moment n 1 "  + moments.get(0).getName());
     }
 
     @Override
@@ -111,7 +104,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
             moments = selectedAlbum.getMoments();
         }else{
             Log.d(TAG,"Album id value " + getArguments().getString("albumId"));
-            api.getAlbumByAlbumId(this,getArguments().getString("albumId"));
+            api.getAlbumByAlbumId(this,getArguments().getString("albumId"),getContext());
         }
 
         Button uploadButton = (Button) momentView.findViewById(R.id.upload_button);
