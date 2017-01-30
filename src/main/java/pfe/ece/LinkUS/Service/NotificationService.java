@@ -2,7 +2,9 @@ package pfe.ece.LinkUS.Service;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import pfe.ece.LinkUS.Model.Moment;
 import pfe.ece.LinkUS.Model.Notification;
+import pfe.ece.LinkUS.Model.NotificationMoment;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.NotificationRepository;
 
 /**
@@ -22,22 +24,21 @@ public class NotificationService {
     public Notification findNotification(String id) {
         return notificationRepository.findOne(id);
     }
-    public Notification createSaveNotification(String userId, String albumId, String momentId, Object o) {
-        Notification notification = createNotification(userId, albumId, momentId, o);
-        if(!addNotification(notification)) {
-            modifyNotification(notification);
+    public NotificationMoment createSaveNotificationMoment(String userId, String albumId, String momentId) {
+        NotificationMoment notificationMoment = createNotificationMoment(userId, albumId, momentId);
+        if(!addNotification(notificationMoment)) {
+            modifyNotification(notificationMoment);
         }
-        return notification;
+        return notificationMoment;
     }
 
-    public Notification createNotification(String userId, String albumId, String momentId, Object o) {
-        Notification notification = new Notification();
-        notification.setUserId(userId);
-        notification.setAlbumId(albumId);
-        notification.setMomentId(momentId);
-        notification.setType(o.getClass().toString());
-        notification.setObject(o);
-        return notification;
+    public NotificationMoment createNotificationMoment(String userId, String albumId, String momentId) {
+        NotificationMoment notificationMoment = new NotificationMoment();
+        notificationMoment.setUserId(userId);
+        notificationMoment.setAlbumId(albumId);
+        notificationMoment.setMomentId(momentId);
+        notificationMoment.setType("Moment");
+        return notificationMoment;
     }
 
     public boolean addNotification(Notification notification) {

@@ -59,8 +59,9 @@ public class HomeController {
 
         if(form==null){
             LOGGER.error("User is null");
-        }else{
-            LOGGER.error("User is not null");
+        } else {
+            // Email en lowercase toujours
+            form.setEmail(form.getEmail().toLowerCase());
         }
 
         // contents as before

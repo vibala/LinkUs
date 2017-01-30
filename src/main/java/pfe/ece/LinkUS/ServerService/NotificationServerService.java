@@ -1,8 +1,6 @@
 package pfe.ece.LinkUS.ServerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import pfe.ece.LinkUS.Model.Moment;
-import pfe.ece.LinkUS.Model.Notification;
 import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
 import pfe.ece.LinkUS.Service.NotificationTokenServiceImpl;
 import pfe.ece.LinkUS.Service.UserService;
@@ -12,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -113,7 +110,7 @@ public class NotificationServerService {
         }
     }
 
-    /*public void sendNotificationWithTokenNotification(ArrayList<String> listUserTokenNotification, Notification notification) throws IOException {
+    /*public void sendNotificationWithTokenNotification(ArrayList<String> listUserTokenNotification, NotificationMoment notification) throws IOException {
 
         for(String token : listUserTokenNotification) {
 

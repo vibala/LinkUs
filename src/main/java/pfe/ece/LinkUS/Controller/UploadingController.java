@@ -8,9 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Enum.Right;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.NotificationRepository;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
 import pfe.ece.LinkUS.ServerService.NotificationServerService;
 import pfe.ece.LinkUS.Service.AlbumService;
@@ -19,7 +16,6 @@ import pfe.ece.LinkUS.Service.NotificationService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Inet4Address;
@@ -161,10 +157,10 @@ public class UploadingController {
             //Liste qui a pour but de lister les token des utilisateurs ayant le droit de lecture
             ArrayList<String> tokenUserListWithReadRight = notificationServerService.getTokenUserListFromIdUserList(listUserIdListWithReadRight,userId);
 
-            Notification notification = notificationService.createSaveNotification(userId, albumId, moment.getId(), moment);
+            NotificationMoment notificationMoment = notificationService.createSaveNotificationMoment(userId, albumId, moment.getId());
 
-            //On demande a FireBase d envoyer une notification a ces personnes (FireBase va utiliser les Token pour envoyer la notif car chaque token correspond a une appli installé sur un device.)
-            notificationServerService.sendObjectWithTokenNotification(tokenUserListWithReadRight, notification);
+            //On demande a FireBase d envoyer une notificationMoment a ces personnes (FireBase va utiliser les Token pour envoyer la notif car chaque token correspond a une appli installé sur un device.)
+            notificationServerService.sendObjectWithTokenNotification(tokenUserListWithReadRight, notificationMoment);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }

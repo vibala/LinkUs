@@ -60,9 +60,10 @@ public class RegisterController {
 
         if(form==null){
             LOGGER.error("User is null");
+        } else {
+            // Email en lowercase toujours
+            form.setEmail(form.getEmail().toLowerCase());
         }
-        // Email en lowercase toujours
-        form.setEmail(form.getEmail().toLowerCase());
 
         // contents as before
         if (bindingResult.hasErrors()) {

@@ -37,12 +37,4 @@ public class LoginController {
         return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
 
     }
-
-    @RequestMapping(value = "/logged", method = RequestMethod.GET)
-    public ResponseEntity<Message> getUserId(){
-        // Retrieve the id from the current user object
-        //String id = ((CurrentUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-        Message msg = new Message(100,"UserID","2");
-        return new ResponseEntity<>(msg, HttpStatus.OK);
-    }
 }
