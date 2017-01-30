@@ -158,7 +158,8 @@ public class UploadingController {
             //Liste qui a pour but de lister les token des utilisateurs ayant le droit de lecture
             ArrayList<String> tokenUserListWithReadRight = notificationServerService.getTokenUserListFromIdUserList(listUserIdListWithReadRight,userId);
 
-            NotificationMoment notificationMoment = notificationService.createSaveNotificationMoment(userId, albumId, moment.getId(), NotificationType.MOMENT);
+            User user = userService.findUserById(userId);
+            NotificationMoment notificationMoment = notificationService.createSaveNotificationMoment(user, albumId, moment.getId(), NotificationType.MOMENT);
 
             //On demande a FireBase d envoyer une notificationMoment a ces personnes (FireBase va utiliser les Token pour envoyer la notif car chaque token correspond a une appli installé sur un device.)
             notificationServerService.sendObjectWithTokenNotification(tokenUserListWithReadRight, notificationMoment);

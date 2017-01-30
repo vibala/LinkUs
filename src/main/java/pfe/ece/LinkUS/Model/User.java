@@ -73,6 +73,8 @@ public class User implements Serializable {
     @Field("friendGroupList")
     private ArrayList<String> friendGroupIdList = new ArrayList<>();
 
+    private ArrayList<String> notificationList = new ArrayList<>();
+
     @Field("configUser")
     private ConfigUser configUser = new ConfigUser();
 
@@ -240,5 +242,13 @@ public class User implements Serializable {
 
     public void setFriendRequestPendingList(ArrayList<String> friendRequestPendingList) {
         this.friendRequestPendingList = friendRequestPendingList;
+    }
+
+    public ArrayList<String> getNotificationList() {
+        return notificationList;
+    }
+
+    public void setNotificationList(ArrayList<String> notificationList) {
+        this.notificationList = notificationList;
     }
 }

@@ -1,16 +1,16 @@
 package pfe.ece.LinkUS.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pfe.ece.LinkUS.Model.Album;
-import pfe.ece.LinkUS.Model.Moment;
-import pfe.ece.LinkUS.Model.NotificationFriendRequest;
-import pfe.ece.LinkUS.Model.NotificationMoment;
+import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.MomentService;
 import pfe.ece.LinkUS.Service.NotificationService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
+import pfe.ece.LinkUS.Service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +21,16 @@ import java.util.List;
 @RequestMapping("/userNotification")
 public class NotificationController {
 
-
     @Autowired
     NotificationService notificationService;
     @Autowired
     AlbumService albumService;
     @Autowired
     AccessTokenService accessTokenService;
+    @Autowired
+    UserService userService;
 
-    @RequestMapping("/moment")
+    @RequestMapping("/getMoment")
     public String getNotificationMoment(@RequestParam("notificationId") String notificationId) {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
@@ -37,8 +38,6 @@ public class NotificationController {
         NotificationMoment notificationMoment =
                 (NotificationMoment) notificationService.findNotification(notificationId);
         if(notificationMoment != null) {
-
-            MomentService momentService = new MomentService();
 
             List<String> momentIdList = new ArrayList<>();
             momentIdList.add(notificationMoment.getMomentId());
@@ -53,13 +52,26 @@ public class NotificationController {
         return null;
     }
 
-    @RequestMapping("/friendRequest")
+    @RequestMapping("/delete")
+    public ResponseEntity delete(@RequestParam("notificationId") String notificationId) {
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        User user = userService.findUserById(userId);
+
+        List<Notification> notificationsList = notificationService.findNotificationByIdAndUserId(notificationId, userId);
+
+        if(notificationService.deleteNotifications(notificationsList, user)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
+    }
+
+    @RequestMapping("/getFriendRequest")
     public String getNotificationFriend(@RequestParam("notificationId") String notificationId) {
 
         NotificationFriendRequest notificationFriendRequest =
                 (NotificationFriendRequest)notificationService.findNotification(notificationId);
         if(notificationFriendRequest != null) {
-
 
 
         }
