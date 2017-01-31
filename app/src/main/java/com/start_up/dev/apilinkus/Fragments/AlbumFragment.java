@@ -203,8 +203,6 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
             adapter.notifyItemRangeChanged(i, moments.size());
             i++;
         }
-        moments=new ArrayList<>();
-
     }
 
 }
