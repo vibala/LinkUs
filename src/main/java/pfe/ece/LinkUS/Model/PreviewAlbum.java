@@ -11,6 +11,7 @@ public class PreviewAlbum {
     private String albumId;
     private String imgUrl;
     private String albumName;
+    private String ownerId;
 
     public String getAlbumId() {
         return albumId;
@@ -34,6 +35,14 @@ public class PreviewAlbum {
 
     public void setAlbumName(String albumName) {
         this.albumName = albumName;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
     @Override

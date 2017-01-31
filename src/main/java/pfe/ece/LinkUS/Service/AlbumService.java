@@ -251,6 +251,7 @@ public class AlbumService {
         previewAlbum.setAlbumId(album.getId());
         previewAlbum.setImgUrl(album.getImageUrl());
         previewAlbum.setAlbumName(album.getName());
+        previewAlbum.setOwnerId(album.getOwnerId());
         return previewAlbum;
     }
 
@@ -491,6 +492,17 @@ public class AlbumService {
         // On enleve les moments auquels on a pas accès
         momentService.checkAllMomentDataRight(album, userId);
         return momentService.findMomentsInAlbum(album, momentIdList);
+    }
+
+    public List<Moment> findAllMomentsCheckRightInAlbum(String albumId, String userId) {
+
+        Album album = findAlbumById(albumId);
+
+        MomentService momentService = new MomentService();
+
+        // On enleve les moments auquels on a pas accès
+        momentService.checkAllMomentDataRight(album, userId);
+        return album.getMoments();
     }
     /**
      * Method preparing the users' albums: new album, new moment

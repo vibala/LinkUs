@@ -184,10 +184,10 @@ public class AlbumController {
         return albumService.getUrlsFromMoment(userId, albumId, momentId).toString();
     }
 
-    @RequestMapping(value = "/findMoments", params = {"albumId"})
-    public String findMomentsInAlbum(@RequestParam("albumId") String albumId, @RequestBody List<String> momentIdList) {
+    @RequestMapping(value = "/findAllMoments", params = {"albumId"})
+    public String findMomentsInAlbum(@RequestParam("albumId") String albumId) {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-        return albumService.findMomentsCheckRightInAlbum(albumId, userId, momentIdList).toString();
+        return albumService.findAllMomentsCheckRightInAlbum(albumId, userId).toString();
     }
 }
