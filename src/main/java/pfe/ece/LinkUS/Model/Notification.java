@@ -14,7 +14,6 @@ public abstract class Notification {
     String id;
     NotificationType type;
     String userId;
-    String token;
 
     public String getUserId() {
         return userId;
@@ -24,13 +23,6 @@ public abstract class Notification {
         this.userId = userId;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public NotificationType getType() {
         return type;
