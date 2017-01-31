@@ -13,6 +13,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.Dimension;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -78,46 +79,17 @@ public class SendMomentActivity extends AppCompatActivity implements APIGetListG
     private APIPostMoment_Observer activity = this;
     private Context mContext = this;
 
-    private void prepareTestModels() {
 
-        api.getListFriend(this);
-        api.getListGroupFriend(this);
+    private void clearDataFragment(){
 
-        RecyclerViewItem a = new RecyclerViewItem("my_friend", "1", "Maroaaon5","https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/15590012_1315905178482946_1583832953346816464_n.jpg?oh=8d20327cf060dc640b40d9c4c3c7d838&oe=59122F99");
-        friendList.add(a);
+        imageList.clear();
+        friendList.clear();
+        friendOrGroupSelected.clear();
 
-        a = new RecyclerViewItem("my_friend", "2","Suazfzagar Ray","https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/13331054_10209337159285692_1032067942344766374_n.jpg?oh=6b53c9ddfba81a637fc22ff684814bfa&oe=5914BADA");
-        friendList.add(a);
-
-        a = new RecyclerViewItem("my_friend", "3","Bon Jazfovi", "https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/15109626_662131003967305_5228921117221664410_n.jpg?oh=4c90a007be4208180953469612e657fa&oe=58DA6FC1");
-        friendList.add(a);
-
-        a = new RecyclerViewItem("my_friend", "4", "The Corrs","https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/15109626_662131003967305_5228921117221664410_n.jpg?oh=4c90a007be4208180953469612e657fa&oe=58DA6FC1");
-        friendList.add(a);
-
-
-        a = new RecyclerViewItem("my_group_friend", "11","my_group3", "https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/15109626_662131003967305_5228921117221664410_n.jpg?oh=4c90a007be4208180953469612e657fa&oe=58DA6FC1");
-        friendList.add(a);
-
-        a = new RecyclerViewItem("my_group_friend", "12","my_group4", "https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/15109626_662131003967305_5228921117221664410_n.jpg?oh=4c90a007be4208180953469612e657fa&oe=58DA6FC1");
-        friendList.add(a);
-
-
-        /*a = new RecyclerViewItem("/storage/emulated/0/pictures/messenger/received_10211846093536911.jpeg","received_10211846093536911.jpeg", new File("/storage/emulated/0/pictures/messenger/received_10211846093536911.jpeg"),true);
-        imageList.add(a);
-
-        a = new RecyclerViewItem("/storage/emulated/0/snapchat/snapchat-5600419020900227079.jpg","snapchat-5600419020900227079.jpg", new File("/storage/emulated/0/snapchat/snapchat-5600419020900227079.jpg"),true);
-        imageList.add(a);
-
-        a = new RecyclerViewItem("/storage/emulated/0/snapchat/snapchat-8595444131681156335.jpg","snapchat-8595444131681156335.jpg", new File("/storage/emulated/0/snapchat/snapchat-8595444131681156335.jpg"),true);
-        imageList.add(a);
-        a = new RecyclerViewItem("/storage/emulated/0/whatsapp/media/whatsapp images/img-20170115-wa0001.jpg","img-20170115-wa0001.jpg", new File("/storage/emulated/0/whatsapp/media/whatsapp images/img-20170115-wa0001.jpg"),true);
-        imageList.add(a);
-        a = new RecyclerViewItem("/storage/emulated/0/pictures/screenshots/screenshot_2016-12-26-01-39-11.png","screenshot_2016-12-26-01-39-11.png", new File("/storage/emulated/0/pictures/screenshots/screenshot_2016-12-26-01-39-11.png"),true);
-        imageList.add(a);
-*/
-
+        friendAdapter.notifyDataSetChanged();
+        imageAdapter.notifyDataSetChanged();
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +102,7 @@ public class SendMomentActivity extends AppCompatActivity implements APIGetListG
 
     }
 
-public boolean landscape;
+    public boolean landscape;
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -179,7 +151,7 @@ public boolean landscape;
         api.getListGroupFriend(this);
         //Intent
         Intent intent =getIntent();
-         imageList=(ArrayList<RecyclerViewItem>) intent.getSerializableExtra("selectedList");
+        imageList=(ArrayList<RecyclerViewItem>) intent.getSerializableExtra("selectedList");
 
 
         friendAdapter = new ImageAndTextListAdapter(getApplicationContext(),friendList,this);
@@ -196,6 +168,9 @@ public boolean landscape;
 
         scrollview=(LockableScrollView)  findViewById(R.id.send_moment_scroll_image_displayed);
         imgDisplayed=(ImageView) findViewById(R.id.send_moment_image_displayed);
+        //Une image view ne peut pas depasser cette taille normalement...
+        imgDisplayed.setMaxHeight((int)MAX_WIDTH_BITMAP);
+        imgDisplayed.setMaxWidth((int)MAX_HEIGHT_BITMAP);
         widthScreen = getApplicationContext().getResources().getDisplayMetrics().widthPixels;
         heightScreen = getApplicationContext().getResources().getDisplayMetrics().heightPixels;
         /*scrollview=(ScrollView) findViewById(R.id.send_moment_scroll_image_displayed);
@@ -273,9 +248,9 @@ public boolean landscape;
                                 }
                             }
                             else{
-                            if(matrixX<(widthScreen-bitmapDisplayed.getWidth()) || matrixX>0){
-                                matrix.set(bkpMatrix);
-                            }
+                                if(matrixX<(widthScreen-bitmapDisplayed.getWidth()) || matrixX>0){
+                                    matrix.set(bkpMatrix);
+                                }
                             }
 
                         } else if (mode == ZOOM) {
@@ -300,7 +275,7 @@ public boolean landscape;
 
                 img.setImageMatrix(matrix);
                 return true;
-        }
+            }
         });
         System.out.println(imageList.get(0).getId());
         //OnSaveState
@@ -348,7 +323,7 @@ public boolean landscape;
                     instant.setTimeZone(timeZone);
 
                     System.out.println(instant.getName());
-                    FileInputStream fis = null;
+  /*                  FileInputStream fis = null;
                     try {
                         fis = new FileInputStream(file);
                     } catch (FileNotFoundException e) {
@@ -368,7 +343,12 @@ public boolean landscape;
                         ex.getMessage();
                     }
                     byte[] imgByte = bos.toByteArray();
+*/
 
+                    Bitmap bmp = getBitmapResizeMaxFromFile(file.getAbsolutePath(),MAX_WIDTH_UPLOAD,MAX_HEIGHT_UPLOAD);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] imgByte = stream.toByteArray();
                     instant.setImgByte(imgByte);
                     ArrayList<IdRight> idRights = new ArrayList<>();
                     IdRight idRight = new IdRight("LECTURE");
@@ -388,25 +368,24 @@ public boolean landscape;
 
                     listInstant.add(instant);
                 }
-                    Moment moment=new Moment();
-                    moment.setName("Appli Android: Titre_Moment_A_DEFINIR");
-                    ArrayList<KeyValue> descriptionsList=new ArrayList<KeyValue>();
-                    descriptionsList.add(new KeyValue("Description",descriptionText.getText().toString()));
-                    moment.setDescriptionsList(descriptionsList);
+                Moment moment=new Moment();
+                moment.setName("Appli Android: Titre_Moment_A_DEFINIR");
+                ArrayList<KeyValue> descriptionsList=new ArrayList<KeyValue>();
+                descriptionsList.add(new KeyValue("Description",descriptionText.getText().toString()));
+                moment.setDescriptionsList(descriptionsList);
 
-                    moment.setInstantList(listInstant);
+                moment.setInstantList(listInstant);
 
-                    moment.setTimeZone(timeZone);
-                    moment.setPublishDate(new Date());
+                moment.setTimeZone(timeZone);
+                moment.setPublishDate(new Date());
 
-                    System.out.println("Moment to string " + moment.toString());
-                    Log.d(TAG,"Llist instant size " + listInstant.size());
-                    if(getIntent() != null){
-
-                        new APILinkUS().addMomentToMyAlbum(moment,getIntent().getStringExtra("albumId"),"true",activity,mContext);
-                    }
-
+                System.out.println("Moment to string " + moment.toString());
+                Log.d(TAG,"List instant size " + listInstant.size());
+                if(getIntent() != null){
+                    new APILinkUS().addMomentToMyAlbum(moment,getIntent().getStringExtra("albumId"),"true",activity,mContext);
                 }
+
+            }
 
         });
     }
@@ -455,7 +434,7 @@ public boolean landscape;
         if (friendOrGroupSelected == null | friendOrGroupSelected.size() == 0){
             Toast.makeText(getApplicationContext(), "Vous devez selectionner au moins 1 destinataire", Toast.LENGTH_SHORT).show();
             return true;
-    }
+        }
         return false;
     }
 
@@ -504,6 +483,36 @@ public boolean landscape;
 
         setImageDisplay(uri);
     }
+    //Plus grand ca fait outofMemory dans l'upload...
+    private final float MAX_WIDTH_UPLOAD=1024.0f;
+    private final float MAX_HEIGHT_UPLOAD=1024.0f;
+    public Bitmap getBitmapResizeMaxFromFile(String pathFile,float maxWidth,float maxHeight){
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        options.inSampleSize = 2;
+        Bitmap bmp = BitmapFactory.decodeFile(pathFile, options);
+
+        float widthImage = ((float) bmp.getWidth());
+        float heightImage = ((float) bmp.getHeight());
+
+        float ratio;
+        ratio = ((float) bmp.getHeight()) / ((float) bmp.getWidth());
+
+        //Normalement pas besoin car options.inSampleSize = 2; precedemment
+        if(widthImage>=MAX_WIDTH_UPLOAD){
+            float ratioReduc= ((float)widthImage)/MAX_WIDTH_UPLOAD;
+            widthImage= (int)MAX_WIDTH_UPLOAD;
+            heightImage=(int) (heightImage/ratioReduc);
+        }
+        if(heightImage>=MAX_HEIGHT_UPLOAD){
+            float ratioReduc= ((float)heightImage)/MAX_HEIGHT_UPLOAD;
+            heightImage= (int)MAX_HEIGHT_UPLOAD;
+            widthImage=(int) (widthImage/ratioReduc);
+        }
+
+        bmp = scaleBitmap(bmp, (int) widthImage, (int) heightImage);
+
+        return bmp;
+    }
     public void setImageDisplay(String uri) {
         uriDisplayed = uri;
         if (bitmapDisplayed != null) {
@@ -512,8 +521,12 @@ public boolean landscape;
         }
 
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        options.inSampleSize = 2;
         System.out.println(uriDisplayed);
-        bitmapDisplayed = BitmapFactory.decodeFile(uriDisplayed, options);
+        bitmapDisplayed = getBitmapResizeMaxFromFile(uriDisplayed,MAX_WIDTH_BITMAP,MAX_HEIGHT_BITMAP);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmapDisplayed.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+       // bitmapDisplayed = BitmapFactory.decodeFile(uriDisplayed, options);
 
         float widthImage = ((float) bitmapDisplayed.getWidth());
         float heightImage = ((float) bitmapDisplayed.getHeight());
@@ -569,17 +582,33 @@ public boolean landscape;
 
     private float HEIGHT_IMG_DISPLAYED;
     public boolean vertical =true;
-public Matrix matrixVertical=new Matrix();
-public Matrix matrixHorizontal=new Matrix();
+    public Matrix matrixVertical=new Matrix();
+    public Matrix matrixHorizontal=new Matrix();
+    //Plus grande taille pour possible pour decoder dans une bitmap Bitmap.decode... 4096 'lIMAGEview doit aussi set avec ces dimension max...
+    private static float MAX_WIDTH_BITMAP=4096.0f;
+    private static float MAX_HEIGHT_BITMAP=4096.0f;
+
 
     public static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHeight) {
+
+        //Normalement pas besoin car options.inSampleSize = 2; precedemment
+        if(newWidth>=MAX_WIDTH_BITMAP){
+            float ratioReduc= ((float)newWidth)/MAX_WIDTH_BITMAP;
+            newWidth= (int)MAX_WIDTH_BITMAP;
+            newHeight=(int) (newHeight/ratioReduc);
+        }
+        if(newHeight>=MAX_HEIGHT_BITMAP){
+            float ratioReduc= ((float)newHeight)/MAX_HEIGHT_BITMAP;
+            newHeight= (int)MAX_HEIGHT_BITMAP;
+            newWidth=(int) (newWidth/ratioReduc);
+        }
+
         Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
 
         float scaleX = newWidth / (float) bitmap.getWidth();
         float scaleY = newHeight / (float) bitmap.getHeight();
         float pivotX = 0;
         float pivotY = 0;
-
         Matrix scaleMatrix = new Matrix();
         scaleMatrix.setScale(scaleX, scaleY, pivotX, pivotY);
 
@@ -680,6 +709,16 @@ public Matrix matrixHorizontal=new Matrix();
         }else{
             Toast.makeText(this,"Failed to upload to the server ! Please retry later",Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        clearDataFragment();
+        Intent intent = new Intent(this, GalleryActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

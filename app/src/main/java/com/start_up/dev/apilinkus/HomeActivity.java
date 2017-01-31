@@ -2,6 +2,7 @@ package com.start_up.dev.apilinkus;
 
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,6 +17,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -122,7 +124,6 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     private static final String TAG_ABOUT_US = "A propos de Linkus";
     private static final String TAG_PRIVACY_POLICY = "Politique de confidentialité";
     private ArrayList<Album> albums;
-    public static String userId;
 
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
@@ -141,6 +142,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         Log.d(TAG, "HomeActivity landscape On create");
         setContentView(R.layout.activity_main);
 
+        isStoragePermissionGranted();
         api = new APILinkUS();
         albums = new ArrayList<>();
         toolbar = (Toolbar) findViewById(R.id.toolbarMain);
@@ -664,7 +666,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     @Override
     public void onUpdateSubscription(String type, int length, String unit) {
 
-        Subscription subscription = new Subscription(type, userId, DateUtil.getCurrentDate());
+        Subscription subscription = new Subscription(type, Authentification.getUserId(), DateUtil.getCurrentDate());
 
         if (type.contentEquals("FRIEND")) {
             if (length == 1 && unit.contentEquals("YEAR")) {
@@ -805,6 +807,23 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         }
 
 
+    public boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG,"Permission is granted");
+                return true;
+            } else {
+
+                Log.v(TAG,"Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG,"Permission is granted");
+            return true;
+        }
+    }
 }
 
 

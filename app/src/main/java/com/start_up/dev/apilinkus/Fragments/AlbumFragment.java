@@ -25,6 +25,7 @@ import com.start_up.dev.apilinkus.Adapter.MomentsAdapter;
 import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Album;
+import com.start_up.dev.apilinkus.Model.Authentification;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.R;
 import com.start_up.dev.apilinkus.Tool.JsonDateDeserializer;
@@ -97,7 +98,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        userId = HomeActivity.userId;
+        userId = Authentification.getUserId();
         Log.d(TAG,"User id " + userId);
         if(savedInstanceState != null){
             selectedAlbum = (Album) savedInstanceState.getSerializable("selected_album");
@@ -112,9 +113,9 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //L'album peut ne pas avoir encore été téléchargé
-                if(selectedAlbum!=null)
+                if(selectedAlbum!=null) {
                     mCallback.momentFragmentOnClickButtonUpload(selectedAlbum.getId());
+                }
             }
         });
         recyclerView = (RecyclerView) momentView.findViewById(R.id.moment_recyclerView);
@@ -202,7 +203,6 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
             adapter.notifyItemRangeChanged(i, moments.size());
             i++;
         }
-
     }
 
 }

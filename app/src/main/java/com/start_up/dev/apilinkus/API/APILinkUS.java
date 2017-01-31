@@ -19,12 +19,12 @@ public class APILinkUS {
 
     private Context mContext;
     private final String TAG = APILinkUS.class.getSimpleName();
-    public static String BASE_URL;
+    public static String BASE_URL="http://192.168.43.46:9999";
     //private String userId="1";
 
+    //ARRETER DE TOUCHER LES CONSTRUCTEURS 
     public APILinkUS(Context mContext) {
         this.mContext=mContext;
-        this.BASE_URL="http://192.168.137.77:9999";
     }
     public APILinkUS() {
     }
@@ -194,7 +194,7 @@ public class APILinkUS {
     }
 
     public String createNewAlbum(Album album){
-        String query = "/album/save";
+        String query = "/album/create";
         String urlrequestAPI = BASE_URL + query;
         APIPostCreateAlbum apiPostCreateAlbum = new APIPostCreateAlbum(album);
         String result = "";

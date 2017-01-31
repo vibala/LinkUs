@@ -11,9 +11,12 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.start_up.dev.apilinkus.AfterNotificationActivity;
 import com.start_up.dev.apilinkus.BaseActivity;
 import com.start_up.dev.apilinkus.MainActivity;
 import com.start_up.dev.apilinkus.R;
+
+import java.util.Map;
 
 /**
  * Created by Huong on 10/12/2016.
@@ -53,13 +56,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        String from = remoteMessage.getFrom();
-        Log.d(TAG, "Message received from: " + from);
+        //String from = remoteMessage.getFrom();
+       // Log.d(TAG, "Message received from: " + from);
 
-        if (remoteMessage.getNotification() != null) {
+   /*     if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Notification: " + remoteMessage.getNotification().getBody());
             showNotificacion(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
         }
+*/
+        Map<String, String> data = remoteMessage.getData();
+        String title = data.get("title");
+        int idMoment = Integer.parseInt(data.get("momentId"));
+        String type = data.get("type");
 
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Data: " + remoteMessage.getData());
@@ -69,8 +77,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void showNotificacion(String title, String body) {
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, AfterNotificationActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra();
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

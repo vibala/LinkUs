@@ -27,6 +27,7 @@ import com.start_up.dev.apilinkus.Adapter.AlbumsAdapter;
 import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Album;
+import com.start_up.dev.apilinkus.Model.Authentification;
 import com.start_up.dev.apilinkus.Model.IdRight;
 import com.start_up.dev.apilinkus.R;
 import com.start_up.dev.apilinkus.Tool.JsonDateDeserializer;
@@ -99,7 +100,7 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
                 api.getAlbumsFilter(this,"LECTURE");
             }
 
-            userId = HomeActivity.userId;
+            userId = Authentification.getUserId();
             adapter = new AlbumsAdapter(getContext(),shared_albums,this,null);
 
         }
