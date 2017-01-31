@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.ServerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import pfe.ece.LinkUS.Model.Notification;
+import pfe.ece.LinkUS.Model.NotificationFriendRequest;
 import pfe.ece.LinkUS.Model.NotificationMoment;
 import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
 import pfe.ece.LinkUS.Service.NotificationTokenServiceImpl;
@@ -23,7 +24,8 @@ public class NotificationServerService {
      * FireBase est le serveur qui va nous permettre de gérer les notifications
      */
     private static final String urlServerFireBase = "https://fcm.googleapis.com/fcm/send";
-    private static final String keyServerFireBase="AAAAqKqxT3k:APA91bHQmHhapf24Zg1sdaCiqUSSi-wp_WbATkmLeCOa-qeQmFOG9ltZ9OwZvVwy94gKXvyWSRLKfHHhG95VQfWiebgXSh1JC_47cCdA9XnDxCg49V18CsEY1UiB2cUQufqGTvWqaceyKwKQbO1Zub6mHrsrJJJevQ";
+    private static final String keyServerFireBaseSmartphone="AAAAqKqxT3k:APA91bHQmHhapf24Zg1sdaCiqUSSi-wp_WbATkmLeCOa-qeQmFOG9ltZ9OwZvVwy94gKXvyWSRLKfHHhG95VQfWiebgXSh1JC_47cCdA9XnDxCg49V18CsEY1UiB2cUQufqGTvWqaceyKwKQbO1Zub6mHrsrJJJevQ";
+    private static final String keyServerFireBaseTablet="AAAAw0EBF_o:APA91bFPh1ZH3dTfjtQYu5lQPA-Rjt_xXMobVu9SfJnnsNdJQhKdRqNHxawqvlSDcfhRVkk_qZ3Wn1WIEdq2AW8bX4VZTPyo8xQo-IB55-zyZveUOe1_BanSv94dtvoOdrYqsqjIaqs5";
     @Autowired
     UserService userservice;
     @Autowired
@@ -33,82 +35,65 @@ public class NotificationServerService {
         this.userservice=userservice;
         this.notificationTokenRepository=notificationTokenRepository;
     }
-/*
-    public ArrayList<String> getTokenUserListFromIdUserList(ArrayList<String>  usersIdInList,String userId){
-        ArrayList<String> tokenUserList=new ArrayList<String>();
 
+    public void sendNotificationFriendRequest(NotificationFriendRequest notificationFriendRequest, String token) throws IOException {
 
-        //TEMPORAIRE A SUPPRIMER QUAND IMPLEMENTATION VIGNESH FINI
-            for(String userIdInList:usersIdInList){
-                //On envoit pas la notification a l'utilsiteur qui appel cette fonction
-                if(userIdInList.equals(userId)) {
-                    continue;
-                }
-                                /*Structure de la table NotificationsTokens dans la BD : ID;USERNAME;TOKEN
-                    String userIdFriend = userservice.findUserById(userIdInList).getId();
-                                /*Recupération du token notif de chaque utilisateur à partir de l'username
-                    NotificationTokenServiceImpl notificationTokenService = new NotificationTokenServiceImpl(notificationTokenRepository);
-                    String notification_token = notificationTokenService.getNotifcationTokenByUsername(userIdFriend);
-                                /*Ajout des tokens dans la liste tokenUserList
-                    tokenUserList.add(notification_token);
+        URL url = new URL(urlServerFireBase);
 
-            }
-        //-----
+        String json = "{\"data\":"
+                +"\"id\":\""+notificationFriendRequest.getId()+"\","
+                +"\"fromFriendId\":\""+notificationFriendRequest.getFromFriendId()+"\","
+                +"\"type\": \""+notificationFriendRequest.getType()+"\"},"
+                +"\"description\": \""+notificationFriendRequest.getMessage()+" \","
+                +"\"to\" : \""+token+"\"}";
 
-        return tokenUserList;
+        sendNotificationRequestToFirebase(url,keyServerFireBaseSmartphone,json);
+        //TODO UNIMPLEMENTED sendToFirebase(url,token,notificationMoment,keyServerFireBaseTablet,title);
     }
-*/
 
-    public void sendNotificationMoment(NotificationMoment notification, String token) throws IOException {
-            /**EXEMPLE
-             *
-             * Content-Type:application/json
-             * Authorization:key=AAAAqKqxT3k:APA91bHQmHhapf24Zg1sdaCiqUSSi-wp_WbATkmLeCOa-qeQmFOG9ltZ9OwZvVwy94gKXvyWSRLKfHHhG95VQfWiebgXSh1JC_47cCdA9XnDxCg49V18CsEY1UiB2cUQufqGTvWqaceyKwKQbO1Zub6mHrsrJJJevQ
-             *
-             * {
-             "to": "c4jGkjlpZR8:APA91bGLnUHESRso2e1aYFT77-2NebDBf3r-eII1uvRL965VGWIJohmAfdr_VjqD-5NJ2T9TYWM8kdaPIWvziA1jXmQpd-MReZHO0eycgJvIhUwqTRYn8ElWFXcc5dL2aSqUho37mWtB"
-             ,
-             "data": {
-             "title": "title-data",
-             "description": "description-data"
-             }
-             ,
-             "notification": {
-             "title": "title-notification",
-             "body": "description-notification"
-             }
-             }
-             *
-             */
-            String json = "{\"notification\":{\"title\":\"title-notification\"," +
-                    "\"body\":\"description-notification\"}," +
-                    "\"data\":{\"description\":\""+ notification.toString() +
-                    "\",\"title\":\"notification\"},\"to\":\""+token+"\"}";
+    public void sendNotificationMoment(NotificationMoment notificationMoment,String token) throws IOException {
 
-            URL url = new URL(urlServerFireBase);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setRequestProperty("Content-Type", "application/json;");
-            conn.setRequestProperty("Authorization", "key="+keyServerFireBase);
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            conn.setRequestMethod("POST");
+        URL url = new URL(urlServerFireBase);
+        String title ="Vous avez reçu un nouveau moment";
 
-            OutputStream os = conn.getOutputStream();
-            os.write(json.getBytes("UTF-8"));
-            os.close();
+        String json = "{\"data\": {\"albumId\": \""+notificationMoment.getAlbumId()+"\","
+                +"\"userId\":\""+notificationMoment.getUserId()+"\","
+                +"\"momentId\": \""+notificationMoment.getMomentId()+"\","
+                +"\"id\":\""+notificationMoment.getId()+"\","
+                +"\"title\": \""+title+" \","
+                +"\"type\": \""+notificationMoment.getType()+"\"},"
+                +"\"to\" : \""+token+"\"}";
 
+        sendNotificationRequestToFirebase(url,keyServerFireBaseSmartphone,json);
+        sendNotificationRequestToFirebase(url,keyServerFireBaseTablet,json);
+
+    }
+
+    private void sendNotificationRequestToFirebase( URL url,String keyServerFireBase,String json) throws IOException {
+
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setConnectTimeout(5000);
+        conn.setRequestProperty("Content-Type", "application/json;");
+        conn.setRequestProperty("Authorization", "key="+keyServerFireBase);
+        conn.setDoOutput(true);
+        conn.setDoInput(true);
+        conn.setRequestMethod("POST");
+
+        OutputStream os = conn.getOutputStream();
+        os.write(json.getBytes("UTF-8"));
+        os.close();
+
+        // read the response
+        InputStream input;
+        try {
             // read the response
-            InputStream input;
-            try {
-                // read the response
-                input = new BufferedInputStream(conn.getInputStream());
-                //String result = IOUtils.toString(input);
+            input = new BufferedInputStream(conn.getInputStream());
+            input.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-                input.close();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            conn.disconnect();
+        conn.disconnect();
+
     }
 }

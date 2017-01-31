@@ -5,18 +5,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pfe.ece.LinkUS.Model.FriendGroup;
-import pfe.ece.LinkUS.Model.NbAlbumsAndNbProches;
-import pfe.ece.LinkUS.Model.User;
+import pfe.ece.LinkUS.Model.*;
+import pfe.ece.LinkUS.Model.Enum.NotificationType;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
+import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
+import pfe.ece.LinkUS.ServerService.NotificationServerService;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.FriendGroupService;
+import pfe.ece.LinkUS.Service.NotificationService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -36,6 +39,11 @@ public class UserController {
     @Autowired
     AccessTokenService accessTokenService;
 
+    @Autowired
+    NotificationTokenRepository notificationTokenRepository;
+
+    @Autowired
+    NotificationService notificationService;
 
     private static final Logger LOGGER = Logger.getLogger(UserController.class);
 
@@ -112,6 +120,18 @@ public class UserController {
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
         if(userService.friendRequest(userId, friendId)) {
+            NotificationServerService notificationServerService = new NotificationServerService(userService,notificationTokenRepository);
+
+            User friend = userService.findUserById(friendId);
+            User fromUser = userService.findUserById(userId);
+            NotificationFriendRequest notificationFriendRequest = notificationService.createSaveNotificationFriendRequest(friend,fromUser, NotificationType.FRIEND_REQUEST);
+            //On demande a FireBase d envoyer une notificationMoment a ces personnes (FireBase va utiliser les Token pour envoyer la notif car chaque token correspond a une appli installé sur un device.)
+            try {
+                notificationServerService.sendNotificationFriendRequest(notificationFriendRequest,notificationService.getTokenByUserId(friendId));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.CONFLICT);

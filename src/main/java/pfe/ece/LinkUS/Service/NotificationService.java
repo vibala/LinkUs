@@ -3,11 +3,8 @@ package pfe.ece.LinkUS.Service;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Enum.NotificationType;
-import pfe.ece.LinkUS.Model.Moment;
-import pfe.ece.LinkUS.Model.Notification;
-import pfe.ece.LinkUS.Model.NotificationMoment;
-import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.NotificationRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
@@ -18,7 +15,7 @@ import java.util.List;
 /**
  * Created by DamnAug on 24/01/2017.
  */
- @Service
+@Service
 public class NotificationService {
     @Autowired
     NotificationTokenRepository notificationTokenRepository;
@@ -75,6 +72,24 @@ public class NotificationService {
         notificationMoment.setAlbumId(albumId);
         notificationMoment.setMomentId(momentId);
         return notificationMoment;
+    }
+
+    public NotificationFriendRequest createSaveNotificationFriendRequest(User user,User fromUser, NotificationType type) {
+        NotificationFriendRequest notificationFriendRequest = createNotificationFriendRequest(user.getId(),type,fromUser.getId());
+        if(!addNotification(notificationFriendRequest)) {
+            modifyNotification(notificationFriendRequest);
+        } else {
+            user.getNotificationList().add(notificationFriendRequest.getId());
+        }
+        return notificationFriendRequest;
+    }
+
+    public NotificationFriendRequest createNotificationFriendRequest(String userId, NotificationType type,String fromUserId) {
+        NotificationFriendRequest notificationFriendRequest = new NotificationFriendRequest();
+        createNotification(notificationFriendRequest,userId,type);
+        notificationFriendRequest.setFromFriendId(fromUserId);
+
+        return notificationFriendRequest;
     }
     public void createNotification(Notification notification,String userId,NotificationType type) {
         notification.setUserId(userId);

@@ -8,8 +8,8 @@ import pfe.ece.LinkUS.Model.Enum.NotificationType;
  */
 public class NotificationFriendRequest extends Notification {
 
-    String friendId;
-    String message;
+    String fromFriendId;
+    String message="Vous avez reçu une demande d'ami";
 
     public NotificationFriendRequest() {
         super();
@@ -22,14 +22,13 @@ public class NotificationFriendRequest extends Notification {
         }
     }
 
-    public String getFriendId() {
-        return friendId;
+    public String getFromFriendId() {
+        return fromFriendId;
     }
 
-    public void setFriendId(String friendId) {
-        this.friendId = friendId;
+    public void setFromFriendId(String fromFriendId) {
+        this.fromFriendId = fromFriendId;
     }
-
 
     public String getMessage() {
         return message;
