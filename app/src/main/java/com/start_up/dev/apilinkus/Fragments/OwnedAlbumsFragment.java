@@ -71,7 +71,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     private Map<String,String> list_friends = new HashMap<>();
     private Map<String,String> list_friendsgroup = new HashMap<>();
     private String scope = "";
-    
+
     // Container Activity must implement this interface
     public interface OnOwnedAlbumSelectedListener{
         void onOwnedAlbumSelected(String albumId);

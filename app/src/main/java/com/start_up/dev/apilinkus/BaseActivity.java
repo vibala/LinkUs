@@ -70,7 +70,6 @@ public class BaseActivity extends AppCompatActivity implements APIPostMoment_Obs
         buttonGoAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("aaaaaaaaaaaaaaaaaaa");
                 Intent intent = new Intent(BaseActivity.this, AlbumActivity.class);
                 //Start details activity
                 startActivity(intent);
@@ -81,7 +80,6 @@ public class BaseActivity extends AppCompatActivity implements APIPostMoment_Obs
         buttonGoAlbumRead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("bbbbbbbbbbbbbbbbbbbbbb");
                 Intent intent = new Intent(BaseActivity.this, AlbumReadActivity.class);
                 //Start details activity
                 startActivity(intent);
