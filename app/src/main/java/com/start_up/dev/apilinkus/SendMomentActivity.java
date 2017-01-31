@@ -168,6 +168,9 @@ public class SendMomentActivity extends AppCompatActivity implements APIGetListG
 
         scrollview=(LockableScrollView)  findViewById(R.id.send_moment_scroll_image_displayed);
         imgDisplayed=(ImageView) findViewById(R.id.send_moment_image_displayed);
+        //Une image view ne peut pas depasser cette taille normalement...
+        imgDisplayed.setMaxHeight((int)MAX_WIDTH_BITMAP);
+        imgDisplayed.setMaxWidth((int)MAX_HEIGHT_BITMAP);
         widthScreen = getApplicationContext().getResources().getDisplayMetrics().widthPixels;
         heightScreen = getApplicationContext().getResources().getDisplayMetrics().heightPixels;
         /*scrollview=(ScrollView) findViewById(R.id.send_moment_scroll_image_displayed);
@@ -342,9 +345,9 @@ public class SendMomentActivity extends AppCompatActivity implements APIGetListG
                     byte[] imgByte = bos.toByteArray();
 */
 
-                    Bitmap bmp = getBitmapResizeMaxFromFile(file.getAbsolutePath());
+                    Bitmap bmp = getBitmapResizeMaxFromFile(file.getAbsolutePath(),MAX_WIDTH_UPLOAD,MAX_HEIGHT_UPLOAD);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] imgByte = stream.toByteArray();
                     instant.setImgByte(imgByte);
                     ArrayList<IdRight> idRights = new ArrayList<>();
@@ -483,7 +486,7 @@ public class SendMomentActivity extends AppCompatActivity implements APIGetListG
     //Plus grand ca fait outofMemory dans l'upload...
     private final float MAX_WIDTH_UPLOAD=1024.0f;
     private final float MAX_HEIGHT_UPLOAD=1024.0f;
-    public Bitmap getBitmapResizeMaxFromFile(String pathFile){
+    public Bitmap getBitmapResizeMaxFromFile(String pathFile,float maxWidth,float maxHeight){
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         options.inSampleSize = 2;
         Bitmap bmp = BitmapFactory.decodeFile(pathFile, options);
@@ -520,7 +523,10 @@ public class SendMomentActivity extends AppCompatActivity implements APIGetListG
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         options.inSampleSize = 2;
         System.out.println(uriDisplayed);
-        bitmapDisplayed = BitmapFactory.decodeFile(uriDisplayed, options);
+        bitmapDisplayed = getBitmapResizeMaxFromFile(uriDisplayed,MAX_WIDTH_BITMAP,MAX_HEIGHT_BITMAP);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmapDisplayed.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+       // bitmapDisplayed = BitmapFactory.decodeFile(uriDisplayed, options);
 
         float widthImage = ((float) bitmapDisplayed.getWidth());
         float heightImage = ((float) bitmapDisplayed.getHeight());
@@ -578,21 +584,22 @@ public class SendMomentActivity extends AppCompatActivity implements APIGetListG
     public boolean vertical =true;
     public Matrix matrixVertical=new Matrix();
     public Matrix matrixHorizontal=new Matrix();
-    private static float MAX_WIDTH=4096.0f;
-    private static float MAX_HEIGHT=4096.0f;
+    //Plus grande taille pour possible pour decoder dans une bitmap Bitmap.decode... 4096 'lIMAGEview doit aussi set avec ces dimension max...
+    private static float MAX_WIDTH_BITMAP=4096.0f;
+    private static float MAX_HEIGHT_BITMAP=4096.0f;
 
 
     public static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHeight) {
 
         //Normalement pas besoin car options.inSampleSize = 2; precedemment
-        if(newWidth>=MAX_WIDTH){
-            float ratioReduc= ((float)newWidth)/MAX_WIDTH;
-            newWidth= (int)MAX_WIDTH;
+        if(newWidth>=MAX_WIDTH_BITMAP){
+            float ratioReduc= ((float)newWidth)/MAX_WIDTH_BITMAP;
+            newWidth= (int)MAX_WIDTH_BITMAP;
             newHeight=(int) (newHeight/ratioReduc);
         }
-        if(newHeight>=MAX_HEIGHT){
-            float ratioReduc= ((float)newHeight)/MAX_HEIGHT;
-            newHeight= (int)MAX_HEIGHT;
+        if(newHeight>=MAX_HEIGHT_BITMAP){
+            float ratioReduc= ((float)newHeight)/MAX_HEIGHT_BITMAP;
+            newHeight= (int)MAX_HEIGHT_BITMAP;
             newWidth=(int) (newWidth/ratioReduc);
         }
 

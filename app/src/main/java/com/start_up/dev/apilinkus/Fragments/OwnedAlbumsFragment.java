@@ -32,6 +32,7 @@ import com.start_up.dev.apilinkus.Adapter.AlbumsAdapter;
 import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Album;
+import com.start_up.dev.apilinkus.Model.Authentification;
 import com.start_up.dev.apilinkus.R;
 import com.start_up.dev.apilinkus.Tool.JsonDateDeserializer;
 
@@ -65,7 +66,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     private AlbumsAdapter adapter;
     private ArrayList<Album> owned_albums = new ArrayList<>();
     private OnOwnedAlbumSelectedListener mCallback;
-    private APILinkUS api;
+    private APILinkUS api=new APILinkUS();;
     private Album selected_album;
     private Map<String,String> list_friends = new HashMap<>();
     private Map<String,String> list_friendsgroup = new HashMap<>();
@@ -81,9 +82,9 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_ownedalbums,container,false);
-        Log.d(TAG,"User id " + HomeActivity.userId);
+        Log.d(TAG,"User id " + Authentification.getUserId());
         Log.d(TAG,"oncreateView");
-        api = new APILinkUS();
+
         recyclerView = (RecyclerView) myView.findViewById(R.id.recycler_view_fragment_ownedalbums);
         return myView;
     }
@@ -98,6 +99,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d(TAG,"onActivityCreated");
+
         if(savedInstanceState != null) {
             System.out.println("Je repasse");
             owned_albums = (ArrayList<Album>) savedInstanceState.getSerializable("owned_albums");
@@ -449,7 +451,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     }
 
     public void synchronizeActionLinkedtoAlbum(){
-        Log.d(TAG,"SsynchronizeActionLinkedtoAlbum");
+        Log.d(TAG,"SynchronizeActionLinkedtoAlbum");
         clearData();
         api.getPreviewAlbumsOwned(this);
     }

@@ -124,7 +124,6 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     private static final String TAG_ABOUT_US = "A propos de Linkus";
     private static final String TAG_PRIVACY_POLICY = "Politique de confidentialité";
     private ArrayList<Album> albums;
-    public static String userId;
 
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
@@ -667,7 +666,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     @Override
     public void onUpdateSubscription(String type, int length, String unit) {
 
-        Subscription subscription = new Subscription(type, userId, DateUtil.getCurrentDate());
+        Subscription subscription = new Subscription(type, Authentification.getUserId(), DateUtil.getCurrentDate());
 
         if (type.contentEquals("FRIEND")) {
             if (length == 1 && unit.contentEquals("YEAR")) {
