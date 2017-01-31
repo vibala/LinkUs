@@ -73,6 +73,7 @@ public class User implements Serializable {
     @Field("friendGroupList")
     private ArrayList<String> friendGroupIdList = new ArrayList<>();
 
+    @Field("notificationList")
     private ArrayList<String> notificationList = new ArrayList<>();
 
     @Field("configUser")

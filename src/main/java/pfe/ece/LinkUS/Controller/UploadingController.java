@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  * Created by Huong on 08/12/2016.
  */
 
-@Controller
+@RestController
 public class UploadingController {
 
     @Autowired

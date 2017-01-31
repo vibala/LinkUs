@@ -29,7 +29,7 @@ import java.util.*;
 /**
  * Created by Vignesh on 12/9/2016.
  */
-@Controller
+@RestController
 public class RegisterController {
 
     @Autowired

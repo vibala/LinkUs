@@ -258,5 +258,17 @@ public class UserController {
         return new ResponseEntity<String>("Username updated", HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/getFriendProfileByIdFromPendingFriends",params = {"friendId"})
+    public String getFriendProfileByIdFromPendingFriends(@RequestParam("friendId") String friendId){
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        List<User> userList = userService.findPendingFriends(userId);
+        userService.checkData(userList);
+        for (User user :userList ) {
+            if(user.getId().contentEquals(friendId)){
+                return user.toString();
+            }
+        }
 
+        return "";
+    }
 }

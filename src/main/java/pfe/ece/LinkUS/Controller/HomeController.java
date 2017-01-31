@@ -33,7 +33,7 @@ import java.util.Optional;
 /**
  * Created by Vignesh on 11/6/2016.
  */
-@Controller
+@RestController
 public class HomeController {
 
     private final Logger LOGGER = Logger.getLogger(HomeController.class);

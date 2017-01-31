@@ -17,6 +17,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -40,7 +41,7 @@ import java.util.UUID;
  * Created by Vignesh on 12/12/2016.
  */
 
-@Controller
+@RestController
 public class SocialRegistrationController {
 
     private static final Logger LOGGER = Logger.getLogger(UserController.class);
