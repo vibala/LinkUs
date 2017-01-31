@@ -113,8 +113,9 @@ public class AlbumFragment extends Fragment implements RecyclerViewClickListener
             @Override
             public void onClick(View view) {
                 //L'album peut ne pas avoir encore été téléchargé
-                if(selectedAlbum!=null)
+                if(selectedAlbum!=null) {
                     mCallback.momentFragmentOnClickButtonUpload(selectedAlbum.getId());
+                }
             }
         });
         recyclerView = (RecyclerView) momentView.findViewById(R.id.moment_recyclerView);

@@ -19,12 +19,12 @@ public class APILinkUS {
 
     private Context mContext;
     private final String TAG = APILinkUS.class.getSimpleName();
-    public static String BASE_URL;
+    public static String BASE_URL="http://192.168.43.45:9999";
     //private String userId="1";
 
+    //ARRETER DE TOUCHER LES CONSTRUCTEURS 
     public APILinkUS(Context mContext) {
         this.mContext=mContext;
-        this.BASE_URL="http://192.168.137.77:9999";
     }
     public APILinkUS() {
     }
