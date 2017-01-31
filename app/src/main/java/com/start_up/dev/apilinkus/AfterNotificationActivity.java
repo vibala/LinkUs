@@ -30,6 +30,7 @@ import com.start_up.dev.apilinkus.Adapter.MomentsAdapter;
 import com.start_up.dev.apilinkus.Fragments.AlbumFragment;
 import com.start_up.dev.apilinkus.Fragments.SlideshowDialogFragment;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
+import com.start_up.dev.apilinkus.Model.DBHandler;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Tool.JsonDateDeserializer;
@@ -61,6 +62,8 @@ public class AfterNotificationActivity extends AppCompatActivity implements Recy
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_recyclerview_postnotif);
 
+        //#ADD On met a jour les token depuis la BD locale
+        new DBHandler(this).updateAuthentificationFromDB();
         /*Planting the toolbar*/
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -81,30 +84,18 @@ public class AfterNotificationActivity extends AppCompatActivity implements Recy
 
         /**/
         api = new APILinkUS();
-        if(getIntent() != null){
+        if (getIntent() != null) {
             Bundle bundle = getIntent().getExtras();
-            if(bundle != null){
-                api.findMomentsInAlbum(bundle.getString("albumId"),bundle.getStringArrayList("listMomentId"),this);
-            }else{
-                Toast.makeText(this,"Failed to retrieve the album details",Toast.LENGTH_SHORT).show();
+            if (bundle != null) {
+                api.findMomentsInAlbum(bundle.getString("albumId"), bundle.getStringArrayList("listMomentId"), this);
+            } else {
+                Toast.makeText(this, "Failed to retrieve the album details", Toast.LENGTH_SHORT).show();
             }
         }
-
-
-
-        /*Planting the recyclerView*/
-        recyclerView = (RecyclerView)findViewById(R.id.moment_recyclerView_post_notif);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this,1);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(dpToPx(10),1));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new MomentsAdapter(this,moments,this);
-        recyclerView.setAdapter(adapter);
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed(){
         //super.onBackPressed();  super.onBackPressed(); if you do not want the default action (finishing the current activity) to be executed.
         Intent intent = new Intent(this,HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -59,8 +60,6 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
     private String userId;
     private int current_selector;
 
-
-
     // Container Activity must implement this interface
     public interface OnSharedAlbumSelectedListener{
         void onSharedAlbumSelected(String albumId);
@@ -89,6 +88,7 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         if(savedInstanceState!=null) {
             shared_albums = (ArrayList<Album>) savedInstanceState.getSerializable("shared_albums");
             userId = (String) savedInstanceState.getString("userId");
@@ -110,7 +110,7 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
         // the policy when to recycle items
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(),2);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(15), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -148,7 +148,6 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
                 break;
         }
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -229,12 +228,14 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
         for (int i = 0; i < length; i++) {
             JSONObject responseObject = responseArray.optJSONObject(i);
             Log.d("response", responseObject.toString());
-            Album album = new Album();
             try {
-                album.setId(responseObject.getString("albumId"));
-                album.setName(responseObject.getString("albumName"));
-                album.setImageUrl(responseObject.getString("imgUrl"));
-                shared_albums.add(album);
+                if(!responseObject.getString("ownerId").contentEquals(userId)){
+                    Album album = new Album();
+                    album.setId(responseObject.getString("albumId"));
+                    album.setName(responseObject.getString("albumName"));
+                    album.setImageUrl(responseObject.getString("imgUrl"));
+                    shared_albums.add(album);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

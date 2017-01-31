@@ -1,5 +1,7 @@
 package com.start_up.dev.apilinkus.API;
 
+import android.app.Activity;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,5 +12,5 @@ import org.json.JSONObject;
 public interface APIGetAlbumsOwned_Observer{
         public void albumsOwned_GetResponse(JSONArray responseArray);
         public void albumsOwned_GetResponse(JSONObject responseObject);
-        public void albumsOwned_NotifyWhenGetFinish(Integer result);
+        public void albumsOwned_NotifyWhenGetFinish(Integer result,Activity parent_activity);
 }

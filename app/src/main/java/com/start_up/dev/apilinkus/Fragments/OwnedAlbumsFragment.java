@@ -1,5 +1,6 @@
 package com.start_up.dev.apilinkus.Fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -7,7 +8,9 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,6 +20,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,6 +37,7 @@ import com.start_up.dev.apilinkus.HomeActivity;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.Model.Authentification;
+import com.start_up.dev.apilinkus.Model.IdRight;
 import com.start_up.dev.apilinkus.R;
 import com.start_up.dev.apilinkus.Tool.JsonDateDeserializer;
 
@@ -59,6 +64,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
                             APIGetAlbumByAlbumId_Observer {
 
     private View myView;
+    private Activity parent_activity;
     private APIPostShareAlbumWith_Observer apiPostShareAlbumWithObserver = this;
     private APIGetAlbumByAlbumId_Observer apiGetAlbumByAlbumIdObserver = this;
     protected static final String TAG = OwnedAlbumsFragment.class.getSimpleName();
@@ -71,6 +77,9 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     private Map<String,String> list_friends = new HashMap<>();
     private Map<String,String> list_friendsgroup = new HashMap<>();
     private String scope = "";
+    private FloatingActionButton fab;
+    private EditText nameBox,countrynameBox,placenameBox;
+    private String userId = Authentification.getUserId();
 
     // Container Activity must implement this interface
     public interface OnOwnedAlbumSelectedListener{
@@ -81,9 +90,9 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_ownedalbums,container,false);
-        Log.d(TAG,"User id " + Authentification.getUserId());
+        Log.d(TAG,"User id " +userId);
         Log.d(TAG,"oncreateView");
-
+        fab = (FloatingActionButton) myView.findViewById(R.id.fab);
         recyclerView = (RecyclerView) myView.findViewById(R.id.recycler_view_fragment_ownedalbums);
         return myView;
     }
@@ -97,17 +106,100 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d(TAG,"onActivityCreated");
+        parent_activity = getActivity();
+        Log.d(TAG,"onActivityCreated " + parent_activity);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog dialog = createDialog();
+                dialog.show();
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int threshold = 0;
+                        //save info where you want it
+                        if( nameBox.getText().toString().trim().equals(""))
+                        {
+                            nameBox.setError( "Album name is required!" );
+                            nameBox.setHint("Album name");
+                        } else {
+                            threshold++;
+                        }
+
+                        if( countrynameBox.getText().toString().trim().equals(""))
+                        {
+                            countrynameBox.setError( "Country name is required!" );
+                            countrynameBox.setHint("Country name");
+                        } else {
+                            threshold++;
+                        }
+
+                        if(placenameBox.getText().toString().trim().equals(""))
+                        {
+                            placenameBox.setError( "Place name is required!" );
+                            placenameBox.setHint("Place name");
+                        } else {
+                            threshold++;
+                        }
+
+                        if(threshold==3){
+                            dialog.dismiss();
+                            Log.d(TAG,"TT EST BON");
+                            Album album = new Album();
+                            album.setOwnerId(userId);
+                            album.setName(nameBox.getText().toString());
+                            album.setCountryName(countrynameBox.getText().toString());
+                            album.setPlaceName(placenameBox.getText().toString());
+
+                            IdRight adminRight = new IdRight("ADMIN");
+                            adminRight.getUserIdList().add(userId);
+
+                            IdRight commentRight = new IdRight("COMMENT");
+                            commentRight.getUserIdList().add(userId);
+
+                            IdRight writeRight = new IdRight("WRITE");
+                            writeRight.getUserIdList().add(userId);
+
+                            IdRight lectureRight = new IdRight("LECTURE");
+                            lectureRight.getUserIdList().add(userId);
+
+                            album.getIdRight().add(writeRight);
+                            album.getIdRight().add(commentRight);
+                            album.getIdRight().add(lectureRight);
+                            album.getIdRight().add(adminRight);
+
+                            String result = api.createNewAlbum(album);
+
+                            if(result.contains("200")){
+                                Toast.makeText(getContext(),"Vous venez de créer un nouvel album",Toast.LENGTH_SHORT).show();
+                                synchronizeActionLinkedtoAlbum(getActivity());
+                            }else{
+                                Toast.makeText(getContext(),"L'album n'a pas pu être créé ! Merci de retenter plus tard",Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        }else{
+                            // Do nothing
+                        }
+
+                    }
+                });
+            }
+        });
+
 
         if(savedInstanceState != null) {
             System.out.println("Je repasse");
             owned_albums = (ArrayList<Album>) savedInstanceState.getSerializable("owned_albums");
+
         }
         else {
             Log.d(TAG,"Owned album size " + owned_albums.size());
             if(owned_albums.isEmpty()) {
-                api.getPreviewAlbumsOwned(this);
+                api.getPreviewAlbumsOwned(this,parent_activity);
             }
+
         }
         adapter = new AlbumsAdapter(getContext(),owned_albums,this,this);
         /////////////////////////////////////////////////////////////////////
@@ -115,7 +207,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
         // the policy when to recycle items
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(),2);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new OwnedAlbumsFragment.GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.addItemDecoration(new OwnedAlbumsFragment.GridSpacingItemDecoration(2, dpToPx(15), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -132,9 +224,35 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
         });
     }
 
+    public AlertDialog createDialog(){
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View layout = inflater.inflate(R.layout.alert_dialog_create_album,null);
+        nameBox = (EditText) layout.findViewById(R.id.album_name_edit_text);
+        countrynameBox = (EditText) layout.findViewById(R.id.album_place_name_edit_text);
+        placenameBox = (EditText) layout.findViewById(R.id.album_country_name_edit_text);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(layout);
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        return builder.create();
+
+    }
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.d(TAG,"onAttach");
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
@@ -143,6 +261,8 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
             throw new ClassCastException(context.toString()
                     + " must implement OnAlbumSelectedListener");
         }
+
+
     }
 
     /***
@@ -228,20 +348,34 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     public void albumsOwned_GetResponse(JSONObject responseObject){}
 
     @Override
-    public void albumsOwned_NotifyWhenGetFinish(Integer result) {
+    public void albumsOwned_NotifyWhenGetFinish(Integer result,final Activity parent_activity) {
         if (result == 1) {
-            Toast.makeText(getContext(),"Successfully fetching data",Toast.LENGTH_SHORT).show();
-            adapter.notifyDataSetChanged();
+            parent_activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d(TAG,"Parent activity " + parent_activity);
+                    Toast.makeText(parent_activity,"Successfully fetching data",Toast.LENGTH_SHORT).show();
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
 
         } else {
-            Toast.makeText(getContext(), "Failed to fetch data!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(parent_activity, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    public void OnShareOwnedAlbumListener(int position,String scope) {
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG,"OWNED IS GET DETACHED");
+    }
+
+    @Override
+    public void OnShareOwnedAlbumListener(final int position,String scope) {
         this.scope = scope;
         api.getAlbumByAlbumId(apiGetAlbumByAlbumIdObserver,owned_albums.get(position).getId(),getContext());
+
     }
 
     @Override
@@ -446,10 +580,11 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
         }
     }
 
-    public void synchronizeActionLinkedtoAlbum(){
+    public void synchronizeActionLinkedtoAlbum(Activity root_activity){
         Log.d(TAG,"SynchronizeActionLinkedtoAlbum");
         clearData();
-        api.getPreviewAlbumsOwned(this);
+        Log.d(TAG,"Parent activity frrom synchronizeAction " + root_activity);
+        api.getPreviewAlbumsOwned(this,root_activity);
     }
 
     public void clearData(){

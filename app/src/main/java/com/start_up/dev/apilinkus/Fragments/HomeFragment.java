@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
                                         HomeFragment.class.getSimpleName();
 
     public interface OnPostSelectedListener{
-        public void onPostSelected(int position,View view);
+        void onPostSelected(int position,View view);
     }
 
     @Nullable
@@ -108,6 +108,7 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
             outRect.bottom = spacing;
         }
     }
+
 
 
     /**

@@ -62,9 +62,11 @@ public abstract class  APIGet extends AsyncTask<String, Void, Integer> {
 
                 // 200 represents HTTP OK
                 if (statusCode == 200) {
+                    Log.d(TAG,"200");
                     String response = streamToString(conn.getInputStream());
                     parseResult(response);
                     result = 1; // Successful
+                    Log.d(TAG,"Response " + response);
                 } else {
                     result = 0; //"Failed
                 }

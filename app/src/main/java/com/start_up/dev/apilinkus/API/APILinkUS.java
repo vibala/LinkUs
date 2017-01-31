@@ -1,5 +1,6 @@
 package com.start_up.dev.apilinkus.API;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -19,7 +20,7 @@ public class APILinkUS {
 
     private Context mContext;
     private final String TAG = APILinkUS.class.getSimpleName();
-    public static String BASE_URL="http://192.168.43.46:9999";
+    public static String BASE_URL="http://192.168.137.77:9999";
     //private String userId="1";
 
     //ARRETER DE TOUCHER LES CONSTRUCTEURS 
@@ -49,11 +50,11 @@ public class APILinkUS {
         return m;
     }
 
-    public void getPreviewAlbumsOwned(APIGetAlbumsOwned_Observer activity){
+    public void getPreviewAlbumsOwned(APIGetAlbumsOwned_Observer activity, Activity parent_activity){
         String query="/album/preview?right=ADMIN&news=true";
 
         String urlrequestAPI = BASE_URL + query;
-        APIGetAlbumsOwned apiGetAlbum = new APIGetAlbumsOwned(activity);
+        APIGetAlbumsOwned apiGetAlbum = new APIGetAlbumsOwned(activity,parent_activity);
         apiGetAlbum.execute(urlrequestAPI);
     }
 
@@ -235,6 +236,20 @@ public class APILinkUS {
         String urlrequestAPI = BASE_URL + query;
         APIPostMomentsInAlbum apiPostMomentsInAlbum = new APIPostMomentsInAlbum(observer,momentIdList);
         apiPostMomentsInAlbum.execute(urlrequestAPI);
+    }
+
+    public void findFriendProfileByIdFromPendingFriends(String friendId,APIGetFriendProfileByIdFromPendingFriends_Observer observer){
+        String query = "/user/getFriendProfileByIdFromPendingFriends?friendId="+friendId;
+        String urlrequestAPI = BASE_URL + query;
+        APIGetFriendProfileByIdFromPendingFriends apiGetFriendProfileByIdFromPendingFriends = new APIGetFriendProfileByIdFromPendingFriends(observer);
+        apiGetFriendProfileByIdFromPendingFriends.execute(urlrequestAPI);
+    }
+
+    public void postFriendRequestDecision(String friendId,boolean decision,APIPostFriendRequestDecision_Observer observer){
+        String query = "/friendRequestDecision?friendId="+friendId+"&decision="+decision;
+        String urlrequestAPI = BASE_URL + query;
+        APIPostFriendRequestDecision apiPostFriendRequestDecision = new APIPostFriendRequestDecision(observer);
+        apiPostFriendRequestDecision.execute(urlrequestAPI,friendId);
     }
 }
 

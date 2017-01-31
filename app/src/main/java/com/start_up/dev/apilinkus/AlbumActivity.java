@@ -1,5 +1,6 @@
 package com.start_up.dev.apilinkus;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -49,7 +50,7 @@ public class AlbumActivity  extends AppCompatActivity implements APIGetAlbumsOwn
         initViews();
 
         //Start download
-        new APILinkUS().getPreviewAlbumsOwned(this);
+        new APILinkUS().getPreviewAlbumsOwned(this,this);
     }
 
     private void initViews(){
@@ -97,7 +98,7 @@ public class AlbumActivity  extends AppCompatActivity implements APIGetAlbumsOwn
     }
 
     @Override
-    public void albumsOwned_NotifyWhenGetFinish(Integer result) {
+    public void albumsOwned_NotifyWhenGetFinish(Integer result,Activity activity) {
 
         if (result == 1) {
             adapter.setGridData(gridItems);

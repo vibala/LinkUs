@@ -50,8 +50,8 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
     private String userId;
     private String username = "", nbProches = "", nbAlbumsOwned = "";
     private APILinkUS api;
-    private FloatingActionButton fab;
-    private EditText nameBox,countrynameBox,placenameBox;
+
+
     private OwnedAlbumsFragment ownedAlbumsFragment;
 
     @Override
@@ -67,7 +67,7 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
         setupViewPager(viewPager);
         TabLayout tabLayout = (TabLayout) myView.findViewById(R.id.tabanim_tabs);
         tabLayout.setupWithViewPager(viewPager);
-        fab = (FloatingActionButton) myView.findViewById(R.id.fab);
+
 
         if(savedInstanceState != null){
             Log.d(TAG,"Je repasse");
@@ -95,6 +95,12 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
     private void setupViewPager(ViewPager viewPager){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         ownedAlbumsFragment = new OwnedAlbumsFragment();
@@ -105,86 +111,14 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(TAG,"onAttach is get called");
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final AlertDialog dialog = createDialog();
-                dialog.show();
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int threshold = 0;
-                        //save info where you want it
-                        if( nameBox.getText().toString().trim().equals(""))
-                        {
-                            nameBox.setError( "Album name is required!" );
-                            nameBox.setHint("Album name");
-                        } else {
-                            threshold++;
-                        }
-
-                        if( countrynameBox.getText().toString().trim().equals(""))
-                        {
-                            countrynameBox.setError( "Country name is required!" );
-                            countrynameBox.setHint("Country name");
-                        } else {
-                            threshold++;
-                        }
-
-                        if(placenameBox.getText().toString().trim().equals(""))
-                        {
-                            placenameBox.setError( "Place name is required!" );
-                            placenameBox.setHint("Place name");
-                        } else {
-                            threshold++;
-                        }
-
-                        if(threshold==3){
-                            dialog.dismiss();
-                            Log.d(TAG,"TT EST BON");
-                            Album album = new Album();
-                            album.setName(nameBox.getText().toString());
-                            album.setCountryName(countrynameBox.getText().toString());
-                            album.setPlaceName(placenameBox.getText().toString());
-
-                            IdRight adminRight = new IdRight("ADMIN");
-                            adminRight.getUserIdList().add(userId);
-
-                            IdRight commentRight = new IdRight("COMMENT");
-                            commentRight.getUserIdList().add(userId);
-
-                            IdRight writeRight = new IdRight("WRITE");
-                            writeRight.getUserIdList().add(userId);
-
-                            IdRight lectureRight = new IdRight("LECTURE");
-                            lectureRight.getUserIdList().add(userId);
-
-                            album.getIdRight().add(writeRight);
-                            album.getIdRight().add(commentRight);
-                            album.getIdRight().add(lectureRight);
-                            album.getIdRight().add(adminRight);
-
-                            String result = api.createNewAlbum(album);
-
-                            if(result.contains("200")){
-                                Toast.makeText(getContext(),"Vous venez de créer un nouvel album",Toast.LENGTH_SHORT).show();
-                                ownedAlbumsFragment.synchronizeActionLinkedtoAlbum();
-                            }else{
-                                Toast.makeText(getContext(),"L'album n'a pas pu être créé ! Merci de retenter plus tard",Toast.LENGTH_SHORT).show();
-                            }
-
-
-                        }else{
-                            // Do nothing
-                        }
-
-                    }
-                });
-            }
-        });
 
         /******************************************************************************************/
         /*DONT TOUCH THIS PART !!!! IT'S FOR DISPLAYING CORRECTLY THE CIRCULARVIEW IN ANY PLATFORM*/
@@ -205,29 +139,7 @@ public class ProfileFragment extends Fragment implements OnTabSelectedListener,A
         circularImageView.requestLayout();
     }
 
-    public AlertDialog createDialog(){
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View layout = inflater.inflate(R.layout.alert_dialog_create_album,null);
-        nameBox = (EditText) layout.findViewById(R.id.album_name_edit_text);
-        countrynameBox = (EditText) layout.findViewById(R.id.album_place_name_edit_text);
-        placenameBox = (EditText) layout.findViewById(R.id.album_country_name_edit_text);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setView(layout);
-        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
 
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-       return builder.create();
-
-    }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {

@@ -102,7 +102,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
 
-    private void updateAuthentificationFromDB() {
+    public void updateAuthentificationFromDB() {
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_AUTHENTIFICATION;
 

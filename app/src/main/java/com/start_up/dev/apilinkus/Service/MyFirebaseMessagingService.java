@@ -12,11 +12,14 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.start_up.dev.apilinkus.AfterNotificationActivity;
-import com.start_up.dev.apilinkus.BaseActivity;
-import com.start_up.dev.apilinkus.MainActivity;
+import com.start_up.dev.apilinkus.NotificationFriendRequestActivity;
 import com.start_up.dev.apilinkus.R;
 
+import java.util.ArrayList;
 import java.util.Map;
+
+import static com.start_up.dev.apilinkus.Model.NotificationType.FRIEND_REQUEST;
+import static com.start_up.dev.apilinkus.Model.NotificationType.MOMENT;
 
 /**
  * Created by Huong on 10/12/2016.
@@ -47,6 +50,7 @@ import java.util.Map;
  Source
  http://stackoverflow.com/questions/39046270/google-fcm-getintent-dont-returning-expected-data-when-app-is-in-background-stat
  */
+//#ADD
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
@@ -55,31 +59,44 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-
-        //String from = remoteMessage.getFrom();
-       // Log.d(TAG, "Message received from: " + from);
-
-   /*     if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Notification: " + remoteMessage.getNotification().getBody());
-            showNotificacion(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
-        }
-*/
         Map<String, String> data = remoteMessage.getData();
-        String title = data.get("title");
-        int idMoment = Integer.parseInt(data.get("momentId"));
-        String type = data.get("type");
 
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Data: " + remoteMessage.getData());
-        }
+            String title = "LinkUs";
+            String type = data.get("type");
 
+            if (type.equals(MOMENT)) {
+                String momentId = data.get("momentId");
+                String albumId = data.get("albumId");
+                String body = data.get("title");
+
+                Intent intent = new Intent(this, AfterNotificationActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("albumId",albumId);
+
+                //On créé une liste avec qu'un moment car la notificatoin ne contient qu'un seul moment
+                ArrayList<String> listMomentId = new ArrayList<>();
+                listMomentId.add(momentId);
+                intent.putExtra("listMomentId",listMomentId);
+
+                showNotification(title, body, intent);
+            }
+            if (type.equals(FRIEND_REQUEST)) {
+                String fromFriendId = data.get("fromFriendId");
+                String body = data.get("description");
+
+                Intent intent = new Intent(this, NotificationFriendRequestActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("fromFriendId",fromFriendId);
+
+                showNotification(title, body,intent);
+            }
+        }
     }
 
-    private void showNotificacion(String title, String body) {
+    private void showNotification(String title,String body,Intent intent ) {
 
-        Intent intent = new Intent(this, AfterNotificationActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra();
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
