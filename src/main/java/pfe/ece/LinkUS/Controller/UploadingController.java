@@ -67,6 +67,7 @@ public class UploadingController {
             return new ResponseEntity<>(
                     new String("You have no right to upload photos on that album: " + albumId), HttpStatus.FORBIDDEN);
         }
+        moment.setRandomId();
         System.out.println("Moment envoyé par l'utilisateur " + userId+" "+moment.toString());
         // Ajoute les personne de moment.IdRight à album.IdRight
         albumService.checkAddUsersFromMomentToAlbum(userId,albumId, moment);

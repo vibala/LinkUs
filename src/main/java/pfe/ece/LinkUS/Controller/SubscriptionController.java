@@ -2,10 +2,7 @@ package pfe.ece.LinkUS.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Model.Subscription;
 import pfe.ece.LinkUS.Model.SubscriptionType;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.*;
@@ -19,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * Created by DamnAug on 15/11/2016.
  */
-@Controller
+@RestController
 @RequestMapping("/subscription")
 public class SubscriptionController {
 
