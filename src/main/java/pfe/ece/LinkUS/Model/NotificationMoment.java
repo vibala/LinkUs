@@ -13,7 +13,6 @@ import java.util.Date;
  */
 public class NotificationMoment extends Notification {
 
-    private String userId;
     private String albumId;
     private String momentId;
 

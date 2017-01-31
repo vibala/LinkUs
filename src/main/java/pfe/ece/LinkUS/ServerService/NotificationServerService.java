@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.ServerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import pfe.ece.LinkUS.Model.Notification;
+import pfe.ece.LinkUS.Model.NotificationMoment;
 import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
 import pfe.ece.LinkUS.Service.NotificationTokenServiceImpl;
 import pfe.ece.LinkUS.Service.UserService;
@@ -32,7 +33,7 @@ public class NotificationServerService {
         this.userservice=userservice;
         this.notificationTokenRepository=notificationTokenRepository;
     }
-
+/*
     public ArrayList<String> getTokenUserListFromIdUserList(ArrayList<String>  usersIdInList,String userId){
         ArrayList<String> tokenUserList=new ArrayList<String>();
 
@@ -43,12 +44,12 @@ public class NotificationServerService {
                 if(userIdInList.equals(userId)) {
                     continue;
                 }
-                                /*Structure de la table NotificationsTokens dans la BD : ID;USERNAME;TOKEN */
+                                /*Structure de la table NotificationsTokens dans la BD : ID;USERNAME;TOKEN
                     String userIdFriend = userservice.findUserById(userIdInList).getId();
-                                /*Recupération du token notif de chaque utilisateur à partir de l'username*/
+                                /*Recupération du token notif de chaque utilisateur à partir de l'username
                     NotificationTokenServiceImpl notificationTokenService = new NotificationTokenServiceImpl(notificationTokenRepository);
                     String notification_token = notificationTokenService.getNotifcationTokenByUsername(userIdFriend);
-                                /*Ajout des tokens dans la liste tokenUserList*/
+                                /*Ajout des tokens dans la liste tokenUserList
                     tokenUserList.add(notification_token);
 
             }
@@ -56,8 +57,9 @@ public class NotificationServerService {
 
         return tokenUserList;
     }
-    public void sendObjectWithTokenNotification(ArrayList<String> listUserTokenNotification, Notification notification) throws IOException {
-        for(String token : listUserTokenNotification) {
+*/
+
+    public void sendNotificationMoment(NotificationMoment notification) throws IOException {
             /**EXEMPLE
              *
              * Content-Type:application/json
@@ -81,7 +83,7 @@ public class NotificationServerService {
             String json = "{\"notification\":{\"title\":\"title-notification\"," +
                     "\"body\":\"description-notification\"}," +
                     "\"data\":{\"description\":\""+ notification.toString() +
-                    "\",\"title\":\"notification\"},\"to\":\""+token+"\"}";
+                    "\",\"title\":\"notification\"},\"to\":\""+notification.getToken()+"\"}";
 
             URL url = new URL(urlServerFireBase);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -108,6 +110,5 @@ public class NotificationServerService {
                 e.printStackTrace();
             }
             conn.disconnect();
-        }
     }
 }

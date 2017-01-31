@@ -1,6 +1,7 @@
 package pfe.ece.LinkUS.Service;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pfe.ece.LinkUS.Model.Enum.NotificationType;
 import pfe.ece.LinkUS.Model.Moment;
@@ -8,6 +9,8 @@ import pfe.ece.LinkUS.Model.Notification;
 import pfe.ece.LinkUS.Model.NotificationMoment;
 import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.NotificationRepository;
+import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
+import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,10 @@ import java.util.List;
  */
  @Service
 public class NotificationService {
+    @Autowired
+    NotificationTokenRepository notificationTokenRepository;
+
+    UserRepository userRepository;
 
     Logger LOGGER = Logger.getLogger("LinkUS.Service.NotificationService");
 
@@ -44,9 +51,18 @@ public class NotificationService {
         return notificationRepository.findOne(notifId);
     }
 
+    public String getTokenByUserId(String userId){
+
+        //Structure de la table NotificationsTokens dans la BD : ID;USERNAME;TOKEN
+        //Recupération du token notif de chaque utilisateur à partir de l'username
+        NotificationTokenServiceImpl notificationTokenService = new NotificationTokenServiceImpl(notificationTokenRepository);
+        //username correspond a l'id dans la BD SQL
+        return notificationTokenService.getNotifcationTokenByUsername(userId);
+
+    }
     public NotificationMoment createSaveNotificationMoment(User user, String albumId, String momentId, NotificationType type) {
 
-        NotificationMoment notificationMoment = createNotificationMoment(user.getId(), albumId, momentId,type);
+        NotificationMoment notificationMoment = createNotificationMoment(user.getId(), albumId, momentId,type,getTokenByUserId(user.getId()));
         if(!addNotification(notificationMoment)) {
             modifyNotification(notificationMoment);
         } else {
@@ -55,15 +71,17 @@ public class NotificationService {
         return notificationMoment;
     }
 
-    public NotificationMoment createNotificationMoment(String userId, String albumId, String momentId,NotificationType type) {
+    public NotificationMoment createNotificationMoment(String userId, String albumId, String momentId,NotificationType type,String token) {
         NotificationMoment notificationMoment = new NotificationMoment();
-        notificationMoment.setUserId(userId);
         notificationMoment.setAlbumId(albumId);
         notificationMoment.setMomentId(momentId);
-        notificationMoment.setType(type);
+        createNotification(notificationMoment,userId,type,token);
         return notificationMoment;
     }
-
+    public void createNotification(Notification notification,String userId,NotificationType type,String token) {
+        notification.setUserId(userId);
+        notification.setType(type);
+    }
     public boolean addNotification(Notification notification) {
 
         if(notification.getId() != null &&

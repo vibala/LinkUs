@@ -50,11 +50,13 @@ public class AlbumController {
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value= "/save", method= RequestMethod.POST)
-    public ResponseEntity saveAlbum(@RequestBody Album album) {
+    @RequestMapping(value= "/create", method= RequestMethod.POST)
+    public ResponseEntity createAlbum(@RequestBody Album album) {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         System.out.println("UserId " + userId );
+        album.setOwnerId(userId);
+        albumService.setMainImageUrlToAlbumAndMoments(album,true);
         if(idRightService.checkUserInIdRight(idRightService.findByRight(album, Right.ADMIN.name()), userId)) {
             albumService.checkSaveAlbum(album);
             System.out.println("okok");

@@ -744,12 +744,18 @@ public class AlbumService {
     }
 
     public void setMainImageUrlToAlbumAndMoments(Album album, boolean updateAlbumImage) {
+
         defineAlbumMomentsMainInstant(album);
 
         // Les image principales des moments sont toujours initialisées
         // (soit par une photo d'instant soit par une image par défaut)
         if(updateAlbumImage) {
-            album.setImageUrl(album.getMoments().get(0).getMainImageUrl());
+            //#ADD
+            if(album.getMoments().size()>0) {
+                album.setImageUrl(album.getMoments().get(0).getMainImageUrl());
+            }else{
+                album.setImageUrl("http://www.fr-dba.com/img/slides/groupe-illus.png");
+            }
         }
     }
     /**

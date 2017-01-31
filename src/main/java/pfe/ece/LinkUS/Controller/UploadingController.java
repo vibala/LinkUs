@@ -156,13 +156,17 @@ public class UploadingController {
             //On dit que y a que l'utilisateur 2 qui recevra le truc (on va d'abord retrouver son tokenNotification, puis on va pouvoir lui envoyer une notif
             //Pn récupere les token de ces utilisateurs dans une liste
             //Liste qui a pour but de lister les token des utilisateurs ayant le droit de lecture
-            ArrayList<String> tokenUserListWithReadRight = notificationServerService.getTokenUserListFromIdUserList(listUserIdListWithReadRight,userId);
+            //ArrayList<String> tokenUserListWithReadRight = notificationServerService.getTokenUserListFromIdUserList(listUserIdListWithReadRight,userId);
 
-            User user = userService.findUserById(userId);
-            NotificationMoment notificationMoment = notificationService.createSaveNotificationMoment(user, albumId, moment.getId(), NotificationType.MOMENT);
-
-            //On demande a FireBase d envoyer une notificationMoment a ces personnes (FireBase va utiliser les Token pour envoyer la notif car chaque token correspond a une appli installé sur un device.)
-            notificationServerService.sendObjectWithTokenNotification(tokenUserListWithReadRight, notificationMoment);
+            for(String friendId:listUserIdListWithReadRight) {
+                //On envoit pas la notification a celui qui a envoyé la notif
+                if(!userId.equals(friendId)) {
+                    User friend = userService.findUserById(friendId);
+                    NotificationMoment notificationMoment = notificationService.createSaveNotificationMoment(friend, albumId, moment.getId(), NotificationType.MOMENT);
+                    //On demande a FireBase d envoyer une notificationMoment a ces personnes (FireBase va utiliser les Token pour envoyer la notif car chaque token correspond a une appli installé sur un device.)
+                    notificationServerService.sendNotificationMoment(notificationMoment);
+                }
+            }
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -19,11 +19,13 @@ public class NotificationTokenServiceImpl implements NotificationTokenService{
         this.notificationTokenRepository=notificationTokenRepository;
     }
 
+    /**
+     * username correspond a l'id dans la BD SQL
+     * @param username
+     * @return
+     */
     @Override
     public String getNotifcationTokenByUsername(String username) {
-        /**
-         *   ONE   ADDDDDDD
-         */
 
         String token =null;
         try {
