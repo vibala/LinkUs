@@ -59,7 +59,7 @@ public class NotificationServerService {
     }
 */
 
-    public void sendNotificationMoment(NotificationMoment notification) throws IOException {
+    public void sendNotificationMoment(NotificationMoment notification, String token) throws IOException {
             /**EXEMPLE
              *
              * Content-Type:application/json
@@ -83,7 +83,7 @@ public class NotificationServerService {
             String json = "{\"notification\":{\"title\":\"title-notification\"," +
                     "\"body\":\"description-notification\"}," +
                     "\"data\":{\"description\":\""+ notification.toString() +
-                    "\",\"title\":\"notification\"},\"to\":\""+notification.getToken()+"\"}";
+                    "\",\"title\":\"notification\"},\"to\":\""+token+"\"}";
 
             URL url = new URL(urlServerFireBase);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();

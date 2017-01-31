@@ -164,7 +164,7 @@ public class UploadingController {
                     User friend = userService.findUserById(friendId);
                     NotificationMoment notificationMoment = notificationService.createSaveNotificationMoment(friend, albumId, moment.getId(), NotificationType.MOMENT);
                     //On demande a FireBase d envoyer une notificationMoment a ces personnes (FireBase va utiliser les Token pour envoyer la notif car chaque token correspond a une appli installé sur un device.)
-                    notificationServerService.sendNotificationMoment(notificationMoment);
+                    notificationServerService.sendNotificationMoment(notificationMoment,notificationService.getTokenByUserId(friendId));
                 }
             }
         }

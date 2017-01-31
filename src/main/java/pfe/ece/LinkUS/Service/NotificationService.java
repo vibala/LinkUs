@@ -23,8 +23,6 @@ public class NotificationService {
     @Autowired
     NotificationTokenRepository notificationTokenRepository;
 
-    UserRepository userRepository;
-
     Logger LOGGER = Logger.getLogger("LinkUS.Service.NotificationService");
 
     NotificationRepository notificationRepository;
@@ -62,7 +60,7 @@ public class NotificationService {
     }
     public NotificationMoment createSaveNotificationMoment(User user, String albumId, String momentId, NotificationType type) {
 
-        NotificationMoment notificationMoment = createNotificationMoment(user.getId(), albumId, momentId,type,getTokenByUserId(user.getId()));
+        NotificationMoment notificationMoment = createNotificationMoment(user.getId(), albumId, momentId,type);
         if(!addNotification(notificationMoment)) {
             modifyNotification(notificationMoment);
         } else {
@@ -71,14 +69,14 @@ public class NotificationService {
         return notificationMoment;
     }
 
-    public NotificationMoment createNotificationMoment(String userId, String albumId, String momentId,NotificationType type,String token) {
+    public NotificationMoment createNotificationMoment(String userId, String albumId, String momentId,NotificationType type) {
         NotificationMoment notificationMoment = new NotificationMoment();
+        createNotification(notificationMoment,userId,type);
         notificationMoment.setAlbumId(albumId);
         notificationMoment.setMomentId(momentId);
-        createNotification(notificationMoment,userId,type,token);
         return notificationMoment;
     }
-    public void createNotification(Notification notification,String userId,NotificationType type,String token) {
+    public void createNotification(Notification notification,String userId,NotificationType type) {
         notification.setUserId(userId);
         notification.setType(type);
     }
