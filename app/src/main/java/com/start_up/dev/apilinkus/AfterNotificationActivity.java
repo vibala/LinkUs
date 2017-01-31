@@ -5,6 +5,10 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -24,7 +28,9 @@ import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.API.APIPostMomentsInAlbum_Observer;
 import com.start_up.dev.apilinkus.Adapter.MomentsAdapter;
 import com.start_up.dev.apilinkus.Fragments.AlbumFragment;
+import com.start_up.dev.apilinkus.Fragments.SlideshowDialogFragment;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
+import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Tool.JsonDateDeserializer;
 
@@ -129,7 +135,37 @@ public class AfterNotificationActivity extends AppCompatActivity implements Recy
 
     @Override
     public void recyclerViewListClicked(View v, int position) {
-            Log.d(TAG,"Position du moment sélectionné " + position);
+        Log.d(TAG,"Position du moment sélectionné " + position);
+        ArrayList<Instant> instants = moments.get(position).getInstantList();
+
+        if(instants == null || instants.isEmpty()){
+          Toast.makeText(this, "Le moment ne contient aucun instants enregistrés", Toast.LENGTH_SHORT);
+
+        }else{
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+
+            Bundle bundle = new Bundle();
+            Log.d(TAG, "Moment name = " + moments.get(position).getName());
+            bundle.putSerializable("instants", instants);
+
+            // Set the current tag
+            String CURRENT_TAG = "Instants";
+
+            // Check if the fragment to be shown is already present in the fragment backstack
+            Fragment fragment = new SlideshowDialogFragment();
+            fragment.setArguments(bundle);
+
+            // Ajoutez le nouveau fragment (Dans ce cas précis, un fragment est déjà affiché à cet emplacement, il faut donc le remplacer et non pas l'ajouter)
+            fragmentTransaction.replace(R.id.frame, fragment);
+
+            // Ajoutez la transaction à la backstack pour la dépiler quand l'utilisateur appuiera sur back
+            fragmentTransaction.addToBackStack(CURRENT_TAG);
+
+            // Faites le commit
+            fragmentTransaction.commit();
+        }
     }
 
     @Override

@@ -238,9 +238,6 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     }
 
     @Override
-    public void onClick(View view, int position) {}
-
-    @Override
     public void OnShareOwnedAlbumListener(int position,String scope) {
         this.scope = scope;
         api.getAlbumByAlbumId(apiGetAlbumByAlbumIdObserver,owned_albums.get(position).getId(),getContext());

@@ -80,7 +80,6 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putSerializable("shared_albums",shared_albums);
-        //savedInstanceState.putSerializable("sent_shared_albums",sent_shared_albums);
         savedInstanceState.putString("userId",userId);
         savedInstanceState.putInt("current_selector",current_selector);
         super.onSaveInstanceState(savedInstanceState);

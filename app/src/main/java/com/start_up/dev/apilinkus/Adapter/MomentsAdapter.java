@@ -46,7 +46,7 @@ public class MomentsAdapter extends RecyclerView.Adapter<MomentsAdapter.MomentVi
     }
 
     @Override
-    public void onBindViewHolder(MomentViewHolder holder, int position) {
+    public void onBindViewHolder(final MomentViewHolder holder, int position) {
         Log.d(TAG,"Moment list size " + momentList.size());
         holder.setIsRecyclable(false);
         if(momentList.size()>0) {
@@ -62,6 +62,12 @@ public class MomentsAdapter extends RecyclerView.Adapter<MomentsAdapter.MomentVi
                     holder.sliderShow.addSlider(textSliderView);
                 }
             }
+            holder.expandImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    itemListener.recyclerViewListClicked(view,holder.getAdapterPosition());
+                }
+            });
         }
 
     }

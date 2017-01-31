@@ -61,7 +61,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
 
     /*Listener qui sera implémenté dans la classe ProfileActivity*/
     public interface ClickListener{
-        void onClick(View view, int position);
         void OnShareOwnedAlbumListener(int position,String scope);
     }
 
@@ -98,7 +97,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
                 @Override
                 public void onClick(View view) {
                     selected_album_position = holder.getAdapterPosition();
-                    Log.d(TAG,"Selected album position after" + selected_album_position);
                     showPopupMenu(holder.overflow);
                 }
             });
