@@ -4,17 +4,20 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import pfe.ece.LinkUS.Model.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import pfe.ece.LinkUS.Model.Enum.NotificationType;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
+import pfe.ece.LinkUS.Model.NbAlbumsAndNbProches;
+import pfe.ece.LinkUS.Model.NotificationFriendRequest;
+import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
 import pfe.ece.LinkUS.ServerService.NotificationServerService;
 import pfe.ece.LinkUS.Service.AlbumService;
-import pfe.ece.LinkUS.Service.FriendGroupService;
 import pfe.ece.LinkUS.Service.NotificationService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
@@ -25,7 +28,7 @@ import java.util.List;
 /**
  * Created by DamnAug on 12/10/2016.
  */
-@RestController
+@Controller
 @RequestMapping("/user")
 public class UserController {
     @Autowired

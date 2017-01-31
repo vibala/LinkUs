@@ -1,11 +1,9 @@
 package pfe.ece.LinkUS.ServerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import pfe.ece.LinkUS.Model.Notification;
 import pfe.ece.LinkUS.Model.NotificationFriendRequest;
 import pfe.ece.LinkUS.Model.NotificationMoment;
 import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
-import pfe.ece.LinkUS.Service.NotificationTokenServiceImpl;
 import pfe.ece.LinkUS.Service.UserService;
 
 import java.io.BufferedInputStream;
@@ -14,7 +12,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 /**
  * Created by Huong on 11/12/2016.

@@ -3,10 +3,12 @@ package pfe.ece.LinkUS.Service;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Enum.NotificationType;
+import pfe.ece.LinkUS.Model.Notification;
+import pfe.ece.LinkUS.Model.NotificationFriendRequest;
+import pfe.ece.LinkUS.Model.NotificationMoment;
+import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.NotificationRepository;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Repository.TokenMySQLRepo.NotificationTokenRepository;
 
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
 package pfe.ece.LinkUS.Model;
 
 import org.bson.types.ObjectId;
-import pfe.ece.LinkUS.Model.Enum.NotificationType;
 
 /**
  * Created by DamnAug on 30/01/2017.

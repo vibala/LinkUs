@@ -9,17 +9,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import pfe.ece.LinkUS.Exception.EmailExistsException;
 import pfe.ece.LinkUS.Model.Enum.Right;
 import pfe.ece.LinkUS.Model.User;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.FriendGroupRepository;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.SubscriptionRepository;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserRepository;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.FriendGroupService;
 import pfe.ece.LinkUS.Service.SubscriptionService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
 import pfe.ece.LinkUS.Service.UserService;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.nio.file.Files;
@@ -118,10 +113,6 @@ public class ScenarioController {
         //if directory exists?
         createDirectory(path);
 
-
-        albumService.addFriendToAlbum(userService, idA, idB, albumId, Right.LECTURE.name());
-
-        albumService.addFriendToAlbum(userService, idA, idC, albumId, Right.LECTURE.name());
         List<String> listFG = new ArrayList<String>();
         listFG.add(idA);
         listFG.add(idB);
@@ -161,14 +152,15 @@ public class ScenarioController {
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Di86zel", url+moment1+"_image"+6+".jpg&albumId="+albumId);
         albumService.saveFakePhoto(albumId, moment1, 6);
 
+        // Doit etre placé après l'ajout des isntants, sinon ca n'est pas comptabilisé
+        albumService.addFriendToAlbumAndAllMomentInstants(userService, idA, idB, albumId, Right.LECTURE.name());
+        albumService.addFriendToAlbumAndAllMomentInstants(userService, idA, idC, albumId, Right.LECTURE.name());
+
         // ALBUM 2
         albumId = albumService.createSaveAlbum(idA, "Album 2");
         path = Paths.get("./images/" + albumId);
         //if directory exists?
         createDirectory(path);
-
-        albumService.addFriendToAlbum(userService, idA, idB, albumId, Right.LECTURE.name());
-        albumService.addFriendToAlbum(userService, idA, idC, albumId, Right.LECTURE.name());
 
         moment1 = albumService.createMomentSaveToAlbum(albumId, "Visite du azepalais TajMahl");
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Couché de solei12l", url+moment1+"_image"+1+".jpg&albumId="+albumId);
@@ -200,6 +192,11 @@ public class ScenarioController {
         albumService.saveFakePhoto(albumId, moment1, 3);
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dize32l", url+moment1+"_image"+6+".jpg&albumId="+albumId);
         albumService.saveFakePhoto(albumId, moment1, 6);
+
+
+        // Doit etre placé après l'ajout des isntants, sinon ca n'est pas comptabilisé
+        albumService.addFriendToAlbumAndAllMomentInstants(userService, idA, idB, albumId, Right.LECTURE.name());
+        albumService.addFriendToAlbumAndAllMomentInstants(userService, idA, idC, albumId, Right.LECTURE.name());
 
         // USER 2
         // ALBUM 1

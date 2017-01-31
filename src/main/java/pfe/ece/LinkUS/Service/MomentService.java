@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import pfe.ece.LinkUS.Model.Album;
 import pfe.ece.LinkUS.Model.Instant;
 import pfe.ece.LinkUS.Model.Moment;
-import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.AlbumRepository;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -204,5 +203,18 @@ public class MomentService {
                 setMainImageUrlDefault(moment);
             }
         }
+    }
+
+    public boolean addUserToAllMomentsInstantWithRight(List<Moment> momentList, String userId, String right) {
+
+        InstantService instantService = new InstantService();
+        boolean bool = true;
+
+        for(Moment moment: momentList) {
+            if(!instantService.addUserToAllInstantIdRight(moment, right, userId)) {
+                bool = false;
+            }
+        }
+        return bool;
     }
 }

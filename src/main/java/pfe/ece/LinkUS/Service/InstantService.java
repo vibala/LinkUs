@@ -113,17 +113,23 @@ public class InstantService {
     public boolean addUserToInstantIdRight(Instant instant, String right, String userId) {
 
         boolean bool = true;
+        boolean exist = false;
         IdRightService idRightService = new IdRightService();
-        for(Right rightStr: Right.values()) {
-            if(rightStr.equals(right)) {
-                IdRight idRight = new IdRight(rightStr.name());
-                if(!idRightService.addUserToIdRight(idRight, userId) ||
-                        !idRightService.addIdRightToInstant(instant, idRight)) {
-                    bool = false;
-                }
+
+        // Si l'IdRight existe deja on ajoute le userId
+        for(IdRight idRight: instant.getIdRight()) {
+            if(idRight.getRight().equals(right)) {
+                idRightService.addUserToIdRight(idRight, userId);
+                return true;
             }
         }
-        return bool;
+        //Sinon on crée l'IdRight et on ajoute le userId
+        IdRight idRight = new IdRight(right);
+        if(!idRightService.addUserToIdRight(idRight, userId) ||
+                !idRightService.addIdRightToInstant(instant, idRight)) {
+            return false;
+        }
+        return true;
     }
 
     public void checkAllInstantDataRight(Moment moment, String userId) {

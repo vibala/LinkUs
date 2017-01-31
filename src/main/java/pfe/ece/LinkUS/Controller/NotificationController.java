@@ -6,7 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pfe.ece.LinkUS.Model.*;
+import pfe.ece.LinkUS.Model.Moment;
+import pfe.ece.LinkUS.Model.Notification;
+import pfe.ece.LinkUS.Model.NotificationMoment;
+import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Service.AlbumService;
 import pfe.ece.LinkUS.Service.NotificationService;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
@@ -61,7 +64,6 @@ public class NotificationController {
                 return momentList.get(0).toString();
             }
         }
-
         return null;
     }
 

@@ -1,7 +1,6 @@
 package pfe.ece.LinkUS.Service;
 
 import org.springframework.stereotype.Service;
-import pfe.ece.LinkUS.Model.User;
 import pfe.ece.LinkUS.Model.UserAlarm;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserAlarmRepository;
 

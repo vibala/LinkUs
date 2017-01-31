@@ -582,8 +582,6 @@ public class AlbumService {
     public boolean addFriendToAlbum(UserService userService,
                                     String userId, String friendId, String albumId, String right) {
 
-        this.userRepository = userRepository;
-
         // Récupération album
         Album album = findAlbumById(albumId);
 
@@ -598,6 +596,29 @@ public class AlbumService {
                 update(album);
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean addFriendToAlbumAndAllMomentInstants(UserService userService,
+                                                        String userId, String friendId, String albumId, String right) {
+
+        MomentService momentService = new MomentService();
+        // Récupération album
+        Album album = findAlbumById(albumId);
+
+        // Récupération du user
+        User user = userService.findUserById(userId);
+
+        // Si l'ami est bien dans la liste d'amis
+        if (userService.checkFriend(user, friendId)) {
+
+            // Ajout du friend au right
+            // Ajout du friend au right tous les instants des moments
+            addUserToAlbumIdRight(album, friendId, right);
+            momentService.addUserToAllMomentsInstantWithRight(album.getMoments(), friendId, right);
+            update(album);
+            return true;
         }
         return false;
     }
