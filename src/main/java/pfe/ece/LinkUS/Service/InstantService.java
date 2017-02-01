@@ -7,6 +7,7 @@ import pfe.ece.LinkUS.Model.Instant;
 import pfe.ece.LinkUS.Model.Moment;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 /**
@@ -133,10 +134,11 @@ public class InstantService {
     }
 
     public void checkAllInstantDataRight(Moment moment, String userId) {
-
-        for(Instant instant: moment.getInstantList()) {
+        Iterator<Instant> iter = moment.getInstantList().iterator();
+        while (iter.hasNext()) {
+            Instant instant = iter.next();
             if(!checkInstantDataRight(instant, userId)) {
-                deleteInstantFromMoment(moment, instant);
+                iter.remove();
             }
         }
     }

@@ -7,6 +7,7 @@ import pfe.ece.LinkUS.Model.Moment;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -152,22 +153,27 @@ public class MomentService {
     public void checkAllMomentDataRight(Album album, String userId) {
 
         InstantService instantService = new InstantService();
-        for(Moment moment: album.getMoments()) {
 
+        Iterator<Moment> iter = album.getMoments().iterator();
+        while (iter.hasNext()) {
+            Moment moment = iter.next();
             // Check if instant are available for the user
             instantService.checkAllInstantDataRight(moment, userId);
 
             if (moment.getInstantList().isEmpty()) {
-                deleteMomentFromAlbum(album, moment);
+                iter.remove();
             }
         }
     }
 
     public void checkAllMomentDataNews(Album album, boolean news, String userId) {
 
-        for(Moment moment: album.getMoments()) {
+        Iterator<Moment> iter = album.getMoments().iterator();
+        while (iter.hasNext()) {
+            Moment moment = iter.next();
+
             if (moment.isNews() != news) {
-                deleteMomentFromAlbum(album, moment);
+                iter.remove();
             }
         }
     }
