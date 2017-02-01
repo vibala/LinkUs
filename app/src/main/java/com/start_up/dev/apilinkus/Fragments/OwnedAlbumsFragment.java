@@ -381,6 +381,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     @Override
     public void OnShareOwnedAlbumListener(final int position,String scope) {
         this.scope = scope;
+        selected_album = owned_albums.get(position);
         if(scope.contentEquals("friends")){
             api.findUsersWithRightInAlbum(0,owned_albums.get(position).getId(),"LECTURE",this);
         }else if(scope.contentEquals("friendGroup")){
@@ -523,6 +524,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
                                         boolean checked = list.isItemChecked(i);
 
                                         if (checked) {
+                                           Log.d(TAG,"Selected album id " + selected_album.getId());
                                            api.shareAlbumWithFriend(list_friends.get(list.getItemAtPosition(i)),selected_album.getId(),"LECTURE",apiPostShareAlbumWithObserver);
                                         }
                                     }
