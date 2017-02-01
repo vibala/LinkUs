@@ -65,7 +65,7 @@ public class NotificationController {
                 return momentList.get(0).toString();
             }
         }
-        return null;
+        return "{ \"data\":\"ERROR\" }";
     }
 
     @RequestMapping("/delete")
