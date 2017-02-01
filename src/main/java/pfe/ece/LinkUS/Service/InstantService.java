@@ -147,7 +147,7 @@ public class InstantService {
 
         // Si le user ne possède pas le droit LECTURE on delete
         for (IdRight idRight: instant.getIdRight()) {
-            if (idRight.getRight().equals(Right.LECTURE.name()) && !idRight.getRight().contains(userId)) {
+            if (idRight.getRight().equals(Right.LECTURE.name()) && !idRight.getUserIdList().contains(userId)) {
                 return false;
             }
         }
