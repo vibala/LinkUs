@@ -20,7 +20,7 @@ public class APILinkUS {
 
     private Context mContext;
     private final String TAG = APILinkUS.class.getSimpleName();
-    public static String BASE_URL="http://192.168.137.77:9999";
+    public static String BASE_URL="http://192.168.43.39:9999";
     //private String userId="1";
 
     //ARRETER DE TOUCHER LES CONSTRUCTEURS 
@@ -231,12 +231,13 @@ public class APILinkUS {
         apiPostAddSubscription.execute(urlrequestAPI);
     }
 
-    public void findMomentsInAlbum(String albumId, List<String> momentIdList, APIPostMomentsInAlbum_Observer observer){
-        String query = "/findMoments?albumId="+albumId;
+    public void findSpecificMomentsInAlbum(String idNotification, APIGetNotificationMoment_Observer observer){
+        String query = "/userNotification/getMoment?notificationId="+idNotification;
         String urlrequestAPI = BASE_URL + query;
-        APIPostMomentsInAlbum apiPostMomentsInAlbum = new APIPostMomentsInAlbum(observer,momentIdList);
+        APIGetNotificationMoment apiPostMomentsInAlbum = new APIGetNotificationMoment(observer);
         apiPostMomentsInAlbum.execute(urlrequestAPI);
     }
+
 
     public void findFriendProfileByIdFromPendingFriends(String friendId,APIGetFriendProfileByIdFromPendingFriends_Observer observer){
         String query = "/user/getFriendProfileByIdFromPendingFriends?friendId="+friendId;

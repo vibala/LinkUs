@@ -6,7 +6,7 @@ import com.start_up.dev.apilinkus.API.APILinkUS;
 /**
  * Created by Huong on 29/01/2017.
  */
-//#ADD
+
 public class Authentification {
 
     private static String userId;

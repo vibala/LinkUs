@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,8 +23,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.start_up.dev.apilinkus.API.APIGetNotificationMoment_Observer;
 import com.start_up.dev.apilinkus.API.APILinkUS;
-import com.start_up.dev.apilinkus.API.APIPostMomentsInAlbum_Observer;
 import com.start_up.dev.apilinkus.Adapter.MomentsAdapter;
 import com.start_up.dev.apilinkus.Fragments.AlbumFragment;
 import com.start_up.dev.apilinkus.Fragments.SlideshowDialogFragment;
@@ -46,7 +45,7 @@ import java.util.Iterator;
  * Created by Vignesh on 1/29/2017.
  */
 
-public class AfterNotificationActivity extends AppCompatActivity implements RecyclerViewClickListener,APIPostMomentsInAlbum_Observer {
+public class AfterNotificationActivity extends AppCompatActivity implements RecyclerViewClickListener,APIGetNotificationMoment_Observer {
 
     private RecyclerView recyclerView;
     // A remplacer par les moments
@@ -62,11 +61,12 @@ public class AfterNotificationActivity extends AppCompatActivity implements Recy
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_recyclerview_postnotif);
 
-        //#ADD On met a jour les token depuis la BD locale
+        // On met a jour les token depuis la BD locale
         new DBHandler(this).updateAuthentificationFromDB();
         /*Planting the toolbar*/
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
 
         View view = getLayoutInflater().inflate(R.layout.custom_action_bar_v2, null);
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(
@@ -81,13 +81,23 @@ public class AfterNotificationActivity extends AppCompatActivity implements Recy
         getSupportActionBar().setDisplayShowCustomEnabled(true); //show custom title
         getSupportActionBar().setDisplayShowTitleEnabled(false); //hide the default title
 
+        adapter=new MomentsAdapter(getApplicationContext(),moments,this);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.moment_recyclerView_post_notif);
+        // 2nd Arguments refer to the number of columns in the grid
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),1);
+        recyclerView.setLayoutManager(layoutManager);
+        // Item decorations can affect both measurement and drawing of individual item views
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        adapter = new MomentsAdapter(getApplicationContext(),moments,this);
+        recyclerView.setAdapter(adapter);
 
         /**/
         api = new APILinkUS();
         if (getIntent() != null) {
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
-                api.findMomentsInAlbum(bundle.getString("albumId"), bundle.getStringArrayList("listMomentId"), this);
+                api.findSpecificMomentsInAlbum(bundle.getString("id"), this);
             } else {
                 Toast.makeText(this, "Failed to retrieve the album details", Toast.LENGTH_SHORT).show();
             }
@@ -126,7 +136,7 @@ public class AfterNotificationActivity extends AppCompatActivity implements Recy
 
     @Override
     public void recyclerViewListClicked(View v, int position) {
-        Log.d(TAG,"Position du moment sélectionné " + position);
+      /*  Log.d(TAG,"Position du moment sélectionné " + position);
         ArrayList<Instant> instants = moments.get(position).getInstantList();
 
         if(instants == null || instants.isEmpty()){
@@ -156,23 +166,25 @@ public class AfterNotificationActivity extends AppCompatActivity implements Recy
 
             // Faites le commit
             fragmentTransaction.commit();
-        }
+        }*/
     }
 
     @Override
-    public void getMomentInAlbum_GetResponse(JSONArray responseArray) {
+    public void getGetNotificationMoment_GetResponse(JSONObject responseObject) {
         Gson gson=new GsonBuilder().registerTypeAdapter(Date.class, new JsonDateDeserializer()).create();
-        if(responseArray != null){
-            clearData();
-            for(int i = 0; i < responseArray.length(); i++) {
-                JSONObject responseObject = responseArray.optJSONObject(i);
-                Moment moment = gson.fromJson(responseObject.toString(), Moment.class);
-                moments.add(moment);
+        Moment moment = gson.fromJson(responseObject.toString(), Moment.class);
+
+        clearData();
+        moments.add(moment);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+
             }
-            adapter.notifyDataSetChanged();
-        }else{
-            Toast.makeText(this,"Failed to retrieve the moments",Toast.LENGTH_SHORT).show();
-        }
+        });
+
+
     }
 
 
