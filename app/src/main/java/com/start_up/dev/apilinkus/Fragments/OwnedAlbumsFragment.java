@@ -30,6 +30,7 @@ import com.start_up.dev.apilinkus.API.APIGetAlbumByAlbumId_Observer;
 import com.start_up.dev.apilinkus.API.APIGetAlbumsOwned_Observer;
 import com.start_up.dev.apilinkus.API.APIGetListFriend_Observer;
 import com.start_up.dev.apilinkus.API.APIGetListGroupFriend_Observer;
+import com.start_up.dev.apilinkus.API.APIGetUsersWithRigthInAlbum_Observer;
 import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.API.APIPostShareAlbumWith_Observer;
 import com.start_up.dev.apilinkus.Adapter.AlbumsAdapter;
@@ -46,9 +47,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,7 +64,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
                 APIGetListFriend_Observer,
                     APIGetListGroupFriend_Observer,
                         APIPostShareAlbumWith_Observer,
-                            APIGetAlbumByAlbumId_Observer {
+                            APIGetAlbumByAlbumId_Observer,APIGetUsersWithRigthInAlbum_Observer {
 
     private View myView;
     private Activity parent_activity;
@@ -74,12 +77,14 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     private OnOwnedAlbumSelectedListener mCallback;
     private APILinkUS api=new APILinkUS();;
     private Album selected_album;
+    private List<String> selected_album_userIdList, selected_album_groupuserIdList;
     private Map<String,String> list_friends = new HashMap<>();
     private Map<String,String> list_friendsgroup = new HashMap<>();
     private String scope = "";
     private FloatingActionButton fab;
     private EditText nameBox,countrynameBox,placenameBox;
     private String userId = Authentification.getUserId();
+
 
     // Container Activity must implement this interface
     public interface OnOwnedAlbumSelectedListener{
@@ -107,6 +112,8 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         parent_activity = getActivity();
+        selected_album_userIdList = new ArrayList<>();
+        selected_album_groupuserIdList = new ArrayList<>();
         Log.d(TAG,"onActivityCreated " + parent_activity);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -374,9 +381,55 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     @Override
     public void OnShareOwnedAlbumListener(final int position,String scope) {
         this.scope = scope;
-        api.getAlbumByAlbumId(apiGetAlbumByAlbumIdObserver,owned_albums.get(position).getId(),getContext());
+        if(scope.contentEquals("friends")){
+            api.findUsersWithRightInAlbum(0,owned_albums.get(position).getId(),"LECTURE",this);
+        }else if(scope.contentEquals("friendGroup")){
+            api.findUsersWithRightInAlbum(1,owned_albums.get(position).getId(),"LECTURE",this);
+        }
+
+        //api.getAlbumByAlbumId(apiGetAlbumByAlbumIdObserver,owned_albums.get(position).getId(),getContext());
 
     }
+
+    @Override
+    public void usersWithRigthInAlbum_GetResponse(String responseObject) {
+          System.out.println("UserId or  GroupUserId list en lecture " + responseObject);
+
+          if(scope.contains("friends")){
+                selected_album_userIdList.clear();
+                selected_album_userIdList = new ArrayList<>(Arrays.asList(responseObject.split(", ")));
+                Log.d(TAG,"UserIdList Size " + selected_album_userIdList.size());
+            }else if(scope.contains("friendGroup")){
+                selected_album_groupuserIdList.clear();
+                selected_album_groupuserIdList = new ArrayList<>(Arrays.asList(responseObject.split(", ")));
+                Log.d(TAG,"GroupIdList Size " + selected_album_groupuserIdList.size());
+            }
+    }
+
+    @Override
+    public void usersWithRigthInAlbum_NotifyWhenGetFinish(Integer result) {
+        if(result == 1){
+            if(scope.contains("friendGroup")){
+                list_friendsgroup.clear();
+                Log.d(TAG,"Scope Friends Group");
+                api.getListGroupFriend(this);
+            }else{
+                list_friends.clear();
+                Log.d(TAG,"Scope Friends");
+                api.getListFriend(this);
+            }
+        }else {
+            Handler mHandler = new Handler();
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(), "Failed to fetch the details about the selected album", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
+    }
+
 
     @Override
     public void albumByAlbumId_GetResponse(JSONObject responseObject) {
@@ -419,8 +472,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
                 JSONObject friend_response= responseArray.optJSONObject(i);
                 // 0 : WRITE; 1: COMMENT; 2: LECTURE; 3: ADMIN
                 String friend_id = friend_response.getString("id");
-                Log.d(TAG,"Selected album userIdList size " + selected_album.getIdRight().size());
-                if(!selected_album.getSpecificIdRight("LECTURE").getUserIdList().contains(friend_id)){
+                if(!selected_album_userIdList.contains(friend_id)){
                     list_friends.put(friend_response.getString("lastName") + " "+ friend_response.getString("firstName"),friend_id);
                 }
             }
@@ -507,7 +559,10 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
             for(int i=0;i<responseArray.length();i++){
                 JSONObject friend_response = responseArray.optJSONObject(i);
                 String group_id = friend_response.getString("id");
-                if(!selected_album.getSpecificIdRight("LECTURE").getGroupIdList().contains(group_id)){
+               /* if(!selected_album.getSpecificIdRight("LECTURE").getGroupIdList().contains(group_id)){
+                    list_friendsgroup.put(friend_response.getString("name"),group_id);
+                }*/
+                if(!selected_album_groupuserIdList.contains(group_id)){
                     list_friendsgroup.put(friend_response.getString("name"),group_id);
                 }
             }

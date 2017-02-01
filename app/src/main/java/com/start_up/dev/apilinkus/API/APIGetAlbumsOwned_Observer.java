@@ -10,7 +10,7 @@ import org.json.JSONObject;
  */
 
 public interface APIGetAlbumsOwned_Observer{
-        public void albumsOwned_GetResponse(JSONArray responseArray);
-        public void albumsOwned_GetResponse(JSONObject responseObject);
-        public void albumsOwned_NotifyWhenGetFinish(Integer result,Activity parent_activity);
+        void albumsOwned_GetResponse(JSONArray responseArray);
+        void albumsOwned_GetResponse(JSONObject responseObject);
+        void albumsOwned_NotifyWhenGetFinish(Integer result,Activity parent_activity);
 }

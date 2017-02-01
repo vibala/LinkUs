@@ -17,14 +17,12 @@ import com.start_up.dev.apilinkus.API.APIGetFriendProfileByIdFromPendingFriends_
 import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.API.APIPostFriendRequestDecision_Observer;
 import com.start_up.dev.apilinkus.Adapter.NotifFriendRequestAdapter;
-import com.start_up.dev.apilinkus.Model.Moment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Created by Vignesh on 1/31/2017.
@@ -53,7 +51,7 @@ public class NotificationFriendRequestActivity extends AppCompatActivity impleme
         }
 
         Log.d("NFRA","zzzzz * 1");
-        //api.findFriendProfileByIdFromPendingFriends("588f2d8f4cab5520309d1253",this); // Pour mes tests
+        api.findFriendProfileByIdFromPendingFriends("588f2d8f4cab5520309d1253",this); // Pour mes tests
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this,1);

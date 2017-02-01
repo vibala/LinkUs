@@ -251,6 +251,21 @@ public class APILinkUS {
         APIPostFriendRequestDecision apiPostFriendRequestDecision = new APIPostFriendRequestDecision(observer);
         apiPostFriendRequestDecision.execute(urlrequestAPI,friendId);
     }
+
+    public void findUsersWithRightInAlbum(int cas,String albumId, String right,APIGetUsersWithRigthInAlbum_Observer observer){
+        if(cas==0){ // UserIdList
+            String query = "/album/findUsersWithRightInAlbum?albumId="+albumId+"&right="+right;
+            String urlrequestAPI = BASE_URL + query;
+            APIGetUsersWithRigthInAlbum apiGetUsersWithRigthInAlbum = new APIGetUsersWithRigthInAlbum(observer);
+            apiGetUsersWithRigthInAlbum.execute(urlrequestAPI);
+        }else if(cas==1){ // GroupIdList
+            String query = "/album/findGroupUsersWithRightInAlbum?albumId="+albumId+"&right="+right;
+            String urlrequestAPI = BASE_URL + query;
+            APIGetUsersWithRigthInAlbum apiGetUsersWithRigthInAlbum = new APIGetUsersWithRigthInAlbum(observer);
+            apiGetUsersWithRigthInAlbum.execute(urlrequestAPI);
+        }
+
+    }
 }
 
 
