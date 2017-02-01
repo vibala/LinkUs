@@ -191,4 +191,20 @@ public class AlbumController {
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         return albumService.findAllMomentsCheckRightInAlbum(albumId, userId).toString();
     }
+
+    @RequestMapping(value = "/findSpecificMoments", params = {"albumId"})
+    public String findSpecificMomentsInAlbum(@RequestParam("albumId") String albumId,
+                                             @RequestBody List<String> momentIdList) {
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        return albumService.findMomentsCheckRightInAlbum(albumId, userId, momentIdList).toString();
+    }
+
+    @RequestMapping(value = "/findUsersWithRightInAlbum", params = {"albumId", "right"})
+    public String findUsersWithRightInAlbum(@RequestParam("albumId") String albumId,
+                                            @RequestParam("right") String right) {
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        return albumService.findUsersWithRightInAlbum(albumId, userId, right).toString();
+    }
 }

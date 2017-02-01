@@ -504,6 +504,18 @@ public class AlbumService {
         momentService.checkAllMomentDataRight(album, userId);
         return album.getMoments();
     }
+
+    public List<String> findUsersWithRightInAlbum(String albumId, String userId, String right) {
+
+        Album album = findAlbumById(albumId);
+
+        IdRightService idRightService = new IdRightService();
+
+        //TODO: Vérifier que l'user à le droit d'obtenir ces infos (--> Admin ?)
+
+        return idRightService.getUsersFromIdRight(idRightService.findByRight(album, right));
+    }
+
     /**
      * Method preparing the users' albums: new album, new moment
      * @param userId

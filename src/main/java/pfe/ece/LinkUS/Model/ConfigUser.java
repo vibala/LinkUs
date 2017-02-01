@@ -11,6 +11,8 @@ import java.io.Serializable;
  */
 public class ConfigUser implements Serializable{
 
+
+
     private String id;
     private boolean news = true;
     private boolean receiveNotification = true;
