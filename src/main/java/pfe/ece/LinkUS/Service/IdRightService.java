@@ -156,4 +156,12 @@ public class IdRightService {
         }
         return new ArrayList<>();
     }
+
+    public List<String> getGroupUsersFromIdRight(IdRight idRight) {
+
+        if(idRight != null){
+            return idRight.getGroupIdList();
+        }
+        return new ArrayList<>();
+    }
 }

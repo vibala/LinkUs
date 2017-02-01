@@ -201,6 +201,7 @@ public class AlbumService {
         return groupIdsList;
     }
 
+
     public void fillEmptyIds(Album album) {
         album.setRandomId();
         for(IdRight idRight: album.getIdRight()){
@@ -514,6 +515,20 @@ public class AlbumService {
         //TODO: Vérifier que l'user à le droit d'obtenir ces infos (--> Admin ?)
 
         return idRightService.getUsersFromIdRight(idRightService.findByRight(album, right));
+    }
+
+    public List<String> findGroupUsersWithRightInAlbum(String albumId, String userId, String right) {
+
+        Album album = findAlbumById(albumId);
+
+        IdRightService idRightService = new IdRightService();
+
+        //TODO: Vérifier que l'user à le droit d'obtenir ces infos (--> Admin ?)
+        // if(album.getOwnerId().contentEquals(userId)){
+        return idRightService.getGroupUsersFromIdRight(idRightService.findByRight(album, right));
+        //   }
+
+        // return new ArrayList<>();
     }
 
     /**

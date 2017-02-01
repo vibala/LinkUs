@@ -199,12 +199,12 @@ public class AlbumController {
         return albumService.findMomentsCheckRightInAlbum(albumId, userId, momentIdList).toString();
     }
 
-    @RequestMapping(value = "/findUsersWithRightInAlbum", params = {"albumId", "right"})
-    public String findUsersWithRightInAlbum(@RequestParam("albumId") String albumId,
-                                            @RequestParam("right") String right) {
+    @RequestMapping(value = "/findGroupUsersWithRightInAlbum", params = {"albumId", "right"})
+    public String findGroupUsersWithRightInAlbum(@RequestParam("albumId") String albumId,
+                                                 @RequestParam("right") String right) {
 
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
 
-        return albumService.findUsersWithRightInAlbum(albumId, userId, right).toString();
+        return albumService.findGroupUsersWithRightInAlbum(albumId, userId, right).toString();
     }
 }
