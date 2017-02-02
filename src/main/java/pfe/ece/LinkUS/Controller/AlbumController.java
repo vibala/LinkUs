@@ -3,7 +3,6 @@ package pfe.ece.LinkUS.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Exception.AlbumNotFoundException;
 import pfe.ece.LinkUS.Model.Album;
@@ -198,6 +197,14 @@ public class AlbumController {
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         return albumService.findMomentsCheckRightInAlbum(albumId, userId, momentIdList).toString();
     }
+    @RequestMapping(value = "/findUsersWithRightInAlbum", params = {"albumId", "right"})
+    public String findUsersWithRightInAlbum(@RequestParam("albumId") String albumId,
+                                            @RequestParam("right") String right) {
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        return albumService.findUsersWithRightInAlbum(albumId, userId, right).toString();
+    }
 
     @RequestMapping(value = "/findGroupUsersWithRightInAlbum", params = {"albumId", "right"})
     public String findGroupUsersWithRightInAlbum(@RequestParam("albumId") String albumId,
@@ -207,4 +214,6 @@ public class AlbumController {
 
         return albumService.findGroupUsersWithRightInAlbum(albumId, userId, right).toString();
     }
+
+
 }
