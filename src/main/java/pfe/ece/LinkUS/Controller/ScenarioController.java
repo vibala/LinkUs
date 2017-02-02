@@ -155,7 +155,7 @@ public class ScenarioController {
         // Doit etre placé après l'ajout des isntants, sinon ca n'est pas comptabilisé
         albumService.addFriendToAlbumAndAllMomentInstants(userService, idA, idB, albumId, Right.LECTURE.name());
         albumService.addFriendToAlbumAndAllMomentInstants(userService, idA, idC, albumId, Right.LECTURE.name());
-
+        albumService.addFriendToAlbumAndAllMomentInstants(userService, idA, idA, albumId, Right.LECTURE.name());
         // ALBUM 2
         albumId = albumService.createSaveAlbum(idA, "Album 2");
         path = Paths.get("./images/" + albumId);
@@ -197,7 +197,7 @@ public class ScenarioController {
         // Doit etre placé après l'ajout des isntants, sinon ca n'est pas comptabilisé
         albumService.addFriendToAlbumAndAllMomentInstants(userService, idA, idB, albumId, Right.LECTURE.name());
         albumService.addFriendToAlbumAndAllMomentInstants(userService, idA, idC, albumId, Right.LECTURE.name());
-
+        albumService.addFriendToAlbumAndAllMomentInstants(userService, idA, idA, albumId, Right.LECTURE.name());
         // USER 2
         // ALBUM 1
         albumId = albumService.createSaveAlbum(idB, "Album 1");
@@ -235,6 +235,7 @@ public class ScenarioController {
         albumService.createInstantPhotoSaveToAlbumMoment(albumId, moment1, "Dizegggl", url+moment1+"_image"+2+".jpg&albumId="+albumId);
         albumService.saveFakePhoto(albumId, moment1, 2);
 
+        albumService.addFriendToAlbumAndAllMomentInstants(userService, idB, idB, albumId, Right.LECTURE.name());
         return new ResponseEntity(HttpStatus.OK);
     }
 

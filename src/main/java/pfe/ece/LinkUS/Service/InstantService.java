@@ -7,6 +7,7 @@ import pfe.ece.LinkUS.Model.Instant;
 import pfe.ece.LinkUS.Model.Moment;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 /**
@@ -133,10 +134,11 @@ public class InstantService {
     }
 
     public void checkAllInstantDataRight(Moment moment, String userId) {
-
-        for(Instant instant: moment.getInstantList()) {
+        Iterator<Instant> iter = moment.getInstantList().iterator();
+        while (iter.hasNext()) {
+            Instant instant = iter.next();
             if(!checkInstantDataRight(instant, userId)) {
-                deleteInstantFromMoment(moment, instant);
+                iter.remove();
             }
         }
     }
@@ -145,7 +147,7 @@ public class InstantService {
 
         // Si le user ne possède pas le droit LECTURE on delete
         for (IdRight idRight: instant.getIdRight()) {
-            if (idRight.getRight().equals(Right.LECTURE.name()) && !idRight.getRight().contains(userId)) {
+            if (idRight.getRight().equals(Right.LECTURE.name()) && !idRight.getUserIdList().contains(userId)) {
                 return false;
             }
         }

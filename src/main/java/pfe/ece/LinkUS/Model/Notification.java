@@ -2,6 +2,7 @@ package pfe.ece.LinkUS.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import pfe.ece.LinkUS.Model.Enum.NotificationType;
 
@@ -14,6 +15,17 @@ public abstract class Notification {
     String id;
     NotificationType type;
     String userId;
+
+    public Notification() {
+        setRandomId();
+    }
+
+    public void setRandomId() {
+        if(getId()== null || getId().equals("")) {
+            ObjectId objectId = new ObjectId();
+            setId(objectId.toString());
+        }
+    }
 
     public String getUserId() {
         return userId;

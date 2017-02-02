@@ -16,14 +16,6 @@ public class NotificationMoment extends Notification {
 
     public NotificationMoment() {
         super();
-        setRandomId();
-    }
-
-    public void setRandomId() {
-        if(getId()== null || getId().equals("")) {
-            ObjectId objectId = new ObjectId();
-            setId(objectId.toString());
-        }
     }
 
     public String getId() {

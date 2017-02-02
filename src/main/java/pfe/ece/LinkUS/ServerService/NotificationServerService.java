@@ -37,11 +37,11 @@ public class NotificationServerService {
 
         URL url = new URL(urlServerFireBase);
 
-        String json = "{\"data\":"
+        String json = "{\"data\":{"
                 +"\"id\":\""+notificationFriendRequest.getId()+"\","
                 +"\"fromFriendId\":\""+notificationFriendRequest.getFromFriendId()+"\","
-                +"\"type\": \""+notificationFriendRequest.getType()+"\"},"
-                +"\"description\": \""+notificationFriendRequest.getMessage()+" \","
+                +"\"type\": \""+notificationFriendRequest.getType()+"\","
+                +"\"description\": \""+notificationFriendRequest.getMessage()+" \"},"
                 +"\"to\" : \""+token+"\"}";
 
         sendNotificationRequestToFirebase(url,keyServerFireBaseSmartphone,json);
