@@ -49,6 +49,7 @@ public abstract class  APIGet extends AsyncTask<String, Void, Integer> {
         protected Integer doInBackground(String... params) {
             Integer result = 0;
             final String authorization = "Bearer " + Authentification.getAccess_token();
+            //final String authorization = "Bearer 51718adc-19de-40fc-8ac6-4bbac30dfca1";
             Log.d("Authorization", authorization);
 
             try {

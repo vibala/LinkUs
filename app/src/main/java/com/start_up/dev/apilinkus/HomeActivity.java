@@ -53,6 +53,7 @@ import com.start_up.dev.apilinkus.Fragments.AlbumFragment;
 import com.start_up.dev.apilinkus.Fragments.AlbumFragment.OnMomentSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.CircleFragment;
 import com.start_up.dev.apilinkus.Fragments.CreateGroupFragment;
+import com.start_up.dev.apilinkus.Fragments.FriendRequestFragment;
 import com.start_up.dev.apilinkus.Fragments.HomeFragment;
 import com.start_up.dev.apilinkus.Fragments.HomeFragment.OnPostSelectedListener;
 import com.start_up.dev.apilinkus.Fragments.NotificationFragment;
@@ -118,6 +119,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     private static final String TAG_ACCUEIL = "Accueil";
     private static final String TAG_PROFIL = "Profile";
     private static final String TAG_PROCHES = "Proches";
+    private static final String TAG_INVITATIONS = "Invitations";
     private static final String TAG_NOTIFICATIONS = "Notifications";
     private static final String TAG_PARAMETRES = "Paramètres";
     public static String CURRENT_TAG = TAG_ACCUEIL;
@@ -368,14 +370,17 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
                 CircleFragment circleFragment = new CircleFragment();
                 return circleFragment;
             case 3:
+                FriendRequestFragment friendRequestFragment = new FriendRequestFragment();
+                return friendRequestFragment;
+            case 4:
                 NotificationFragment notificationFragment = new NotificationFragment();
                 return notificationFragment;
-            case 4:
+            case 5:
                 // Parametres
                 bottomBar.setVisibility(View.GONE);
                 ParametreFragment parametreFragment = new ParametreFragment();
                 return parametreFragment;
-            case 5:
+            case 6:
                 AboutUsFragment aboutUsFragment = new AboutUsFragment();
                 return aboutUsFragment;
             default:
@@ -391,7 +396,6 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     private void selectNavMenu() {
         navigationView.getMenu().getItem(navItemIndex).setChecked(true);
     }
-
 
     /*Setting the action bar's title*/
     private void setActionBarTitle() {
@@ -501,16 +505,20 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
                 navItemIndex = 2;
                 CURRENT_TAG = TAG_PROCHES;
                 break;
-            case R.id.nav_notifications:
+            case R.id.nav_invitations:
                 navItemIndex = 3;
+                CURRENT_TAG = TAG_INVITATIONS;
+                break;
+            case R.id.nav_notifications:
+                navItemIndex = 4;
                 CURRENT_TAG = TAG_NOTIFICATIONS;
                 break;
             case R.id.nav_settings:
-                navItemIndex = 4;
+                navItemIndex = 5;
                 CURRENT_TAG = TAG_PARAMETRES;
                 break;
             case R.id.nav_about_us:
-                navItemIndex = 5;
+                navItemIndex = 6;
                 CURRENT_TAG = TAG_ABOUT_US;
                 drawer.closeDrawer(GravityCompat.START);
                 break;
@@ -652,9 +660,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         timer.schedule(task2, 0, 5 * 1000); // interval of five seconds
     }
 
-
-
-    @Override
+   @Override
     public void onChangeUserInformation(String key, String[] value) {
         if (key.contentEquals("Fullname")) {
             api.changeUserFullName(value[0], value[1]);

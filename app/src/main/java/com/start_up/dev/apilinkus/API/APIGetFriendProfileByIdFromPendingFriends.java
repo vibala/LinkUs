@@ -2,6 +2,7 @@ package com.start_up.dev.apilinkus.API;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,9 +13,11 @@ import org.json.JSONObject;
 public class APIGetFriendProfileByIdFromPendingFriends extends APIGet {
 
     private APIGetFriendProfileByIdFromPendingFriends_Observer observer;
+    private String type;
 
-    public APIGetFriendProfileByIdFromPendingFriends(APIGetFriendProfileByIdFromPendingFriends_Observer observer){
+    public APIGetFriendProfileByIdFromPendingFriends(APIGetFriendProfileByIdFromPendingFriends_Observer observer,String type){
         this.observer = observer;
+        this.type = type;
     }
 
     @Override
@@ -26,8 +29,13 @@ public class APIGetFriendProfileByIdFromPendingFriends extends APIGet {
     @Override
     protected void parseResult(String result) {
         try {
-            JSONObject object = new JSONObject(result);
-            this.observer.getFriendProfileByIdFromPendingFriends_GetResponse(object);
+            if(type.contentEquals("NotifFriendRequest")){
+                JSONObject object = new JSONObject(result);
+                this.observer.getFriendProfileByIdFromPendingFriends_GetResponse(object);
+            }else if(type.contentEquals("NormalFriendRequest")){
+                JSONArray object = new JSONArray(result);
+                this.observer.getFriendProfileByIdFromPendingFriends_GetResponse(object);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -28,6 +28,7 @@ public class APIPostFriendRequestDecision extends AsyncTask<String,Void,Boolean>
     protected Boolean doInBackground(String... params) {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
         headers.add("Authorization", "Bearer " + Authentification.getAccess_token());
+        //headers.add("Authorization", "Bearer 51718adc-19de-40fc-8ac6-4bbac30dfca1");
         headers.add("Content-Type", "application/json");
 
         try{
@@ -36,17 +37,17 @@ public class APIPostFriendRequestDecision extends AsyncTask<String,Void,Boolean>
 
             HttpEntity<String> request = new HttpEntity<String>(params[1], headers);
 
-            String result = restTemplate.postForObject((String) params[0], request, String.class);
-            if(result.contentEquals("200")){
-                return true;
-            }else{
-                return false;
-            }
+            restTemplate.postForObject((String) params[0], request, String.class);
+
         }catch (Exception e){
-            Log.e("ServicePostAPIa", e.getMessage());
+            if(e.getMessage() != null){
+                Log.e("ServicePostAPIa",e.getMessage());
+            }
+            e.printStackTrace();
             return false;
         }
 
+        return true;
     }
 
     @Override

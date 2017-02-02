@@ -14,6 +14,10 @@
             android:id="@+id/nav_relatives"
             android:icon="@drawable/ic_group_black_24dp"
             android:title="@string/nav_proches" />
+        <item
+            android:id="@+id/nav_invitations"
+            android:icon="@drawable/ic_account_plus_black_24dp"
+            android:title="@string/nav_invitations" />
 
         <item
             android:id="@+id/nav_notifications"

@@ -53,6 +53,7 @@
     <string name="nav_accueil">Accueil</string>
     <string name="nav_profile">Profile</string>
     <string name="nav_proches">Proches</string>
+    <string name="nav_invitations">Invitations</string>
     <string name="nav_notifications">Notifications</string>
     <string name="nav_parametres">Paramètres</string>
     <string name="nav_about_us">A propos de Linkus</string>
@@ -86,6 +87,7 @@
         <item>Accueil</item>
         <item>Profile</item>
         <item>Proches</item>
+        <item>Invitations</item>
         <item>Notifications</item>
         <item>Paramètres</item>
         <item>A propos de Linkus</item>

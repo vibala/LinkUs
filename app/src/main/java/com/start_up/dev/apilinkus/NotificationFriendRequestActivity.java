@@ -17,6 +17,7 @@ import com.start_up.dev.apilinkus.API.APIGetFriendProfileByIdFromPendingFriends_
 import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.API.APIPostFriendRequestDecision_Observer;
 import com.start_up.dev.apilinkus.Adapter.NotifFriendRequestAdapter;
+import com.start_up.dev.apilinkus.Model.Authentification;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,17 +42,23 @@ public class NotificationFriendRequestActivity extends AppCompatActivity impleme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_home_fragment);
         friendsFromPendingList = new HashMap<>();
-        Log.d("NFRA","zzzzz * 0");
         api = new APILinkUS();
         if(getIntent() != null){
             Bundle bundle = getIntent().getExtras();
             if(bundle != null){
-                api.findFriendProfileByIdFromPendingFriends(bundle.getString("fromFriendId"),this);
+                if(Authentification.getAccess_token()!= null){
+                    api.findFriendProfileByIdFromPendingFriends(bundle.getString("fromFriendId"),this);
+                }else{ // On va lui demander de se reconnecter
+                    Intent intent = new Intent(this,MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish(); // call this to finish the current activity
+                }
             }
         }
 
-        Log.d("NFRA","zzzzz * 1");
-        api.findFriendProfileByIdFromPendingFriends("588f2d8f4cab5520309d1253",this); // Pour mes tests
+        //Log.d("NFRA","zzzzz * 1");
+        //api.findFriendProfileByIdFromPendingFriends("58927750274e851e4420e0fb",this); // Pour mes tests
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this,1);
@@ -101,6 +108,7 @@ public class NotificationFriendRequestActivity extends AppCompatActivity impleme
     @Override
     public void getFriendProfileByIdFromPendingFriends_GetResponse(JSONObject responseObject) {
         System.out.println("Response object : " + responseObject);
+        friendsFromPendingList.clear();
         try {
             if(responseObject.toString() != null){
                 String ln = responseObject.getString("lastName");

@@ -34,6 +34,7 @@ public class NotifFriendRequestAdapter extends RecyclerView.Adapter<NotifFriendR
 
     @Override
     public NotifFriendRequestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d("NFRQ","TEST");
         View itemView = LayoutInflater
                             .from(parent.getContext())
                                 .inflate(R.layout.cardview_recyclerview_notif_friend_request,parent,false);
@@ -42,11 +43,12 @@ public class NotifFriendRequestAdapter extends RecyclerView.Adapter<NotifFriendR
 
     @Override
     public void onBindViewHolder(final NotifFriendRequestViewHolder holder, int position) {
+        Log.d("NFRQ","TEST0");
         if(friendsFromPendingList != null && friendsFromPendingList.size() > 0){
-            String user = friendsFromPendingList.get(position);
-            Log.d("NFRA","Tzzzz* 2");
+            Log.d("NFRQ","TEST1");
+            String user = (String) friendsFromPendingList.values().toArray()[holder.getAdapterPosition()];
             if(user!=null){
-                Log.d("NFRA","zzzzz * 3");
+                Log.d("NFRQ","TEST2");
                 holder.friend_profile_name.setText(user);
                 holder.btn_accept.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -67,7 +69,7 @@ public class NotifFriendRequestAdapter extends RecyclerView.Adapter<NotifFriendR
 
     @Override
     public int getItemCount() {
-        return 0;
+        return friendsFromPendingList.size();
     }
 
     public class NotifFriendRequestViewHolder extends RecyclerView.ViewHolder{

@@ -11,6 +11,8 @@ import com.start_up.dev.apilinkus.Model.Subscription;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by Huong on 06/11/2016.
@@ -20,7 +22,7 @@ public class APILinkUS {
 
     private Context mContext;
     private final String TAG = APILinkUS.class.getSimpleName();
-    public static String BASE_URL="http://192.168.43.39:9999";
+    public static String BASE_URL="http://192.168.137.77:9999";
     //private String userId="1";
 
     //ARRETER DE TOUCHER LES CONSTRUCTEURS 
@@ -161,7 +163,15 @@ public class APILinkUS {
         String query="/user/";
         String urlrequestAPI = BASE_URL + query;
         APIGetUserProfileDetails apiGetUserProfileDetails = new APIGetUserProfileDetails(activityObserver,mContext);
-        apiGetUserProfileDetails.execute(urlrequestAPI);
+        try {
+            apiGetUserProfileDetails.execute(urlrequestAPI).get(1000, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getNbofFriendsAndAlbumOwned(APIGetUserNbFriendsAndNbOwnedAlbums_Observer activityObserver){
@@ -242,12 +252,21 @@ public class APILinkUS {
     public void findFriendProfileByIdFromPendingFriends(String friendId,APIGetFriendProfileByIdFromPendingFriends_Observer observer){
         String query = "/user/getFriendProfileByIdFromPendingFriends?friendId="+friendId;
         String urlrequestAPI = BASE_URL + query;
-        APIGetFriendProfileByIdFromPendingFriends apiGetFriendProfileByIdFromPendingFriends = new APIGetFriendProfileByIdFromPendingFriends(observer);
+        APIGetFriendProfileByIdFromPendingFriends apiGetFriendProfileByIdFromPendingFriends = new APIGetFriendProfileByIdFromPendingFriends(observer,"NotifFriendRequest");
         apiGetFriendProfileByIdFromPendingFriends.execute(urlrequestAPI);
     }
 
+    public void findFriendsNameandIdByIdFromPendingFriends(APIGetFriendProfileByIdFromPendingFriends_Observer observer){
+        String query = "/user/getPendingFriends";
+        String urlrequestAPI = BASE_URL + query;
+        APIGetFriendProfileByIdFromPendingFriends apiGetFriendProfileByIdFromPendingFriends = new APIGetFriendProfileByIdFromPendingFriends(observer,"NormalFriendRequest");
+        apiGetFriendProfileByIdFromPendingFriends.execute(urlrequestAPI);
+    }
+
+
+
     public void postFriendRequestDecision(String friendId,boolean decision,APIPostFriendRequestDecision_Observer observer){
-        String query = "/friendRequestDecision?friendId="+friendId+"&decision="+decision;
+        String query = "/user/friendRequestDecision?decision="+decision;
         String urlrequestAPI = BASE_URL + query;
         APIPostFriendRequestDecision apiPostFriendRequestDecision = new APIPostFriendRequestDecision(observer);
         apiPostFriendRequestDecision.execute(urlrequestAPI,friendId);

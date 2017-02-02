@@ -21,8 +21,10 @@ import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.start_up.dev.apilinkus.API.APIGetUserProfileDetails_Observer;
 import com.start_up.dev.apilinkus.API.APILinkUS;
 import com.start_up.dev.apilinkus.Auth.AbstractAsyncActivity;
+import com.start_up.dev.apilinkus.Model.Authentification;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -32,10 +34,12 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
+import org.json.JSONObject;
+
 import io.fabric.sdk.android.Fabric;
 
 
-public class MainActivity extends AbstractAsyncActivity {
+public class MainActivity extends AbstractAsyncActivity implements APIGetUserProfileDetails_Observer {
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "3vSE6aWBhqI2L3T5ruj24j3SO";
@@ -50,6 +54,8 @@ public class MainActivity extends AbstractAsyncActivity {
     private CallbackManager callbackManager;
     private LoginButton facebookLoginButton;
     private TwitterLoginButton twitterLoginButton;
+    private APILinkUS api;
+    private boolean access_token_valid = true;
 
     // ***************************************
     // Activity methods
@@ -57,9 +63,24 @@ public class MainActivity extends AbstractAsyncActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         //Initialisation de l'url il a besoin du context pour chercher l'url qui se trouve dans urls.xml
-        new APILinkUS(MainActivity.this);
-
+        api = new APILinkUS(MainActivity.this);
         super.onCreate(savedInstanceState);
+
+        // il faut laisser passer SI une des deux conditions est vérifiée:
+        /*1 - le MDP est bon et lui donner un bon token*
+                OU
+        2- le laisser passer si envoit un Token qui correspond bien au token dans la BD*/
+        if(Authentification.getAccess_token()!= null){
+            api.getUserProfileDetails(this,this);
+            if(access_token_valid == true){
+                Log.d(TAG,"Access token valid true");
+                access_token_valid = false; // reset
+                Intent intent = new Intent(this,HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish(); // call this to finish the current activity
+            }
+        }
 
         /*Social conf settings */
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
@@ -286,6 +307,20 @@ public class MainActivity extends AbstractAsyncActivity {
             }
         }else if(requestCode == TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE){
             twitterLoginButton.onActivityResult(requestCode,resultCode,data);
+        }
+    }
+
+    @Override
+    public void userDetails_GetResponse(JSONObject responseJSON) {
+
+    }
+
+    @Override
+    public void userDetails_NotifyWhenGetFinish(Integer result) {
+        if(result==1){
+            access_token_valid = true;
+        }else{
+            access_token_valid = false;
         }
     }
 
