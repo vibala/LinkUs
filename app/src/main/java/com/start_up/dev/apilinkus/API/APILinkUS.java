@@ -163,15 +163,7 @@ public class APILinkUS {
         String query="/user/";
         String urlrequestAPI = BASE_URL + query;
         APIGetUserProfileDetails apiGetUserProfileDetails = new APIGetUserProfileDetails(activityObserver,mContext);
-        try {
-            apiGetUserProfileDetails.execute(urlrequestAPI).get(1000, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-        }
+        apiGetUserProfileDetails.execute(urlrequestAPI);
     }
 
     public void getNbofFriendsAndAlbumOwned(APIGetUserNbFriendsAndNbOwnedAlbums_Observer activityObserver){

@@ -70,7 +70,7 @@ public class MainActivity extends AbstractAsyncActivity implements APIGetUserPro
         /*1 - le MDP est bon et lui donner un bon token*
                 OU
         2- le laisser passer si envoit un Token qui correspond bien au token dans la BD*/
-        if(Authentification.getAccess_token()!= null){
+        /*if(Authentification.getAccess_token()!= null){
             api.getUserProfileDetails(this,this);
             if(access_token_valid == true){
                 Log.d(TAG,"Access token valid true");
@@ -80,7 +80,7 @@ public class MainActivity extends AbstractAsyncActivity implements APIGetUserPro
                 startActivity(intent);
                 finish(); // call this to finish the current activity
             }
-        }
+        }*/
 
         /*Social conf settings */
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
