@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 public class GalleryActivity extends AppCompatActivity implements RecyclerViewGalleryFolderClickListener,RecyclerViewGalleryClickListener {
     private static final String TAG = GalleryActivity.class.getSimpleName();
-    private String current_directory;
+    public static String current_directory;
     private ProgressBar mProgressBar;
     private ArrayList<RecyclerViewItem> currentList=new ArrayList<>();
     private RecyclerView currentRecyclerView ;
@@ -47,14 +47,16 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewGa
     private String ExternalStorageDirectoryPath;
 
 
+
     //Je sais pas si ca clear vraiment mais on post sur internet dit que oui http://stackoverflow.com/questions/19287346/clear-a-bitmap-from-arraytlist-using-recycle-not-working-android
-    private void clearDataFragment(){
+    private void clearCurrentList(){
+        if(currentList!=null) {
+            currentList.clear();
+        }
 
-        currentList.clear();
-        folderList.clear();
+        if(currentAdapter!=null)
+            currentAdapter.notifyDataSetChanged();
 
-        currentAdapter.notifyDataSetChanged();
-        folderAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -79,15 +81,22 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewGa
         // Save UI state changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is
         // killed and restarted.
-        savedInstanceState.putSerializable("selectedList",  selectedList);
-        savedInstanceState.putSerializable("currentList",  currentList);
-        savedInstanceState.putSerializable("folderList",  folderList);
-        savedInstanceState.putString("current_directory",  current_directory);
+        savedInstanceState.putSerializable("selectedList", selectedList);
+        savedInstanceState.putSerializable("currentList", currentList);
+        savedInstanceState.putSerializable("folderList", folderList);
+        savedInstanceState.putString("current_directory", current_directory);
         // etc.
         super.onSaveInstanceState(savedInstanceState);
     }
-
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        //Refresh your stuff here
+        setGalleryDisplay(current_directory);
+    }
     private void initViews(Bundle savedInstanceState){
+        clearCurrentList();
 
         current_directory=ExternalStorageDirectoryPath+"/Pictures/Messenger/";
         currentAdapter = new GalleryAdapter(this,currentList,"current");
@@ -139,10 +148,10 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewGa
                 Intent intent = new Intent(GalleryActivity.this, SendMomentActivity.class);
                 intent.putExtra("selectedList",selectedList);
                 intent.putExtra("albumId",getIntent().getStringExtra("albumId"));
-                clearDataFragment();
+                clearCurrentList();
+
                 //Start details activity
                 startActivity(intent);
-                finish();
             }
         });
     }
@@ -155,7 +164,7 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewGa
         return false;
     }
     private ArrayList<RecyclerViewFolderItem> getDirectoryWithImages(String path) {
-        ArrayList<RecyclerViewFolderItem> folderListLocal=new ArrayList<RecyclerViewFolderItem>();
+        ArrayList<RecyclerViewFolderItem> folderListLocal=new ArrayList<>();
         File targetDirector = new File(path);
         File[] files_list = targetDirector.listFiles();
         if(files_list != null){
@@ -197,38 +206,36 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewGa
     }
 
     private void setGalleryDisplay(String directory){
-
+        clearCurrentList();
         File fileTest = new File(directory);
         if (fileTest.exists() && fileTest.isDirectory()) {
             current_directory=directory;
             String targetPath = directory;
             //System.out.println(targetPath);
-                try {
-                    File targetDirector = new File(targetPath);
-                    File[] files_list = targetDirector.listFiles();
-                    currentList.clear();
-                    currentAdapter.notifyDataSetChanged();
-                    for (File file : files_list) {
-                        if(!file.isDirectory()) {
-                            boolean exist = false;
-                            String absPath=file.getAbsolutePath();
-                            for (RecyclerViewItem item : selectedList) {
-                                if (item.getId().equals(absPath)) {
-                                    exist = true;
-                                    break;
-                                }
+            try {
+                File targetDirector = new File(targetPath);
+                File[] files_list = targetDirector.listFiles();
+                for (File file : files_list) {
+                    if(!file.isDirectory()) {
+                        boolean exist = false;
+                        String absPath=file.getAbsolutePath();
+                        for (RecyclerViewItem item : selectedList) {
+                            if (item.getId().equals(absPath)) {
+                                exist = true;
+                                break;
                             }
-                            currentList.add(new RecyclerViewItem(absPath.toLowerCase(), absPath.substring(absPath.lastIndexOf('/') +1).toLowerCase(), file, exist));
                         }
+                        currentList.add(new RecyclerViewItem(absPath, absPath.substring(absPath.lastIndexOf('/') +1), file, exist));
                     }
-                    currentAdapter.setGridData(currentList);
-                    Toast.makeText(getApplicationContext(), targetPath, Toast.LENGTH_SHORT).show();
-                }catch(Exception e){
-                    Toast.makeText(getApplicationContext(), "Le chemin n'est pas valide.", Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                Toast.makeText(getApplicationContext(), "Le dossier n'existe pas.", Toast.LENGTH_SHORT).show();
+                currentAdapter.setGridData(currentList);
+                Toast.makeText(getApplicationContext(), targetPath, Toast.LENGTH_SHORT).show();
+            }catch(Exception e){
+                Toast.makeText(getApplicationContext(), "Le chemin n'est pas valide.", Toast.LENGTH_SHORT).show();
             }
+        } else {
+            Toast.makeText(getApplicationContext(), "Le dossier n'existe pas.", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -240,27 +247,27 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewGa
                 item=item_tmp;
         }
         if(item!=null){
-        //System.out.println("name "+item.getName());
-        if(((CheckBox)viewCheckBox).isChecked()){
-            item.setChecked(true);
-            selectedList.add(item);
-            System.out.println("add "+item.getId());
-        }
-        else{
-            item.setChecked(false);
-            for (RecyclerViewItem i : selectedList) {
-                if (i.getId().equals(path)) {
-                    i.setChecked(false);
-                    //l'item de la selected list et current list ne soit pas toujours les meme a cause des cahngement de directory
-                    item.setChecked(false);
-                    selectedList.remove(i);
-                    //System.out.println("remove "+i.getName());
-                    break;
-                }
+            //System.out.println("name "+item.getName());
+            if(((CheckBox)viewCheckBox).isChecked()){
+                item.setChecked(true);
+                selectedList.add(item);
+                System.out.println("add "+item.getId());
             }
-            //System.out.println("remove "+item.getName());
+            else{
+                item.setChecked(false);
+                for (RecyclerViewItem i : selectedList) {
+                    if (i.getId().equals(path)) {
+                        i.setChecked(false);
+                        //l'item de la selected list et current list ne soit pas toujours les meme a cause des cahngement de directory
+                        item.setChecked(false);
+                        selectedList.remove(i);
+                        //System.out.println("remove "+i.getName());
+                        break;
+                    }
+                }
+                //System.out.println("remove "+item.getName());
 
-        }
+            }
             currentAdapter.setGridData(currentList);
         }
         else if(!((CheckBox)viewCheckBox).isChecked()) {
@@ -291,7 +298,22 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewGa
     @Override
     public void onBackPressed(){
         super.onBackPressed();
-        clearDataFragment();
+        clearCurrentList();
+
         finish();
     }
+
+
+
+
+    private void clearFolderList(){
+        if(folderList!=null) {
+            folderList.clear();
+        }
+
+        if(folderAdapter!=null)
+            folderAdapter.notifyDataSetChanged();
+
+    }
+
 }

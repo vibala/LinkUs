@@ -1,6 +1,5 @@
 package com.start_up.dev.apilinkus;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -13,7 +12,6 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.Dimension;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -40,7 +38,6 @@ import com.start_up.dev.apilinkus.Adapter.MiniCarouselAdapter;
 import com.start_up.dev.apilinkus.Adapter.RecyclerViewItem;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewCircleClickListener;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewGalleryClickListener;
-import com.start_up.dev.apilinkus.Model.Authentification;
 import com.start_up.dev.apilinkus.Model.IdRight;
 import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.KeyValue;
@@ -54,9 +51,6 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -526,7 +520,7 @@ public class SendMomentActivity extends AppCompatActivity implements APIGetListG
         bitmapDisplayed = getBitmapResizeMaxFromFile(uriDisplayed,MAX_WIDTH_BITMAP,MAX_HEIGHT_BITMAP);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmapDisplayed.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-       // bitmapDisplayed = BitmapFactory.decodeFile(uriDisplayed, options);
+        // bitmapDisplayed = BitmapFactory.decodeFile(uriDisplayed, options);
 
         float widthImage = ((float) bitmapDisplayed.getWidth());
         float heightImage = ((float) bitmapDisplayed.getHeight());
@@ -716,8 +710,6 @@ public class SendMomentActivity extends AppCompatActivity implements APIGetListG
     public void onBackPressed(){
         super.onBackPressed();
         clearDataFragment();
-        Intent intent = new Intent(this, GalleryActivity.class);
-        startActivity(intent);
         finish();
     }
 
