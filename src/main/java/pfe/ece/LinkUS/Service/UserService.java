@@ -208,10 +208,10 @@ public class UserService {
 
         User user = findUserById(userId);
         User friend = findUserById(friendId);
-        if (friend.getFriendPendingList().contains(userId)) {
+        if (user.getFriendPendingList().contains(friendId)) {
             LOGGER.info("New friend with friendID: " + friendId);
-            user.getFriendRequestPendingList().remove(friendId);
-            friend.getFriendPendingList().remove(userId);
+            friend.getFriendRequestPendingList().remove(userId);
+            user.getFriendPendingList().remove(friendId);
 
             // Ajout dans les amis
             user.getFriendList().add(friendId);
@@ -228,10 +228,14 @@ public class UserService {
 
         User user = findUserById(userId);
         User friend = findUserById(friendId);
-        if(friend.getFriendPendingList().contains(userId)) {
-            LOGGER.info("Refuse friend with friendID: " + friendId);
-            user.getFriendRequestPendingList().remove(friendId);
-            friend.getFriendPendingList().remove(userId);
+        if (user.getFriendPendingList().contains(friendId)) {
+            LOGGER.info("New friend with friendID: " + friendId);
+            friend.getFriendRequestPendingList().remove(userId);
+            user.getFriendPendingList().remove(friendId);
+
+            // Ajout dans les amis
+            user.getFriendList().add(friendId);
+            friend.getFriendList().add(userId);
 
             update(user);
             update(friend);

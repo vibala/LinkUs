@@ -7,10 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Component.OnSendingCompleteEvent;
 import pfe.ece.LinkUS.Exception.UpdatePasswordException;
 import pfe.ece.LinkUS.Model.Message;
@@ -28,7 +25,7 @@ import java.util.logging.Logger;
 /**
  * Created by Vignesh on 12/30/2016.
  */
-@Controller
+@RestController
 public class PasswordController {
 
     private Logger LOGGER = Logger.getLogger("LinkUS.Controller.PasswordController");

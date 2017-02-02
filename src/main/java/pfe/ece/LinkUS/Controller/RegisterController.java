@@ -7,7 +7,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSendException;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
@@ -29,7 +28,7 @@ import java.util.*;
 /**
  * Created by Vignesh on 12/9/2016.
  */
-@Controller
+@RestController
 public class RegisterController {
 
     @Autowired

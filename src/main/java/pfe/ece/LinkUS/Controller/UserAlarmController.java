@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pfe.ece.LinkUS.Model.UserAlarm;
 import pfe.ece.LinkUS.Repository.OtherMongoDBRepo.UserAlarmRepository;
 import pfe.ece.LinkUS.Service.TokenService.AccessTokenService;
@@ -14,7 +15,7 @@ import pfe.ece.LinkUS.Service.UserAlarmService;
 /**
  * Created by DamnAug on 20/01/2017.
  */
-@Controller
+@RestController
 @RequestMapping("/alarm")
 public class UserAlarmController {
 

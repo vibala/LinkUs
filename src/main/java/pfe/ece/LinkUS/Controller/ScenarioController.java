@@ -3,9 +3,9 @@ package pfe.ece.LinkUS.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import pfe.ece.LinkUS.Exception.EmailExistsException;
 import pfe.ece.LinkUS.Model.Enum.Right;
 import pfe.ece.LinkUS.Model.User;
@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by DamnAug on 19/01/2017.
  */
-@Controller
+@RestController
 @RequestMapping(value = "/scenario")
 public class ScenarioController {
 

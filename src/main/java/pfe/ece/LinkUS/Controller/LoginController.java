@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import pfe.ece.LinkUS.Model.Message;
 
 import java.util.Optional;
@@ -18,7 +18,7 @@ import java.util.Optional;
  * Created by Vignesh on 11/3/2016.
  */
 
-@Controller
+@RestController
 public class LoginController {
 
     private static final Logger LOGGER = Logger.getLogger(LoginController.class);

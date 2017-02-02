@@ -4,7 +4,6 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Model.*;
 import pfe.ece.LinkUS.Model.Enum.NotificationType;
@@ -32,7 +31,7 @@ import java.util.logging.Logger;
  * Created by Huong on 08/12/2016.
  */
 
-@Controller
+@RestController
 public class UploadingController {
 
     @Autowired

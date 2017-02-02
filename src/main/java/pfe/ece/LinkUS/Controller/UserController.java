@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pfe.ece.LinkUS.Model.Enum.NotificationType;
 import pfe.ece.LinkUS.Model.NbAlbumsAndNbProches;
@@ -258,5 +257,17 @@ public class UserController {
         return new ResponseEntity<String>("Username updated", HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/getFriendProfileByIdFromPendingFriends",params = {"friendId"})
+    public String getFriendProfileByIdFromPendingFriends(@RequestParam("friendId") String friendId){
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+        List<User> userList = userService.findPendingFriends(userId);
+        userService.checkData(userList);
+        for (User user :userList ) {
+            if(user.getId().contentEquals(friendId)){
+                return user.toString();
+            }
+        }
 
+        return "";
+    }
 }

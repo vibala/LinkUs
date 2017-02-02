@@ -11,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
@@ -33,7 +32,7 @@ import java.util.Optional;
 /**
  * Created by Vignesh on 11/6/2016.
  */
-@Controller
+@RestController
 public class HomeController {
 
     private final Logger LOGGER = Logger.getLogger(HomeController.class);
