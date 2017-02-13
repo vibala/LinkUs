@@ -232,10 +232,13 @@ public class UserService {
             LOGGER.info("New friend with friendID: " + friendId);
             friend.getFriendRequestPendingList().remove(userId);
             user.getFriendPendingList().remove(friendId);
+<<<<<<< HEAD
 
             // Ajout dans les amis
             user.getFriendList().add(friendId);
             friend.getFriendList().add(userId);
+=======
+>>>>>>> origin/server_linkus
 
             update(user);
             update(friend);

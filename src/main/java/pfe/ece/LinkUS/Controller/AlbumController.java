@@ -197,6 +197,14 @@ public class AlbumController {
         String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
         return albumService.findMomentsCheckRightInAlbum(albumId, userId, momentIdList).toString();
     }
+    @RequestMapping(value = "/findUsersWithRightInAlbum", params = {"albumId", "right"})
+    public String findUsersWithRightInAlbum(@RequestParam("albumId") String albumId,
+                                            @RequestParam("right") String right) {
+
+        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
+
+        return albumService.findUsersWithRightInAlbum(albumId, userId, right).toString();
+    }
 
     @RequestMapping(value = "/findGroupUsersWithRightInAlbum", params = {"albumId", "right"})
     public String findGroupUsersWithRightInAlbum(@RequestParam("albumId") String albumId,
@@ -207,6 +215,7 @@ public class AlbumController {
         return albumService.findGroupUsersWithRightInAlbum(albumId, userId, right).toString();
     }
 
+<<<<<<< HEAD
     @RequestMapping(value = "/findGroupUsersWithRightInAlbum", params = {"albumId", "right"})
     public String findGroupUsersWithRightInAlbum(@RequestParam("albumId") String albumId,
                                             @RequestParam("right") String right) {
@@ -215,4 +224,7 @@ public class AlbumController {
 
         return albumService.findGroupUsersWithRightInAlbum(albumId, userId, right).toString();
     }
+=======
+
+>>>>>>> origin/server_linkus
 }
