@@ -232,13 +232,6 @@ public class UserService {
             LOGGER.info("New friend with friendID: " + friendId);
             friend.getFriendRequestPendingList().remove(userId);
             user.getFriendPendingList().remove(friendId);
-<<<<<<< HEAD
-
-            // Ajout dans les amis
-            user.getFriendList().add(friendId);
-            friend.getFriendList().add(userId);
-=======
->>>>>>> origin/server_linkus
 
             update(user);
             update(friend);
@@ -353,7 +346,7 @@ public class UserService {
         user.setEmail(name.toLowerCase() + "@yopmail.com");
         user.setDateofBirth(new Date(117, 0, 17, 17, 17));
         user.setFirstName(name);
-        user.setLastName("Corea");
+        user.setLastName("X");
         user.setSexe("Male");
         user.setRole(Role.USER);
 
@@ -391,6 +384,7 @@ public class UserService {
     public void addFakeFriend(String userId, String friendId) {
 
         friendRequest(userId, friendId);
-        acceptFriend(userId, friendId);
+        //#ADD switch param
+        acceptFriend(friendId,userId );
     }
 }

@@ -344,7 +344,7 @@ public class AlbumService {
             Album album = createCompleteAlbum(name, ownerId, null, null, null, null);
             album.setActive(true);
             addUserToAlbumAllIdRight(album, ownerId);
-            album.setImageUrl("http://www.fr-dba.com/img/slides/groupe-illus.png");
+            album.setImageUrl("http://www.snut.fr/wp-content/uploads/2015/08/image-de-paysage-4.jpg");
             save(album);
             return album.getId();
         }
@@ -513,25 +513,8 @@ public class AlbumService {
         IdRightService idRightService = new IdRightService();
 
         //TODO: Vérifier que l'user à le droit d'obtenir ces infos (--> Admin ?)
-        //if(album.getOwnerId().contentEquals(userId)){
-            return idRightService.getUsersFromIdRight(idRightService.findByRight(album, right));
-        //}
 
-        //return new ArrayList<>();
-    }
-
-    public List<String> findGroupUsersWithRightInAlbum(String albumId, String userId, String right) {
-
-        Album album = findAlbumById(albumId);
-
-        IdRightService idRightService = new IdRightService();
-
-        //TODO: Vérifier que l'user à le droit d'obtenir ces infos (--> Admin ?)
-       // if(album.getOwnerId().contentEquals(userId)){
-            return idRightService.getGroupUsersFromIdRight(idRightService.findByRight(album, right));
-     //   }
-
-       // return new ArrayList<>();
+        return idRightService.getUsersFromIdRight(idRightService.findByRight(album, right));
     }
 
     public List<String> findGroupUsersWithRightInAlbum(String albumId, String userId, String right) {
@@ -827,11 +810,11 @@ public class AlbumService {
         // Les image principales des moments sont toujours initialisées
         // (soit par une photo d'instant soit par une image par défaut)
         if(updateAlbumImage) {
-            //#ADD
+
             if(album.getMoments().size()>0) {
                 album.setImageUrl(album.getMoments().get(0).getMainImageUrl());
             }else{
-                album.setImageUrl("http://www.fr-dba.com/img/slides/groupe-illus.png");
+                album.setImageUrl("http://www.snut.fr/wp-content/uploads/2015/08/image-de-paysage-4.jpg");
             }
         }
     }

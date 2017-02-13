@@ -215,16 +215,5 @@ public class AlbumController {
         return albumService.findGroupUsersWithRightInAlbum(albumId, userId, right).toString();
     }
 
-<<<<<<< HEAD
-    @RequestMapping(value = "/findGroupUsersWithRightInAlbum", params = {"albumId", "right"})
-    public String findGroupUsersWithRightInAlbum(@RequestParam("albumId") String albumId,
-                                            @RequestParam("right") String right) {
 
-        String userId = accessTokenService.getUserIdOftheAuthentifiedUser();
-
-        return albumService.findGroupUsersWithRightInAlbum(albumId, userId, right).toString();
-    }
-=======
-
->>>>>>> origin/server_linkus
 }
