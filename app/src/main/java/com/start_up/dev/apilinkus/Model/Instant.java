@@ -1,5 +1,7 @@
 package com.start_up.dev.apilinkus.Model;
 
+import android.graphics.Bitmap;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.Serializable;
@@ -152,5 +154,56 @@ public class Instant implements Serializable {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //#TL --------------------Pour la TL
+    private Bitmap bitmap;
+    private Bitmap bitmapBig;
+
+
+    public Instant(String id){
+        this.id=id;
+    }
+
+    //#Changement BD
+    public Instant generateInstantCopy(){
+        Instant instantCopy= new Instant(this.getId());
+        instantCopy.setName(this.getName());
+        instantCopy.setUrl(this.getUrl());
+        instantCopy.setTimeZone(this.getTimeZone());
+        instantCopy.setCommentList(new ArrayList<>(this.getCommentList()));
+        instantCopy.setDescriptionsList(new ArrayList<>(this.getDescriptionsList()));
+        instantCopy.setPublishDate(new Date(this.getPublishDate().getTime()));
+        instantCopy.setIdRight(new ArrayList<>(this.getIdRight()));
+        instantCopy.setUserIdDescriptionAvailable(new ArrayList<>(this.getUserIdDescriptionAvailable()));
+
+        return instantCopy;
+    }
+    public Bitmap getBitmapBig() {
+        return bitmapBig;
+    }
+
+    public void setBitmapBig(Bitmap bitmapBig) {
+        this.bitmapBig = bitmapBig;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }

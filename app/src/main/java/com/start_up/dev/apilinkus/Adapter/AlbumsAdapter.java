@@ -1,6 +1,7 @@
 package com.start_up.dev.apilinkus.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.style.ClickableSpan;
@@ -12,14 +13,17 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.start_up.dev.apilinkus.Fragments.OwnedAlbumsFragment;
 import com.start_up.dev.apilinkus.Listener.RecyclerViewClickListener;
 import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.R;
+import com.start_up.dev.apilinkus.TimeLine.TimeLineActivity;
 
 import java.util.ArrayList;
 
@@ -34,11 +38,13 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
     private RecyclerViewClickListener itemListener;
     protected static final String TAG = AlbumsAdapter.class.getSimpleName();
     private ClickListener mCallback;
+    private OwnedAlbumsFragment.OnOwnedAlbumSelectedListener listenerTL;
     private int selected_album_position;
 
     public class AlbumViewHolder extends RecyclerView.ViewHolder{
         public TextView title, count;
         public ImageView thumbnail, overflow;
+        public Button timeline;
 
 
         public AlbumViewHolder(View itemView) {
@@ -53,6 +59,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
                 }
             });
             overflow = (ImageView) itemView.findViewById(R.id.image_view_overflow);
+            timeline = (Button) itemView.findViewById(R.id.timeline_activity_button_tl);
 
         }
 
@@ -64,11 +71,12 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
         void OnShareOwnedAlbumListener(int position,String scope);
     }
 
-    public AlbumsAdapter(Context mContext, ArrayList<Album> albumList,RecyclerViewClickListener itemListener,ClickListener listener) {
+    public AlbumsAdapter(Context mContext, ArrayList<Album> albumList,RecyclerViewClickListener itemListener,ClickListener listener,OwnedAlbumsFragment.OnOwnedAlbumSelectedListener listenerTL) {
         this.mContext = mContext;
         this.albumList = albumList;
         this.itemListener = itemListener;
         this.mCallback = listener;
+        this.listenerTL=listenerTL;
     }
 
     @Override
@@ -78,18 +86,18 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
                             .inflate(R.layout.content_albums,parent,false);
         return new AlbumViewHolder(itemView);
     }
-
+private  Album albumOnlyGetTmp;
     @Override
     public void onBindViewHolder(final AlbumViewHolder holder, int position) {
         if(albumList.size()>0) {
-            Album album = albumList.get(position);
-            Log.d(TAG, "Album name " + album.getName());
-            holder.title.setText(album.getName());
-            holder.count.setText(album.getCountryName());
+            albumOnlyGetTmp = albumList.get(position);
+            Log.d(TAG, "Album name " + albumOnlyGetTmp.getName());
+            holder.title.setText(albumOnlyGetTmp.getName());
+            holder.count.setText(albumOnlyGetTmp.getCountryName());
             // loading album cover using Glide library
             Glide
                     .with(mContext)
-                    .load(album.getImageUrl())
+                    .load(albumOnlyGetTmp.getImageUrl())
                     .thumbnail(0.1f)
                     .into(holder.thumbnail);
 
@@ -100,6 +108,14 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
                     showPopupMenu(holder.overflow);
                 }
             });
+            if(listenerTL!=null) {
+                holder.timeline.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startTimeLine(albumOnlyGetTmp);
+                    }
+                });
+            }
         }
     }
 
@@ -113,7 +129,9 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumViewH
         popupMenu.setOnMenuItemClickListener(new MyMenuItemClickListener());
         popupMenu.show();
     }
-
+    public void startTimeLine(Album album){
+        listenerTL.onOwnedTimeLineAlbumSelected(album.getId());
+    }
     /**
      * Click listener for popup menu items
      */

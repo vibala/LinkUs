@@ -3,6 +3,7 @@ package com.start_up.dev.apilinkus.Fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ import com.start_up.dev.apilinkus.Model.Album;
 import com.start_up.dev.apilinkus.Model.Authentification;
 import com.start_up.dev.apilinkus.Model.IdRight;
 import com.start_up.dev.apilinkus.R;
+import com.start_up.dev.apilinkus.TimeLine.TimeLineActivity;
 import com.start_up.dev.apilinkus.Tool.JsonDateDeserializer;
 
 import org.json.JSONArray;
@@ -75,21 +77,25 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
     private AlbumsAdapter adapter;
     private ArrayList<Album> owned_albums = new ArrayList<>();
     private OnOwnedAlbumSelectedListener mCallback;
-    private APILinkUS api=new APILinkUS();;
+    private APILinkUS api = new APILinkUS();
+    ;
     private Album selected_album;
     private List<String> selected_album_userIdList, selected_album_groupuserIdList;
-    private Map<String,String> list_friends = new HashMap<>();
-    private Map<String,String> list_friendsgroup = new HashMap<>();
+    private Map<String, String> list_friends = new HashMap<>();
+    private Map<String, String> list_friendsgroup = new HashMap<>();
     private String scope = "";
     private FloatingActionButton fab;
-    private EditText nameBox,countrynameBox,placenameBox;
+    private EditText nameBox, countrynameBox, placenameBox;
     private String userId = Authentification.getUserId();
 
 
     // Container Activity must implement this interface
-    public interface OnOwnedAlbumSelectedListener{
+    public interface OnOwnedAlbumSelectedListener {
         void onOwnedAlbumSelected(String albumId);
+
+        void onOwnedTimeLineAlbumSelected(String albumId);
     }
+
 
     @Nullable
     @Override
@@ -208,7 +214,7 @@ public class OwnedAlbumsFragment extends Fragment implements RecyclerViewClickLi
             }
 
         }
-        adapter = new AlbumsAdapter(getContext(),owned_albums,this,this);
+        adapter = new AlbumsAdapter(getContext(),owned_albums,this,this,mCallback);
         /////////////////////////////////////////////////////////////////////
         // A LayoutManager is responsible for measuring and positionning items within a RecyclerView as well as determining
         // the policy when to recycle items

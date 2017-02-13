@@ -58,7 +58,10 @@
             android:name=".AfterNotificationActivity">
 
         </activity>
+        <activity
+            android:name=".TimeLine.TimeLineActivity">
 
+        </activity>
         <activity
             android:name=".SendMomentActivity"
             android:configChanges="orientation|screenSize"

@@ -22,7 +22,7 @@ public class APILinkUS {
 
     private Context mContext;
     private final String TAG = APILinkUS.class.getSimpleName();
-    public static String BASE_URL="http://192.168.137.77:9999";
+    public static String BASE_URL="http://192.168.43.39:9999";
     //private String userId="1";
 
     //ARRETER DE TOUCHER LES CONSTRUCTEURS 

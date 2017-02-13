@@ -72,6 +72,7 @@ import com.start_up.dev.apilinkus.Model.Instant;
 import com.start_up.dev.apilinkus.Model.Moment;
 import com.start_up.dev.apilinkus.Model.Subscription;
 import com.start_up.dev.apilinkus.Service.DateUtil;
+import com.start_up.dev.apilinkus.TimeLine.TimeLineActivity;
 import com.start_up.dev.apilinkus.Tool.JsonDateDeserializer;
 
 import org.json.JSONException;
@@ -558,6 +559,15 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
 
     @Override
     public void onOwnedAlbumSelected(String albumId) { callAlbumFragment(albumId); }
+
+    @Override
+    public void onOwnedTimeLineAlbumSelected(String albumId) {
+            Intent intent = new Intent(this, TimeLineActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("albumId",albumId);
+            startActivity(intent); // call this to finish the current activity
+
+    }
 
     @Override
     public void onSharedAlbumSelected(String albumId) {

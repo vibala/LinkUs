@@ -2,6 +2,7 @@ package com.start_up.dev.apilinkus.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.start_up.dev.apilinkus.TimeLine.TLViewMoment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,6 +23,9 @@ public class Moment implements Serializable {
     private boolean news = true;
     private String mainInstant;
 
+    public Moment(String id) {
+        this.id = id;
+    }
 
     public Moment() {
     }
@@ -116,5 +120,54 @@ public class Moment implements Serializable {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //#TL
+
+    private Instant getMostRecentInstant() {
+        if (instantList.size() < 1) return null;
+
+        Instant mostRecentInstant;
+        mostRecentInstant = instantList.get(0);
+        for (Instant instant : instantList) {
+            if (instant.getPublishDate().compareTo(mostRecentInstant.getPublishDate()) < 0) {
+                mostRecentInstant = instant;
+            }
+        }
+        return mostRecentInstant;
+    }
+    public TLViewMoment generateTLViewMoment(Album album){
+        TLViewMoment tlMoment = new TLViewMoment(id);
+        tlMoment.setName(name);
+        tlMoment.setInstantList(instantList);
+        tlMoment.setAlbumId(album.getId());
+        tlMoment.setAlbumName(album.getName());
+        tlMoment.setInstantList(instantList);
+        tlMoment.setDescriptionsList(descriptionsList);
+        //#REMOVE when news dans les moment
+        news=false;
+        tlMoment.setNews(news);
+
+        //On créé un nouvel instant pour la vue que l'on modifie a notre guise
+        Instant mainInstant=getMostRecentInstant().generateInstantCopy();
+        if(news){
+            mainInstant.setPublishDate(publishDate);
+        }
+        tlMoment.setMainInstant(mainInstant);
+        return tlMoment;
     }
 }

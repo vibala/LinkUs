@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.start_up.dev.apilinkus.TimeLine.TimeLineActivity"
+    android:orientation="vertical">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <com.start_up.dev.apilinkus.TimeLine.ObservableHorizontalScrollView
+        android:id="@+id/horizontalScroll"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:fillViewport="true"
+        android:scrollbars="horizontal">
+
+    </com.start_up.dev.apilinkus.TimeLine.ObservableHorizontalScrollView>
+</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom|end">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mini_caroussel_icon"
+                android:scrollbars="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/tw__tweet_light_primary_text_color"
+                android:numColumns="auto_fit"/>
+
+        </LinearLayout>
+        <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:id="@+id/add_button">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/button_change_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                app:srcCompat="@android:drawable/ic_menu_send" />
+
+        </android.support.design.widget.CoordinatorLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
+</LinearLayout>

@@ -93,7 +93,7 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
             shared_albums = (ArrayList<Album>) savedInstanceState.getSerializable("shared_albums");
             userId = (String) savedInstanceState.getString("userId");
             spinner.setSelection(savedInstanceState.getInt("current_selector"));
-            adapter = new AlbumsAdapter(getContext(),shared_albums,this,null);
+            adapter = new AlbumsAdapter(getContext(),shared_albums,this,null,null);
 
         }else {
             if(shared_albums.isEmpty()){
@@ -101,7 +101,7 @@ public class SharedAlbumsFragment extends Fragment implements RecyclerViewClickL
             }
 
             userId = Authentification.getUserId();
-            adapter = new AlbumsAdapter(getContext(),shared_albums,this,null);
+            adapter = new AlbumsAdapter(getContext(),shared_albums,this,null,null);
 
         }
 

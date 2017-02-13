@@ -25,6 +25,13 @@ public class Album implements Serializable {
     private boolean active = false;
     private String imageUrl;
 
+    public Album() {
+
+    }
+    public Album(String id) {
+        this.id = id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

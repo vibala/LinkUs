@@ -25,6 +25,15 @@ public class Description implements Serializable {
         return str;
     }
 
+    public Description(String type, String content) {
+        this.type = type;
+        this.content = content;
+    }
+    public Description() {
+
+    }
+
+
     public String getId() {
         return id;
     }
